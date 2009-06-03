@@ -1,7 +1,10 @@
-\documentclass[12pt,a4paper,ngerman]{article}
+\documentclass[12pt,a4paper,ngerman]{report}
 \usepackage{babel}
-\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+
+%\usepackage{float}
+\usepackage{floatflt}
 
 \author{Roman Scherer \\ scherer@informatik.hu-berlin.de}
 
@@ -22,12 +25,9 @@
 \begin{document}
 
 \maketitle
-
-\begin{center}
-  Betreuer: Prof. Dr. Jens-Peter Redlich
-\end{center}
-
 \include{kapitel/zusammenfassung}
+\tableofcontents
+
 \include{kapitel/einleitung}
 
 \bibliographystyle{geralpha}

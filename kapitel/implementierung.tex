@@ -1,6 +1,65 @@
 \chapter{Implementierung der Web Applikation}
 \section{Vorstellung der verwendeten Technologien}
-\section{Behavior Driven Development}
+
+\section{Behaviour Driven Development}
+
+\textit{Behaviour Driven Development} ist eine Erweiterung des
+\textit{Test Driven Development}, einer Methode aus dem Bereich der
+\textit{Agilen Softwareentwicklung}. Ziel der Agilen
+Softwareentwicklung ist es den klassischen Softwareentwicklungsprozess
+schlanker und flexibler zu gestalten und sich mehr auf die zu
+erreichenden Ziele und Anforderungen zu
+fokussieren. Paarprogrammierung, ständige Refaktorisierungen des Codes
+und testgetriebene Entwicklung sind einige der dabei verwendeten
+Methoden \cite{wiki:agile}.
+
+Behaviour Driven Development ist ein durch Dan North geprägter Begriff
+und eine Erweiterung der Philosophie des Test Driven
+Developments. Durch die Einführung eines gemeinsames Vokabluars soll
+die Zusammenarbeit zwischen Programmieren und anderen
+nicht-technischen Beteiligten an einem Softwareprojekt erhöht
+werden. Das gemeinsame Vokabular wird dazu benutzt das Verhalten,
+bzw. die Anforderungen der Software gemeinsam zu beschreiben. Diese
+Anforderungen werden dann in Form von automatischen Tests vom
+Programmierer implementiert. Wie beim Test Driven Development wird der
+Test auch hier vor der Implementierung geschrieben. Bei dieser Art der
+Software Entwicklung wird die API des zu entwickelnden Codes während
+der Beschreibung und der Implementierung des Verhaltens in Form von
+Tests erforscht.
+
+Rspec ist ein Behaviour Driven Development Framework für Ruby, das
+unter anderen auch von Dan North mitentwickelt wird. Das
+\textit{Spec::Rails} Plugin bietet die nötige Infrastruktur für Ruby
+on Rails Projekte. An die MVC-Architektur von Rails angelehnt bietet
+es verschiedene Umgebungen um Model, View, Controller und Helper zu
+spezifizieren.
+
+\begin{verbatim}
+A saved spot
+- should have a name
+- should have a secret flag
+- should not be secret by default
+- should not be valid without name
+- should not be valid without user
+
+A saved public spot
+- should be public
+- should not be secret
+- should return the invitation status for the spot owner
+- should return the invitation status an anonymous user
+- should be visible to an anonymous user
+- should be visible to the given user
+
+A saved secret spot without a spot invitation
+- should have the spot owner as inviter
+- should have the spot owner as invitee
+- should be secret
+- should not be public
+
+\end{verbatim}
+
+
+
 \section{Architektur der Web Applikation}
 \section{Caching Verfahren in Ruby on Rails}
 

@@ -1,7 +1,122 @@
 
 \chapter{Aufbau und Analyse der ETL Prozesse}
 \section{Überblick der verwendeten Datenquellen}
-\subsection{Wetterdaten}
+
+\subsection{Wetter- und Wellendaten}
+
+Heutige Wettervorhersagen basieren meist auf den Ergebnissen
+\textit{numerischer Wettermodelle}, die von verschiedenen
+Wetterdiensten erstellt und betrieben werden. Diese Modelle versuchen
+den Zustand der Atmosphäre und deren Veränderung als mathematisches
+Problem zu berschreiben. Eingabe für ein solches Modell ist der
+Zustand der Atmosphäre in Form von physikalischen Größen, wie
+z.B. Temperatur, Windstärke und Windrichtung. Die physikalischen
+Beziehungen, die den Zustand der Atmosphäre verändern werden als
+System partieller Differentialgleichungen modelliert.
+
+% Verfahren der Numerik
+% und der Einsatz von Supercomputern helfen dabei d
+
+
+% formuliert. Zur Lösung des Problems werden Verfahren
+
+% Dieses wird mit Verfahren der Numerik und dem Einsatz von
+% Supercomputern näherungsweise gelöst. Das Ergebnis
+
+% Es gibt eine Vielzahl dieser Modelle die
+% von unterschiedlichen Wetterdiensten erstellt werden, und aufgrund der
+% Anwendung verschiedener Verfahren auch erhebliche Abweichungen
+
+
+
+% Diese Ergebnisse repräsentieren
+% den Zustand der Atmosphäre für ein Vorhersagegebiet zu einem
+% bestimmten Zeitpunkt in Form von physikalischen Größen, wie
+% z.B. Temperatur, Windstärke und Windrichtung.
+
+
+
+% Diese E
+
+
+
+% Das Vorhersagegebiet wird dabei in Gitterzellen
+
+
+%  als dreidimensionaler Raum in
+% Abhängigkiet der Zeit betrachtet.
+
+% in Gitterzellen aufgeteilt, um die für
+% das Modell relevanten physikalischen Größen als Funktion der Zeit im
+% dreidimensionalen Raum darstellen zu können.
+
+% .System
+
+
+%  in Form
+% von partiellen Differentialgleichungen dar.
+
+
+% Die Berechnung dieser
+% Modelle ist sehr aufwendig, weshalb Verfahren aus dem Bereich der
+% Numerik und Supercomputer verwendet werden um das Problem
+% näherungsweise zu lösen.
+
+% Der Zustand der Atmosphäre
+
+
+% . Dieser
+% dreidimensionale Raum wird durch die geographischen Koordinaten
+% Latitude, Longitude sowie der Höhe über dem Meeresspiegel aufgespannt.
+
+% Die Eckpunkte
+% einer Gitterzelle representieren dabei die physikalischen Größen wie
+% z.B. Temperatur, Windrichtung und -stärke, Wellenhöhe und
+% -periode sind einige der
+
+
+
+
+
+
+% , wie Temperatur,
+% Luftdruck, Windrichtung, Windstärke, etc.
+
+% Problem zu formulieren.
+
+% , und durch die Lösung darzustellen.
+
+% System partieller
+% Differentialgleichungen darzustellen.
+
+
+% zu einem gegeben Zeitpunkt durch die
+% numerische Lösung
+
+
+% Es gibt eine Vielzahl von
+% Wettermodellen die von verschiedenen Wetterdiensten für bestimmte
+% Regionen angeboten werden.
+
+
+% Für die Berechnung dieser Modelle
+% wird ein Gebiet oder Region in Gitterzellen aufgeteilt.
+
+
+% Es gibt eine Vielzahl dieser
+% Modelle,
+
+
+% In einem solchen Modell wir das
+
+
+% , die sind rechnergestützte Wettervorhersagen
+
+% Die für die Wetter- und Wellenvorhersagen benötigten Daten werden von
+% der US-amerikanischen Wetter- und Ozeanografiebehörde \textit{National
+%   Oceanic and Atmospheric Administration (NOAA)} als Ergebnis
+% numerisch gelöster Wettermodelle zur Verfügung gestellt.
+
 \subsection{Photos \& Videos}
 \section{Datenbank Design}
 \subsection{Konzeptionelle Schema}

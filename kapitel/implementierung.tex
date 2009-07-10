@@ -1,7 +1,7 @@
 \chapter{Implementierung der Web Applikation}
 \section{Vorstellung der verwendeten Technologien}
 
-\section{Behaviour Driven Development}
+\section{Behaviour \& Test Driven Development}
 
 \textit{Behaviour Driven Development} ist eine Erweiterung des
 \textit{Test Driven Development}, einer Methode aus dem Bereich der
@@ -15,71 +15,189 @@ Methoden \cite{wiki:agile}.
 
 Behaviour Driven Development ist ein durch Dan North geprägter Begriff
 und eine Erweiterung der Philosophie des Test Driven Developments
-\cite{wiki:bdd}. Durch die Einführung eines gemeinsames Vokabluars
-soll die Zusammenarbeit zwischen Programmieren und anderen
-nicht-technischen Beteiligten an einem Softwareprojekt erhöht
-werden. Das gemeinsame Vokabular wird dazu benutzt das Verhalten,
-bzw. die Anforderungen der Software gemeinsam zu beschreiben. Diese
-Anforderungen werden dann in Form von automatischen Tests vom
-Programmierer implementiert. Wie beim Test Driven Development wird der
-Test auch hier vor der Implementierung geschrieben. Bei dieser Art der
-Software Entwicklung wird die API des zu entwickelnden Codes während
-der Beschreibung und der Implementierung des Verhaltens in Form von
-Tests erforscht.
+\cite{wiki:bdd}. Durch die Einführung eines gemeinsamen Vokabluars
+soll die Zusammenarbeit zwischen Programmieren und nicht-technischen
+Beteiligten an einem Softwareprojekt erhöht werden. Das gemeinsame
+Vokabular wird benutzt um das Verhalten, bzw. die Anforderungen der
+Software gemeinsam zu beschreiben und eine Spezifikation zu erstellen.
 
-\subsection{Rspec}
+Diese Spezifikation wird in Form von automatischen Tests in einer
+domänen\-spezifische Sprache vom Programmierer implementiert.
 
-\textit{Rspec} ist ein Behaviour Driven Development Framework für
-Ruby, das unter anderen auch von Dan North mitentwickelt wird. Es
-implementiert eine domänenspezifische Sprache zu Beschreibung von
-Anforderungen und Verhalten in Ruby. Als Beispiel für Behaviour Driven
-Development mit Rspec soll hier die Berechnung der Distanz zwischen
-zwei geographischen Positionen dienen. Hierfür soll eine Ruby Klasse
-implementiert werden, die durch Anwendung der Haversine Formel
-\cite{wiki:haversine} die Distanz in Kilometern berechnet. asasasas
+\subsection{Red, Green, Refactor}
 
-Bevor man die Klasse implementiert, beschreibt man deren Verhalten
-anhand von Beispielen. Diese Beispiele sollten im Idealfall von
-Programmierer und demjenigen, der die Anforderungen der Anwendung
-definiert erstellt werden. Die Beschreibung und Beispiele der
-Haversine Klasse
+Die Entwicklung der Software erfolgt, wie beim Test Driven
+Development, durch ständige Wiederhohlung des \textit{Red, Green,
+  Refactor} Zykluses. \textit{Red} und \textit{Green} stehen für
+fehlschlagende bzw. erfolgreiche Testfälle, und \textit{Refactor} für
+die Umstrukturierung, Verbesserung und Säuberung schon implementierten
+Programmcodes. Die Entwicklung der Anwendung wird in kleinere Teile,
+sogenannte \textit{Feature} aufgeteilt und diese nacheinander
+abgearbeitet. Das Verhalten eines zu implementierenden Features wird
+durch mehrere Testfälle beschrieben und somit spezifiziert. Dabei
+werden die folgenden drei Schritte solange wiederholt bis das
+gewünschte Feature ausreichend spezifizert und implementiert ist. Die
+Kunst ist hierbei, immer nur sehr kleine Schritte pro Zyklus zu
+spezifizieren und zu implementieren.
 
-Die Haversine Klasse
-\begin{itemize}
-\item berechnet eine Distanz von 878.01 km zwischen Berlin und Paris
-\item berechnet eine Distanz von 878.01 km zwischen Paris und Berlin
-\end{itemize}
+\subsubsection{Red - Die Spezifikation des Verhaltens}
 
-Eine Beschreibung der
-Haversine Klasse könnte wie folgt aussehen:
+In der \textit{Red} Phase wird ein korrekter, aber fehlschlagender,
+Test geschrieben, der ein bestimmtes Verhalten eines noch nicht
+implementiertes Features spezifiziert. Dieser Test sollte nur einen
+sehr geringen Teil des gesammten Features
+verifizieren. Beispielsweise, dass eine Methode ein Array zurückgibt,
+die Elemente eines Arrays Instanzen einer bestimmten Klasse sind oder
+die Distanz zwischen zwei gegebenen geografischen Positionen korrekt
+berechnet wird.
 
-In der Praxis formuliert man diese Beschreibung gleich in der von
-Rspec zur Verfügung gestellten domänen\-spezifischen Sprache.
+\subsubsection{Green - Die Implementierung des Verhaltens}
 
-{\small
+Ziel der \textit{Green} Phase ist es den soeben geschriebenen und
+fehlschlagenden Test (und alle bisher erfolgreichen) durch eine
+geeignete Implementierung zum Erfolg zu bringen. Hierbei ist zu
+Erwähnen, dass auch eine vorübergehend nicht korrekte Implementierung
+erlaubt ist, solange alle Tests erfolgreich sind. Beispielsweise kann
+eine Methode vorrübergehend immer einen leeren Array zurückgegeben,
+wenn im Test nur auf die Rückgabe eines Arrays geprüft wird. Diese
+inkorrekten Implementierungen sind gewollte Indizien für die als
+nächstes zu spezifizierenden Testfälle. In einem der nächsten Zyklen
+wird die inkorrekte Implementierung durch einen neuen fehlschlagenden
+Test aufgedeckt und durch eine korrekte Implementierung ausgetauscht.
+
+\subsubsection{Refactor - Besserer Programmcode durch
+  Umstrukturierung}
+
+Die \textit{Refactor} Phase dient dazu, bisher entwickelten
+Programmcode durch Umzustrukturierung aufzuräumen. Dazu zählt die
+Eliminierung doppelten oder ähnlichen Codes, die Extrahierung von
+Hilfsmethoden und weiterer Refactor-Techniken, die ausführlich in
+\cite{fowler99refactoring} beschrieben werden. Insbesondere in
+Software Projekten, die ohne automatische Tests entwickelt werden, ist
+diese Phase hochproblematisch. Zuvor funktionierender und durch
+Refactoring geänderter Programmcode muss nochmals manuell verifiziert
+werden. Probleme treten oft auch an nicht offensichtlich mit den
+Änderungen in Verbindung stehenden Teilen des Programms auf. Ein
+deshalb notwendiger, manueller Systemtest kann dann oft zu aufwendig
+sein, dass die Vorteile des Refactoring in den Hintergrund rücken und
+oftmals darauf verzichtet wird.  \textit{''Never change a running
+  system''. \footnote{Oft falsch verwendeter Pseudoanglizismus}}
+
+\subsection{Vorteile Behaviour \& Test Driven Developments}
+
+Diese Art der Softwareentwicklung wird heute oft immer noch aus den
+verschiedensten Gründen abgelehnt. \textit{''Nicht notwendig, bei gut
+  entwickeltem Code''}, \textit{''zu aufwenig''}, oder Barrieren,
+seine gewohnte Arbeitsweise zu ändern, sind einige dieser Gründe. Der
+Klassiker \textit{''man würde ja, aber habe keine Zeit Tests zu
+  schreiben''} zeigt, dass die Vorteile des Test Driven Development
+oft nicht erkannt werden. Dies liegt unter anderem wohl daran, dass es
+einige Zeit in Anspruch nimmt seine gewohnte Arbeitsweise zu ändern,
+und die Früchte erst nach einiger Zeit und Praxis deutlich zu sehen
+sind. Einige der Vorteile sollen im folgenen deutlich gemacht werden.
+
+\subsubsection{Steigerung der eigenen Produktivität}
+
+Martin Fowler beschreibt in \cite{fowler99refactoring}[S.89], dass
+viele Programmierer ihre Zeit nicht mit der Entwicklung des
+eigentlichen Programmcodes verbringen. Ein Großteil der Zeit wird für
+Debugging und das manuelle Testen des gerade zu entwickelten Codes
+verwendet. Produziert wird hier nur der eigentliche Programmcode. Beim
+Test Driven Development wird diese Zeit für die selben Ziele
+verwendet, doch als Nebenprodukt entstehen automatische
+Tests. Manuelles Testen und Debugging muss unter Umständen immer
+wieder von neuem wiederholt werden, während automatische Tests
+sicherstellen, dass bestimmte Dinge funktionieren und nicht nochmals
+verifiziert werden müssen. Die Entwicklung von Tests bedeutet mehr
+Code, was mit mehr Arbeit gleichzusetzen ist. Dieser Mehraufwand
+scheint auf den ersten Blick keinen Sinn zu machen, bis man selbst
+erfahren hat wie sehr dieses Vorgehen die eigene Produktivität
+steigern kann.
+
+\subsubsection{Besserer Programmcode}
+
+Schreibt man Tests vor der eigentlichen Implementierung blickt man von
+vornherein aus der Rolle eines Anwenders auf die zu entwickelnde
+Schnittstelle. Die API des zu implementierenden Codes kann so während
+der Entwicklung der Testfälle ''erforscht'' werden. Die Struktur des
+Programmcodes wird zudem positiv beeinflusst, da vor der
+Implementierung überlegt werden muss wie das Verhalten am besten
+getestet werden kann. Implementierungen, die vor Testfällen entwickelt
+wurden, müssen oft umstrukturiert werden damit diese überhaupt
+getestet werden können. Zu lange Methoden sind hier das klassische
+Beispiel. Sie lassen sich schlecht testen weil sie oft viel zu viel
+auf einmal erledigen. Darüber hinaus sind sie meist auch noch schwer
+zu verstehen. Durch Extraktion von Hilfsmethoden kann man diese
+Methoden verkürzen und verbessert dadurch die Lesbarkeit des
+Codes. Die extrahierten Methoden und die verkürzte Methode selbst
+lassen sich nun in Isolation meist viel besser und einfacher testen
+als zuvor. Zudem können die extrahierten Hilfsmethoden potentiell von
+anderem Programmcode mitverwendet werden.
+
+\subsubsection{Qualitätsmanagment und Teamwork}
+
+Insbesondere bei Softwareprojekten in dynamischen Programmiersprachen,
+die erst zur Laufzeit interpretiert werden und keine statische
+Typprüfung besitzen ist es von großem Vorteil eine automatische
+Testsuite zu haben. In diesen Sprachen gibt es keinen Compiler der
+nach Änderungen überprüfen kann, dass zumindest syntaktisch noch alles
+korrekt ist. Änderungen an einer Stelle im System haben oft
+Konsequenzen an anderen nicht vorhersehbaren Stellen. Eine Testsuite,
+welche die gesamte Codebasis abdeckt kann sicherstellen, dass
+Änderungen funktionieren und eingeschlichene Fehler so früh wie
+möglich aufgedeckt werden.
+
+Auch bei Softwareprojekten, die von mehreren Personen gleichzeitg
+entwickelt werden bietet eine Testsuite Schutz gegen das Einschleichen
+von Fehlern und hilft bei der Weiterentwicklung fremden Codes. Wird
+Programmcode vom nicht ursprünglichen Autor geändert oder erweitert
+muss dieser zuerst verstanden, erweitert und danach verifiziert
+werden. Testfällen dienen dabei nicht nur zur Verifizierung dieser
+Änderungen, sondern auch als Dokumentation und Spezifikation, und
+helfen somit das Problem besser und schneller zu verstehen.
+
+\subsection{Unit Tests mit RSpec}
+
+\textit{RSpec} \cite{rspec} ist ein Behaviour Driven Development
+Framework für die Entwicklung von Softwareprojekten in der
+Programmiersprache Ruby.  Es implementiert eine interne
+bzw. eingebettete domänen\-spezifische Sprache (DSL) zur Spezifikation
+von Anforderungen in Form von Unit Tests.  Spezifikationen können wie
+bei den diversen xUnit Derivaten gruppiert, verifiziert und deren
+Resultate angezeigt werden. Vor der eigentlichen Implementierung wird
+das Verhalten der Klasse anhand von Beispielen in der RSpec DSL wie
+folgt spezifiziert:
+
+{\footnotesize
 \begin{verbatim}
 describe Haversine do
-
-  before(:each) do
-    @berlin = Burningswell::Location.make_unsaved(:berlin)
-    @paris  = Burningswell::Location.make_unsaved(:paris)
-  end
-
   it "should calculate a distance of 0 km between the same location"
   it "should calculate a distance of 878.01 km between Berlin and Paris"
-  it "should calculate a distance of 878.01 km between Paris and Berlin"
-
 end
 \end{verbatim}
 }
 
-{\small
+Diese Spezifikation der Haversine Klasse ist Teil des oben erwähnten
+gemeinsamen Vokabulars und zugleich gültiger und ausführbarer Ruby
+Code. Die Entwicklung einer einfachen, verständlichen und
+aussagekräftigen DSL hatte zum Ziel, dass Spezifikationen wie diese
+von oder mit nicht-technischen Personen erstellt werden können. Die
+eigentliche Verifizierung und Implementierung des Verhaltens soll dann
+vom Programmierer erstellt werden. Bevor die Haversine Formel durch
+eine Klasse implementiert wird, erweitert der Programmierer die
+Spezifikation durch Code, der das Verhalten der Klasse verifiziert. Da
+die Spezifikation in der Programmiersprache Ruby geschrieben ist, kann
+diese vom Programmierer einfach und flexibel erweitert werden. Auch
+hier kommen Konstrukte der RSpec DSL zum Einsatz, welche die
+Lesbarkeit vereinfachen und die Spezifikation verständlicher machen
+sollen.
+
+{\footnotesize
 \begin{verbatim}
 describe Haversine do
 
   before(:each) do
-    @berlin = Burningswell::Location.make_unsaved(:berlin)
-    @paris  = Burningswell::Location.make_unsaved(:paris)
+    @berlin, @paris = Location.make(:berlin), Location.make(:paris)
   end
 
   it "should calculate a distance of 0 km between the same location" do
@@ -90,85 +208,73 @@ describe Haversine do
     Haversine.distance(@berlin, @paris).should == 878.006710357836.km
   end
 
-  it "should calculate a distance of 878.01 km between Paris and Berlin" do
-    Haversine.distance(@paris, @berlin).should == 878.006710357836.km
-  end
-
 end
 \end{verbatim}
 }
 
-Die Ruby Implementierung ist aus der Javascript Version
-\cite{movable_type_scripts} von Chris Veness abgeleitet.
+Das Ausführen dieser Spezifikation schlägt auf Grund der noch
+fehlenden Implementierung fehl. Durch die Wiederholung des Red, Green,
+Refactor Zykluses wird nun das Verhalten der Klasse implementiert. Der
+erste Testfall kann durch die folgende, noch inkorrekte
+Implementierung zum Erfolg gebracht werden:
 
-{\small
+{\footnotesize
 \begin{verbatim}
 class Haversine
 
-  cattr_accessor :earth_radius
-  @@earth_radius = Burningswell::Mapping::EARTH_RADIUS
-
-  attr_reader :from, :to
-
-  def initialize(from, to, options = { })
-    @from = Burningswell::Location.normalize(from)
-    @to   = Burningswell::Location.normalize(to)
-    @options = options
-  end
-
-  def distance
-    @distance ||= calculate
-  end
-
-  def earth_radius
-    @options[:earth_radius] || self.class.earth_radius
-  end
-
-  protected
-
-  def calculate
-
-    latitude  = (from.latitude.to_f  - to.latitude.to_f).to_radian
-    longitude = (from.longitude.to_f - to.longitude.to_f).to_radian
-
-    a = Math.sin(latitude / 2) * Math.sin(latitude / 2) +
-        Math.cos(from.latitude.to_f.to_radian) *
-        Math.cos(to.latitude.to_f.to_radian) *
-        Math.sin(longitude / 2) * Math.sin(longitude / 2)
-
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-    earth_radius * c
-
-  end
-
   def self.distance(from, to, options = { })
-    new(from, to, options).distance
+    return 0
   end
 
 end
 \end{verbatim}
 }
 
+Im nächsten Iterationszyklus muß nun die eigentliche Haversine Formel
+implementiert werden um auch den zweiten Testfall zum Erfolg zu
+bringen. Durch das Aufteilen der zu bewältigenden Aufgaben in kleine
+Iterationszyklen wird das spezifizierte Verhalten so Schritt für
+Schritt implementiert. Die nächste zu bearbeitende Teilaufgabe wird
+durch einen neuen Testfall beschrieben und das bisher erwartete
+Verhalten durch die bestehenden verifiziert.
 
-{\small
+Das im Umfeld von RSpec entwickelte \textit{Spec::Rails} Plugin bietet
+die nötige Infrastruktur für Ruby on Rails Projekte. An die
+MVC-Architektur von Rails angelehnt werden verschiedene Umgebungen und
+Hilsmethoden bereit gestellt um Model, View, Controller und Helper zu
+spezifizieren. Während der Entwicklung des Prototypen der Web
+Applikation wurden so insgesammt 4274 Testfälle spezifiziert die
+92.6\% (C0 Code Coverage) des gesammten Codes abdecken und so das
+korrekte Verhalten der Web Applikation verifizieren.
+
+\subsection{Integrationstests mit Cucumber}
+
+\textit{Cucumber} \cite{cucumber} ist ein weiteres Framework für
+Behaviour Driven Development in Ruby. Es bietet Software Entwicklern
+die Möglichkeit das Verhalten ihrer Anwendung in reinem Text zu
+beschreiben. In Ruby on Rails Projekten wird es üblicherweise benutzt
+um Integrationstests zu entwickeln.
+
+{\footnotesize
 \begin{verbatim}
-The Haversine class
-- should calculate a distance of 0 km between the same location
-- should calculate a distance of 878.01 km between Berlin and Paris
-- should calculate a distance of 878.01 km between Paris and Berlin
+Feature: Authentication
+  To ensure the safety of the application
+  A user of the system
+  Must authenticate before using the application
+
+  Scenario: Login as an exisiting and activated user
+    Given I am an activated user
+     When I log in with my credentials
+     Then I should be on my profile page
+      And I should be logged in
+
+  Scenario: Login as an exisiting and activated user with wrong credentials
+    Given I am an activated user
+     When I log in with invalid credentials
+     Then I should see "Sorry, invalid nick/password combination given."
+      And I should not be logged in
 \end{verbatim}
 }
-
-Das \textit{Spec::Rails} Plugin bietet die nötige Infrastruktur für
-Ruby on Rails Projekte. An die MVC-Architektur von Rails angelehnt
-werden verschiedene Umgebungen um Model, View, Controller und Helper
-zu spezifizieren bereitgestellt.
-
-\subsection{Cucumber}
-
-\textit{Cucumber} bietet Software Entwicklern die Möglichkeit das
-Verhalten ihrer Anwendung in reinem Text zu beschreiben.
 
 \section{Architektur der Web Applikation}
 \section{Caching Verfahren in Ruby on Rails}

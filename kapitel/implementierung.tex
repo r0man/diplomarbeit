@@ -164,9 +164,11 @@ Programmiersprache Ruby.  Es implementiert eine interne
 bzw. eingebettete domänen\-spezifische Sprache (DSL) zur Spezifikation
 von Anforderungen in Form von Unit Tests.  Spezifikationen können wie
 bei den diversen xUnit Derivaten gruppiert, verifiziert und deren
-Resultate angezeigt werden. Vor der eigentlichen Implementierung wird
-das Verhalten der Klasse anhand von Beispielen in der RSpec DSL wie
-folgt spezifiziert:
+Resultate angezeigt werden. Als Beispiel soll hier die Implementierung
+einer Klasse dienen, welche die Distanz in Kilometern zwischen zwei
+geografischen Positionen berechnet. Vor der eigentlichen
+Implementierung wird das Verhalten der Klasse anhand von Beispielen in
+der RSpec DSL wie folgt spezifiziert:
 
 {\footnotesize
 \begin{verbatim}
@@ -223,7 +225,7 @@ Implementierung zum Erfolg gebracht werden:
 class Haversine
 
   def self.distance(from, to, options = { })
-    return 0
+    return 0 # A first, naive implementation.
   end
 
 end
@@ -231,29 +233,71 @@ end
 }
 
 Im nächsten Iterationszyklus muß nun die eigentliche Haversine Formel
-implementiert werden um auch den zweiten Testfall zum Erfolg zu
-bringen. Durch das Aufteilen der zu bewältigenden Aufgaben in kleine
-Iterationszyklen wird das spezifizierte Verhalten so Schritt für
-Schritt implementiert. Die nächste zu bearbeitende Teilaufgabe wird
-durch einen neuen Testfall beschrieben und das bisher erwartete
-Verhalten durch die bestehenden verifiziert.
+\cite{wiki:haversine} implementiert werden um auch den zweiten
+Testfall zum Erfolg zu bringen. Durch das Aufteilen der zu
+bewältigenden Aufgaben in kleine Iterationszyklen wird das
+spezifizierte Verhalten so Schritt für Schritt implementiert. Die
+nächste zu bearbeitende Teilaufgabe wird durch einen neuen Testfall
+beschrieben und das bisher erwartete Verhalten durch die bestehenden
+verifiziert.
 
 Das im Umfeld von RSpec entwickelte \textit{Spec::Rails} Plugin bietet
 die nötige Infrastruktur für Ruby on Rails Projekte. An die
 MVC-Architektur von Rails angelehnt werden verschiedene Umgebungen und
 Hilsmethoden bereit gestellt um Model, View, Controller und Helper zu
 spezifizieren. Während der Entwicklung des Prototypen der Web
-Applikation wurden so insgesammt 4274 Testfälle spezifiziert die
-92.6\% (C0 Code Coverage) des gesammten Codes abdecken und so das
-korrekte Verhalten der Web Applikation verifizieren.
+Applikation wurden insgesammt 4274 Testfälle spezifiziert, die 92.6\%
+(C0 Code Coverage) des gesammten Codes abdecken und das korrekte
+Verhalten der Web Applikation verifizieren.
+
+Das Durchlaufen der gesammten Testsuite benötigt momentan ca. 15
+Minuten, was zu einem Durchschnitt von 4,8 Sekunden pro Test
+führt. Diese hohe Laufzeit lässt sich auf die vielen Datenbankzugriffe
+zurückführen, die vor den meisten Testfällen einen bestimmten
+Datenbestand herstellen und danach wieder zurücksetzen müssen. Durch
+den Einsatz von \textit{Mocks} und \textit{Stubs} können diese
+Datenbankzugriffe reduziert werden. Diese Techniken sollten jedoch
+vorsichtig eingesetzt werden. Eine übermäßige Anwendung resultiert
+meist in einer zu engen Kopplung zwischen Test und
+Implementierung. Diese Kopplung macht sich dann meist beim Refactoring
+bemerkbar, wenn Tests ebenfalls geändert werden müssen weil aus
+Performanzgründen Annahmen über die Implementierung getroffen
+wurden. Hier muss man einen Mittelweg zwischen der Wartbarkeit der
+Testsuite und deren Laufzeit finden.
+
+In der Praxis hat sich herausgestellt, dass der Durchschnittswert von
+4,8 Sekunden pro Test von geringer Bedeutung ist. Bei der
+Implementierung eines Features lässt man meist nur die gerade
+aktuellen Testfälle laufen und deren Laufzeit ist im einzelnen meist
+besser als der erwähnte Durchschnittswert. Mindestens vor jedem
+Deployment sollte dann die gesammte Testsuite ausgeführt werden um
+sicherzustellen, dass das System auch in der Gesammtheit korrekt
+funktioniert.
 
 \subsection{Integrationstests mit Cucumber}
 
 \textit{Cucumber} \cite{cucumber} ist ein weiteres Framework für
-Behaviour Driven Development in Ruby. Es bietet Software Entwicklern
-die Möglichkeit das Verhalten ihrer Anwendung in reinem Text zu
-beschreiben. In Ruby on Rails Projekten wird es üblicherweise benutzt
-um Integrationstests zu entwickeln.
+Behaviour Driven Development in Ruby. Es bietet die Möglichkeit das
+Verhalten von Anwendungen in einer \textit{natürlichen Sprache}, wie
+z.B. Englisch oder Deutsch, zu beschreiben. Auch hier war das Ziel,
+das nicht-technische Personen das Verhalten einer Anwendung durch ein
+gemeinsam verwendetes Vokabular beschreiben und spezifizieren können.
+Die Spezifikationen wird dann von einem Entwickler erweitert um daraus
+automatische Tests zu erstellen. In Ruby on Rails Projekten wird
+Cucumber üblicherweise benutzt um durch Integrationstests
+sicherzustellen, dass das Zusammenspiel zwischen Browser und
+Controllern funktioniert.
+
+Ein Feature wird in Cucumber's externer DSL \textit{Gherkin}
+\footnote{\url{http://wiki.github.com/aslakhellesoy/cucumber/gherkin}}
+beschrieben, einer sogenannten \textit{Business Readable, Domain
+  Specific Language}.
+\footnote{\url{http://martinfowler.com/bliki/BusinessReadableDSL.html}}
+Die Beschreibung kann in einer der über 30 unterstützen natürlichen
+Sprachen verfasst werden, wobei nur eine durch Gherkin definierte
+Struktur eingehalten werden muss. Als Beispiel für solch eine
+Spezifikation soll hier die Authentifizierung eines Benutzers durch
+die Web Applikation dienen.
 
 {\footnotesize
 \begin{verbatim}
@@ -262,19 +306,106 @@ Feature: Authentication
   A user of the system
   Must authenticate before using the application
 
-  Scenario: Login as an exisiting and activated user
-    Given I am an activated user
-     When I log in with my credentials
-     Then I should be on my profile page
-      And I should be logged in
-
-  Scenario: Login as an exisiting and activated user with wrong credentials
+  Scenario: Login as an activated user with wrong credentials
     Given I am an activated user
      When I log in with invalid credentials
      Then I should see "Sorry, invalid nick/password combination given."
       And I should not be logged in
 \end{verbatim}
 }
+
+Die Struktur der Beschreibung ist durch die Reihenfolge einiger
+Schlüssel\-wörter vorgegeben. Mit dem Schlüsselwort \textit{Feature}
+wird die Spezifikation eines Features eingeleitet, gefolgt von einer
+kurzen Beschreibung zu Dokumentationszwecken. Ein Abschnitt, der mit
+dem Schlüsselwort \textit{Scenario} definiert wird, beschreibt das
+Verhalten der Anwendung in einer bestimmten Situation. Mit dem
+Schlüsselwort \textit{Given} beschreibt man welche Vorbedingungen in
+der gegebenen Situation herrschen müssen. \textit{When} beschreibt
+auszuführende Aktionen, wie z.B. das Ausfüllen eines Formulars oder
+das Klicken eines Links. Das Schlüsselwort \textit{Then} beschreibt
+denn Zustand nach dem ausführen der Aktionen. Mit \textit{And} wird
+eine weitere Zeile des selben Typs der vorigen Zeile definiert, und
+dient zur Verknüpfung und der besseren Lesbarkeit.
+
+Cucumber verarbeitet solch eine Spezifikation zeilenweise und führt
+für bestimmte Zeilen Code aus der die beschriebenen Vorbedingungen
+herstellt, Aktionen ausführt und Erwartungen verifiziert. Für jede
+Zeile, die mit einem der Schlüsselwörter \textit{Given},
+\textit{When}, \textit{Then} oder \textit{And} anfängt, muss ein auf
+sie passender regulärer Ausdruck definiert werden, der mit einem
+Codeblock assoziiert wird.
+
+Der folgende Programmcode definiert einen regulären Ausdruck der auf
+die erste \textit{Given} Zeile passt. Der mit ihm assozierte Codeblock
+erstellt einen neuen und aktivierten Benutzer, speichert ihn in der
+Datenbank und weist ihn einer Variablen zu, auf die in anderen
+Codeblöcken zugegriffen werden kann.
+
+{\footnotesize
+\begin{verbatim}
+Given /^I am an activated user$/ do
+  @current_user = User.make(:activated)
+end
+\end{verbatim}
+}
+
+Cucumber stellt eine Bibliothek einiger dieser häufige verwendeten
+Konstrukte als Makros zu Verfügung. Diese können in eigenen
+Codeblöcken benutzt werden. Der folgende Code verwendet einige dieser
+vordefinierten Konstrukte. Der Code der dabei ausgeführt wird
+simuliert das Besuchen der \textit{Login} Seite, das Ausfüllen zweier
+Textfelder mit dem Benutzernamen und einem falschen Passwort, sowie
+das Klicken des \textit{Login} Buttons mit einem Browser.
+
+{\footnotesize
+\begin{verbatim}
+When /^I log in with invalid credentials$/ do
+  Given "I am on the login page"
+  When  "I fill in \"login\" with \"#{@current_user.nick}\""
+  When  "I fill in \"password\" with \"invalid-password\""
+  When  "I press \"Login\""
+end
+\end{verbatim}
+}
+
+Die Zeile \textit{Then I should see ''Sorry, invalid nick/password
+  combination given.''} verwendet ebenfalls ein von Cucumber
+definiertes Makro, dass überprüft ob der in Hochkomma gesetzte Text in
+der vom Server empfangenen HTML Seite zu finden ist.
+
+Die letzte Zeile ist ein selbst definiertes Makro, das wiederum
+Methoden des RSpec Frameworks verwendet um zu überprüfen dass der
+Benutzer nicht angemeldet ist.
+
+{\footnotesize
+\begin{verbatim}
+Then /^I should not be logged in$/ do
+  controller.send(:current_user).should be_nil
+end
+\end{verbatim}
+}
+
+Cucumber bietet die Möglichkeit eigene Makros interaktiv zu
+entwickeln. Für Zeilen die keinem regulären Ausdruck zugeordnet werden
+können, generiert Cucumber auf sie passende Codeblöcke, die sehr
+einfach angepasst und weiterentwickelt werden können. Durch die
+Verwendung der eigenen und der vielen vordefinierten Makros lässt sich
+so ein auf die eigene Domäne zugeschnittenes Vokabular definieren, mit
+dem das korrekte Verhalten einer Anwendung auf einem hohem
+Abstraktionsniveau verifiziert werden kann.
+
+Da Cucumber relativ neu ist wurden im hier entwickelten Prototypen
+bisher nur 17 solcher Szenarien spezifiziert, die vor allem die
+korrekte Interaktion mit externen Diensten
+verifizieren. Beispielsweise werden von Benutzern publizierte Videos
+und Bilder von der Web Applikation auf \textit{Amazon's
+  S3}\footnote{Amazon Simple Storage Service
+  \url{http://aws.amazon.com/s3}} gespeichert. Die Verwendung dieses
+Web Services wurde aus Performanzgründen in den RSpec Unit Tests durch
+Mock Objekte ersetzt. Integrationstests mit Cucumber bieten hier eine
+gute Möglichkeit das Zusammenspiel von Browser und Controllern in
+einer realitätsnahen Umgebung zu verifizieren.
 
 \section{Architektur der Web Applikation}
 \section{Caching Verfahren in Ruby on Rails}

@@ -9,13 +9,13 @@
 Softwareentwicklung ist es den klassischen Softwareentwicklungsprozess
 schlanker und flexibler zu gestalten und sich mehr auf die zu
 erreichenden Ziele und Anforderungen zu
-fokussieren. Paarprogrammierung, ständige Refaktorisierungen des Codes
+fokussieren. Paarprogrammierung, ständige Refaktorisierung des Codes
 und testgetriebene Entwicklung sind einige der dabei verwendeten
 Methoden \cite{wiki:agile}.
 
 Behaviour Driven Development ist ein durch Dan North geprägter Begriff
 und eine Erweiterung der Philosophie des Test Driven Developments
-\cite{wiki:bdd}. Durch die Einführung eines gemeinsamen Vokabluars
+\cite{wiki:bdd}. Durch die Einführung eines gemeinsamen Vokabulars
 soll die Zusammenarbeit zwischen Programmieren und nicht-technischen
 Beteiligten an einem Softwareprojekt erhöht werden. Das gemeinsame
 Vokabular wird benutzt um das Verhalten, bzw. die Anforderungen der
@@ -27,7 +27,7 @@ domänen\-spezifische Sprache vom Programmierer implementiert.
 \subsection{Red, Green, Refactor}
 
 Die Entwicklung der Software erfolgt, wie beim Test Driven
-Development, durch ständige Wiederhohlung des \textit{Red, Green,
+Development, durch ständige Wiederholung des \textit{Red, Green,
   Refactor} Zykluses. \textit{Red} und \textit{Green} stehen für
 fehlschlagende bzw. erfolgreiche Testfälle, und \textit{Refactor} für
 die Umstrukturierung, Verbesserung und Säuberung schon implementierten
@@ -36,7 +36,7 @@ sogenannte \textit{Feature} aufgeteilt und diese nacheinander
 abgearbeitet. Das Verhalten eines zu implementierenden Features wird
 durch mehrere Testfälle beschrieben und somit spezifiziert. Dabei
 werden die folgenden drei Schritte solange wiederholt bis das
-gewünschte Feature ausreichend spezifizert und implementiert ist. Die
+gewünschte Feature ausreichend spezifiziert und implementiert ist. Die
 Kunst ist hierbei, immer nur sehr kleine Schritte pro Zyklus zu
 spezifizieren und zu implementieren.
 
@@ -45,8 +45,8 @@ spezifizieren und zu implementieren.
 In der \textit{Red} Phase wird ein korrekter, aber fehlschlagender,
 Test geschrieben, der ein bestimmtes Verhalten eines noch nicht
 implementiertes Features spezifiziert. Dieser Test sollte nur einen
-sehr geringen Teil des gesammten Features
-verifizieren. Beispielsweise, dass eine Methode ein Array zurückgibt,
+sehr geringen Teil des gesamten Features
+verifizieren. Beispielsweise, dass eine Methode ein Array zurück gibt,
 die Elemente eines Arrays Instanzen einer bestimmten Klasse sind oder
 die Distanz zwischen zwei gegebenen geografischen Positionen korrekt
 berechnet wird.
@@ -58,7 +58,7 @@ fehlschlagenden Test (und alle bisher erfolgreichen) durch eine
 geeignete Implementierung zum Erfolg zu bringen. Hierbei ist zu
 Erwähnen, dass auch eine vorübergehend nicht korrekte Implementierung
 erlaubt ist, solange alle Tests erfolgreich sind. Beispielsweise kann
-eine Methode vorrübergehend immer einen leeren Array zurückgegeben,
+eine Methode vorübergehend immer einen leeren Array zurückgegeben,
 wenn im Test nur auf die Rückgabe eines Arrays geprüft wird. Diese
 inkorrekten Implementierungen sind gewollte Indizien für die als
 nächstes zu spezifizierenden Testfälle. In einem der nächsten Zyklen
@@ -69,12 +69,12 @@ Test aufgedeckt und durch eine korrekte Implementierung ausgetauscht.
   Umstrukturierung}
 
 Die \textit{Refactor} Phase dient dazu, bisher entwickelten
-Programmcode durch Umzustrukturierung aufzuräumen. Dazu zählt die
-Eliminierung doppelten oder ähnlichen Codes, die Extrahierung von
+Programmcode durch Umstrukturierung aufzuräumen. Dazu zählt die
+Eliminierung doppelten oder ähnlichen Codes, das Extrahieren von
 Hilfsmethoden und weiterer Refactor-Techniken, die ausführlich in
 \cite{fowler99refactoring} beschrieben werden. Insbesondere in
 Software Projekten, die ohne automatische Tests entwickelt werden, ist
-diese Phase hochproblematisch. Zuvor funktionierender und durch
+diese Phase hoch problematisch. Zuvor funktionierender und durch
 Refactoring geänderter Programmcode muss nochmals manuell verifiziert
 werden. Probleme treten oft auch an nicht offensichtlich mit den
 Änderungen in Verbindung stehenden Teilen des Programms auf. Ein
@@ -87,14 +87,14 @@ oftmals darauf verzichtet wird.  \textit{''Never change a running
 
 Diese Art der Softwareentwicklung wird heute oft immer noch aus den
 verschiedensten Gründen abgelehnt. \textit{''Nicht notwendig, bei gut
-  entwickeltem Code''}, \textit{''zu aufwenig''}, oder Barrieren,
+  entwickeltem Code''}, \textit{''zu aufwendig''}, oder Barrieren,
 seine gewohnte Arbeitsweise zu ändern, sind einige dieser Gründe. Der
 Klassiker \textit{''man würde ja, aber habe keine Zeit Tests zu
   schreiben''} zeigt, dass die Vorteile des Test Driven Development
 oft nicht erkannt werden. Dies liegt unter anderem wohl daran, dass es
 einige Zeit in Anspruch nimmt seine gewohnte Arbeitsweise zu ändern,
 und die Früchte erst nach einiger Zeit und Praxis deutlich zu sehen
-sind. Einige der Vorteile sollen im folgenen deutlich gemacht werden.
+sind. Einige der Vorteile sollen im folgenden deutlich gemacht werden.
 
 \subsubsection{Steigerung der eigenen Produktivität}
 
@@ -147,7 +147,7 @@ welche die gesamte Codebasis abdeckt kann sicherstellen, dass
 Änderungen funktionieren und eingeschlichene Fehler so früh wie
 möglich aufgedeckt werden.
 
-Auch bei Softwareprojekten, die von mehreren Personen gleichzeitg
+Auch bei Softwareprojekten, die von mehreren Personen gleichzeitig
 entwickelt werden bietet eine Testsuite Schutz gegen das Einschleichen
 von Fehlern und hilft bei der Weiterentwicklung fremden Codes. Wird
 Programmcode vom nicht ursprünglichen Autor geändert oder erweitert
@@ -244,13 +244,13 @@ verifiziert.
 Das im Umfeld von RSpec entwickelte \textit{Spec::Rails} Plugin bietet
 die nötige Infrastruktur für Ruby on Rails Projekte. An die
 MVC-Architektur von Rails angelehnt werden verschiedene Umgebungen und
-Hilsmethoden bereit gestellt um Model, View, Controller und Helper zu
+Hilfsmethoden bereit gestellt um Model, View, Controller und Helper zu
 spezifizieren. Während der Entwicklung des Prototypen der Web
-Applikation wurden insgesammt 4274 Testfälle spezifiziert, die 92.6\%
-(C0 Code Coverage) des gesammten Codes abdecken und das korrekte
+Applikation wurden insgesamt 4274 Testfälle spezifiziert, die 92.6\%
+(C0 Code Coverage) des gesamten Codes abdecken und das korrekte
 Verhalten der Web Applikation verifizieren.
 
-Das Durchlaufen der gesammten Testsuite benötigt momentan ca. 15
+Das Durchlaufen der gesamten Testsuite benötigt momentan ca. 15
 Minuten, was zu einem Durchschnitt von 4,8 Sekunden pro Test
 führt. Diese hohe Laufzeit lässt sich auf die vielen Datenbankzugriffe
 zurückführen, die vor den meisten Testfällen einen bestimmten
@@ -270,8 +270,8 @@ In der Praxis hat sich herausgestellt, dass der Durchschnittswert von
 Implementierung eines Features lässt man meist nur die gerade
 aktuellen Testfälle laufen und deren Laufzeit ist im einzelnen meist
 besser als der erwähnte Durchschnittswert. Mindestens vor jedem
-Deployment sollte dann die gesammte Testsuite ausgeführt werden um
-sicherzustellen, dass das System auch in der Gesammtheit korrekt
+Deployment sollte dann die gesamte Testsuite ausgeführt werden um
+sicherzustellen, dass das System auch in der Gesamtheit korrekt
 funktioniert.
 
 \subsection{Integrationstests mit Cucumber}
@@ -337,7 +337,7 @@ sie passender regulärer Ausdruck definiert werden, der mit einem
 Codeblock assoziiert wird.
 
 Der folgende Programmcode definiert einen regulären Ausdruck der auf
-die erste \textit{Given} Zeile passt. Der mit ihm assozierte Codeblock
+die erste \textit{Given} Zeile passt. Der mit ihm assoziierte Codeblock
 erstellt einen neuen und aktivierten Benutzer, speichert ihn in der
 Datenbank und weist ihn einer Variablen zu, auf die in anderen
 Codeblöcken zugegriffen werden kann.

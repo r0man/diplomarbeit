@@ -1,5 +1,79 @@
 \chapter{Implementierung der Web Applikation}
+
 \section{Vorstellung der verwendeten Technologien}
+
+\subsection{Web Application Framework}
+
+Ein \textit{Web Application Framework} ist eine Software Bibliothek
+zur Entwicklung von dynamische Webseiten bzw. Web Applikationen. Ein
+solches Framework baut meist auf der \textit{Model View Controller
+  (MVC)} Architektur auf, deren Ziel es ist ein Software System in
+einzelne, möglichst voneinander unabhängige Komponenten
+aufzuteilen. Dadurch soll die Komplexität der Software reduziert
+werden und die Erweiterung und Wiederverwendung des Programmcodes
+erleichtert werden.
+
+\subsection{Datenbank Management System}
+
+In Web Applikationen wird für Anfragen an Daten und deren persistente
+Speicherung meist ein \textit{objekt-relationaler Mapper (ORM)}
+verwendet. Dieser ist dafür zuständig in einer Programmiersprache
+verwendete Objekte auf das Schema einer relationalen Datenbank
+abzubilden. Dadurch können Daten persistent gespeichert und später
+wieder angefragt werden. In Ruby on Rails Anwendungen kommt hier
+meistens das \textit{ActiveRecord} Framework zum Einsatz, das die
+meisten der gängigen Datenbank Management Systeme (DMBS) unterstützt.
+
+Bei der Auswahl des für die Web Applikation verwendeten Datenbank
+Management Systems kamen kommerzielle Produkte wie Oracle's 11g oder
+DB2 von IBM aus Kostengründen nicht in Frage. Insbesondere die
+integrierten Möglichkeiten zur Auswertung von großen Datenbeständen
+\footnote{hier die Historie der Vorhersagedaten und deren
+  Klassifikation durch Benutzer} mit Data Mining Verfahren wären bei
+diesen Produkten eine interessante Anwendung. Jedoch sind diese
+Optionen in den kostenlosen Varianten dieser Produkte leider nur
+eingeschränkt oder überhaupt nicht nutzbar.
+
+Bei den Open Source Datenbank Management Systemen viel die Auswahl auf
+\textit{PostgreSQL, ''the world's most advanced open source
+  database''}. Zum einen wurden schon in der dieser Diplomarbeit
+vorausgegangenen Studienarbeit gute und tiefgründige Erfahrungen mit
+diesem DBMS gesammelt, zum anderen wird die Funktionalität von
+PostgreSQL selbst und einiger der zur Verfügung stehenden
+Erweiterungen den benötigten Anforderungen gerecht. Einige dieser
+Anforderungen sollen hier beschrieben werden.
+
+\begin{itemize}
+\item Ein sogenannter \textit{Bulk Loader} wird benötigt um größere
+  Datenmengen zu exportieren bzw. zu importieren. PostgreSQL bietet
+  hierfür die \textit{COPY FROM/TO} Befehle, mit denen Dateien in
+  verschiedenen Formaten sehr viel schneller als mit den sonst
+  üblichen \textit{SELECT}, \textit{INSERT} und \textit{UPDATE}
+  Befehlen verarbeitet werden können. Diese Funktionalität wird unter
+  anderem für die Vorhersagedaten verarbeitenden ELT Prozesse
+  benötigt.
+
+\item Das \textit{PostGIS} Projekt erweitert PostgreSQL mit
+  geografischen Funktionen und Datentypen, die konform zu der
+  \textit{Simple Features Specification for SQL} des \textit{Open
+    Geospatial Consortium} sind. Hiermit können geografische Objekte
+  in dem weit verbreiteten \textit{Shapefile} Format verarbeitet
+  werden. Insbesonder mit Hinblick auf die Integration von
+  \textit{Google Maps} bieten sich hier einige interessante
+  Anwendungen.
+
+\item Aufbauend auf dem PostGIS Projekt stellt das \textit{pgRouting}
+  Funktionalitäten zur Routenplanung bereit. In das DMBS integrierte
+  \textit{Shortest Path} Algorithmen wie \textit{Dijkstra},
+  \textit{Shooting Star} und \textit{Traveling Sales Person} können so
+  effizient ausgeführt werden. Der Dijkstra Algorithmus wird
+  beispielsweise in der Web Applikation dazu verwendet, die aus vielen
+  anderen Community Plattformen bekannten Freundschaftsbeziehungen
+  zwischen Benutzern zu berechnen.
+
+\end{itemize}
+
+\section{Architektur der Web Applikation}
 
 \section{Behaviour \& Test Driven Development}
 
@@ -407,7 +481,6 @@ Mock Objekte ersetzt. Integrationstests mit Cucumber bieten hier eine
 gute Möglichkeit das Zusammenspiel von Browser und Controllern in
 einer realitätsnahen Umgebung zu verifizieren.
 
-\section{Architektur der Web Applikation}
 \section{Caching Verfahren in Ruby on Rails}
 
 %%% Local Variables:

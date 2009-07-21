@@ -1,9 +1,14 @@
 \documentclass[12pt,a4paper,ngerman]{report}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[utf8]{inputenc}
 \usepackage{babel}
 \usepackage{graphicx}
-\usepackage[utf8]{inputenc}
-
+\usepackage{listings}
 \usepackage{url}
+
+%\usepackage[T1]{fontenc}
+\usepackage{times}
+%\usepackage{helvet}
 %\usepackage{hyperref}
 
 \author{Roman Scherer \\ scherer@informatik.hu-berlin.de}
@@ -23,6 +28,23 @@
 }
 
 \begin{document}
+
+\renewcommand{\lstlistingname}{Auflistung}
+
+\definecolor{LightGray}{gray}{0.95}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  captionpos=b,
+  float=htbp,
+  frame=single,
+  showspaces=false,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\footnotesize,
+  backgroundcolor=\color{LightGray}
+}
 
 \maketitle
 

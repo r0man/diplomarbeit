@@ -5,13 +5,118 @@
 \subsection{Web Application Framework}
 
 Ein \textit{Web Application Framework} ist eine Software Bibliothek
-zur Entwicklung von dynamische Webseiten bzw. Web Applikationen. Ein
-solches Framework baut meist auf der \textit{Model View Controller
-  (MVC)} Architektur auf, deren Ziel es ist ein Software System in
-einzelne, möglichst voneinander unabhängige Komponenten
-aufzuteilen. Dadurch soll die Komplexität der Software reduziert
-werden und die Erweiterung und Wiederverwendung des Programmcodes
-erleichtert werden.
+zur Entwicklung von dynamische Webseiten, Web Applikationen und Web
+Services. Ein solches Framework baut meist auf der in Abschnit
+\ref{Model View Controller} beschriebenen \textit{Model View
+  Controller (MVC)} Architektur auf und bietet Lösungen und
+Abstraktionen für die im Bereich der Web Programmierung häufig
+auftretenden Probleme und verwendeten Konzepte. Hierzu gehört z.B. der
+Zugriff auf Datenbanken, das Routing von URLs, Caching und Template
+Systeme zur Generierung von Benutzeroberfächen.
+
+\subsubsection{Ruby on Rails - Web development that doesn't hurt}
+
+\textit{Ruby on Rails} ist ein in der Programmiersprache Ruby
+geschriebenes Framework zur Entwicklung von Web Applikationen, das in
+letzter Zeit viel Aufmerksamkeit auf sich gezogen hat. Durch
+Prinzipien wie \textit{Don't Repeat Yourself (DRY)} und
+\textit{Convention over Configuration} hat es die Art und Weise wie
+Web Anwendungen entwickelt werden revolutioniert.
+
+\subsubsection{Template Systeme}
+
+Dynamische Webseiten und Web Applikation verwenden meist eine
+\textit{Template Engine}, oder auch \textit{Template System} genannt,
+um Markup \footnote{in Web Applikationen üblicherweise HTML oder XML}
+zu generieren. Als \textit{Template} bezeichnet man eine mit
+Platzhaltern und Instruktionen annotierte Datei, die vom Template
+System in ein Ausgabeformat transformiert wird. Platzhalter werden
+dabei durch dynamischen Inhalt ersetzt, und Instruktionen bieten die
+Möglichkeit den zu generierenden Inhalt durch Schleifen oder
+Bedingungen programmatisch zu kontrollieren. Einige bekannte Template
+Systeme sind z.B. \textit{XSL/XSLT}, \textit{Java Server Pages (JSP)}
+oder das in die Ruby Standardbibliothek integrierte \textit{Erb}.
+
+\subsubsection{Erb - Ruby Templating}
+
+\textit{Erb} ist ein in die Ruby Standardbibliothek integriertes
+Template System, das beliebige Text Dokumente verarbeiten kann und im
+Moment noch das Standard Template System in Ruby on Rails Anwendungen
+ist. In Auflistung \ref{template_erb} ist ein Rails-typisches Erb
+Template zu sehen, in dem Platzhalter verwendet werden um XHTML mit
+dynamischem Inhalt zu generieren. Platzhalter werden in Erb Templates
+durch die speziellen Tags \textit{$<$\%=} und \textit{\%$>$}
+markiert. Der zwischen diesen Tags stehende Ruby Code wird vom
+Template System evaluiert und der Rückgabe\-wert verwendet um den
+Platzhalter zu ersetzen.
+
+\lstinputlisting[caption={Beispiel eines Erb Templates},
+label=template_erb]{listings/template.erb}
+
+Die Flexibilität von Erb beliebige Eingabeformate verarbeiten zu
+können ist gleichzeitig auch einer der großen Nachteile. Tippfehler,
+unbalancierte Tags und ähnliche Fehler bereiten oft Probleme. Durch
+inkorrektes Markup verursachte Layoutfehler lassen sich bei der
+Verwendung von Erb oft schwer finden und erforden meist ein
+zeitaufwendiges Debugging.
+
+\subsubsection{Haml - Markup Haiku}
+
+Eine sehr zu empfehlende und produktivitätssteigernde Alternative zu
+Erb ist \textit{Haml}. Haml steht für \textit{XHTML Abstraction Markup
+  Language} und spielt mit seinem Untertitel berechtigterweise auf die
+kürzeste, aus dem japanischen stammende Gedichtsform \textit{Haiku}
+an. Mit Haml lassen sich XHTML Dokumente auf einer sehr viel
+kompakterern, lesbareren und somit übersichtlicheren Art und Weise
+beschreiben. In Auflistung \ref{template_haml} ist ein Haml Template
+zu sehen, das äquivalent zum Beispiel aus Auflistung
+\ref{template_erb} ist und das selbe Markup generiert.
+
+\lstinputlisting[caption={Beispiel eines Haml Templates},
+label=template_haml]{listings/template.haml}
+
+Insbesondere in XHTML Dokumenten, die in Verbindung mit Javascript und
+CSS verwendet werden, lassen sich einige immer wiederkehrende Muster
+identifizieren, die in Haml durch eine kompakterer Syntax ersetzt
+wurden.
+
+Ein weiterer Vorteil von Haml gegenüber Erb ist, dass der Parser das
+zu verarbeitende Template auf syntaktische Korrektheit überprüfen
+kann, mögliche Fehler sofort meldet und damit sicherstellt ist, dass
+immer valides XHTML erzeugt wird.
+
+Statt der in XHTML Dokumenten verwendeten und sehr viel Redundanz
+erzeugenden Start- und Ende-Tags wird in Haml Dokumenten nur ein Tag
+benötigt. Haml generiert den durch XML vorgeschriebenen und zum Start
+Tag gehörenden Ende Tag automatisch. Um Elemente zu verschachteln wird
+eine Einrückung von zwei Leerzeichen verwendet. Die in XHTML
+Dokumenten häufig in Verbindung mit \textit{id} oder \textit{class}
+Attributen verwendeten \textit{$<$div$>$} Elemente wurden in Haml mit
+einer speziellen Syntax versehen. Ein \textit{\#} Zeichen gefolgt von
+einem String wird wird zu einem \textit{$<$div$>$} Element
+transformiert, dessen \textit{id} Attribut den Wert des Strings
+enthält. Ein ähnliches Prinzip wird auch für den Punkt ''\textit{.}''
+in Verbindung mit dem \textit{class} Attribut verwendet, so dass
+Zeilen 1 und 2 in beiden Auflistungen äquivalent sind.
+
+Das eng mit Haml verwandte Template System \textit{Sass} bietet
+ähnlicher Vorteile und kann verwendet werden um \textit{Cascading
+  Style Sheets (CSS)} zu generieren. Das Template System definiert
+ebenfalls eine auf syntaktische Korrektheit überprüfbare Sprache und
+generiert als Ausgabeformat CSS. Zudem bietet es die in CSS nicht
+vorhandene Möglichkeit Variablen zu definieren, simple arithmetische
+Operationen auszuführen und einige weitere sehr nützliche
+Funktionalitäten.
+
+Die durch Haml und Sass definierten Sprachen sind sehr einfach zu
+erlernen und die Verwendung dieser Systeme hat sich bei der
+Entwicklung der Web Applikation als sehr hilfreich herausgestellt. Die
+übersichtlicheren und kompakteren Templates und deren Überprüfung auf
+Korrektheit überzeugten nach einiger Zeit so sehr, dass vor allem der
+Syntax von CSS leicht in Vergessenheit geriet.
+
+\textit{''Haml is 1.3x slower than straight ERB, but once you start
+  writing code in Haml, it’s highly addictive.''}
 
 \subsection{Datenbank Management System}
 
@@ -74,6 +179,24 @@ Anforderungen sollen hier beschrieben werden.
 \end{itemize}
 
 \section{Architektur der Web Applikation}
+
+\subsection{Model View Controller}
+\label{Model View Controller}
+
+Die \textit{Model View Controller (MVC)} Architektur
+\cite{Gamma:1995:DPE}[S.10] wurde erstmals in \textit{Smalltalk-80}
+verwendet um Benutzeroberflächen zu entwickeln. Sie basiert auf drei
+verschiedenen Arten von Objekten. Ein Modell repräsentiert die Daten
+der Applikation und die darauf möglichen Operationen, die sogenannte
+Geschäftslogik. Die Benutzeroberfläche besteht aus Views bzw. Sichten,
+welche für die Darstellung der Daten auf verschieden Medien und in
+unterschiedlichen Formaten verantwortlich sind. Controller definieren
+schließlich die Art und Weise wie eine Benutzeroberfläche auf Eingaben
+von Benutzern reagiert. Ziel ist es ein Software System in einzelne,
+möglichst voneinander unabhängige Komponenten aufzuteilen. Dadurch
+soll die Komplexität der Software reduziert werden und die Erweiterung
+und Wiederverwendung des Programmcodes erleichtert werden.
+
 
 \section{Behaviour \& Test Driven Development}
 
@@ -244,14 +367,12 @@ geografischen Positionen berechnet. Vor der eigentlichen
 Implementierung wird das Verhalten der Klasse anhand von Beispielen in
 der RSpec DSL wie folgt spezifiziert:
 
-{\footnotesize
-\begin{verbatim}
+\begin{lstlisting}
 describe Haversine do
   it "should calculate a distance of 0 km between the same location"
   it "should calculate a distance of 878.01 km between Berlin and Paris"
 end
-\end{verbatim}
-}
+\end{lstlisting}
 
 Diese Spezifikation der Haversine Klasse ist Teil des oben erwähnten
 gemeinsamen Vokabulars und zugleich gültiger und ausführbarer Ruby
@@ -268,12 +389,12 @@ hier kommen Konstrukte der RSpec DSL zum Einsatz, welche die
 Lesbarkeit vereinfachen und die Spezifikation verständlicher machen
 sollen.
 
-{\footnotesize
-\begin{verbatim}
+\begin{lstlisting}
 describe Haversine do
 
   before(:each) do
-    @berlin, @paris = Location.make(:berlin), Location.make(:paris)
+    @berlin = Location.make(:berlin)
+    @paris = Location.make(:paris)
   end
 
   it "should calculate a distance of 0 km between the same location" do
@@ -281,12 +402,11 @@ describe Haversine do
   end
 
   it "should calculate a distance of 878.01 km between Berlin and Paris" do
-    Haversine.distance(@berlin, @paris).should == 878.006710357836.km
+    Haversine.distance(@berlin, @paris).should == 878.01.km
   end
 
 end
-\end{verbatim}
-}
+\end{lstlisting}
 
 Das Ausführen dieser Spezifikation schlägt auf Grund der noch
 fehlenden Implementierung fehl. Durch die Wiederholung des Red, Green,
@@ -294,8 +414,7 @@ Refactor Zykluses wird nun das Verhalten der Klasse implementiert. Der
 erste Testfall kann durch die folgende, noch inkorrekte
 Implementierung zum Erfolg gebracht werden:
 
-{\footnotesize
-\begin{verbatim}
+\begin{lstlisting}
 class Haversine
 
   def self.distance(from, to, options = { })
@@ -303,8 +422,7 @@ class Haversine
   end
 
 end
-\end{verbatim}
-}
+\end{lstlisting}
 
 Im nächsten Iterationszyklus muß nun die eigentliche Haversine Formel
 \cite{wiki:haversine} implementiert werden um auch den zweiten
@@ -373,8 +491,7 @@ Struktur eingehalten werden muss. Als Beispiel für solch eine
 Spezifikation soll hier die Authentifizierung eines Benutzers durch
 die Web Applikation dienen.
 
-{\footnotesize
-\begin{verbatim}
+\begin{lstlisting}[caption=Spezifikation eines Features mit Cucumber]
 Feature: Authentication
   To ensure the safety of the application
   A user of the system
@@ -383,10 +500,10 @@ Feature: Authentication
   Scenario: Login as an activated user with wrong credentials
     Given I am an activated user
      When I log in with invalid credentials
-     Then I should see "Sorry, invalid nick/password combination given."
+     Then I should see "Sorry, invalid nick/password
+          combination given."
       And I should not be logged in
-\end{verbatim}
-}
+\end{lstlisting}
 
 Die Struktur der Beschreibung ist durch die Reihenfolge einiger
 Schlüssel\-wörter vorgegeben. Mit dem Schlüsselwort \textit{Feature}
@@ -416,13 +533,11 @@ erstellt einen neuen und aktivierten Benutzer, speichert ihn in der
 Datenbank und weist ihn einer Variablen zu, auf die in anderen
 Codeblöcken zugegriffen werden kann.
 
-{\footnotesize
-\begin{verbatim}
+\begin{lstlisting}
 Given /^I am an activated user$/ do
   @current_user = User.make(:activated)
 end
-\end{verbatim}
-}
+\end{lstlisting}
 
 Cucumber stellt eine Bibliothek einiger dieser häufige verwendeten
 Konstrukte als Makros zu Verfügung. Diese können in eigenen
@@ -432,16 +547,14 @@ simuliert das Besuchen der \textit{Login} Seite, das Ausfüllen zweier
 Textfelder mit dem Benutzernamen und einem falschen Passwort, sowie
 das Klicken des \textit{Login} Buttons mit einem Browser.
 
-{\footnotesize
-\begin{verbatim}
+\begin{lstlisting}
 When /^I log in with invalid credentials$/ do
   Given "I am on the login page"
   When  "I fill in \"login\" with \"#{@current_user.nick}\""
   When  "I fill in \"password\" with \"invalid-password\""
   When  "I press \"Login\""
 end
-\end{verbatim}
-}
+\end{lstlisting}
 
 Die Zeile \textit{Then I should see ''Sorry, invalid nick/password
   combination given.''} verwendet ebenfalls ein von Cucumber
@@ -452,13 +565,11 @@ Die letzte Zeile ist ein selbst definiertes Makro, das wiederum
 Methoden des RSpec Frameworks verwendet um zu überprüfen dass der
 Benutzer nicht angemeldet ist.
 
-{\footnotesize
-\begin{verbatim}
+\begin{lstlisting}
 Then /^I should not be logged in$/ do
   controller.send(:current_user).should be_nil
 end
-\end{verbatim}
-}
+\end{lstlisting}
 
 Cucumber bietet die Möglichkeit eigene Makros interaktiv zu
 entwickeln. Für Zeilen die keinem regulären Ausdruck zugeordnet werden

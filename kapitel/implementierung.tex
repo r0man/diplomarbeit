@@ -16,12 +16,101 @@ Systeme zur Generierung von Benutzeroberfächen.
 
 \subsubsection{Ruby on Rails - Web development that doesn't hurt}
 
-\textit{Ruby on Rails} ist ein in der Programmiersprache Ruby
-geschriebenes Framework zur Entwicklung von Web Applikationen, das in
+\textit{Ruby on Rails} ist ein ursprünglich von David Heinemeier
+Hansson in der Programmiersprache \textit{Ruby} geschriebenes
+Framework zur Entwicklung von Web Applikationen. Es besteht aus den
+vier größeren Bibliotheken \textit{ActionMailer}, \textit{ActionPack},
+\textit{ActiveSupport} und \textit{ActiveRecord} mit denen Emails
+verarbeitet, Benutzeroberflächen erstellt, Daten persistent
+gespeichert und viele weitere Probleme bewältigt werden
+können. \textit{Rails} basiert auf der bewährten \textit{MVC}
+Architektur, greift aber auch neuere Techniken, wie den in Abschnitt
+\ref{rest} beschriebenen Architekturstil \textit{REST} auf und ebnet
+so den Weg zu einer zukunftsorientierten Entwicklung von Web
+Applikationen. Viele dieser bewährten Konzepte, aber auch neue und
+innovative Ideen haben dazu beigetragen, dass \textit{Rails} in
 letzter Zeit viel Aufmerksamkeit auf sich gezogen hat. Durch
 Prinzipien wie \textit{Don't Repeat Yourself (DRY)} und
-\textit{Convention over Configuration} hat es die Art und Weise wie
-Web Anwendungen entwickelt werden revolutioniert.
+\textit{Convention over Configuration} hat \textit{Ruby on Rails} die
+Art und Weise wie Web Anwendungen entwickelt werden
+revolutioniert. Die integrierten Testumgebungen für den in
+\textit{Model}, \textit{View}, \textit{Controller} und \textit{Helper}
+Klassen aufgeteilten Programmcode motivieren zum \textit{Test Driven
+  Development} und erleichtern den Einstieg erheblich.  Nach der im
+Dezember 2008 angekündigten Verschmelzung mit \textit{Merb}, dem
+zweitgrößten Framework zur Entwicklung von Web Applikationen in
+\textit{Ruby}, ist die Entscheidung \textit{Rails} für diese Anwendung
+zu verwenden noch zusätzlich untermauert worden.
+
+\subsubsection{\textit{Don't Repeat Yourself} und \textit{Convention
+    over Configuration} in \textit{ActiveRecord}}
+
+\textit{Giving a computer two contradictory pieces of knowledge was
+  Captain James T. Kirk's preferred way of disabling a marauding
+  artificial intelligence.} Mit diesem Zitat wird in
+\cite{hunt1999}[S.49] eine Diskussion über das \textit{Don't Repeat
+  Yourself} Prinzip eingeleitet. Die Duplikation von Informationen
+wird dort als eines der grundlegenden Probleme im Bereich der
+Softwareentwicklung identifiziert. Mit Information ist hier nicht nur
+der ohnehin zu normalisierende Inhalt von Datenbanken gemeint, sondern
+auch Konfigurationsdaten und Programmcode.
+
+In \textit{Ruby on Rails} wird die Duplikation von Informationen vor
+allem durch die Anwendung von \textit{Convention over Configuration}
+vermieden, bzw. versucht auf ein Minimum reduziert. Das klassiche
+Vorzeigebeispiel ist hier die Bibliothek \textit{ActiveRecord}, der
+von \textit{Ruby on Rails} verwendeter \textit{objekt-relationaler
+  Mapper (ORM)}. Dieser ist dafür zuständig in einer
+Programmiersprache verwendete Objekte auf das Schema einer
+relationalen Datenbank abzubilden. Dadurch können Daten persistent
+gespeichert und später wieder angefragt werden.
+
+Als Beispiel soll hier die \textit{One-To-Many} Beziehung zwischen den
+beiden zu persistierenden Klassen aus Auflistung \ref{ar_models}
+dienen: Ein Surf Spot ist in einem bestimmten Land, und ein Land hat
+mehrere Surf Spots. Klassen repräsentieren hier die Tabellen einer
+Datenbank und Instanzen einer Klasse die Zeilen einer Tabelle.
+
+\lstinputlisting[caption={\textit{Convention over Configuration} in
+  \textit{ActiveRecord}}, label=ar_models]{listings/models.rb}
+
+Vorausgesetzt man hält sich an die durch \textit{ActiveRecord}
+definierten Konventionen, reichen diese 6 Zeilen Code aus um Länder
+und Spots zu speichern, zu finden, zu löschen und auf die
+Assoziationen zuzugreifen. Einzige Voraussetzung hierfür ist eine
+bestimmte, von \textit{ActiveRecord} erwartete Struktur der
+Datenbank. Diese Struktur ist durch die folgenden Konventionen
+vorgegeben:
+
+\begin{itemize}
+\item Es müssen Tabellen in der Datenbank existieren, die nach dem
+  Plural der kleingeschriebenen Klassennamen benannt sind. In diesem
+  Beispiel also die beiden Tabellen \textit{countries} und
+  \textit{spots}.
+\item Auf den Tabellen muss ein Primärschlüssel mit dem Namen
+  \textit{id} definiert sein. Instanzen einer Klasse können über
+  dynamisch generierte Methoden auf diesen Primärschlüssel und alle
+  zusätzlichen Attribute einer Tabelle zugreifen.
+\item Für eine \textit{One-To-Many} Beziehung muss auf der Tabelle
+  derjenigen Klasse ein Fremdschlüssel definiert sein, in der die
+  Assoziation mit der \textit{belongs\_to} Methode definiert
+  wurde. Der Fremdschlüssel muss aus dem kleingeschriebenen Namen der
+  assoziierten Klasse und dem String \textit{\_id} zusammengesetzt
+  sein. Hier also ein Fremdschlüssel mit dem Namen
+  \textit{country\_id} auf der Tabelle \textit{spots}.
+\end{itemize}
+
+Mit \textit{ActiveRecord} lassen sich persistente Daten eines Systems
+und deren Beziehungen untereinander schnell und ohne größeren Aufwand
+modellieren. Im Vergleich zu den aus \textit{Java} bekannten
+\textit{Entity Beans} wird der Entwicklungsaufwand hier erheblich
+reduziert. Die verwendeten Konventionen stammen aus den langjährigen
+Erfahrungen vieler Entwickler, treffen auf viele der Anwendunggsfälle
+zu und können als \textit{''Best Practices''} verstanden und
+über\-nommen werden. \textit{ActiveRecord} ist nur eine der von
+\textit{Ruby on Rails} verwendeten Bibliotheken, die gut dokumentiert
+sind, innovative Konzepte bieten, und somit eine einfache und flexible
+Entwicklung ermöglichen.
 
 \subsubsection{Template Systeme}
 
@@ -197,6 +286,8 @@ möglichst voneinander unabhängige Komponenten aufzuteilen. Dadurch
 soll die Komplexität der Software reduziert werden und die Erweiterung
 und Wiederverwendung des Programmcodes erleichtert werden.
 
+\subsection{REST - Representational State Transfer}
+\label{rest}
 
 \section{Behaviour \& Test Driven Development}
 

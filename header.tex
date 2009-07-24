@@ -1,0 +1,47 @@
+
+% COLORS
+\usepackage[usenames,dvipsnames]{color}
+\definecolor{LightGray}{gray}{0.95}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+% Fuer eine Liste mit Abk.
+\usepackage[refpage]{nomencl}
+\renewcommand{\nomname}{Abkürzungsverzeichnis}
+\setlength{\nomlabelwidth}{.20\hsize}
+\renewcommand{\nomlabel}[1]{#1 \dotfill}
+
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{url}
+
+\usepackage{fancyhdr}
+\pagestyle{headings}
+\usepackage[sc,center]{titlesec}
+
+% LISTINGS
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Auflistung}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  captionpos=b,
+  float=htbp,
+  frame=single,
+  showspaces=false,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\footnotesize,
+  backgroundcolor=\color{LightGray}
+}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "community-plattform"
+%%% End:

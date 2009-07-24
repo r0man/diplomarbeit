@@ -1,15 +1,5 @@
 \documentclass[12pt,a4paper,ngerman]{report}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage[utf8]{inputenc}
-\usepackage{babel}
-\usepackage{graphicx}
-\usepackage{listings}
-\usepackage{url}
-
-%\usepackage[T1]{fontenc}
-\usepackage{times}
-%\usepackage{helvet}
-%\usepackage{hyperref}
+\input{header}
 
 \author{Roman Scherer \\ scherer@informatik.hu-berlin.de}
 
@@ -29,36 +19,26 @@
 
 \begin{document}
 
-\renewcommand{\lstlistingname}{Auflistung}
-
-\definecolor{LightGray}{gray}{0.95}
-
-\lstset{
-  basicstyle=\ttfamily\footnotesize,
-  breaklines=true,
-  captionpos=b,
-  float=htbp,
-  frame=single,
-  showspaces=false,
-  showstringspaces=false,
-  numbers=left,
-  numberstyle=\footnotesize,
-  backgroundcolor=\color{LightGray}
-}
-
 \maketitle
+\makenomenclature
 
-\include{kapitel/zusammenfassung}
+% ZUSAMMENFASSUNG
+\include{zusammenfassung}
 
 \tableofcontents
+\printnomenclature
 
+% KAPTITEL
 \include{kapitel/einleitung}
 \include{kapitel/anforderungen}
 \include{kapitel/implementierung}
 \include{kapitel/etl}
-
 \include{kapitel/ausblick}
 
+% SELBSTÄNDIGKEITSERKLÄRUNG & EINVERSTÄNDNISERKLÄRUNG
+\include{erklaerung}
+
+% LITERATURVERZEICHNIS
 \bibliographystyle{geralpha}
 \bibliography{literatur}
 

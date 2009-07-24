@@ -10,11 +10,13 @@
 \usepackage{lmodern}
 
 % Fuer eine Liste mit Abk.
-\usepackage[refpage]{nomencl}
+\usepackage[intoc,german,refpage]{nomencl}
 \renewcommand{\nomname}{Abkürzungsverzeichnis}
 \setlength{\nomlabelwidth}{.20\hsize}
 \renewcommand{\nomlabel}[1]{#1 \dotfill}
+\setlength{\nomitemsep}{-\parsep}
 
+\usepackage{bibgerm}
 \usepackage{babel}
 \usepackage{graphicx}
 \usepackage{float}
@@ -23,7 +25,18 @@
 
 \usepackage{fancyhdr}
 \pagestyle{headings}
-\usepackage[sc,center]{titlesec}
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+{\bfseries\Large}
+{\filleft\MakeUppercase{\chaptertitlename} \Huge\thechapter}
+{4ex}
+{\titlerule
+  \vspace{2ex}%
+  \filright}
+[\vspace{2ex}%
+\titlerule]
+
 
 % LISTINGS
 \usepackage{listings}

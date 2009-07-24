@@ -8,13 +8,12 @@ Ein \textit{Web Application Framework} ist eine Software Bibliothek
 zur Entwicklung von dynamische Webseiten, Web Applikationen und Web
 Services. Ein solches Framework baut meist auf der in Abschnit
 \ref{Model View Controller} beschriebenen \textit{Model View
-  Controller (MVC)} Architektur auf und bietet Lösungen und
-Abstraktionen für die im Bereich der Web Programmierung häufig
-auftretenden Probleme und verwendeten Konzepte. Hierzu gehört z.B. der
-Zugriff auf Datenbanken, das Routing von URLs, Caching und Template
-Systeme zur Generierung von Benutzeroberfächen.
-
-\nomenclature[MVC]{MVC}{Model View Controller}
+  Controller (MVC)} \nomenclature{MVC}{Model View Controller}
+Architektur auf und bietet Lösungen und Abstraktionen für die im
+Bereich der Web Programmierung häufig auftretenden Probleme und
+verwendeten Konzepte. Hierzu gehört z.B. der Zugriff auf Datenbanken,
+das Routing von URLs, Caching und Template Systeme zur Generierung von
+Benutzeroberfächen.
 
 \subsubsection{Ruby on Rails - Web development that doesn't hurt}
 
@@ -27,22 +26,24 @@ verarbeitet, Benutzeroberflächen erstellt, Daten persistent
 gespeichert und viele weitere Probleme bewältigt werden
 können. \textit{Rails} basiert auf der bewährten \textit{MVC}
 Architektur, greift aber auch neuere Techniken, wie den in Abschnitt
-\ref{rest} beschriebenen Architekturstil \textit{REST} auf und ebnet
-so den Weg zu einer zukunftsorientierten Entwicklung von Web
+\ref{rest} beschriebenen Architekturstil \textit{REST}
+\nomenclature{REST}{Representational State Transfer} auf und ebnet so
+den Weg zu einer zukunftsorientierten Entwicklung von Web
 Applikationen. Viele dieser bewährten Konzepte, aber auch neue und
 innovative Ideen haben dazu beigetragen, dass \textit{Rails} in
 letzter Zeit viel Aufmerksamkeit auf sich gezogen hat. Durch
-Prinzipien wie \textit{Don't Repeat Yourself (DRY)} und
-\textit{Convention over Configuration} hat \textit{Ruby on Rails} die
-Art und Weise wie Web Anwendungen entwickelt werden
-revolutioniert. Die integrierten Testumgebungen für den in
-\textit{Model}, \textit{View}, \textit{Controller} und \textit{Helper}
-Klassen aufgeteilten Programmcode motivieren zum \textit{Test Driven
-  Development} und erleichtern den Einstieg erheblich.  Nach der im
-Dezember 2008 angekündigten Verschmelzung mit \textit{Merb}, dem
-zweitgrößten Framework zur Entwicklung von Web Applikationen in
-\textit{Ruby}, ist die Entscheidung \textit{Rails} für diese Anwendung
-zu verwenden noch zusätzlich untermauert worden.
+Prinzipien wie \textit{Don't Repeat Yourself (DRY)}
+\nomenclature{DRY}{Don't Repeat Yourself} und \textit{Convention over
+  Configuration} hat \textit{Ruby on Rails} die Art und Weise wie Web
+Anwendungen entwickelt werden revolutioniert. Die integrierten
+Testumgebungen für den in \textit{Model}, \textit{View},
+\textit{Controller} und \textit{Helper} Klassen aufgeteilten
+Programmcode motivieren zum \textit{Test Driven Development} und
+erleichtern den Einstieg erheblich.  Nach der im Dezember 2008
+angekündigten Verschmelzung mit \textit{Merb}, dem zweitgrößten
+Framework zur Entwicklung von Web Applikationen in \textit{Ruby}, ist
+die Entscheidung \textit{Rails} für diese Anwendung zu verwenden noch
+zusätzlich untermauert worden. \cite{AgileRails06} asa
 
 \subsubsection{Don't Repeat Yourself und Convention over Configuration
   in ActiveRecord}
@@ -50,7 +51,7 @@ zu verwenden noch zusätzlich untermauert worden.
 \textit{Giving a computer two contradictory pieces of knowledge was
   Captain James T. Kirk's preferred way of disabling a marauding
   artificial intelligence.} Mit diesem Zitat wird in
-\cite{hunt1999}[S.49] eine Diskussion über das \textit{Don't Repeat
+\cite{Hunt99}[S.49] eine Diskussion über das \textit{Don't Repeat
   Yourself} Prinzip eingeleitet. Die Duplikation von Informationen
 wird dort als eines der grundlegenden Probleme im Bereich der
 Softwareentwicklung identifiziert. Mit Information ist hier nicht nur
@@ -275,21 +276,25 @@ Anforderungen sollen hier beschrieben werden.
 \label{Model View Controller}
 
 Die \textit{Model View Controller (MVC)} Architektur
-\cite{Gamma:1995:DPE}[S.10] wurde erstmals in \textit{Smalltalk-80}
+\cite{Gamma95Design}[S.10] wurde erstmals in \textit{Smalltalk-80}
 verwendet um Benutzeroberflächen zu entwickeln. Sie basiert auf drei
-verschiedenen Arten von Objekten. Ein Modell repräsentiert die Daten
-der Applikation und die darauf möglichen Operationen, die sogenannte
-Geschäftslogik. Die Benutzeroberfläche besteht aus Views bzw. Sichten,
-welche für die Darstellung der Daten auf verschieden Medien und in
-unterschiedlichen Formaten verantwortlich sind. Controller definieren
-schließlich die Art und Weise wie eine Benutzeroberfläche auf Eingaben
-von Benutzern reagiert. Ziel ist es ein Software System in einzelne,
-möglichst voneinander unabhängige Komponenten aufzuteilen. Dadurch
-soll die Komplexität der Software reduziert werden und die Erweiterung
-und Wiederverwendung des Programmcodes erleichtert werden.
+verschiedenen Arten von Objekten. Ein \textit{Model} repräsentiert die
+Daten der Applikation und die darauf möglichen Operationen, die
+sogenannte Geschäftslogik. Die Benutzeroberfläche besteht aus
+\textit{Views} bzw. Sichten, welche für die Darstellung der Daten auf
+verschieden Medien und in unterschiedlichen Formaten verantwortlich
+sind. \textit{Controller} definieren schließlich die Art und Weise wie
+eine Benutzeroberfläche auf Eingaben von Benutzern reagiert. Ziel
+dieser Architektur ist es ein Software System in einzelne, möglichst
+voneinander unabhängige Komponenten aufzuteilen. Dadurch soll die
+Komplexität der Software reduziert werden und die Erweiterung und
+Wiederverwendung des Programmcodes erleichtert werden.
 
 \subsection{REST - Representational State Transfer}
 \label{rest}
+
+In der Doktorarbeit von Roy T. Fielding \cite{Fielding2000}
+\cite{Richardson07}
 
 \section{Behaviour \& Test Driven Development}
 
@@ -362,10 +367,10 @@ Die \textit{Refactor} Phase dient dazu, bisher entwickelten
 Programmcode durch Umstrukturierung aufzuräumen. Dazu zählt die
 Eliminierung doppelten oder ähnlichen Codes, das Extrahieren von
 Hilfsmethoden und weiterer Refactor-Techniken, die ausführlich in
-\cite{fowler99refactoring} beschrieben werden. Insbesondere in
-Software Projekten, die ohne automatische Tests entwickelt werden, ist
-diese Phase hoch problematisch. Zuvor funktionierender und durch
-Refactoring geänderter Programmcode muss nochmals manuell verifiziert
+\cite{Fowler1999} beschrieben werden. Insbesondere in Software
+Projekten, die ohne automatische Tests entwickelt werden, ist diese
+Phase hoch problematisch. Zuvor funktionierender und durch Refactoring
+geänderter Programmcode muss nochmals manuell verifiziert
 werden. Probleme treten oft auch an nicht offensichtlich mit den
 Änderungen in Verbindung stehenden Teilen des Programms auf. Ein
 deshalb notwendiger, manueller Systemtest kann dann oft zu aufwendig
@@ -388,10 +393,10 @@ sind. Einige der Vorteile sollen im folgenden deutlich gemacht werden.
 
 \subsubsection{Steigerung der eigenen Produktivität}
 
-Martin Fowler beschreibt in \cite{fowler99refactoring}[S.89], dass
-viele Programmierer ihre Zeit nicht mit der Entwicklung des
-eigentlichen Programmcodes verbringen. Ein Großteil der Zeit wird für
-Debugging und das manuelle Testen des gerade zu entwickelten Codes
+Martin Fowler beschreibt in \cite{Fowler1999}[S.89], dass viele
+Programmierer ihre Zeit nicht mit der Entwicklung des eigentlichen
+Programmcodes verbringen. Ein Großteil der Zeit wird für Debugging und
+das manuelle Testen des gerade zu entwickelten Codes
 verwendet. Produziert wird hier nur der eigentliche Programmcode. Beim
 Test Driven Development wird diese Zeit für die selben Ziele
 verwendet, doch als Nebenprodukt entstehen automatische

@@ -290,11 +290,82 @@ voneinander unabhängige Komponenten aufzuteilen. Dadurch soll die
 Komplexität der Software reduziert werden und die Erweiterung und
 Wiederverwendung des Programmcodes erleichtert werden.
 
-\subsection{REST - Representational State Transfer}
+\subsection{Representational State Transfer}
 \label{rest}
 
-In der Doktorarbeit von Roy T. Fielding \cite{Fielding2000}
-\cite{Richardson07}
+Das Akronym \textit{REST} steht für \textit{Representational State
+  Transfer} und stammt ursprünglich aus der Doktorarbeit
+\textit{Architectural Styles and the Design of Network-based Software
+  Architectures} \cite{Fielding2000}
+\footnote{\url{http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm}}
+von Roy T. Fielding. In dieser Arbeit werden verschiedene
+Architekturstile für das Design netzwerkbasierter Hypermedia Systeme
+vorgestellt und deren Verhalten bezüglich Effizienz, Skalierbarkeit
+und einiger weiterer Kriterien untersucht. In Kapitel 5 wird
+\textit{REST} als Architekturstil vorgestellt, der bewährte Konzepte
+aus den zuvor anayliserten Architekturen aufgreift und Richtlinien für
+das Design moderner Web- Architekturen und Anwendungen
+vorgibt. Fielding, der auch an der Spezifikation des \textit{Hypertext
+  Transfer Protocol (HTTP)} \nomenclature{HTTP}{Hypertext Transfer
+  Protocol} beteiligt war, führt den großen Erfolg des \textit{World
+  Wide Web (WWW)} \nomenclature{WWW}{World Wide Web} auf dessen
+Architektur und der verwendeten Technologien zurück, die sich in
+einigen der vorgestellten Regeln widerspiegeln.
+
+\subsubsection{Resource-Oriented Architecture}
+
+In \textit{RESTful Web Services} \cite{Richardson07} werden Fielding's
+Vorschläge auf die Architektur moderner \textit{Web Services}
+übertragen und \textit{Resource-Oriented Architecture (ROA)} als ein
+konkreter Architekturstil vorgestellt, der sich an den Konzepten von
+\textit{REST} orientiert. Im folgenden sollen die zugrunde liegenden
+Konzepte und deren Anwendung vorgestellt werden.
+
+\paragraph{Ressourcen}
+
+Der Begriff \textit{Ressource} ist eine Abstraktion und wird in
+\textit{ROA} verwendet um Dinge zu bezeichnen, die auf einem Computer
+gespeichert, in einer Folge von Bits repräsentiert und auf irgendeine
+Art und Weise identifiziert und referenziert werden können. Dokumente
+auf einem Web Server, Zeilen einer Datenbanktabelle oder auch das
+Ergebnis eines Algorithmus auf einer bestimmten Eingabe können als
+Ressource modelliert werden. Einige konkrete Beispiele sind:
+
+\begin{itemize}
+\item Die Version 3.0.12 eines Softwarepakets.
+\item Die letzte stabile Version eines Softwarepakets.
+\item Die Beschreibung der Surfbedingungen in Mundaka, Spanien.
+\item Die Wettervorhersage für Mundaka am 26. Juli 2009 um 15:00h.
+\end{itemize}
+
+\paragraph{Identifizierung}
+Ressourcen müssen identifiziert werden können. Im Web werden hierfür
+üblicherweise \textit{Uniform Resource Identifier (URI)}
+\nomenclature{URI}{Uniform Resource Identifier} verwendet. Eine
+Ressource muß mindestens eine \textit{URI} besitzen, die von
+Anwendungen verwendet wird um Informationen über eine Ressource zu
+bekommen oder diese zu verändern. Die eben als Beispiel erwähnten
+Ressourcen könnten z.B. über die folgenden \textit{URI}s
+identifiziert werden:
+
+\begin{itemize}
+\item http://example.com/software/releases/3.0.12.tar.gz
+\item http://example.com/software/releases/latest.tar.gz
+\item http://example.com/spots/03-Mundaka/description.html
+\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
+\end{itemize}
+
+Wie an den ersten beiden Beispielen zu sehen ist, kann eine Ressource
+zu einem bestimmten Zeitpunkt auch über mehrere \textit{URI}s
+identifiziert werden: Zu einem bestimmten Zeitpunkt war Version 3.0.12
+der Software auch die aktuellste Version. Der Aufbau oder die Struktur
+von \textit{URI}s wird durch \textit{REST} nicht strikt vorgegeben.
+Eine durch den Clienten vorhersehbare Struktur wird aber in
+\textit{ROA} empfohlen, da dies zum einen gutes Design ausmacht und
+zugleich dem Clienten die Möglichkeiten gibt flexibel auf den Web
+Service zuzugreifen.
+
+\paragraph{Addressierbarkeit}
 
 \section{Behaviour \& Test Driven Development}
 

@@ -135,7 +135,8 @@ oder das in die Ruby Standardbibliothek integrierte \textit{Erb}.
 Template System, das beliebige Text Dokumente verarbeiten kann und im
 Moment noch das Standard Template System in Ruby on Rails Anwendungen
 ist. In Auflistung \ref{template_erb} ist ein Rails-typisches Erb
-Template zu sehen, in dem Platzhalter verwendet werden um XHTML mit
+Template zu sehen, in dem Platzhalter verwendet werden um XHTML
+\nomenclature{XHTML}{Extensible Hypertext Markup Language} mit
 dynamischem Inhalt zu generieren. Platzhalter werden in Erb Templates
 durch die speziellen Tags \textit{$<$\%=} und \textit{\%$>$}
 markiert. Der zwischen diesen Tags stehende Ruby Code wird vom
@@ -179,17 +180,18 @@ immer valides XHTML erzeugt wird.
 
 Statt der in XHTML Dokumenten verwendeten und sehr viel Redundanz
 erzeugenden Start- und Ende-Tags wird in Haml Dokumenten nur ein Tag
-benötigt. Haml generiert den durch XML vorgeschriebenen und zum Start
-Tag gehörenden Ende Tag automatisch. Um Elemente zu verschachteln wird
-eine Einrückung von zwei Leerzeichen verwendet. Die in XHTML
-Dokumenten häufig in Verbindung mit \textit{id} oder \textit{class}
-Attributen verwendeten \textit{$<$div$>$} Elemente wurden in Haml mit
-einer speziellen Syntax versehen. Ein \textit{\#} Zeichen gefolgt von
-einem String wird wird zu einem \textit{$<$div$>$} Element
-transformiert, dessen \textit{id} Attribut den Wert des Strings
-enthält. Ein ähnliches Prinzip wird auch für den Punkt ''\textit{.}''
-in Verbindung mit dem \textit{class} Attribut verwendet, so dass
-Zeilen 1 und 2 in beiden Auflistungen äquivalent sind.
+benötigt. Haml generiert den durch XML \nomenclature{XML}{Extensible
+  Markup Language} vorgeschriebenen und zum Start Tag gehörenden Ende
+Tag automatisch. Um Elemente zu verschachteln wird eine Einrückung von
+zwei Leerzeichen verwendet. Die in XHTML Dokumenten häufig in
+Verbindung mit \textit{id} oder \textit{class} Attributen verwendeten
+\textit{$<$div$>$} Elemente wurden in Haml mit einer speziellen Syntax
+versehen. Ein \textit{\#} Zeichen gefolgt von einem String wird wird
+zu einem \textit{$<$div$>$} Element transformiert, dessen \textit{id}
+Attribut den Wert des Strings enthält. Ein ähnliches Prinzip wird auch
+für den Punkt ''\textit{.}''  in Verbindung mit dem \textit{class}
+Attribut verwendet, so dass Zeilen 1 und 2 in beiden Auflistungen
+äquivalent sind.
 
 Das eng mit Haml verwandte Template System \textit{Sass} bietet
 ähnlicher Vorteile und kann verwendet werden um \textit{Cascading
@@ -303,14 +305,15 @@ Architekturstile für das Design netzwerkbasierter Hypermedia Systeme
 vorgestellt und deren Verhalten bezüglich Effizienz, Skalierbarkeit
 und einiger weiterer Kriterien untersucht. In Kapitel 5 wird
 \textit{REST} als Architekturstil vorgestellt, der bewährte Konzepte
-aus den zuvor anayliserten Architekturen aufgreift und Richtlinien für
-das Design moderner Web- Architekturen und Anwendungen
-vorgibt. Fielding, der auch an der Spezifikation des \textit{Hypertext
-  Transfer Protocol (HTTP)} \nomenclature{HTTP}{Hypertext Transfer
-  Protocol} beteiligt war, führt den großen Erfolg des \textit{World
-  Wide Web (WWW)} \nomenclature{WWW}{World Wide Web} auf dessen
-Architektur und der verwendeten Technologien zurück, die sich in
-einigen der vorgestellten Regeln widerspiegeln.
+aus den zuvor anayliserten Architekturen aufgreift und Regeln und
+Anforderungen für das Design moderner Web- Architekturen und
+Anwendungen vorgibt. Fielding, der auch an der Spezifikation des
+\textit{Hypertext Transfer Protocol (HTTP)}
+\nomenclature{HTTP}{Hypertext Transfer Protocol} beteiligt war, führt
+den Erfolg des \textit{World Wide Web (WWW)} \nomenclature{WWW}{World
+  Wide Web} unter anderem auf dessen Architektur und die verwendeten
+Technologien zurück, die sich in einigen der vorgestellten Regeln
+widerspiegeln.
 
 \subsubsection{Resource-Oriented Architecture}
 
@@ -327,9 +330,9 @@ Der Begriff \textit{Ressource} ist eine Abstraktion und wird in
 \textit{ROA} verwendet um Dinge zu bezeichnen, die auf einem Computer
 gespeichert, in einer Folge von Bits repräsentiert und auf irgendeine
 Art und Weise identifiziert und referenziert werden können. Dokumente
-auf einem Web Server, Zeilen einer Datenbanktabelle oder auch das
-Ergebnis eines Algorithmus auf einer bestimmten Eingabe können als
-Ressource modelliert werden. Einige konkrete Beispiele sind:
+auf einem Web Server, Zeilen einer Datenbanktabelle oder das Ergebnis
+eines Algorithmus auf einer bestimmten Eingabe können als Ressource
+modelliert werden. Einige konkrete Beispiele für eine Ressource sind:
 
 \begin{itemize}
 \item Die Version 3.0.12 eines Softwarepakets.
@@ -365,7 +368,90 @@ Eine durch den Clienten vorhersehbare Struktur wird aber in
 zugleich dem Clienten die Möglichkeiten gibt flexibel auf den Web
 Service zuzugreifen.
 
-\paragraph{Addressierbarkeit}
+\paragraph{Adressierbarkeit}
+
+Ein \textit{Web Service} ist addressierbar wenn die zur Verfügung
+gestellten Informationen als Ressourcen publiziert werden und auf
+diese durch \textit{URI}s zugegriffen werden kann. Die Anzahl der
+\textit{URI}s, die von solch einem \textit{Web Service} angeboten
+werden ist durch die Vielzahl der möglichen Eingaben meist unbegrenzt.
+Vertreter solch eines \textit{Web Services} ist z.B. die Suche nach
+dem Wort ''REST'' bei \textit{Google}, welche durch folgende
+\textit{URI} adressierbar ist:
+\url{http://www.google.de/search?q=REST}.
+
+Addressierbarkeit ist eine wichtige Eigenschaft
+\textit{REST}-basierter Web Architekturen und bringt viel mehr
+Anwendungsmöglichkeiten mit sich, als das ''bloße Publizieren'' von
+Informationen. Beispiele hierfür sind:
+
+\begin{itemize}
+\item Die Informationen referenzierenden Adressen können z.B. in
+  Büchern abgedruckt, als Lesezeichen gespeichert, per Mail
+  weitergeleitet und als Eingabe für Programme dienen, welche den
+  Inhalt weiterverarbeiten. Dadurch muss nicht der eigentliche Inhalt
+  verbreitet oder kommuniziert werden werden sondern nur die Adresse
+  unter der dieser Inhalt zu finden ist.
+\item In \textit{HTTP Proxy Caches} wird die Adressierbarkeit von
+  Ressourcen ausgenutzt um den Zugriff darauf zu beschleunigen. Bei
+  einer ersten Anfrage wird die Ressource vom Proxy
+  zwischengespeichert und weitere Anfragen an diese aus dem Cache
+  bedient.
+\item Durch \textit{URI}s adressierbare \textit{Web Services} bieten
+  nicht nur den speziell entworfenen Programmen Zugang zu Ressourcen,
+  sondern auch Menschen die mit Standardwerkzeugen wie z.B. einem
+  \textit{Web Browser} oder einem \textit{RSS Reader} darauf zugreifen
+  oder Agenten des \textit{Semantic Web}.
+\end{itemize}
+
+\paragraph{Zustandslosigkeit}
+
+Unter Zustandslosigkeit bzw. \textit{Statelessness} versteht man in
+Protokollen zur Client-Server Kommunikation, dass alle Anfragen des
+Clienten an den Server komplett unabhängig voneinander sind. Anfragen
+des Clienten müssen alle nötigen Informationen beinhalten, die vom
+Server benötigt werden um diese zu bearbeiten. Auf Seiten des Servers
+wird keinerlei Information über den Zustand von Anfragen
+verwaltet. Dadurch wird dessen Implementierung vereinfacht, spart
+Ressourcen beim Verarbeiten von Anfragen ein und bietet die
+Möglichkeit \textit{Load Balancing} in Form von horizontaler
+Skalierung zu betreiben. Zustandslosigkeit ist ebenfalls eine der von
+Fielding geforderten Eigenschaften \textit{REST}-basierter
+Architekturen.
+
+\paragraph{Repräsentation}
+
+Das abstrakte Konzept einer Ressource wird durch ihre Repräsentation
+bzw. Darstellung konkretisiert. Fordert ein Client Informationen über
+eine Ressource an, wird nicht die Ressource selbst, sondern eine
+bestimmte Repräsentation dieser Ressource als Sequenz von Bytes
+übertragen. Eine Ressource kann viele verschiedene Repräsentationen
+haben, beispielsweise als \textit{HTML-},
+\nomenclature{HTML}{Hypertext Markup Language} \textit{XML-} oder
+\textit{JSON-}Dokument \nomenclature{JSON}{Javascript Object Notation}
+kodiert. Die Darstellungen in unterschiedlichen Sprachen sind
+ebenfalls mögliche Repräsentationen einer Ressource. 
+
+In \textit{ROA} wird empfohlen die Information welche Repräsentation
+einer Ressource der Server ausliefern soll, in die \textit{URI} oder
+in die Metadaten des verwendeten Übertragungsprotokolls
+einzubetten. Mögliche Repräsentationen der Wettervorhersage für
+Mundaka am 26. Juli 2009 um 15:00h könnten z.B. als ''Dateiendung'' in
+der \textit{URI} kodiert werden:
+
+\begin{itemize}
+\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
+\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.xml
+\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.json
+\end{itemize}
+
+Durch Differenzierung von Repräsentationen einer Ressource kann ein
+\textit{Web Service} Anwendungen mit verschiedenen Anforderungen
+bedienen. \textit{Web Browsern} kann z.B. eine aufwendigere, auf
+Interaktivität fokussierte Darstellung gesendet werden,
+datenverarbeitenden Programmen eine Variante in \textit{XML} und
+mobilen Endgeräten eine leicht-gewichtigere Version im \textit{JSON}
+Format.
 
 \section{Behaviour \& Test Driven Development}
 

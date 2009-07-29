@@ -337,8 +337,9 @@ modelliert werden. Einige konkrete Beispiele für eine Ressource sind:
 \begin{itemize}
 \item Die Version 3.0.12 eines Softwarepakets.
 \item Die letzte stabile Version eines Softwarepakets.
-\item Die Beschreibung der Surfbedingungen in Mundaka, Spanien.
-\item Die Wettervorhersage für Mundaka am 26. Juli 2009 um 15:00h.
+\item Die Beschreibung der Surfbedingungen in \textit{Mundaka,
+    Spanien}.
+\item Die Wettervorhersage für \textit{Mundaka} am 26. Juli 2009 um 15:00h.
 \end{itemize}
 
 \paragraph{Identifizierung}
@@ -436,8 +437,8 @@ In \textit{ROA} wird empfohlen die Information welche Repräsentation
 einer Ressource der Server ausliefern soll, in die \textit{URI} oder
 in die Metadaten des verwendeten Übertragungsprotokolls
 einzubetten. Mögliche Repräsentationen der Wettervorhersage für
-Mundaka am 26. Juli 2009 um 15:00h könnten z.B. als ''Dateiendung'' in
-der \textit{URI} kodiert werden:
+\textit{Mundaka} am 26. Juli 2009 um 15:00h könnten z.B. als
+''Dateiendung'' in der \textit{URI} kodiert werden:
 
 \begin{itemize}
 \item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
@@ -452,6 +453,71 @@ Interaktivität fokussierte Darstellung gesendet werden,
 datenverarbeitenden Programmen eine Variante in \textit{XML} und
 mobilen Endgeräten eine leicht-gewichtigere Version im \textit{JSON}
 Format.
+
+\paragraph{Einheitliche Schnittstelle}
+
+Eine einheitliche Schnittstelle zwischen den Komponenten einer
+\textit{REST}-basierten Architektur ist eine weitere Forderung
+Fieldings, mit dem Ziel die Komplexität des zu entwerfenden Systems zu
+reduzieren. Das Akronym \textit{CRUD} \nomenclature{CRUD}{Create,
+  Read, Update, Delete} steht für die mindestens zu implementierenden
+Operationen einer vollständigen \footnote{im Sinne der Theorie}
+relationalen Datenbank: \textit{Create}, \textit{Read},
+\textit{Update} und \textit{Delete}. Mit diesen Basis Operationen
+können die Objekte einer Datenbank erstellt, gelesen, verändert und
+gelöscht werden. Ausgehend von der Annahme, dass Ressourcen in einer
+bestimmten Repräsentation auch in einer relationalen Datenbank
+gespeichert werden können, bieten sich die \textit{CRUD}-Operationen
+auch beim Design einer einheitlichen Schnittstelle für Ressourcen
+an. In \cite{Richardson07}[S.97-105] wird das \textit{HTTP}-Protokoll
+zur Implementierung der einheitlichen Schnittstelle
+vorgeschlagen. Dabei werden die vier \textit{CRUD}-Operationen auf die
+im \textit{HTTP}-Protokoll definierten \textit{GET}, \textup{POST},
+\textit{PUT} und \textit{DELETE} Methoden abgebildet.
+
+\begin{itemize}
+\item Die Repräsentationen existierender Ressourcen werden mit der
+  \textit{GET} Methode angefordert, beispielsweise die \textit{HTML}
+  Repräsentation der Beschreibung zu den Surfbedingungen in
+  \textit{Mundaka}.
+
+  \texttt{GET http://example.com/spots/03-Mundaka.html}
+
+\item Existierende Ressourcen werden mit der \textit{DELETE} Methode
+  gelöscht. Im folgenden Beispiel wird der Surf Spot \textit{Mundaka}
+  gelöscht.
+
+  \texttt{DELETE http://example.com/spots/03-Mundaka}
+
+\item Der Zustand existierender Ressourcen wird mit der \textit{PUT}
+  Methode verändert. Eine Repräsentation, die den veränderten Zustand
+  der Ressource widerspiegelt, wird im \textit{HTTP-Body} der Anfrage
+  mitgesendet. Im folgenden Beispiel soll mit der Anfrage die
+  Beschreibung des Spots verändert werden.
+
+  \texttt{PUT http://example.com/spots/03-Mundaka}
+
+  \textit{HTTP-Body:} \texttt{id=3,name=Mundaka,description=Some...}
+
+\item Neue Ressourcen werden entweder mit der \textit{POST}- oder der
+  \textit{PUT} Methode und einer optionalen Repräsentation der
+  Ressource im \textit{HTTP-Body} erstellt. Mit welcher Methode und an
+  welche \textit{URI} die Anfrage gesendet wird, ist abhängig davon ob
+  der Client (\textit{PUT}) oder der Server (\textit{POST}) die
+  \textit{URI} der neuen Ressource festlegt.
+
+  \texttt{POST http://example.com/spots}
+
+  \texttt{ PUT http://example.com/countries/de-germany}
+
+\end{itemize}
+
+Ein Beispiel der \textit{POST} Methode ist wenn die \textit{URI} der
+neuen Ressource aus Informationen konstruiert wird, die dem Client
+nicht bekannt sind, beispielsweise einem Identifikator aus einer
+Datenbank.
+
+
 
 \section{Behaviour \& Test Driven Development}
 

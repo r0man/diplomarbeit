@@ -346,11 +346,11 @@ modelliert werden. Einige konkrete Beispiele für eine Ressource sind:
 Ressourcen müssen identifiziert werden können. Im Web werden hierfür
 üblicherweise \textit{Uniform Resource Identifier (URI)}
 \nomenclature{URI}{Uniform Resource Identifier} verwendet. Eine
-Ressource muß mindestens eine \textit{URI} besitzen, die von
+Ressource muß mindestens einen \textit{URI} besitzen, die von
 Anwendungen verwendet wird um Informationen über eine Ressource zu
 bekommen oder diese zu verändern. Die eben als Beispiel erwähnten
-Ressourcen könnten z.B. über die folgenden \textit{URI}s
-identifiziert werden:
+Ressourcen könnten z.B. über die folgenden \textit{URI}s identifiziert
+werden:
 
 \begin{itemize}
 \item http://example.com/software/releases/3.0.12.tar.gz
@@ -377,7 +377,7 @@ diese durch \textit{URI}s zugegriffen werden kann. Die Anzahl der
 \textit{URI}s, die von solch einem \textit{Web Service} angeboten
 werden ist durch die Vielzahl der möglichen Eingaben meist unbegrenzt.
 Vertreter solch eines \textit{Web Services} ist z.B. die Suche nach
-dem Wort ''REST'' bei \textit{Google}, welche durch folgende
+dem Wort ''REST'' bei \textit{Google}, welche durch folgenden
 \textit{URI} adressierbar ist:
 \url{http://www.google.de/search?q=REST}.
 
@@ -434,11 +434,11 @@ kodiert. Die Darstellungen in unterschiedlichen Sprachen sind
 ebenfalls mögliche Repräsentationen einer Ressource. 
 
 In \textit{ROA} wird empfohlen die Information welche Repräsentation
-einer Ressource der Server ausliefern soll, in die \textit{URI} oder
+einer Ressource der Server ausliefern soll, in den \textit{URI} oder
 in die Metadaten des verwendeten Übertragungsprotokolls
 einzubetten. Mögliche Repräsentationen der Wettervorhersage für
 \textit{Mundaka} am 26. Juli 2009 um 15:00h könnten z.B. als
-''Dateiendung'' in der \textit{URI} kodiert werden:
+''Dateiendung'' im \textit{URI} kodiert werden:
 
 \begin{itemize}
 \item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
@@ -490,34 +490,46 @@ im \textit{HTTP}-Protokoll definierten \textit{GET}, \textup{POST},
   \texttt{DELETE http://example.com/spots/03-Mundaka}
 
 \item Der Zustand existierender Ressourcen wird mit der \textit{PUT}
-  Methode verändert. Eine Repräsentation, die den veränderten Zustand
-  der Ressource widerspiegelt, wird im \textit{HTTP-Body} der Anfrage
-  mitgesendet. Im folgenden Beispiel soll mit der Anfrage die
-  Beschreibung des Spots verändert werden.
+  Methode verändert. Im \textit{HTTP-Body} der Anfrage wird eine
+  Repräsentation \footnote{In Web Applikationen üblicherweise in XML
+    oder Form-Encoded} der Ressource mitgsesendet, die den veränderten
+  Zustand widerspiegelt. Im folgenden Beispiel wird der Spot
+  \textit{Mundaka} mit der im \textit{HTTP-Body} enthaltenen, hier
+  aber nicht gezeigten, Repräsentation aktualisiert.
 
   \texttt{PUT http://example.com/spots/03-Mundaka}
 
-  \textit{HTTP-Body:} \texttt{id=3,name=Mundaka,description=Some...}
-
 \item Neue Ressourcen werden entweder mit der \textit{POST}- oder der
-  \textit{PUT} Methode und einer optionalen Repräsentation der
-  Ressource im \textit{HTTP-Body} erstellt. Mit welcher Methode und an
-  welche \textit{URI} die Anfrage gesendet wird, ist abhängig davon ob
-  der Client (\textit{PUT}) oder der Server (\textit{POST}) die
-  \textit{URI} der neuen Ressource festlegt.
+  \textit{PUT} Methode erstellt. Eine den Zustand der Ressource
+  widerspigelnde Repräsentation wird hier ebenfalls im
+  \textit{HTTP-Body} kodiert.
+  
+  Mit welcher Methode und \textit{URI} die Anfrage gesendet wird, ist
+  abhängig davon ob der Client (\textit{PUT}) oder der Server
+  (\textit{POST}) den \textit{URI} der neuen Ressource festlegt. Diese
+  Unterscheidung ist auf die Einhaltung der im \textit{RFC-2616}
+  \nomenclature{RFC}{Request for Comments} beschriebenen
+  \textit{HTTP/1.1} Spezifikation zurückzuführen und wird in
+  \cite{Richardson07}[S.99-102] ausführlicher erläutert. Die zwei
+  folgenden Beispiele sollen beide Situationen verdeutlichen.
+
+  \textbf{POST:} Der \textit{URI} für Spots wird in der hier
+  entwickelten Web Applikation aus dem Datenbank Identifikator und dem
+  Namen des Spots zusammengesetzt. Da der Datenbank Identifikator dem
+  Benutzer beim Erstellen des neuen Spots nicht bekannt ist, muss hier
+  die \textit{POST} Methode verwendet werden.
 
   \texttt{POST http://example.com/spots}
 
-  \texttt{ PUT http://example.com/countries/de-germany}
+  \textbf{PUT:} Bei der Registrierung von Benutzern hingegen wird die
+  \textit{PUT} Methode verwendet. Der \textit{URI} eines Benutzer wird
+  in der Web Applikation nur aus dem von ihm gewählten Nicknamen
+  konstruiert. Hier legt also der Client den \textit{URI} der neuen
+  Ressource fest.
+
+  \texttt{ PUT http://example.com/users/bob}
 
 \end{itemize}
-
-Ein Beispiel der \textit{POST} Methode ist wenn die \textit{URI} der
-neuen Ressource aus Informationen konstruiert wird, die dem Client
-nicht bekannt sind, beispielsweise einem Identifikator aus einer
-Datenbank.
-
-
 
 \section{Behaviour \& Test Driven Development}
 

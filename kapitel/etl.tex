@@ -1,18 +1,66 @@
 
 \chapter{Aufbau und Analyse der ETL Prozesse}
+
 \section{Überblick der verwendeten Datenquellen}
 
-\subsection{Wetter- und Wellendaten}
+\subsection{Numerische Wettervorhersagen}
 
-Heutige Wettervorhersagen basieren meist auf den Ergebnissen
-\textit{numerischer Wettermodelle}, die von verschiedenen
-Wetterdiensten erstellt und betrieben werden. Diese Modelle versuchen
-den Zustand der Atmosphäre und deren Veränderung als mathematisches
-Problem zu berschreiben. Eingabe für ein solches Modell ist der
-Zustand der Atmosphäre in Form von physikalischen Größen, wie
-z.B. Temperatur, Windstärke und Windrichtung. Die physikalischen
-Beziehungen, die den Zustand der Atmosphäre verändern werden als
-System partieller Differentialgleichungen modelliert.
+Heutige Wettervorhersagen basieren auf den aufwendig berechneten
+Ergebnissen numerischer Wettermodelle. Diese Modelle versuchen den
+Zustand der Atmosphäre und deren Veränderung im Laufe der Zeit als
+mathematisches Problem zu beschreiben. Dabei werden die physikalischen
+Größen und Beziehungen, die den Zustand und die Veränderung der
+Atmosphäre beschreiben, als System partieller Differentialgleichungen
+modelliert. Allen Modellen liegen dabei dieselben physikalischen
+Gesetzmäßigkeiten, wie die Erhaltungssätze von Energie, Impuls und
+Masse, zugrunde, unterscheiden sich aber in der konkreten
+mathematischen Formulierung und der numerischen Lösung dieser
+Gleichungssysteme.
+
+Um die reale Atmosphäre auf ein Modell abbilden zu können wird eine
+Diskretisierung von Raum und Zeit vorgenommen. Dabei wird die
+Oberfläche der Erde mit einem aus Dreiecken oder Vierecken bestehenden
+Gitternetz überzogen, und die Atmosphäre horizontal in mehrere
+Luftschichten aufgeteilt. In Abbildung \ref{gitternetz} ist das
+Gitternetz des vom Deutschen Wetterdienst und Max-Planck-Institut für
+Meteorologie entwickelten Wettermodells \textit{ICON}
+\nomenclature{ICON}{ICOsahedral Non-hydrostatic General Circulation
+  Model} zu sehen.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[height=200px]{bilder/gitternetz}
+    \caption{Dreiecksgitter des ICON Wettermodells}
+    \label{gitternetz}
+  \end{center}
+\end{figure}
+
+Die nicht nur von Wetterstationen und -ballonen, sondern auch von
+Satelliten, Bojen und Flugzeugen gemessene physikalische Größen bilden
+den Ausgangszustand dieser Modelle. Typische Größen sind dabei Wind,
+Temperatur und Luftdruck. 
+
+
+
+\subsubsection{Global Forecast System}
+\subsubsection{Wave Watch III}
+
+% Die Erde umgebende Atmosphäre wird
+% in numerischen Wettermodelle in
+
+
+% , die von verschiedenen
+% Wetterdiensten erstellt und betrieben werden.
+
+% \subsection{Wetter- und Wellendaten}
+
+%  Diese Modelle versuchen
+% den Zustand der Atmosphäre und deren Veränderung als mathematisches
+% Problem zu berschreiben. Eingabe für ein solches Modell ist der
+% Zustand der Atmosphäre in Form von physikalischen Größen, wie
+% z.B. Temperatur, Windstärke und Windrichtung. Die physikalischen
+% Beziehungen, die den Zustand der Atmosphäre verändern werden als
+% System partieller Differentialgleichungen modelliert.
 
 % Verfahren der Numerik
 % und der Einsatz von Supercomputern helfen dabei d

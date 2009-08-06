@@ -1,31 +1,78 @@
 
 \chapter{Aufbau und Analyse der ETL Prozesse}
 
-\section{Überblick der verwendeten Datenquellen}
+\section{Wettervorhersagen}
 
-\subsection{Numerische Wettervorhersagen}
+Wettervorhersagen haben das Ziel den Zustand der Erdatmosphäre zu
+einer bestimmten Zeit an einem bestimmten Ort zu prognostizieren. Sie
+werden meist von staatlichen oder privaten Wetterdiensten erstellt,
+die sich an den Erkenntnissen der Meteorologie bedienen. Heutige
+Wettervorhersagen basieren auf den aufwendig berechneten Ergebnissen
+numerischer Wettermodelle.
 
-Heutige Wettervorhersagen basieren auf den aufwendig berechneten
-Ergebnissen numerischer Wettermodelle. Diese Modelle versuchen den
-Zustand der Atmosphäre und deren Veränderung im Laufe der Zeit als
-mathematisches Problem zu beschreiben. Dabei werden die physikalischen
-Größen und Beziehungen, die den Zustand und die Veränderung der
-Atmosphäre beschreiben, als System partieller Differentialgleichungen
-modelliert. Allen Modellen liegen dabei dieselben physikalischen
-Gesetzmäßigkeiten, wie die Erhaltungssätze von Energie, Impuls und
-Masse, zugrunde, unterscheiden sich aber in der konkreten
-mathematischen Formulierung und der numerischen Lösung dieser
-Gleichungssysteme.
+Die Vorhersage des Wetters ist ein typisches Anfangswertproblem, das
+meist in drei Schritten gelöst wird. Im ersten Schritt, der Analyse,
+wird der Ausgangszustand der Atmosphäre bestimmt. Dieser Zustand wird
+durch verschiedene physikalische Größen festgelegt, die von
+Wetterstationen, Satelliten, Bojen oder Flugzeugen gemessenen
+werden. Typische Größen repräsentieren dabei Luftdruck, Temperatur,
+Wind, Wasserdampf, Wolken und Niederschlag.
 
-Um die reale Atmosphäre auf ein Modell abbilden zu können wird eine
-Diskretisierung von Raum und Zeit vorgenommen. Dabei wird die
-Oberfläche der Erde mit einem aus Dreiecken oder Vierecken bestehenden
-Gitternetz überzogen, und die Atmosphäre horizontal in mehrere
-Luftschichten aufgeteilt. In Abbildung \ref{gitternetz} ist das
-Gitternetz des vom Deutschen Wetterdienst und Max-Planck-Institut für
-Meteorologie entwickelten Wettermodells \textit{ICON}
-\nomenclature{ICON}{ICOsahedral Non-hydrostatic General Circulation
-  Model} zu sehen.
+Die Modellberechnung ist der zweite Schritt, und simuliert die
+Entwicklung der Atmosphäre in die Zukunft. Die Berechnung dieser
+Simulation ist sehr aufwendig, weshalb meist Supercomputer eingesetzt
+werden. Ergebnis der Modellberechnung ist der Zustand der Atmosphäre
+zu verschiedenen Zeitpunkten in der Zukunft, dargestellt durch
+physikalischen Größen.
+
+Im letzten Schritt, der Nachbereitung, werden die Ergebnisse der
+Simulation schließlich für die verschiedensten Nutzer
+aufbereitet. Dies beinhaltet die Generierung von Wetterkarten,
+Warnhinweisen für Technisches Hilfswerk und Feuerwehr oder die
+Visualisierung Strömungsfilmen.
+
+\subsection{Numerische Wettermodelle}
+
+Numerische Wettermodelle Modelle versuchen den Zustand der Atmosphäre
+und deren Veränderung im Laufe der Zeit als mathematisches Problem zu
+beschreiben. Dabei werden die physikalischen Größen und Beziehungen,
+die den Zustand und die Veränderung der Atmosphäre beschreiben, als
+System partieller Differentialgleichungen modelliert. Die meisten
+Modelle verwenden dabei dieselben physikalischen Gesetzmäßigkeiten,
+die auf den Erhaltungssätzen von Energie, Impuls und Masse
+beruhen. Meist unterscheiden sie sich aber in der konkreten
+mathematischen Formulierung und der numerischen Lösung der
+Gleichungssysteme, weshalb die Ergebnisse verschiedener Modelle
+erheblich voneinander abweichen können.
+
+\subsubsection{Populäre Wettermodelle}
+
+Der Deutsche Wetterdienst betreibt drei verschiedene
+Wettermodelle. Die lokalen \textit{COSMO-DE} und \textit{COSMO-EU}
+Modelle liefern Vorhersagen für Deutschland und Europa, das globale
+Modell \textit{GME} hingegen Vorhersagen für die ganze Welt. Weitere
+bekannte Modelle sind das von der US-amerikanischen \textit{National
+  Oceanic and Atmospheric Administration} betriebene \textit{Global
+  Forecast System (GFS)} \nomenclature{GFS}{Global Forecast System}
+und das neuere \textit{Weather Research and Forecasting (WRF)}
+\nomenclature{WRF}{Weather Research and Forecasting} Modell, das vom
+\textit{National Weather Service (NWS)} \nomenclature{NWS}{National
+  Weather Service}, vom amerikanischen Militär und einigen privaten
+meteorologischen Organisationen verwendet wird.
+
+\subsubsection{Diskretisierung von Raum und Zeit}
+
+Um die sich verändernde Atmosphäre der Erde auf ein Modell abbilden zu
+können wird eine Diskretisierung von Raum und Zeit vorgenommen. Dabei
+wird die Oberfläche der Erde mit einem aus Drei- oder Vierecken
+bestehenden Gitternetz überzogen, und die Atmosphäre vertikal in
+mehrere Luftschichten aufgeteilt. Damit wird die unendlich Zahl der
+möglichen Vorhersagepunkte in der Atmosphäre auf die endliche Zahl der
+so entstandenen Kreuzungspunkte reduziert. In Abbildung
+\ref{gitternetz} ist das dreieckige Gitternetz des zur Zeit vom
+Deutschen Wetterdienst und des Max-Planck-Instituts für Meteorologie
+neu entwickelten \textit{ICON} \nomenclature{ICON}{ICOsahedral
+  Non-hydrostatic General Circulation Model} Wettermodells zu sehen.
 
 \begin{figure}[h]
   \begin{center}
@@ -35,15 +82,37 @@ Meteorologie entwickelten Wettermodells \textit{ICON}
   \end{center}
 \end{figure}
 
-Die nicht nur von Wetterstationen und -ballonen, sondern auch von
-Satelliten, Bojen und Flugzeugen gemessene physikalische Größen bilden
-den Ausgangszustand dieser Modelle. Typische Größen sind dabei Wind,
-Temperatur und Luftdruck. 
+Mit der Maschenweite bezeichnet man den horizontalen Abstand zwischen
+zwei benachbarten Gitterpunkten. Je feiner das Gitter, bzw. je höher
+die Auflösung des Modells ist, desto genauer kann die Erdoberfläche
+und die darüber liegenden atmosphärischen Strukturen erfasst werden,
+was sich auf die Genauigkeit der Wettervorhersage auswirkt. Die
+benötigten Ressourcen zu Berechnung der Modellgleichungen steigt mit
+der Anzahl der verwendeten Gitterpunkte.
 
+Da eine sehr hohe Auflösungen selbst die Leistungsfähigkeit der
+schnellsten Supercomputer übersteigt werden von den Wetterdiensten
+meist verschiedene Modelle in unterschiedlichen Auflösungen
+berechnet. Globale, den gesamten Globus umfassende Modelle werden mit
+einer geringeren Auflösung als lokale, Länder oder Kontinente
+abdeckende Modelle berechnet. Je weiter in die Zukunft prognostiziert
+werden soll, desto mehr spielen aber wieder Wetterphänomene aus
+Gebieten die nicht vom lokalen Modell abgedeckt werden eine Rolle. Für
+Vorhersagen ab 5 Tagen in die Zukunft benötigen die lokalen Modelle
+wiederum Informationen aus der gesamten Atmosphäre. Deshalb verwenden
+die höher auflösenden lokalen Modelle oft Informationen als Randwerte
+aus den zuvor berechneten globalen Modelle.
 
+Die zeitliche Diskretisierung hingegen ist weniger problematisch. Die
+meisten Modelle bieten mindestens Prognosen um 12 und 24 Uhr für
+diejenigen Tage an, über die sich der Vorhersagezeitraum
+erstreckt. Das \textit{Global Forecast System} Modell berechnet die
+Vorhersagen beispielsweise im drei Stunden Intervall.
 
-\subsubsection{Global Forecast System}
-\subsubsection{Wave Watch III}
+\section{Überblick der verwendeten Datenquellen}
+
+\subsection{Global Forecast System}
+\subsection{Wave Watch III}
 
 % Die Erde umgebende Atmosphäre wird
 % in numerischen Wettermodelle in

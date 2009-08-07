@@ -10,13 +10,13 @@ die sich an den Erkenntnissen der Meteorologie bedienen. Heutige
 Wettervorhersagen basieren auf den aufwendig berechneten Ergebnissen
 numerischer Wettermodelle.
 
-Die Vorhersage des Wetters ist ein typisches Anfangswertproblem, das
-meist in drei Schritten gelöst wird. Im ersten Schritt, der Analyse,
-wird der Ausgangszustand der Atmosphäre bestimmt. Dieser Zustand wird
-durch verschiedene physikalische Größen festgelegt, die von
-Wetterstationen, Satelliten, Bojen oder Flugzeugen gemessenen
-werden. Typische Größen repräsentieren dabei Luftdruck, Temperatur,
-Wind, Wasserdampf, Wolken und Niederschlag.
+Die Vorhersage des Wetters ist ein Anfangswertproblem, das meist in
+drei Schritten gelöst wird. Im ersten Schritt, der Analyse, wird der
+Ausgangszustand der Atmosphäre bestimmt. Dieser Zustand wird durch
+verschiedene physikalische Größen festgelegt, die von Wetterstationen,
+Satelliten, Bojen oder Flugzeugen gemessenen werden. Typische Größen
+repräsentieren dabei Luftdruck, Temperatur, Wind, Wasserdampf, Wolken
+und Niederschlag.
 
 Die Modellberechnung ist der zweite Schritt, und simuliert die
 Entwicklung der Atmosphäre in die Zukunft. Die Berechnung dieser
@@ -29,12 +29,12 @@ Im letzten Schritt, der Nachbereitung, werden die Ergebnisse der
 Simulation schließlich für die verschiedensten Nutzer
 aufbereitet. Dies beinhaltet die Generierung von Wetterkarten,
 Warnhinweisen für Technisches Hilfswerk und Feuerwehr oder die
-Visualisierung Strömungsfilmen.
+Visualisierung von Strömungsfilmen.
 
 \subsection{Numerische Wettermodelle}
 
-Numerische Wettermodelle Modelle versuchen den Zustand der Atmosphäre
-und deren Veränderung im Laufe der Zeit als mathematisches Problem zu
+Numerische Wettermodelle versuchen den Zustand der Erdatmosphäre und
+deren Veränderung im Laufe der Zeit als mathematisches Problem zu
 beschreiben. Dabei werden die physikalischen Größen und Beziehungen,
 die den Zustand und die Veränderung der Atmosphäre beschreiben, als
 System partieller Differentialgleichungen modelliert. Die meisten
@@ -43,7 +43,7 @@ die auf den Erhaltungssätzen von Energie, Impuls und Masse
 beruhen. Meist unterscheiden sie sich aber in der konkreten
 mathematischen Formulierung und der numerischen Lösung der
 Gleichungssysteme, weshalb die Ergebnisse verschiedener Modelle
-erheblich voneinander abweichen können.
+voneinander abweichen können.
 
 \subsubsection{Populäre Wettermodelle}
 
@@ -101,13 +101,51 @@ Gebieten die nicht vom lokalen Modell abgedeckt werden eine Rolle. Für
 Vorhersagen ab 5 Tagen in die Zukunft benötigen die lokalen Modelle
 wiederum Informationen aus der gesamten Atmosphäre. Deshalb verwenden
 die höher auflösenden lokalen Modelle oft Informationen als Randwerte
-aus den zuvor berechneten globalen Modelle.
+aus einem zuvor berechneten globalen Modell.
 
 Die zeitliche Diskretisierung hingegen ist weniger problematisch. Die
 meisten Modelle bieten mindestens Prognosen um 12 und 24 Uhr für
 diejenigen Tage an, über die sich der Vorhersagezeitraum
-erstreckt. Das \textit{Global Forecast System} Modell berechnet die
-Vorhersagen beispielsweise im drei Stunden Intervall.
+erstreckt. Das \textit{Global Forecast System} Modell bietet
+beispielsweise Vorhersagen im drei Stunden Intervall an, wobei das
+lokale \textit{COSMO-DE} Modell mit einem 25 Sekunden Intervall
+betrieben wird.
+
+\subsubsection{Rechenaufwand heutiger Modelle}
+
+In einer Präsentation
+\footnote{\url{http://www.initiative-wissenschaftsjournalismus.de/fileadmin/Downloads/WissensWerte2008/B3_Majewski.pdf}}
+aus dem November 2008 wurde der Rechenaufwand für die vom Deutschen
+Wetterdienst betriebenen Modelle mit den dazugehörigen Kenngrößen
+veröffentlicht. Damals wurden die Wettervorhersagen auf einem IBM
+Power 5 System (p575) mit 52 Knoten, 416 Prozessoren und einer
+Spitzenleistung von 3,1 Teraflop/s berechnet.
+
+\begin{itemize}
+\item Für Deutschland wird das \textit{COSMO-DE} Modell mit einer
+  Maschenweite von 2,8 Kilometern betrieben und besteht aus ca. 10
+  Millionen Gitterpunkten. Die Berechnung dauert 30 Minuten und
+  liefert Vorhersagen in einem 25 Sekunden Intervall für einen
+  21-stündigen Vorhersagezeitraum.
+\item Das Europa umfassende Modell \textit{COSMO-EU} hat eine
+  Maschenweite von 7 Kilometern, ca. 17 Millionen Gitterpunkten und
+  wird mit einem Zeitintervall von 40 Sekunden erstellt. Die
+  Berechnung einer 24-stündigen Vorhersage dauert 25 Minuten.
+\item Das globale, die gesamte Welt umfassende \textit{GME} Modell hat
+  eine Maschenweite von 40 Kilometern mit ca. 15 Millionen
+  Gitterpunkten. Die Berechnung der 24 Stunden Vorhersage mit einem
+  Zeitintervall von 133 Sekunden benötigt 15 Minuten.
+\end{itemize}
+
+Leider wurden während der Recherche keine genaueren Informationen
+gefunden, wie sich die Berechnung der hier erwähnten Modelle auf dem
+seit März 2009 beim Deutschen Wetterdienst in Betrieb genommenen
+Vektorsupercomputer SX-9 der Firma NEC verhält. Die Spitzenleistung
+dieses Systems beträgt momentan 4,5 Teraflop/s, die bis 2010 auf 11
+Teraflop/s aufgestockt werden soll. Mit dieser neuen Anschaffung will
+der Deutsche Wetterdienst unter anderem auch Wettervorhersagen mit
+einer Auflösung von 2,8 Kilometern für Deutschlands Anrainerstaaten
+berechnen.
 
 \section{Überblick der verwendeten Datenquellen}
 

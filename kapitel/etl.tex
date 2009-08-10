@@ -45,7 +45,7 @@ mathematischen Formulierung und der numerischen Lösung der
 Gleichungssysteme, weshalb die Ergebnisse verschiedener Modelle
 voneinander abweichen können.
 
-\subsubsection{Populäre Wettermodelle}
+\subsubsection{Operative Wettermodelle}
 
 Der Deutsche Wetterdienst betreibt drei verschiedene
 Wettermodelle. Die lokalen \textit{COSMO-DE} und \textit{COSMO-EU}
@@ -149,128 +149,130 @@ berechnen.
 
 \section{Überblick der verwendeten Datenquellen}
 
+Eine der Anforderungen an die Web Applikation ist es den Nutzern
+aktuelle Informationen über die Wetter- und die Wellenverhältnisse in
+den nächsten Tagen zu bieten. Hierfür werden die frei erhältlichen
+Ergebnisse von zwei numerischen Wettermodelle verwendet, dem
+\textit{Global Forecast System} und dem \textit{Wave Watch III}
+Modell.
+
 \subsection{Global Forecast System}
+
+Das \textit{Global Forecast System} ist ein globales numerisches
+Wettermodell das vom \textit{National Weather Service} betrieben wird
+und den gesamten Erdball abdeckt. Da die Ergebnisse der
+Modellberechnung über das Internet
+\footnote{\url{http://nomad5.ncep.noaa.gov/pub/gfs}} erhältlich sind
+und von jedermann verwendet werden dürfen erfreut es sich einer großen
+Beliebtheit. Das Modell liefert Vorhersagen bis zu 384 Stunden (16
+Tage) in die Zukunft und wird mit variierenden Auflösungen viermal
+täglich berechnet, jeweils um 0h, 6h, 12h und 18h koordinierter
+Weltzeit (\textit{UTC}). Die ersten 180 Stunden werden mit einer
+Maschenweite von ca. 40 Kilometern und einem Intervall von 3 Stunden
+berechnet, die restlichen Stunden im 12 Stunden Intervall und einer
+Auflösung von ca. 80 Kilometern. Vertikal wird die Atmosphäre bei
+beiden Auflösungen in 64 unterschiedliche Luftschichten aufgeteilt.
+
+Das Modell berechnet eine Vielzahl von physikalischen Größen, von
+denen hier hauptsächlich die Temperatur, die Gesamtbewölkung und das
+Niederschlagswasser von Bedeutung sind. Da weithin Einverständnis
+darüber herrscht, dass Vorhersagen über 180 Stunden hinaus sehr
+ungenau sind verwenden die hier entwickelten \textit{ETL} Prozessen
+nur die ersten 180 Stunden in der höchsten verfügbaren Auflösung.
+
 \subsection{Wave Watch III}
 
-% Die Erde umgebende Atmosphäre wird
-% in numerischen Wettermodelle in
+Um für mehr Sicherheit auf hoher See und an Küstenregionen zu sorgen
+betreibt der \textit{National Weather Service} das \textit{Wave Watch
+  III} Wettermodell um Wellen vorherzusagen. Es liefert ausschließlich
+Informationen über diejenigen Wellen, die durch den direkten Einfluss
+von Winden entstehen. Wellen die durch andere Ereignisse wie
+z.B. Gewitter, Gezeiten oder Tsunamis verursacht werden, sind in
+diesem Modell nicht berücksichtigt. Da sich Wellen viel zu sehr
+voneinander unterscheiden, werden nicht Vorhersagen für einzelne
+Wellen getroffen, sondern über die Statistik von mehreren Wellen. Das
+Modell liefert sowohl Informationen über die Wellenhöhe, Wellenperiode
+und Wellenrichtung als auch über die Windstärke und die Windrichtung
+an einem bestimmten Ort zu einer bestimmten Zeit.
 
+Das Modell wird wie das \textit{Global Forecast System} viermal
+täglich neu berechnet, liefert Vorhersagen im 3 Stunden Intervall für
+180 Stunden in die Zukunft und die Ergebnisse sind ebenfalls frei
+erhältlich
+\footnote{\url{http://polar.ncep.noaa.gov/waves/index2.shtml}}. Das
+globale Modell wird mit einer Maschenweite von ca. 80 Kilometern
+berechnet, die lokalen Modelle mit einer Maschenweite von bis zu 20
+Kilometern. Die hier entwickelten \textit{ETL} Prozesse verarbeiten
+bisher nur die Daten des globalen Modells.
 
-% , die von verschiedenen
-% Wetterdiensten erstellt und betrieben werden.
+\subsection{GRIB - Das GRIdded Binary Datenformat}
 
-% \subsection{Wetter- und Wellendaten}
+Die Abkürzung \textit{GRIB} \nomenclature{GRIB}{GRIdded Binary} steht
+für \textit{GRIdded Binary} und ist ein weit verbreitetes,
+bitorientiertes Datenformat zur Speicherung und Übertragung von
+Wetterdaten. Das Format wurde von der Kommision für Basissysteme
+(\textit{CBS}) \nomenclature{CBS}{Commission for Basic Systems} der
+Weltorganisation für Meteorologie (\textit{WMO})
+\nomenclature{WMO}{World Meteorological Organization} standardisiert
+\footnote{\url{http://www.wmo.int/pages/prog/www/WMOCodes/Guides/GRIB/GRIB1-Contents.html}},
+und wird von vielen Wetterorganisationen dazu verwendet die Ergebnisse
+ihrer Modellberechnungen kompakt und plattformunabhängig zu
+speichern. Das Format basiert, wie auch viele der numerischen
+Wettermodelle, auf einem rechteckigen Gitternetz dessen
+Kreuzungspunkte die geographische Koordinaten der Erde repräsentieren.
 
-%  Diese Modelle versuchen
-% den Zustand der Atmosphäre und deren Veränderung als mathematisches
-% Problem zu berschreiben. Eingabe für ein solches Modell ist der
-% Zustand der Atmosphäre in Form von physikalischen Größen, wie
-% z.B. Temperatur, Windstärke und Windrichtung. Die physikalischen
-% Beziehungen, die den Zustand der Atmosphäre verändern werden als
-% System partieller Differentialgleichungen modelliert.
+\begin{table*}
+  \centering
+  {\sf
+    \begin{longtable}{@{}lp{9,5cm}@{}}
 
-% Verfahren der Numerik
-% und der Einsatz von Supercomputern helfen dabei d
+      \toprule
+      \textbf{Name} & \textbf{Inhalt} \\
 
+      \midrule
 
-% formuliert. Zur Lösung des Problems werden Verfahren
+      Indicator & Die Zeichenkette ''GRIB'', Versionsnummer, Länge der gesamten Nachricht \\
 
-% Dieses wird mit Verfahren der Numerik und dem Einsatz von
-% Supercomputern näherungsweise gelöst. Das Ergebnis
+      Identification & Charakteristiken die auf alle Daten zutreffen, u.a. Herkunft der Daten, Referenzzeit und Typ des Produkts \\
 
-% Es gibt eine Vielzahl dieser Modelle die
-% von unterschiedlichen Wetterdiensten erstellt werden, und aufgrund der
-% Anwendung verschiedener Verfahren auch erhebliche Abweichungen
+      Local Use (optional) & Abschnitt für beliebige zusätzliche Informationen \\
 
+      Grid Definition &  Definition des Gitternetzes, u.a. die Dimension, die Anzahl der Datenpunkte und die verwendete Koordinatenprojektion \\
 
+      Product Definition &  Beschreibung der Daten. \\
 
-% Diese Ergebnisse repräsentieren
-% den Zustand der Atmosphäre für ein Vorhersagegebiet zu einem
-% bestimmten Zeitpunkt in Form von physikalischen Größen, wie
-% z.B. Temperatur, Windstärke und Windrichtung.
+      Data Representation &  Beschreibung wie die Daten repräsentiert werden. Art der Komprimierung \\
 
+      Bitmap & Eine Bitmap, welche die Anwesenheit bzw. Abwesenheit von Datenpunkten in der nächsten Sektion signalisiert \\
 
+      Data &  Die komprimierten Daten. Für jeden in der Bitmap existierenden Gitterpunkt ein Wert. \\
 
-% Diese E
+      End & Die Zeichenkette ''7777'' markiert das Ende der Nachricht \\
 
+      \bottomrule
 
+    \end{longtable}
+  }
 
-% Das Vorhersagegebiet wird dabei in Gitterzellen
+  \caption{Die verschiedenen Sektionen einer \textit{GRIB} Nachricht}
+  \label{tab:grib}
 
+\end{table*}
 
-%  als dreidimensionaler Raum in
-% Abhängigkiet der Zeit betrachtet.
+% Die meisten Wettermodelle
+% Ergebnisse der
 
-% in Gitterzellen aufgeteilt, um die für
-% das Modell relevanten physikalischen Größen als Funktion der Zeit im
-% dreidimensionalen Raum darstellen zu können.
+% und wird von den meisten Wettermodelle zur Speicherung
+% der Ergebnisse verwendet.
 
-% .System
+% kompakter und wird dazu verwendet Wetterdaten sehr
+% kompakt zu speichern und auszutauschen.
 
-
-%  in Form
-% von partiellen Differentialgleichungen dar.
-
-
-% Die Berechnung dieser
-% Modelle ist sehr aufwendig, weshalb Verfahren aus dem Bereich der
-% Numerik und Supercomputer verwendet werden um das Problem
-% näherungsweise zu lösen.
-
-% Der Zustand der Atmosphäre
-
-
-% . Dieser
-% dreidimensionale Raum wird durch die geographischen Koordinaten
-% Latitude, Longitude sowie der Höhe über dem Meeresspiegel aufgespannt.
-
-% Die Eckpunkte
-% einer Gitterzelle representieren dabei die physikalischen Größen wie
-% z.B. Temperatur, Windrichtung und -stärke, Wellenhöhe und
-% -periode sind einige der
-
-
-
-
-
-
-% , wie Temperatur,
-% Luftdruck, Windrichtung, Windstärke, etc.
-
-% Problem zu formulieren.
-
-% , und durch die Lösung darzustellen.
-
-% System partieller
-% Differentialgleichungen darzustellen.
-
-
-% zu einem gegeben Zeitpunkt durch die
-% numerische Lösung
-
-
-% Es gibt eine Vielzahl von
-% Wettermodellen die von verschiedenen Wetterdiensten für bestimmte
-% Regionen angeboten werden.
-
-
-% Für die Berechnung dieser Modelle
-% wird ein Gebiet oder Region in Gitterzellen aufgeteilt.
-
-
-% Es gibt eine Vielzahl dieser
-% Modelle,
-
-
-% In einem solchen Modell wir das
-
-
-% , die sind rechnergestützte Wettervorhersagen
-
-% Die für die Wetter- und Wellenvorhersagen benötigten Daten werden von
-% der US-amerikanischen Wetter- und Ozeanografiebehörde \textit{National
-%   Oceanic and Atmospheric Administration (NOAA)} als Ergebnis
-% numerisch gelöster Wettermodelle zur Verfügung gestellt.
+% ist
+% von der Kommision für Basissysteme der Weltorganisation für
+% Meteorologie (\textit{WMO}) \nomenclature{WMO}{World Meteorological
+%   Organization} standardisiert und wird dazu verwendet Wetterdaten
+% kompakt zu speichern.
 
 \subsection{Photos \& Videos}
 \section{Datenbank Design}

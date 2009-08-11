@@ -71,7 +71,7 @@ möglichen Vorhersagepunkte in der Atmosphäre auf die endliche Zahl der
 so entstandenen Kreuzungspunkte reduziert. In Abbildung
 \ref{gitternetz} ist das dreieckige Gitternetz des zur Zeit vom
 Deutschen Wetterdienst und des Max-Planck-Instituts für Meteorologie
-neu entwickelten \textit{ICON} \nomenclature{ICON}{ICOsahedral
+neu entwickelten \textit{ICON} \nomenclature{ICON}{Icosahedral
   Non-hydrostatic General Circulation Model} Wettermodells zu sehen.
 
 \begin{figure}[h]
@@ -207,27 +207,47 @@ bisher nur die Daten des globalen Modells.
 
 \subsection{GRIB - Das GRIdded Binary Datenformat}
 
-Die Abkürzung \textit{GRIB} \nomenclature{GRIB}{GRIdded Binary} steht
+Die Abkürzung \textit{GRIB} \nomenclature{GRIB}{Gridded Binary} steht
 für \textit{GRIdded Binary} und ist ein weit verbreitetes,
 bitorientiertes Datenformat zur Speicherung und Übertragung von
 Wetterdaten. Das Format wurde von der Kommision für Basissysteme
 (\textit{CBS}) \nomenclature{CBS}{Commission for Basic Systems} der
 Weltorganisation für Meteorologie (\textit{WMO})
 \nomenclature{WMO}{World Meteorological Organization} standardisiert
-\footnote{\url{http://www.wmo.int/pages/prog/www/WMOCodes/Guides/GRIB/GRIB1-Contents.html}},
+\footnote{\url{http://www.wmo.int/pages/prog/www/WMOCodes/Guides/GRIB/GRIB1-Contents.html}}
 und wird von vielen Wetterorganisationen dazu verwendet die Ergebnisse
 ihrer Modellberechnungen kompakt und plattformunabhängig zu
-speichern. Das Format basiert, wie auch viele der numerischen
-Wettermodelle, auf einem rechteckigen Gitternetz dessen
-Kreuzungspunkte die geographische Koordinaten der Erde repräsentieren.
+speichern. Insgesamt wurden drei verschiedenen Versionen spezifiziert,
+von denen sich die Versionen 1 und 2 etabliert haben. Die mit der
+Nummer 0 bezeichnete Version wird als veraltet angesehen und befindet
+sich bei den meisten Wetterorganisationen nicht mehr im operativen
+Einsatz.
+
+Eine \textit{GRIB} Datei besteht aus eigenständigen, sich selbst
+beschreibenden Datensätzen, den sogenannten \textit{GRIB}
+Nachrichten. Eine Nachricht enthält dabei alle Daten eines bestimmten
+Produkts, für eine auf ein Gitternetz diskretisierte geographische
+Region zu einem bestimmten Zeitpunkt. Beispielsweise die Temperaturen
+um 12 Uhr mittags für Europa aus dem \textit{Global Forecast System},
+oder die signifikanten Wellenhöhen des \textit{Wave Watch III} Modells
+um 9 Uhr morgens für die gesamte Erdkugel. 
+
+Eine \textit{GRIB} Nachricht besteht wiederum aus mehreren Sektionen,
+die deren Inhalt genauer beschreiben und in Tabelle \ref{tab:grib}
+aufgelistet sind. Die Sektionen enthalten neben den eigentlichen Daten
+u.a. Informationen über die Dimension und Auflösung des verwendeten
+Gitternetzes, die Herkunft der Daten, die Art des verwendeten
+Komprimierungsverfahrens und die physikalische Einheit in der die
+Daten gespeichert sind.
 
 \begin{table*}
   \centering
   {\sf
-    \begin{longtable}{@{}lp{9,5cm}@{}}
+    \footnotesize
+    \begin{longtable}{@{}lp{10cm}@{}}
 
       \toprule
-      \textbf{Name} & \textbf{Inhalt} \\
+      \textbf{Name der Sektion} & \textbf{Verwendungszweck} \\
 
       \midrule
 
@@ -254,31 +274,24 @@ Kreuzungspunkte die geographische Koordinaten der Erde repräsentieren.
     \end{longtable}
   }
 
-  \caption{Die verschiedenen Sektionen einer \textit{GRIB} Nachricht}
+  \caption{Die aufeinander folgenden Sektionen einer \textit{GRIB} Nachricht}
   \label{tab:grib}
 
 \end{table*}
 
-% Die meisten Wettermodelle
-% Ergebnisse der
+\textit{GRIB} Nachrichten können beliebig oft aneinandergereiht
+werden, was eine individuelle Komposition von beliebigen Nachrichten
+in einer Datei erlaubt. Dies wird in Abschnitt \ref{subsec:download}
+ausgenutzt um nur ausgewählte Nachrichten einer größeren \textit{GRIB}
+Datei zu beziehen.
 
-% und wird von den meisten Wettermodelle zur Speicherung
-% der Ergebnisse verwendet.
-
-% kompakter und wird dazu verwendet Wetterdaten sehr
-% kompakt zu speichern und auszutauschen.
-
-% ist
-% von der Kommision für Basissysteme der Weltorganisation für
-% Meteorologie (\textit{WMO}) \nomenclature{WMO}{World Meteorological
-%   Organization} standardisiert und wird dazu verwendet Wetterdaten
-% kompakt zu speichern.
-
-\subsection{Photos \& Videos}
 \section{Datenbank Design}
 \subsection{Konzeptionelle Schema}
 \subsection{Physisches Schema}
 \section{Extraktion aus den Quellsystemen}
+\subsection{Download der GRIB Dateien}
+\label{subsec:download}
+
 \section{Transformation der Daten}
 \section{Laden der Daten}
 \section{Verbesserungen}

@@ -1,7 +1,16 @@
 
 \chapter{Aufbau und Analyse der ETL Prozesse}
 
-\section{Wettervorhersagen}
+\section{Überblick über die verwendeten Datenquellen}
+
+Eine der Anforderungen an die Web Applikation ist es den Nutzern
+aktuelle Informationen über die Wetter- und die Wellenverhältnisse in
+den nächsten Tagen zu bieten. Hierfür werden die frei erhältlichen
+Ergebnisse von zwei numerischen Wettermodelle verwendet, dem
+\textit{Global Forecast System} und dem \textit{Wave Watch III}
+Modell.
+
+\subsection{Wettervorhersagen}
 
 Wettervorhersagen haben das Ziel den Zustand der Erdatmosphäre zu
 einer bestimmten Zeit an einem bestimmten Ort zu prognostizieren. Sie
@@ -147,15 +156,6 @@ der Deutsche Wetterdienst unter anderem auch Wettervorhersagen mit
 einer Auflösung von 2,8 Kilometern für Deutschlands Anrainerstaaten
 berechnen.
 
-\section{Überblick der verwendeten Datenquellen}
-
-Eine der Anforderungen an die Web Applikation ist es den Nutzern
-aktuelle Informationen über die Wetter- und die Wellenverhältnisse in
-den nächsten Tagen zu bieten. Hierfür werden die frei erhältlichen
-Ergebnisse von zwei numerischen Wettermodelle verwendet, dem
-\textit{Global Forecast System} und dem \textit{Wave Watch III}
-Modell.
-
 \subsection{Global Forecast System}
 
 Das \textit{Global Forecast System} ist ein globales numerisches
@@ -178,7 +178,7 @@ denen hier hauptsächlich die Temperatur, die Gesamtbewölkung und das
 Niederschlagswasser von Bedeutung sind. Da weithin Einverständnis
 darüber herrscht, dass Vorhersagen über 180 Stunden hinaus sehr
 ungenau sind verwenden die hier entwickelten \textit{ETL} Prozessen
-nur die ersten 180 Stunden in der höchsten verfügbaren Auflösung.
+nur die ersten 180 Stunden in der hohen Auflösung.
 
 \subsection{Wave Watch III}
 
@@ -208,12 +208,12 @@ bisher nur die Daten des globalen Modells.
 \subsection{GRIB - Das GRIdded Binary Datenformat}
 
 Die Abkürzung \textit{GRIB} \nomenclature{GRIB}{Gridded Binary} steht
-für \textit{GRIdded Binary} und ist ein weit verbreitetes,
-bitorientiertes Datenformat zur Speicherung und Übertragung von
-Wetterdaten. Das Format wurde von der Kommision für Basissysteme
-(\textit{CBS}) \nomenclature{CBS}{Commission for Basic Systems} der
-Weltorganisation für Meteorologie (\textit{WMO})
-\nomenclature{WMO}{World Meteorological Organization} standardisiert
+für \textit{GRIdded Binary} und ist ein bitorientiertes Datenformat
+zum Speichern und Übertragen von Wetterdaten. Das Format wurde von der
+Kommision für Basissysteme (\textit{CBS})
+\nomenclature{CBS}{Commission for Basic Systems} der Weltorganisation
+für Meteorologie (\textit{WMO}) \nomenclature{WMO}{World
+  Meteorological Organization} standardisiert
 \footnote{\url{http://www.wmo.int/pages/prog/www/WMOCodes/Guides/GRIB/GRIB1-Contents.html}}
 und wird von vielen Wetterorganisationen dazu verwendet die Ergebnisse
 ihrer Modellberechnungen kompakt und plattformunabhängig zu
@@ -230,7 +230,7 @@ Produkts, für eine auf ein Gitternetz diskretisierte geographische
 Region zu einem bestimmten Zeitpunkt. Beispielsweise die Temperaturen
 um 12 Uhr mittags für Europa aus dem \textit{Global Forecast System},
 oder die signifikanten Wellenhöhen des \textit{Wave Watch III} Modells
-um 9 Uhr morgens für die gesamte Erdkugel. 
+um 9 Uhr morgens für die gesamte Erdkugel.
 
 Eine \textit{GRIB} Nachricht besteht wiederum aus mehreren Sektionen,
 die deren Inhalt genauer beschreiben und in Tabelle \ref{tab:grib}
@@ -282,13 +282,138 @@ Daten gespeichert sind.
 \textit{GRIB} Nachrichten können beliebig oft aneinandergereiht
 werden, was eine individuelle Komposition von beliebigen Nachrichten
 in einer Datei erlaubt. Dies wird in Abschnitt \ref{subsec:download}
-ausgenutzt um nur ausgewählte Nachrichten einer größeren \textit{GRIB}
-Datei zu beziehen.
+ausgenutzt um nur ausgewählte Nachrichten aus einer größeren
+\textit{GRIB} Datei zu beziehen. 
+
+\subsubsection{Programme zum Verarbeiten von GRIB Dateien}
+
+Zum Verarbeiten und Lesen von \textit{GRIB} Dateien werden spezielle
+Programme eingesetzt. Werkzeugen für die Kommandozeile, C-Bibliotheken
+und Programmen zur Visualisierung der \textit{GRIB} Daten sind für
+verschiedene Plattformen und Programmiersprachen erhältlich und in
+einer Übersicht bei \textit{Wikipedia}
+\footnote{\url{http://en.wikipedia.org/wiki/GRIB\#Applications}}
+zusammengestellt. Zur Weiterverarbeitung sind insbesondere die
+Kommandozeilenprogramme \texttt{wgrib} und \texttt{degrib} zu
+empfehlen, da sie als typische \textit{UNIX} Filter konzipiert sind
+und in Kombination mit \textit{UNIX} Standardwerkzeugen wie
+z.B. \texttt{cat}, \texttt{curl} oder \texttt{dd} flexibel eingesetzt
+werden können. Das Programm \texttt{degrib} bietet die Möglichkeit
+einen Index für eine \textit{GRIB} Datei zu generieren, mit dessen
+Hilfe ein wahlfreier Zugriff nach geographischen Positionen ermöglicht
+wird und die Zugriffszeiten erheblich beschleunigt.
+
+\subsubsection{Inhaltsverzeichnis von GRIB Dateien}
+
+\begin{verbatim}
+1:0:d=2009081606:HGT:10 mb:12hr fcst:NAve=0
+2:130404:d=2009081606:TMP:10 mb:12hr fcst:NAve=0
+3:211938:d=2009081606:UGRD:10 mb:12hr fcst:NAve=0
+...
+\end{verbatim}
 
 \section{Datenbank Design}
 \subsection{Konzeptionelle Schema}
 \subsection{Physisches Schema}
+
 \section{Extraktion aus den Quellsystemen}
+
+\subsection{Analyse der Quellsysteme}
+
+Sowohl das \textit{Global Forecast System} als auch das \textit{Wave
+  Watch III} Modell werden viermal täglich, jeweils um 0h, 6h, 12h und
+18h koordinierter Weltzeit berechnet. Danach werden die Ergebnisse in
+\textit{GRIB} Dateien auf mehreren, teilweise von Unterorganisationen
+der \textit{National Oceanic and Atmospheric Administration}
+betriebenen Servern veröffentlicht, die verschiedensten Anforderungen
+gerecht werden. Auf einigen Server sind nur die aktuellen Ergebnisse
+verfügbar, andere wiederum dienen zur Archivierung und bieten eine
+Historie über mehrere Jahre hinweg.
+
+Die Ergebnisse der Modellberechnung werden in einem, meist nach Datum
+und Uhrzeit strukturierten Dateisystem hinterlegt, das per
+\textit{FTP} oder \textit{HTTP} exportiert wird. Die Struktur und
+Benennung der Verzeichnisse und Dateien variiert dabei zwischen den
+Servern, ist aber innerhalb eines Servers konsistent und folgt einem
+bestimmten, vorhersehbaren Muster. Die \textit{URI}s der benötigten
+Daten können so für einem bestimmten Server im voraus konstruiert
+werden und deren Existenz mit einem der unterstützten Protokolle
+überprüft werden. Dieses Verfahren kann als Anwendungsbeispiel zur
+Identifizierung von Ressourcen durch vorhersehbare \textit{URI}s
+angesehen werden, und ist einer der in Abschnitt
+\ref{paragraph:identifizierung} beschriebenen Vorschläge der
+\textit{Ressource Oriented Architecture}.
+
+\subsubsection{Datenstruktur des Global Forecast System}
+
+Aktuelle Daten des \textit{Global Forecast System} können in einer
+Auflösung von 0.5x0.5 Grad von den Servern des \textit{National Oceanic
+  And Atmospheric Administration Operational Model Archive and
+  Distribution System (NOMADS)} \nomenclature{NOMADS}{NOAA Operational
+  Model Archive and Distribution System}
+\footnote{\url{http://nomads.ncdc.noaa.gov}} bezogen werden. Unter der
+\textit{URI} \url{http://nomad5.ncep.noaa.gov/pub/gfs_master/} sind
+Verzeichnisse zu finden, die nach dem Muster
+\texttt{gfs\textbf{YYYYMMDD}} benannt sind. Dabei steht \texttt{YYYY}
+für das Jahr, \texttt{MM} für den Monat und \texttt{DD} für den Tag,
+an dem ein Modell berechnet wurde. Beispielsweise waren die
+\textit{GRIB} Dateien aller Modellberechnungen, die am 16. August 2009
+durchgeführt wurden unter der \textit{URI}
+\url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/} aufgelistet.
+\footnote{Der Server \texttt{nomad5.ncep.noaa.gov} verwaltet keine
+  historischen Daten, d.h. wenn dieses Dokument gelesen wird sind
+  höchstwahrscheinlich keine Daten mehr vorhanden.}
+
+In den nach Tagen geordneten Verzeichnissen befinden sich
+\textit{GRIB} Dateien die nach dem Muster
+\texttt{gfs.t\textbf{XX}z.master.grbf\textbf{YY}} benannt sind. Die Zeichen
+\texttt{XX} stehen dabei für den Zeitpunkt der Modellberechnung (00,
+06, 12 oder 18), und die Zeichen \texttt{YY} für die Stunde der
+Vorhersage in der Zukunft (00-180 im 3 Stunden Intervall). Die
+Vorhersagedaten des \textit{GFS} für den 16. August 2009 um 18 Uhr
+abends, die am selben Tag um 6 Uhr morgens berechnet wurden, waren
+somit in der \textit{GRIB} Datei mit der \textit{URI}
+\url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/gfs.t06z.master.grbf12}
+zu finden.
+
+Eine \textit{GRIB} Datei des \textit{Global Forecast System} enthält
+für einen bestimmten Zeitpunkt 63 verschiedene Vorhersageelemente und
+ist zwischen 200 und 215 Megabyte groß. Die Größe aller \textit{GRIB}
+Daten für einen Vorhersagezeitraum von 180 Stunden (und für den
+Berechnungszeitpunkt selbst) mit einem 3-stündigen Intervall beträgt
+somit $(180h / 3h + 1) * 215 Mb = 13115 Mb$. Da aber nur sehr wenige
+Vorhersageelemente der \textit{GRIB} Dateien benötigt werden, wird in
+Abschnitt \ref{subsec:download} ein Verfahren vorgestellt, um nur die
+benötigten Elemente zu übertragen, und somit das Datenvolumen zu
+reduzieren.
+
+\subsubsection{Datenstruktur des Wave Watch III Models}
+
+Die Daten des \textit{Wave Watch III} Modells sind ähnlich
+strukturiert wie die des \textit{Global Forecast System}, und werden
+in einer Auflösung von 1.25x1 Grad ebenfalls auf den \textit{NOMADS}
+Servern veröffentlicht. Die \textit{GRIB} Dateien werden in
+Verzeichnissen hinterlegt, die nach dem Muster
+\texttt{nww3\textbf{YYYYMMDD}} benannt, und unter der \textit{URI}
+\url{http://nomad5.ncep.noaa.gov/pub/waves/nww3} angeordnet sind. Auch
+hier ist das Datum der Modellberechnung im Verzeichnisnamen
+kodiert. Das \textit{Wave Watch III} Modell hat im Vergleich zum
+\textit{Global Forecast System} viel weniger Elemente, weshalb die
+kompletten Daten für eine 180-stündige Vorhersage in einer einzigen
+Datei gespeichert werden. Diese ist nach dem Muster
+\texttt{nww3.t\textbf{XX}z.grib} benannt, wobei \texttt{XX} hier
+ebenfalls für den Zeitpunkt der Modellberechnung (00, 06, 12 oder 18)
+steht. Die Ergebnisse des \textit{Wave Watch III} Modells, das z.B. am
+16. August 2009 um 18 Uhr berechnet wurde, konnten unter der
+\textit{URI}
+\url{http://nomad5.ncep.noaa.gov/pub/waves/nww3/nww320090816/nww3.t18z.grib}
+bezogen werden.
+
+Eine \textit{GRIB} Datei des \textit{Wave Watch III} Models mit 11
+verschiedenen Elementen ist bei einer Auflösung von 1.25x1 Grad ca. 32
+Megabyte groß und enthält Vorhersagedaten für 180 Stunden in die
+Zukunft.
+
 \subsection{Download der GRIB Dateien}
 \label{subsec:download}
 

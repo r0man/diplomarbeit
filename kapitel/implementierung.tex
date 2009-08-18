@@ -104,15 +104,16 @@ vorgegeben:
 \end{itemize}
 
 Mit \textit{ActiveRecord} lassen sich persistente Daten eines Systems
-und deren Beziehungen untereinander schnell und ohne größeren Aufwand
-modellieren. Im Vergleich zu den aus \textit{Java} bekannten
-\textit{Entity Beans} wird der Entwicklungsaufwand hier erheblich
-reduziert. Die verwendeten Konventionen stammen aus den langjährigen
-Erfahrungen vieler Entwickler, treffen auf viele der Anwendunggsfälle
-zu und können als \textit{''Best Practices''} verstanden und
-über\-nommen werden. \textit{ActiveRecord} ist nur eine der von
-\textit{Ruby on Rails} verwendeten Bibliotheken, die gut dokumentiert
-sind, innovative Konzepte bieten, und somit eine einfache und flexible
+und deren Beziehungen untereinander schnell und ohne größeren
+Konfigurationsaufwand modellieren. Im Vergleich zu den aus
+\textit{Java} bekannten \textit{Container Managed Entity Beans} wird
+der Entwicklungsaufwand hier erheblich reduziert. Die verwendeten
+Konventionen stammen aus den langjährigen Erfahrungen vieler
+Entwickler, treffen auf viele der Anwendunggsfälle zu und können als
+\textit{''Best Practices''} verstanden und über\-nommen
+werden. \textit{ActiveRecord} ist nur eine der von \textit{Ruby on
+  Rails} verwendeten Bibliotheken, die gut dokumentiert sind,
+innovative Konzepte bieten, und somit eine einfache und flexible
 Entwicklung ermöglichen.
 
 \subsubsection{Template Systeme}
@@ -320,7 +321,7 @@ Anwendungen vorgibt. Fielding, der auch an der Spezifikation des
 den großen Erfolg des \textit{World Wide Web (WWW)}
 \nomenclature{WWW}{World Wide Web} unter anderem auf dessen
 Architektur und die verwendeten Technologien zurück, die sich in den
-von ihm vorgeschlagenen Regeln widerspiegeln. 
+von ihm vorgeschlagenen Regeln widerspiegeln.
 
 \subsubsection{Resource-Oriented Architecture}
 
@@ -351,6 +352,7 @@ modelliert werden. Einige konkrete Beispiele für eine Ressource sind:
 \end{itemize}
 
 \paragraph{Identifizierung}
+\label{paragraph:identifizierung}
 Ressourcen müssen identifiziert werden können. Im Web werden hierfür
 üblicherweise \textit{Uniform Resource Identifier (URI)}
 \nomenclature{URI}{Uniform Resource Identifier} verwendet. Eine
@@ -360,12 +362,14 @@ bekommen oder diese zu verändern. Die eben als Beispiel erwähnten
 Ressourcen könnten z.B. über die folgenden \textit{URI}s identifiziert
 werden:
 
-\begin{itemize}
-\item http://example.com/software/releases/3.0.12.tar.gz
-\item http://example.com/software/releases/latest.tar.gz
-\item http://example.com/spots/03-Mundaka/description.html
-\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
-\end{itemize}
+{\sf \small
+  \begin{itemize}
+  \item http://example.com/software/releases/3.0.12.tar.gz
+  \item http://example.com/software/releases/latest.tar.gz
+  \item http://example.com/spots/03-Mundaka/description.html
+  \item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
+  \end{itemize}
+}
 
 Wie an den ersten beiden Beispielen zu sehen ist, kann eine Ressource
 zu einem bestimmten Zeitpunkt auch über mehrere \textit{URI}s
@@ -439,7 +443,7 @@ haben, beispielsweise als \textit{HTML-},
 \nomenclature{HTML}{Hypertext Markup Language} \textit{XML-} oder
 \textit{JSON-}Dokument \nomenclature{JSON}{Javascript Object Notation}
 kodiert. Die Darstellungen in unterschiedlichen Sprachen sind
-ebenfalls mögliche Repräsentationen einer Ressource. 
+ebenfalls mögliche Repräsentationen einer Ressource.
 
 In \textit{ROA} wird empfohlen die Information welche Repräsentation
 einer Ressource der Server ausliefern soll, in den \textit{URI} oder
@@ -448,11 +452,13 @@ einzubetten. Mögliche Repräsentationen der Wettervorhersage für
 \textit{Mundaka} am 26. Juli 2009 um 15:00h könnten z.B. als
 ''Dateiendung'' im \textit{URI} kodiert werden:
 
-\begin{itemize}
-\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
-\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.xml
-\item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.json
-\end{itemize}
+{\sf \small
+  \begin{itemize}
+  \item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.html
+  \item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.xml
+  \item http://example.com/spots/03-Mundaka/forecasts/2009-07-26/15h.json
+  \end{itemize}
+}
 
 Durch Differenzierung von Repräsentationen einer Ressource kann ein
 \textit{Web Service} Anwendungen mit verschiedenen Anforderungen
@@ -511,7 +517,7 @@ im \textit{HTTP}-Protokoll definierten \textit{GET}, \textup{POST},
   \textit{PUT} Methode erstellt. Eine den Zustand der Ressource
   widerspigelnde Repräsentation wird hier ebenfalls im
   \textit{HTTP-Body} kodiert.
-  
+
   Mit welcher Methode und \textit{URI} die Anfrage gesendet wird, ist
   abhängig davon ob der Client (\textit{PUT}) oder der Server
   (\textit{POST}) den \textit{URI} der neuen Ressource festlegt. Diese

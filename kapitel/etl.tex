@@ -370,34 +370,68 @@ und Uhrzeit strukturierten Dateisystem hinterlegt, das per
 \textit{FTP} oder \textit{HTTP} exportiert wird. Die Struktur und
 Benennung der Verzeichnisse und Dateien variiert dabei zwischen den
 Servern, ist aber innerhalb eines Servers konsistent und folgt einem
-bestimmten, vorhersehbaren Muster. Die \textit{URI}s der benötigten
-Daten können so für einem bestimmten Server im voraus konstruiert
-werden und deren Existenz mit einem der unterstützten Protokolle
-überprüft werden. Dieses Verfahren kann als Anwendungsbeispiel zur
+vorhersehbaren Muster. Die \textit{URI}s der benötigten Daten können
+so für einem bestimmten Server im voraus konstruiert werden und deren
+Existenz mit einem der unterstützten Protokolle überprüft
+werden. Dieses Verfahren kann als Anwendungsbeispiel zur
 Identifizierung von Ressourcen durch vorhersehbare \textit{URI}s
 angesehen werden, und ist einer der in Abschnitt
 \ref{paragraph:identifizierung} beschriebenen Vorschläge der
 \textit{Ressource Oriented Architecture}.
 
-\subsubsection{Datenstruktur des Global Forecast System}
+\subsubsection{Datenorganisation des Global Forecast System}
 
-Aktuelle Daten des \textit{Global Forecast System} können in einer
-Auflösung von 0.5x0.5 Grad von den Servern des \textit{National Oceanic
+Aktuelle Daten des \textit{Global Forecast System} können in
+verschiedenen Auflösung von den Servern des \textit{National Oceanic
   And Atmospheric Administration Operational Model Archive and
   Distribution System (NOMADS)} \nomenclature{NOMADS}{NOAA Operational
   Model Archive and Distribution System}
-\footnote{\url{http://nomads.ncdc.noaa.gov}} bezogen werden. Unter der
-\textit{URI} \url{http://nomad5.ncep.noaa.gov/pub/gfs_master/} sind
-Verzeichnisse zu finden, die nach dem Muster
-\texttt{gfs\textbf{YYYYMMDD}} benannt sind. Dabei steht \texttt{YYYY}
-für das Jahr, \texttt{MM} für den Monat und \texttt{DD} für den Tag,
-an dem ein Modell berechnet wurde. Beispielsweise waren die
-\textit{GRIB} Dateien aller Modellberechnungen, die am 16. August 2009
-durchgeführt wurden unter der \textit{URI}
-\url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/} aufgelistet.
-\footnote{Der Server \texttt{nomad5.ncep.noaa.gov} verwaltet keine
-  historischen Daten, d.h. wenn dieses Dokument gelesen wird sind
-  höchstwahrscheinlich keine Daten mehr vorhanden.}
+\footnote{\url{http://nomads.ncdc.noaa.gov}} bezogen werden. In
+Tabelle \ref{tab:gfs_auflösungen} sind die Dateigrößen und
+Bezugsquellen der \textit{GRIB} Dateien in den verschiedenen
+Auflösungen dargestellt. Die Dateigröße bezieht sich dabei immer auf
+eine einzelne \textit{GRIB} Datei, die alle Vorhersageelemente des
+\textit{GFS} für einen bestimmten Zeitpunkt in der Zukunft enthält.
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{@{}ccl}
+
+      \toprule
+      \textbf{Auflösung} & \textbf{Dateigrößen} & \textbf{URI der Bezugsquelle} \\
+
+      \midrule
+
+      2$^{\circ}$ x 5$^{\circ}$ & 4 Mb - 4.8 Mb & \url{http://nomad5.ncep.noaa.gov/pub/gfs2p5} \\
+      1$^{\circ}$ x 1$^{\circ}$ & 25 Mb - 29 Mb & \url{http://nomad5.ncep.noaa.gov/pub/gfs} \\
+      0.5$^{\circ}$ x 0.5$^{\circ}$ & 200 Mb - 215 Mb & \url{http://nomad5.ncep.noaa.gov/pub/gfs_master} \\
+
+      \bottomrule
+
+    \end{longtable}
+  }
+
+  \caption{Dateigrößen der verschiedenen Auflösungen des GFS}
+  \label{tab:gfs_auflösungen}
+
+\end{table*}
+
+Die in dieser Arbeit entwickelten \textit{ETL} Prozesse arbeiten alle
+mit den \textit{GRIB} Dateien der höchsten Auflösung
+(0.5$^{\circ}$ x 0.5$^{\circ}$). Unter der \textit{URI}
+\url{http://nomad5.ncep.noaa.gov/pub/gfs_master/} sind Verzeichnisse
+zu finden, die nach dem Muster \texttt{gfs\textbf{YYYYMMDD}} benannt
+sind. Dabei steht \texttt{YYYY} für das Jahr, \texttt{MM} für den
+Monat und \texttt{DD} für den Tag, an dem ein Modell berechnet
+wurde. Beispielsweise waren die \textit{GRIB} Dateien aller
+Modellberechnungen, die am 16. August 2009 durchgeführt wurden unter
+der \textit{URI}
+\url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/}
+aufgelistet.  \footnote{Der Server \texttt{nomad5.ncep.noaa.gov}
+  verwaltet keine historischen Daten, d.h. wenn dieses Dokument
+  gelesen wird sind höchstwahrscheinlich keine Daten mehr vorhanden.}
 
 In den nach Tagen geordneten Verzeichnissen befinden sich
 \textit{GRIB} Dateien die nach dem Muster
@@ -422,13 +456,13 @@ Abschnitt \ref{subsec:download} ein Verfahren vorgestellt, um nur die
 benötigten Elemente zu übertragen, und somit das Datenvolumen zu
 reduzieren.
 
-\subsubsection{Datenstruktur des Wave Watch III Models}
+\subsubsection{Datenorganisation des Wave Watch III Models}
 
 Die Daten des \textit{Wave Watch III} Modells sind ähnlich
 strukturiert wie die des \textit{Global Forecast System}, und werden
-in einer Auflösung von 1.25x1 Grad ebenfalls auf den \textit{NOMADS}
-Servern veröffentlicht. Die \textit{GRIB} Dateien werden in
-Verzeichnissen hinterlegt, die nach dem Muster
+in einer Auflösung von 1.25$^{\circ}$ x 1$^{\circ}$ ebenfalls auf den
+\textit{NOMADS} Servern veröffentlicht. Die \textit{GRIB} Dateien
+werden in Verzeichnissen hinterlegt, die nach dem Muster
 \texttt{nww3\textbf{YYYYMMDD}} benannt, und unter der \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/waves/nww3} angeordnet sind. Auch
 hier ist das Datum der Modellberechnung im Verzeichnisnamen
@@ -445,9 +479,9 @@ steht. Die Ergebnisse des \textit{Wave Watch III} Modells, das z.B. am
 bezogen werden.
 
 Eine \textit{GRIB} Datei des \textit{Wave Watch III} Models mit 11
-verschiedenen Elementen ist bei einer Auflösung von 1.25x1 Grad ca. 32
-Megabyte groß und enthält Vorhersagedaten für 180 Stunden in die
-Zukunft.
+verschiedenen Elementen ist bei einer Auflösung von
+1.25$^{\circ}$ x 1$^{\circ}$ ca. 32 Megabyte groß und enthält
+Vorhersagedaten für 180 Stunden in die Zukunft.
 
 \subsection{Download der GRIB Dateien}
 \label{subsec:download}

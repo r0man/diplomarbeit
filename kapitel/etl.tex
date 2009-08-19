@@ -205,15 +205,19 @@ berechnet, die lokalen Modelle mit einer Maschenweite von bis zu 20
 Kilometern. Die hier entwickelten \textit{ETL} Prozesse verarbeiten
 bisher nur die Daten des globalen Modells.
 
-\subsection{GRIB - Das GRIdded Binary Datenformat}
+\section{Datenbank Design}
+\subsection{Konzeptionelle Schema}
+\subsection{Physisches Schema}
+
+\section{Das GRIdded Binary Datenformat}
 
 Die Abkürzung \textit{GRIB} \nomenclature{GRIB}{Gridded Binary} steht
 für \textit{GRIdded Binary} und ist ein bitorientiertes Datenformat
 zum Speichern und Übertragen von Wetterdaten. Das Format wurde von der
-Kommision für Basissysteme (\textit{CBS})
-\nomenclature{CBS}{Commission for Basic Systems} der Weltorganisation
-für Meteorologie (\textit{WMO}) \nomenclature{WMO}{World
-  Meteorological Organization} standardisiert
+\textit{Kommission für Basissysteme} (\textit{CBS})
+\nomenclature{CBS}{Commission for Basic Systems} der
+\textit{Weltorganisation für Meteorologie} (\textit{WMO})
+\nomenclature{WMO}{World Meteorological Organization} standardisiert
 \footnote{\url{http://www.wmo.int/pages/prog/www/WMOCodes/Guides/GRIB/GRIB1-Contents.html}}
 und wird von vielen Wetterorganisationen dazu verwendet die Ergebnisse
 ihrer Modellberechnungen kompakt und plattformunabhängig zu
@@ -223,14 +227,17 @@ Nummer 0 bezeichnete Version wird als veraltet angesehen und befindet
 sich bei den meisten Wetterorganisationen nicht mehr im operativen
 Einsatz.
 
+\subsection{Struktur von GRIB Dateien}
+
 Eine \textit{GRIB} Datei besteht aus eigenständigen, sich selbst
 beschreibenden Datensätzen, den sogenannten \textit{GRIB}
 Nachrichten. Eine Nachricht enthält dabei alle Daten eines bestimmten
-Produkts, für eine auf ein Gitternetz diskretisierte geographische
-Region zu einem bestimmten Zeitpunkt. Beispielsweise die Temperaturen
-um 12 Uhr mittags für Europa aus dem \textit{Global Forecast System},
-oder die signifikanten Wellenhöhen des \textit{Wave Watch III} Modells
-um 9 Uhr morgens für die gesamte Erdkugel.
+Vorhersageelements, für eine auf ein Gitternetz diskretisierte
+geographische Region zu einem bestimmten Zeitpunkt. Beispielsweise die
+Temperaturen um 12 Uhr mittags für Europa aus dem \textit{Global
+  Forecast System}, oder die signifikanten Wellenhöhen des
+\textit{Wave Watch III} Modells um 9 Uhr morgens für die gesamte
+Erdkugel.
 
 Eine \textit{GRIB} Nachricht besteht wiederum aus mehreren Sektionen,
 die deren Inhalt genauer beschreiben und in Tabelle \ref{tab:grib}
@@ -274,7 +281,7 @@ Daten gespeichert sind.
     \end{longtable}
   }
 
-  \caption{Die aufeinander folgenden Sektionen einer \textit{GRIB} Nachricht}
+  \caption{Die aufeinander folgenden Sektionen einer \textit{GRIB2} Nachricht}
   \label{tab:grib}
 
 \end{table*}
@@ -283,38 +290,66 @@ Daten gespeichert sind.
 werden, was eine individuelle Komposition von beliebigen Nachrichten
 in einer Datei erlaubt. Dies wird in Abschnitt \ref{subsec:download}
 ausgenutzt um nur ausgewählte Nachrichten aus einer größeren
-\textit{GRIB} Datei zu beziehen. 
+\textit{GRIB} Datei zu beziehen.
 
-\subsubsection{Programme zum Verarbeiten von GRIB Dateien}
+\subsection{Programme zum Verarbeiten von GRIB Dateien}
 
 Zum Verarbeiten und Lesen von \textit{GRIB} Dateien werden spezielle
 Programme eingesetzt. Werkzeugen für die Kommandozeile, C-Bibliotheken
 und Programmen zur Visualisierung der \textit{GRIB} Daten sind für
-verschiedene Plattformen und Programmiersprachen erhältlich und in
-einer Übersicht bei \textit{Wikipedia}
-\footnote{\url{http://en.wikipedia.org/wiki/GRIB\#Applications}}
-zusammengestellt. Zur Weiterverarbeitung sind insbesondere die
-Kommandozeilenprogramme \texttt{wgrib} und \texttt{degrib} zu
-empfehlen, da sie als typische \textit{UNIX} Filter konzipiert sind
-und in Kombination mit \textit{UNIX} Standardwerkzeugen wie
-z.B. \texttt{cat}, \texttt{curl} oder \texttt{dd} flexibel eingesetzt
-werden können. Das Programm \texttt{degrib} bietet die Möglichkeit
-einen Index für eine \textit{GRIB} Datei zu generieren, mit dessen
-Hilfe ein wahlfreier Zugriff nach geographischen Positionen ermöglicht
-wird und die Zugriffszeiten erheblich beschleunigt.
+verschiedene Plattformen und Programmiersprachen erhältlich. Eine
+Übersicht gängiger Software ist bei \textit{Wikipedia}
+zusammengestellt.
+\footnote{\url{http://en.wikipedia.org/wiki/GRIB\#Applications}} Zur
+Weiterverarbeitung sind insbesondere die Kommandozeilenprogramme
+\texttt{wgrib} und \texttt{degrib} zu empfehlen, da sie als typische
+\textit{UNIX} Filter konzipiert sind und in Kombination mit
+\textit{UNIX} Standardwerkzeugen wie z.B. \texttt{cat}, \texttt{curl}
+oder \texttt{dd} flexibel eingesetzt werden können. Das Programm
+\texttt{degrib} bietet die Möglichkeit einen Index für eine
+\textit{GRIB} Datei zu generieren, mit dessen Hilfe ein wahlfreier
+Zugriff nach geographischen Positionen ermöglicht wird und die
+Zugriffszeiten erheblich beschleunigt.
 
-\subsubsection{Inhaltsverzeichnis von GRIB Dateien}
+\subsection{Inventar einer GRIB Dateien}
 
-\begin{verbatim}
-1:0:d=2009081606:HGT:10 mb:12hr fcst:NAve=0
-2:130404:d=2009081606:TMP:10 mb:12hr fcst:NAve=0
-3:211938:d=2009081606:UGRD:10 mb:12hr fcst:NAve=0
+Die beiden Kommandozeilenprogramme \texttt{degrib} und \texttt{wgrib}
+können dazu verwendet werden Inventare von \textit{GRIB} Datei zu
+erstellen. Ein Inventar ist eine Art Inhaltsverzeichnis und liefert
+Informationen über die in der Datei enthaltenen Nachrichten. Da
+\textit{GRIB} Dateien oft mehrere Megabyte groß sind, stellen viele
+Wetterorganisationen aus praktischen Gründen zusätzlich die Inventare
+zur Verfügung. Ein Inventar ist zur Verarbeitung einer \textit{GRIB}
+Datei zwar nicht zwingend erforderlich, vereinfacht aber den Umgang,
+da nicht immer die kompletten \textit{GRIB} Dateien übertragen werden
+müssen, sondern nur die sehr viel kleineren Inventare. In Abbildung
+\ref{abbildung:inventar} ist der Ausschnitt eines Inventars von einer
+\textit{GRIB} Datei des \textit{Global Forecast System} zu sehen. Pro
+Nachricht ist in diesem Inventar eine Zeile enthalten, die unter
+anderem Informationen über die Nummer der Nachricht, deren Position in
+Bytes und den Zeitpunkt als auch das Element der Vorhersage, bzw. der
+Analyse liefert.
+
+\begin{figure}[h]
+\begin{Verbatim}[frame=lines,framerule=0.5pt,framesep=3mm]
+1:0:d=2009081812:HGT:10 mb:anl:NAve=0
+2:519924:d=2009081812:TMP:10 mb:anl:NAve=0
+3:812418:d=2009081812:UGRD:10 mb:anl:NAve=0
 ...
-\end{verbatim}
+\end{Verbatim}
+  \caption{Inventar einer \textit{GRIB} Datei des \textit{Global
+      Forecast System} }
+  \label{abbildung:inventar}
+\end{figure}
 
-\section{Datenbank Design}
-\subsection{Konzeptionelle Schema}
-\subsection{Physisches Schema}
+Die zweite Zeile aus Abbildung \ref{abbildung:inventar} gibt zum
+Beispiel Auskunft darüber, dass die Nachricht mit der Nummer 2 in der
+\textit{GRIB} Datei an der Position 519.924 (Byte) zu finden ist, die
+Werte der Nachricht für den 18. August 2009 um 12 Uhr gelten, und das
+Element die Temperatur (TMP) auf einer Höhe von 10 Hektopascal (10 mb)
+darstellt. Zudem handelt es sich bei den Werten nicht um eine
+Vorhersage (fcst), sondern um eine Analyse (anl) für die kein
+durchschnittlicher Wert (NAve=0) vorhanden ist.
 
 \section{Extraktion aus den Quellsystemen}
 

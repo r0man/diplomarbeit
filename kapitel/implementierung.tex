@@ -136,7 +136,7 @@ oder das in die Ruby Standardbibliothek integrierte \textit{Erb}.
 Template System, das beliebige Text Dokumente verarbeiten kann und im
 Moment noch das Standard Template System in Ruby on Rails Anwendungen
 ist. In Auflistung \ref{template_erb} ist ein Rails-typisches Erb
-Template zu sehen, in dem Platzhalter verwendet werden um XHTML
+Template zu sehen, in dem Platzhalter verwendet werden um \textit{XHTML}
 \nomenclature{XHTML}{Extensible Hypertext Markup Language} mit
 dynamischem Inhalt zu generieren. Platzhalter werden in Erb Templates
 durch die speziellen Tags \textit{$<$\%=} und \textit{\%$>$}
@@ -156,11 +156,14 @@ zeitaufwendiges Debugging.
 
 \subsubsection{Haml - Markup Haiku}
 
+\textit{''Haml is 1.3x slower than straight ERB, but once you start
+  writing code in Haml, it’s highly addictive.''}
+
 Eine sehr zu empfehlende und produktivitätssteigernde Alternative zu
 Erb ist \textit{Haml}. Haml steht für \textit{XHTML Abstraction Markup
   Language} und spielt mit seinem Untertitel berechtigterweise auf die
 kürzeste, aus dem japanischen stammende Gedichtsform \textit{Haiku}
-an. Mit Haml lassen sich XHTML Dokumente auf einer sehr viel
+an. Mit Haml lassen sich \textit{XHTML} Dokumente auf einer sehr viel
 kompakterern, lesbareren und somit übersichtlicheren Art und Weise
 beschreiben. In Auflistung \ref{template_haml} ist ein Haml Template
 zu sehen, das äquivalent zum Beispiel aus Auflistung
@@ -169,22 +172,22 @@ zu sehen, das äquivalent zum Beispiel aus Auflistung
 \lstinputlisting[caption={Beispiel eines Haml Templates},
 label=template_haml]{listings/template.haml}
 
-Insbesondere in XHTML Dokumenten, die in Verbindung mit Javascript und
-CSS verwendet werden, lassen sich einige immer wiederkehrende Muster
+Insbesondere in \textit{XHTML} Dokumenten, die in Verbindung mit Javascript und
+\textit{CSS} verwendet werden, lassen sich einige immer wiederkehrende Muster
 identifizieren, die in Haml durch eine kompakterer Syntax ersetzt
 wurden.
 
 Ein weiterer Vorteil von Haml gegenüber Erb ist, dass der Parser das
 zu verarbeitende Template auf syntaktische Korrektheit überprüfen
 kann, mögliche Fehler sofort meldet und damit sicherstellt ist, dass
-immer valides XHTML erzeugt wird.
+immer valides \textit{XHTML} erzeugt wird.
 
-Statt der in XHTML Dokumenten verwendeten und sehr viel Redundanz
+Statt der in \textit{XHTML} Dokumenten verwendeten und sehr viel Redundanz
 erzeugenden Start- und Ende-Tags wird in Haml Dokumenten nur ein Tag
 benötigt. Haml generiert den durch XML \nomenclature{XML}{Extensible
   Markup Language} vorgeschriebenen und zum Start Tag gehörenden Ende
 Tag automatisch. Um Elemente zu verschachteln wird eine Einrückung von
-zwei Leerzeichen verwendet. Die in XHTML Dokumenten häufig in
+zwei Leerzeichen verwendet. Die in \textit{XHTML} Dokumenten häufig in
 Verbindung mit \textit{id} oder \textit{class} Attributen verwendeten
 \textit{$<$div$>$} Elemente wurden in Haml mit einer speziellen Syntax
 versehen. Ein \textit{\#} Zeichen gefolgt von einem String wird wird
@@ -198,20 +201,17 @@ Das eng mit Haml verwandte Template System \textit{Sass} bietet
 ähnlicher Vorteile und kann verwendet werden um \textit{Cascading
   Style Sheets (CSS)} zu generieren. Das Template System definiert
 ebenfalls eine auf syntaktische Korrektheit überprüfbare Sprache und
-generiert als Ausgabeformat CSS. Zudem bietet es die in CSS nicht
-vorhandene Möglichkeit Variablen zu definieren, simple arithmetische
-Operationen auszuführen und einige weitere sehr nützliche
-Funktionalitäten.
+generiert als Ausgabeformat \textit{CSS}. Zudem bietet es die in
+\textit{CSS} nicht vorhandene Möglichkeit Variablen zu definieren,
+simple arithmetische Operationen auszuführen und einige weitere sehr
+nützliche Funktionalitäten.
 
 Die durch Haml und Sass definierten Sprachen sind sehr einfach zu
 erlernen und die Verwendung dieser Systeme hat sich bei der
 Entwicklung der Web Applikation als sehr hilfreich herausgestellt. Die
 übersichtlicheren und kompakteren Templates und deren Überprüfung auf
 Korrektheit überzeugten nach einiger Zeit so sehr, dass vor allem der
-Syntax von CSS leicht in Vergessenheit geriet.
-
-\textit{''Haml is 1.3x slower than straight ERB, but once you start
-  writing code in Haml, it’s highly addictive.''}
+Syntax von \textit{CSS} leicht in Vergessenheit geriet.
 
 \subsection{Datenbank Management System}
 
@@ -238,22 +238,22 @@ Bei den Open Source Datenbank Management Systemen viel die Auswahl auf
 \textit{PostgreSQL, ''the world's most advanced open source
   database''}. Zum einen wurden schon in der dieser Diplomarbeit
 vorausgegangenen Studienarbeit gute und tiefgründige Erfahrungen mit
-diesem DBMS gesammelt, zum anderen wird die Funktionalität von
-PostgreSQL selbst und einiger der zur Verfügung stehenden
+diesem \textit{DBMS} gesammelt, zum anderen wird die Funktionalität von
+\textit{PostgreSQL} selbst und einiger der zur Verfügung stehenden
 Erweiterungen den benötigten Anforderungen gerecht. Einige dieser
 Anforderungen sollen hier beschrieben werden.
 
 \begin{itemize}
 \item Ein sogenannter \textit{Bulk Loader} wird benötigt um größere
-  Datenmengen zu exportieren bzw. zu importieren. PostgreSQL bietet
-  hierfür die \textit{COPY FROM/TO} Befehle, mit denen Dateien in
-  verschiedenen Formaten sehr viel schneller als mit den sonst
+  Datenmengen zu exportieren bzw. zu importieren. \textit{PostgreSQL}
+  bietet hierfür die \textit{COPY FROM/TO} Befehle, mit denen Dateien
+  in verschiedenen Formaten sehr viel schneller als mit den sonst
   üblichen \textit{SELECT}, \textit{INSERT} und \textit{UPDATE}
   Befehlen verarbeitet werden können. Diese Funktionalität wird unter
   anderem für die Vorhersagedaten verarbeitenden ELT Prozesse
   benötigt.
 
-\item Das \textit{PostGIS} Projekt erweitert PostgreSQL mit
+\item Das \textit{PostGIS} Projekt erweitert \textit{PostgreSQL} mit
   geografischen Funktionen und Datentypen, die konform zu der
   \textit{Simple Features Specification for SQL} des \textit{Open
     Geospatial Consortium} sind. Hiermit können geografische Objekte
@@ -475,19 +475,19 @@ Eine einheitliche Schnittstelle zwischen den Komponenten einer
 Fieldings, mit dem Ziel die Komplexität des zu entwerfenden Systems zu
 reduzieren. Das Akronym \textit{CRUD} \nomenclature{CRUD}{Create,
   Read, Update, Delete} steht für die mindestens zu implementierenden
-Operationen einer vollständigen \footnote{im Sinne der Theorie}
-relationalen Datenbank: \textit{Create}, \textit{Read},
-\textit{Update} und \textit{Delete}. Mit diesen Basis Operationen
-können die Objekte einer Datenbank erstellt, gelesen, verändert und
-gelöscht werden. Ausgehend von der Annahme, dass Ressourcen in einer
-bestimmten Repräsentation auch in einer relationalen Datenbank
-gespeichert werden können, bieten sich die \textit{CRUD}-Operationen
-auch beim Design einer einheitlichen Schnittstelle für Ressourcen
-an. In \cite{Richardson07}[S.97-105] wird das \textit{HTTP}-Protokoll
-zur Implementierung der einheitlichen Schnittstelle
-vorgeschlagen. Dabei werden die vier \textit{CRUD}-Operationen auf die
-im \textit{HTTP}-Protokoll definierten \textit{GET}, \textup{POST},
-\textit{PUT} und \textit{DELETE} Methoden abgebildet.
+Operationen einer im Sinne der Theorie vollständigen relationalen
+Datenbank: \textit{Create}, \textit{Read}, \textit{Update} und
+\textit{Delete}. Mit diesen Basis Operationen können die Objekte einer
+Datenbank erstellt, gelesen, verändert und gelöscht werden. Ausgehend
+von der Annahme, dass Ressourcen in einer bestimmten Repräsentation
+auch in einer relationalen Datenbank gespeichert werden können, bieten
+sich die \textit{CRUD}-Operationen auch beim Design einer
+einheitlichen Schnittstelle für Ressourcen an. In
+\cite{Richardson07}[S.97-105] wird das \textit{HTTP}-Protokoll zur
+Implementierung dieser Schnittstelle vorgeschlagen. Dabei werden die
+vier \textit{CRUD}-Operationen auf die im \textit{HTTP}-Protokoll
+definierten \textit{GET}, \textup{POST}, \textit{PUT} und
+\textit{DELETE} Methoden abgebildet.
 
 \begin{itemize}
 \item Die Repräsentationen existierender Ressourcen werden mit der

@@ -483,8 +483,25 @@ verschiedenen Elementen ist bei einer Auflösung von
 1.25$^{\circ}$ x 1$^{\circ}$ ca. 32 Megabyte groß und enthält
 Vorhersagedaten für 180 Stunden in die Zukunft.
 
-\subsection{Download der GRIB Dateien}
+\subsection{Partieller Download der GRIB Dateien}
 \label{subsec:download}
+
+Die eben beschriebenen Vorhersagemodelle bieten sehr viel mehr
+Informationen zum Download an, als von der hier entwickelten
+Anwendungen überhaupt benötigt wird. Vom \textit{Global Forecast
+  System} werden im Moment lediglich 4 der 63 verschiedenen
+Vorhersagelemente, und vom \textit{Wave Watch III} Modell 7 von 11
+Elementen verwendet. Um nicht unnötig Bandbreite zu verschwenden, und
+den Extraktionsprozess zu beschleunigen, wird hier ein Verfahren
+verwendet, das in dem Dokument \textit{Fast Downloading of GRIB Files}
+\footnote{\url{http://www.cpc.noaa.gov/products/wesley/fast_downloading_grib.html}}
+beschrieben ist. Voraussetzung dafür ist, dass der Server das HTTP/1.1
+Protokoll unterstützt, und die Inhaltsverzeichnisse der GRIB Dateien
+zu Verfügung stehen.
+
+Die aus eigenständigen und sich selbst beschreibenden Nachrichten
+bestehenden GRIB Dateien werden bei der Extraktion so transformiert,
+dass 
 
 \section{Transformation der Daten}
 \section{Laden der Daten}

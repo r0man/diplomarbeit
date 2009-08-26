@@ -336,6 +336,7 @@ Analyse liefert.
 2:519924:d=2009081812:TMP:10 mb:anl:NAve=0
 3:812418:d=2009081812:UGRD:10 mb:anl:NAve=0
 ...
+568:211123530:d=2009081812:VWSH:-1500 pv units:anl:NAve=0
 \end{Verbatim}
   \caption{Inventar einer \textit{GRIB} Datei des \textit{Global
       Forecast System} }
@@ -483,7 +484,7 @@ verschiedenen Elementen ist bei einer Auflösung von
 1.25$^{\circ}$ x 1$^{\circ}$ ca. 32 Megabyte groß und enthält
 Vorhersagedaten für 180 Stunden in die Zukunft.
 
-\subsection{Partieller Download der GRIB Dateien}
+\subsection{Download einzelner GRIB Nachrichten}
 \label{subsec:download}
 
 Die eben beschriebenen Vorhersagemodelle bieten sehr viel mehr
@@ -495,13 +496,143 @@ Elementen verwendet. Um nicht unnötig Bandbreite zu verschwenden, und
 den Extraktionsprozess zu beschleunigen, wird hier ein Verfahren
 verwendet, das in dem Dokument \textit{Fast Downloading of GRIB Files}
 \footnote{\url{http://www.cpc.noaa.gov/products/wesley/fast_downloading_grib.html}}
-beschrieben ist. Voraussetzung dafür ist, dass der Server das HTTP/1.1
-Protokoll unterstützt, und die Inhaltsverzeichnisse der GRIB Dateien
-zu Verfügung stehen.
+beschrieben ist. Ziel ist es nur die gewünschten Nachrichten einer
+\textit{GRIB} Datei herunterzuladen. Voraussetzung dafür ist, dass die
+Dateien von einem Server bezogen werden, der das HTTP/1.1 Protokoll
+unterstützt, und die Inhaltsverzeichnisse der Dateien zu Verfügung
+stehen. Das Verfahren besteht aus den folgende drei Schritten.
 
-Die aus eigenständigen und sich selbst beschreibenden Nachrichten
-bestehenden GRIB Dateien werden bei der Extraktion so transformiert,
-dass 
+\begin{enumerate}
+\item Download des Inhaltsverzeichnisses der entsprechenden Datei
+\item Berechnung der Start- und Endpositionen aller relevanten Nachrichten
+\item Download der entsprechenden Nachricht (\textit{HTTP Range Header})
+\end{enumerate}
+
+Im ersten Schritt wird das Inhaltsverzeichnis der entsprechenden
+\textit{GRIB} Datei heruntergeladen. Die Inhaltsverzeichnisse auf den
+\textit{NOMADS} Servern sind mit dem \textit{wgrib} Programm erstellt,
+und deren \textit{URI} lässt sich durch das Anhängen der Endung
+''.inv'', an die \textit{URI} der \textit{GRIB} Datei konstruieren.
+
+Anschließend wird im zweiten Schritt in Zweierpaaren über die Zeilen
+des Inhaltsverzeichnisses iteriert. Dabei wird die Startposition jeder
+Nachricht extrahiert, und die dazugehörige Endposition berechnet. Die
+Startposition steht dabei an zweiter Stelle jeder Zeile, und die
+Endposition berechnet sich aus der Startposition der nächsten
+Nachricht, von der ein Byte subtrahiert wird. Ein Sonderfall ist die
+letzte Nachricht des Inhaltsverzeichnisses. Für diese Nachricht kann
+die Endposition nicht berechnet werden, da keine Information über die
+gesamte Länge der \textit{GRIB} im Inhaltsverzeichnis vorhanden
+ist. Tabelle \ref{tab:inhaltsverzeichnis_mit_positionen} zeigt das
+Resultat dieser Berechnung, angewendet auf das Inhaltsverzeichnis aus
+Abbildung \ref{abbildung:inventar}.
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{@{}ccccc}
+      \toprule
+      \textbf{Nachricht} & \textbf{Startposition} & \textbf{Endposition} & \textbf{Referenzzeit} & \textbf{Element} \\
+      \midrule
+      1 & 0 & 519.923 & 2009-08-18 12:00 & HGT \\
+      2 & 519.924 & 812.417 & 2009-08-18 12:00 & TMP \\
+      3 & 812.418 & ... & 2009-08-18 12:00 & UGRD \\
+      ... & ... & ... & ... & ... \\
+      568 & 211.123.530 & - & 2009-08-18 12:00 & HGT \\
+      \bottomrule
+    \end{longtable}
+  }
+
+  \caption{Berechnete Positionen aus einem Inhaltsverzeichnis}
+  \label{tab:inhaltsverzeichnis_mit_positionen}
+
+\end{table*}
+
+Im dritten Schritt werden schließlich nur die ausgewählten Nachrichten
+unter Verwendung des \textit{HTTP/1.1} Protokolls
+heruntergeladen. Dabei wird pro Nachricht eine Anfrage an den Server
+gesendet, in der die Start- und Endposition im \textit{Range} Feld des
+\textit{HTTP} Headers eingetragen wird. Um beispielsweise nur die
+zweite Nachricht aus Tabelle
+\ref{tab:inhaltsverzeichnis_mit_positionen} herunterzuladen, wird das
+\textit{Range} Feld auf ''bytes=519924-812417'' gesetzt. Der im
+zweiten Schritt erwähnte Sonderfall, bei dem die Endposition für die
+letzte Nachricht nicht bekannt ist, wird dadurch abgedeckt, dass die
+Endposition im \textit{Range} Header einfach weggelassen wird. Dies
+ist trotz der fehlenden Endposition eine gültige \textit{Range} Angabe
+und veranlasst den Server dazu den Rest der Datei ab der gegebenen
+Startposition zu senden.
+
+\subsection{Beschreibung des Downloadvorgangs}
+
+Beim Download der \textit{GRIB} Dateien von den \textit{NOMADS}
+Servern werden zwei verschiedene Strategien angewendet. Dies ist auf
+die unterschiedliche Datenorganisation der beiden Vorhersagemodelle
+auf der Serverseite zurückzuführen. Ziel des Downloadvorgangs ist es
+alle relevanten \textit{GRIB} Nachrichten beider Modelle in einer
+einheitlichen Struktur im lokalen Dateisystem zu hinterlegen. Pro
+Element wird eine Datei erstellt die alle Nachrichten des
+entsprechenden Elements für die verschiedenen Zeitpunkte enthält.
+
+Das \textit{Wave Watch III} Modell wird auf Serverseite in einer
+einzigen \textit{GRIB} Datei veröffentlicht. Der Extraktionsprozess
+für dieses Modell lädt das Inhaltsverzeichnis dieser Datei, extrahiert
+die Start- und Endpositionen der gewünschten Elemente und sendet pro
+Element eine \textit{HTTP} Anfrage mit dem entsprechenden
+\textit{Range} Header.
+
+\subsection{Messung der Downloadzeiten}
+
+Um eine Aussage über die Performanz des Extraktionsprozesses machen zu
+können, wurde eine Messung der Downloadzeiten über einen Zeitraum von
+einer Woche vorgenommen und deren Ergebnisse analysiert.
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{@{}ccccc}
+      \toprule
+      \textbf{Element} & \textbf{Größe (Element)} & \textbf{Downloadzeit}  \\
+      \midrule
+      HTSGW & 2.5 MB & 27.12 s \\
+      PERPW & 2.7 MB & 30.12 s \\
+      DIRPW & 3.5 MB & 35.90 s \\
+      WVPER & 2.5 MB & 25.79 s \\
+      WVDIR & 3.5 MB & 35.83 s \\
+      WIND  & 2.9 MB & 34.36 s \\
+      WDIR  & 3.8 MB & 38.99 s \\      
+      \midrule
+    Gesamt: & 21.4 MB & 3.80 m \\
+      \bottomrule
+    \end{longtable}
+  }
+  \caption{Messung der Downloadzeiten des \textit{Wave Watch III} Modells}
+  \label{tab:download_messung_ww3}
+\end{table*}
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{@{}ccccc}
+      \toprule
+      \textbf{Element} & \textbf{Größe (Nachricht)} & \textbf{Zeit (Nachricht)} & \textbf{Größe (Element)} & \textbf{Zeit (Element)} \\
+      \midrule
+      TMP   & 317.4 KB & 4.17 s & 18.90 MB & 4.24 m \\
+      TCDC  & 222.2 KB & 2.62 s & 13.23 MB & 2.66 m \\
+      PWAT  & 317.4 KB & 3.63 s & 18.90 MB & 3.69 m \\
+      WEASD & 285.6 KB & 3.27 s & 17.01 MB & 3.33 m \\
+      \midrule
+    Gesamt: & 1.12 MB  & 13.69 s & 68.04 MB & 13.92 m \\
+      \bottomrule
+    \end{longtable}
+  }
+  \caption{Messung der Downloadzeiten des \textit{Global Forecast System}}
+  \label{tab:download_messung_ww3}
+\end{table*}
+
 
 \section{Transformation der Daten}
 \section{Laden der Daten}

@@ -211,7 +211,7 @@ bisher nur die Daten des globalen Modells.
 
 \section{Das GRIdded Binary Datenformat}
 
-Die Abkürzung \textit{GRIB} \nomenclature{GRIB}{Gridded Binary} steht
+Die Abkürzung \textit{Grib} \nomenclature{GRIB}{Gridded Binary} steht
 für \textit{GRIdded Binary} und ist ein bitorientiertes Datenformat
 zum Speichern und Übertragen von Wetterdaten. Das Format wurde von der
 \textit{Kommission für Basissysteme} (\textit{CBS})
@@ -227,10 +227,10 @@ Nummer 0 bezeichnete Version wird als veraltet angesehen und befindet
 sich bei den meisten Wetterorganisationen nicht mehr im operativen
 Einsatz.
 
-\subsection{Struktur von GRIB Dateien}
+\subsection{Struktur von Grib Dateien}
 
-Eine \textit{GRIB} Datei besteht aus eigenständigen, sich selbst
-beschreibenden Datensätzen, den sogenannten \textit{GRIB}
+Eine \textit{Grib} Datei besteht aus eigenständigen, sich selbst
+beschreibenden Datensätzen, den sogenannten \textit{Grib}
 Nachrichten. Eine Nachricht enthält dabei alle Daten eines bestimmten
 Vorhersageelements, für eine auf ein Gitternetz diskretisierte
 geographische Region zu einem bestimmten Zeitpunkt. Beispielsweise die
@@ -239,7 +239,7 @@ Temperaturen um 12 Uhr mittags für Europa aus dem \textit{Global
 \textit{Wave Watch III} Modells um 9 Uhr morgens für die gesamte
 Erdkugel.
 
-Eine \textit{GRIB} Nachricht besteht wiederum aus mehreren Sektionen,
+Eine \textit{Grib} Nachricht besteht wiederum aus mehreren Sektionen,
 die deren Inhalt genauer beschreiben und in Tabelle \ref{tab:grib}
 aufgelistet sind. Die Sektionen enthalten neben den eigentlichen Daten
 u.a. Informationen über die Dimension und Auflösung des verwendeten
@@ -281,22 +281,22 @@ Daten gespeichert sind.
     \end{longtable}
   }
 
-  \caption{Die aufeinander folgenden Sektionen einer \textit{GRIB2} Nachricht}
+  \caption{Die aufeinander folgenden Sektionen einer \textit{Grib2} Nachricht}
   \label{tab:grib}
 
 \end{table*}
 
-\textit{GRIB} Nachrichten können beliebig oft aneinandergereiht
+\textit{Grib} Nachrichten können beliebig oft aneinandergereiht
 werden, was eine individuelle Komposition von beliebigen Nachrichten
 in einer Datei erlaubt. Dies wird in Abschnitt \ref{subsec:download}
 ausgenutzt um nur ausgewählte Nachrichten aus einer größeren
-\textit{GRIB} Datei zu beziehen.
+\textit{Grib} Datei zu beziehen.
 
-\subsection{Programme zum Verarbeiten von GRIB Dateien}
+\subsection{Programme zum Verarbeiten von Grib Dateien}
 
-Zum Verarbeiten und Lesen von \textit{GRIB} Dateien werden spezielle
+Zum Verarbeiten und Lesen von \textit{Grib} Dateien werden spezielle
 Programme eingesetzt. Werkzeugen für die Kommandozeile, C-Bibliotheken
-und Programmen zur Visualisierung der \textit{GRIB} Daten sind für
+und Programmen zur Visualisierung der \textit{Grib} Daten sind für
 verschiedene Plattformen und Programmiersprachen erhältlich. Eine
 Übersicht gängiger Software ist bei \textit{Wikipedia}
 zusammengestellt.
@@ -307,45 +307,45 @@ Weiterverarbeitung sind insbesondere die Kommandozeilenprogramme
 \textit{UNIX} Standardwerkzeugen wie z.B. \texttt{cat}, \texttt{curl}
 oder \texttt{dd} flexibel eingesetzt werden können. Das Programm
 \texttt{degrib} bietet die Möglichkeit einen Index für eine
-\textit{GRIB} Datei zu generieren, mit dessen Hilfe ein wahlfreier
+\textit{Grib} Datei zu generieren, mit dessen Hilfe ein wahlfreier
 Zugriff nach geographischen Positionen ermöglicht wird und die
 Zugriffszeiten erheblich beschleunigt.
 
-\subsection{Inventar einer GRIB Dateien}
+\subsection{Inventar einer Grib Dateien}
 
 Die beiden Kommandozeilenprogramme \texttt{degrib} und \texttt{wgrib}
-können dazu verwendet werden Inventare von \textit{GRIB} Datei zu
+können dazu verwendet werden Inventare von \textit{Grib} Datei zu
 erstellen. Ein Inventar ist eine Art Inhaltsverzeichnis und liefert
 Informationen über die in der Datei enthaltenen Nachrichten. Da
-\textit{GRIB} Dateien oft mehrere Megabyte groß sind, stellen viele
+\textit{Grib} Dateien oft mehrere Megabyte groß sind, stellen viele
 Wetterorganisationen aus praktischen Gründen zusätzlich die Inventare
-zur Verfügung. Ein Inventar ist zur Verarbeitung einer \textit{GRIB}
+zur Verfügung. Ein Inventar ist zur Verarbeitung einer \textit{Grib}
 Datei zwar nicht zwingend erforderlich, vereinfacht aber den Umgang,
-da nicht immer die kompletten \textit{GRIB} Dateien übertragen werden
+da nicht immer die kompletten \textit{Grib} Dateien übertragen werden
 müssen, sondern nur die sehr viel kleineren Inventare. In Abbildung
 \ref{abbildung:inventar} ist der Ausschnitt eines Inventars von einer
-\textit{GRIB} Datei des \textit{Global Forecast System} zu sehen. Pro
+\textit{Grib} Datei des \textit{Global Forecast System} zu sehen. Pro
 Nachricht ist in diesem Inventar eine Zeile enthalten, die unter
 anderem Informationen über die Nummer der Nachricht, deren Position in
 Bytes und den Zeitpunkt als auch das Element der Vorhersage, bzw. der
 Analyse liefert.
 
 \begin{figure}[h]
-\begin{Verbatim}[frame=lines,framerule=0.5pt,framesep=3mm]
-1:0:d=2009081812:HGT:10 mb:anl:NAve=0
-2:519924:d=2009081812:TMP:10 mb:anl:NAve=0
-3:812418:d=2009081812:UGRD:10 mb:anl:NAve=0
-...
-568:211123530:d=2009081812:VWSH:-1500 pv units:anl:NAve=0
-\end{Verbatim}
-  \caption{Inventar einer \textit{GRIB} Datei des \textit{Global
+  \begin{Verbatim}[frame=lines,framerule=0.5pt,framesep=3mm]
+    1:0:d=2009081812:HGT:10 mb:anl:NAve=0
+    2:519924:d=2009081812:TMP:10 mb:anl:NAve=0
+    3:812418:d=2009081812:UGRD:10 mb:anl:NAve=0
+    ...
+    568:211123530:d=2009081812:VWSH:-1500 pv units:anl:NAve=0
+  \end{Verbatim}
+  \caption{Inventar einer \textit{Grib} Datei des \textit{Global
       Forecast System} }
   \label{abbildung:inventar}
 \end{figure}
 
 Die zweite Zeile aus Abbildung \ref{abbildung:inventar} gibt zum
 Beispiel Auskunft darüber, dass die Nachricht mit der Nummer 2 in der
-\textit{GRIB} Datei an der Position 519.924 (Byte) zu finden ist, die
+\textit{Grib} Datei an der Position 519.924 (Byte) zu finden ist, die
 Werte der Nachricht für den 18. August 2009 um 12 Uhr gelten, und das
 Element die Temperatur (TMP) auf einer Höhe von 10 Hektopascal (10 mb)
 darstellt. Zudem handelt es sich bei den Werten nicht um eine
@@ -359,7 +359,7 @@ durchschnittlicher Wert (NAve=0) vorhanden ist.
 Sowohl das \textit{Global Forecast System} als auch das \textit{Wave
   Watch III} Modell werden viermal täglich, jeweils um 0h, 6h, 12h und
 18h koordinierter Weltzeit berechnet. Danach werden die Ergebnisse in
-\textit{GRIB} Dateien auf mehreren, teilweise von Unterorganisationen
+\textit{Grib} Dateien auf mehreren, teilweise von Unterorganisationen
 der \textit{National Oceanic and Atmospheric Administration}
 betriebenen Servern veröffentlicht, die verschiedensten Anforderungen
 gerecht werden. Auf einigen Server sind nur die aktuellen Ergebnisse
@@ -389,9 +389,9 @@ verschiedenen Auflösung von den Servern des \textit{National Oceanic
   Model Archive and Distribution System}
 \footnote{\url{http://nomads.ncdc.noaa.gov}} bezogen werden. In
 Tabelle \ref{tab:gfs_auflösungen} sind die Dateigrößen und
-Bezugsquellen der \textit{GRIB} Dateien in den verschiedenen
+Bezugsquellen der \textit{Grib} Dateien in den verschiedenen
 Auflösungen dargestellt. Die Dateigröße bezieht sich dabei immer auf
-eine einzelne \textit{GRIB} Datei, die alle Vorhersageelemente des
+eine einzelne \textit{Grib} Datei, die alle Vorhersageelemente des
 \textit{GFS} für einen bestimmten Zeitpunkt in der Zukunft enthält.
 
 \begin{table*}[h]
@@ -420,13 +420,13 @@ eine einzelne \textit{GRIB} Datei, die alle Vorhersageelemente des
 \end{table*}
 
 Die in dieser Arbeit entwickelten \textit{ETL} Prozesse arbeiten alle
-mit den \textit{GRIB} Dateien der höchsten Auflösung
+mit den \textit{Grib} Dateien der höchsten Auflösung
 (0.5$^{\circ}$ x 0.5$^{\circ}$). Unter der \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/gfs_master/} sind Verzeichnisse
 zu finden, die nach dem Muster \texttt{gfs\textbf{YYYYMMDD}} benannt
 sind. Dabei steht \texttt{YYYY} für das Jahr, \texttt{MM} für den
 Monat und \texttt{DD} für den Tag, an dem ein Modell berechnet
-wurde. Beispielsweise waren die \textit{GRIB} Dateien aller
+wurde. Beispielsweise waren die \textit{Grib} Dateien aller
 Modellberechnungen, die am 16. August 2009 durchgeführt wurden unter
 der \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/}
@@ -435,24 +435,24 @@ aufgelistet.  \footnote{Der Server \texttt{nomad5.ncep.noaa.gov}
   gelesen wird sind höchstwahrscheinlich keine Daten mehr vorhanden.}
 
 In den nach Tagen geordneten Verzeichnissen befinden sich
-\textit{GRIB} Dateien die nach dem Muster
+\textit{Grib} Dateien die nach dem Muster
 \texttt{gfs.t\textbf{XX}z.master.grbf\textbf{YY}} benannt sind. Die Zeichen
 \texttt{XX} stehen dabei für den Zeitpunkt der Modellberechnung (00,
 06, 12 oder 18), und die Zeichen \texttt{YY} für die Stunde der
 Vorhersage in der Zukunft (00-180 im 3 Stunden Intervall). Die
 Vorhersagedaten des \textit{GFS} für den 16. August 2009 um 18 Uhr
 abends, die am selben Tag um 6 Uhr morgens berechnet wurden, waren
-somit in der \textit{GRIB} Datei mit der \textit{URI}
+somit in der \textit{Grib} Datei mit der \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/gfs.t06z.master.grbf12}
 zu finden.
 
-Eine \textit{GRIB} Datei des \textit{Global Forecast System} enthält
+Eine \textit{Grib} Datei des \textit{Global Forecast System} enthält
 für einen bestimmten Zeitpunkt 63 verschiedene Vorhersageelemente und
-ist zwischen 200 und 215 Megabyte groß. Die Größe aller \textit{GRIB}
+ist zwischen 200 und 215 Megabyte groß. Die Größe aller \textit{Grib}
 Daten für einen Vorhersagezeitraum von 180 Stunden (und für den
 Berechnungszeitpunkt selbst) mit einem 3-stündigen Intervall beträgt
 somit $(180h / 3h + 1) * 215 Mb = 13115 Mb$. Da aber nur sehr wenige
-Vorhersageelemente der \textit{GRIB} Dateien benötigt werden, wird in
+Vorhersageelemente der \textit{Grib} Dateien benötigt werden, wird in
 Abschnitt \ref{subsec:download} ein Verfahren vorgestellt, um nur die
 benötigten Elemente zu übertragen, und somit das Datenvolumen zu
 reduzieren.
@@ -462,7 +462,7 @@ reduzieren.
 Die Daten des \textit{Wave Watch III} Modells sind ähnlich
 strukturiert wie die des \textit{Global Forecast System}, und werden
 in einer Auflösung von 1.25$^{\circ}$ x 1$^{\circ}$ ebenfalls auf den
-\textit{NOMADS} Servern veröffentlicht. Die \textit{GRIB} Dateien
+\textit{NOMADS} Servern veröffentlicht. Die \textit{Grib} Dateien
 werden in Verzeichnissen hinterlegt, die nach dem Muster
 \texttt{nww3\textbf{YYYYMMDD}} benannt, und unter der \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/waves/nww3} angeordnet sind. Auch
@@ -479,12 +479,12 @@ steht. Die Ergebnisse des \textit{Wave Watch III} Modells, das z.B. am
 \url{http://nomad5.ncep.noaa.gov/pub/waves/nww3/nww320090816/nww3.t18z.grib}
 bezogen werden.
 
-Eine \textit{GRIB} Datei des \textit{Wave Watch III} Models mit 11
+Eine \textit{Grib} Datei des \textit{Wave Watch III} Models mit 11
 verschiedenen Elementen ist bei einer Auflösung von
 1.25$^{\circ}$ x 1$^{\circ}$ ca. 32 Megabyte groß und enthält
 Vorhersagedaten für 180 Stunden in die Zukunft.
 
-\subsection{Download einzelner GRIB Nachrichten}
+\subsection{Download einzelner Grib Nachrichten}
 \label{subsec:download}
 
 Die eben beschriebenen Vorhersagemodelle bieten sehr viel mehr
@@ -494,10 +494,10 @@ Anwendungen überhaupt benötigt wird. Vom \textit{Global Forecast
 Vorhersagelemente, und vom \textit{Wave Watch III} Modell 7 von 11
 Elementen verwendet. Um nicht unnötig Bandbreite zu verschwenden, und
 den Extraktionsprozess zu beschleunigen, wird hier ein Verfahren
-verwendet, das in dem Dokument \textit{Fast Downloading of GRIB Files}
+verwendet, das in dem Dokument \textit{Fast Downloading of Grib Files}
 \footnote{\url{http://www.cpc.noaa.gov/products/wesley/fast_downloading_grib.html}}
 beschrieben ist. Ziel ist es nur die gewünschten Nachrichten einer
-\textit{GRIB} Datei herunterzuladen. Voraussetzung dafür ist, dass die
+\textit{Grib} Datei herunterzuladen. Voraussetzung dafür ist, dass die
 Dateien von einem Server bezogen werden, der das HTTP/1.1 Protokoll
 unterstützt, und die Inhaltsverzeichnisse der Dateien zu Verfügung
 stehen. Das Verfahren besteht aus den folgende drei Schritten.
@@ -509,10 +509,10 @@ stehen. Das Verfahren besteht aus den folgende drei Schritten.
 \end{enumerate}
 
 Im ersten Schritt wird das Inhaltsverzeichnis der entsprechenden
-\textit{GRIB} Datei heruntergeladen. Die Inhaltsverzeichnisse auf den
+\textit{Grib} Datei heruntergeladen. Die Inhaltsverzeichnisse auf den
 \textit{NOMADS} Servern sind mit dem \textit{wgrib} Programm erstellt,
 und deren \textit{URI} lässt sich durch das Anhängen der Endung
-''.inv'', an die \textit{URI} der \textit{GRIB} Datei konstruieren.
+''.inv'', an die \textit{URI} der \textit{Grib} Datei konstruieren.
 
 Anschließend wird im zweiten Schritt in Zweierpaaren über die Zeilen
 des Inhaltsverzeichnisses iteriert. Dabei wird die Startposition jeder
@@ -522,7 +522,7 @@ Endposition berechnet sich aus der Startposition der nächsten
 Nachricht, von der ein Byte subtrahiert wird. Ein Sonderfall ist die
 letzte Nachricht des Inhaltsverzeichnisses. Für diese Nachricht kann
 die Endposition nicht berechnet werden, da keine Information über die
-gesamte Länge der \textit{GRIB} im Inhaltsverzeichnis vorhanden
+gesamte Länge der \textit{Grib} im Inhaltsverzeichnis vorhanden
 ist. Tabelle \ref{tab:inhaltsverzeichnis_mit_positionen} zeigt das
 Resultat dieser Berechnung, angewendet auf das Inhaltsverzeichnis aus
 Abbildung \ref{abbildung:inventar}.
@@ -566,21 +566,52 @@ Startposition zu senden.
 
 \subsection{Beschreibung des Downloadvorgangs}
 
-Beim Download der \textit{GRIB} Dateien von den \textit{NOMADS}
+Beim Download der \textit{Grib} Dateien von den \textit{NOMADS}
 Servern werden zwei verschiedene Strategien angewendet. Dies ist auf
 die unterschiedliche Datenorganisation der beiden Vorhersagemodelle
 auf der Serverseite zurückzuführen. Ziel des Downloadvorgangs ist es
-alle relevanten \textit{GRIB} Nachrichten beider Modelle in einer
+alle relevanten \textit{Grib} Nachrichten beider Modelle in einer
 einheitlichen Struktur im lokalen Dateisystem zu hinterlegen. Pro
-Element wird eine Datei erstellt die alle Nachrichten des
+Element wird dabei eine Datei erstellt die alle Nachrichten des
 entsprechenden Elements für die verschiedenen Zeitpunkte enthält.
 
-Das \textit{Wave Watch III} Modell wird auf Serverseite in einer
-einzigen \textit{GRIB} Datei veröffentlicht. Der Extraktionsprozess
-für dieses Modell lädt das Inhaltsverzeichnis dieser Datei, extrahiert
-die Start- und Endpositionen der gewünschten Elemente und sendet pro
-Element eine \textit{HTTP} Anfrage mit dem entsprechenden
-\textit{Range} Header.
+\subsubsection{Downloadstrategie für das Wave Watch III Model}
+
+Die Daten des \textit{Wave Watch III} Modells werden auf Serverseite
+in einer einzigen \textit{Grib} Datei gespeichert. Der
+Extraktionsprozess für dieses Modell lädt zunächst das
+Inhaltsverzeichnis dieser Datei, extrahiert die Start- und
+Endpositionen der gewünschten Elemente, und sendet dann pro Element
+eine \textit{HTTP-Range} Anfrage an den Server. Insgesamt werden dabei
+8 Anfragen an den Server gesendet, eine für das Inhaltsverzeichnis und
+7 für die \textit{Grib} Nachrichten der entsprechenden Elemente.
+
+\subsubsection{Downloadstrategie für das Global Forecast System}
+
+Der Downloadvorgang für die Elemente des \textit{Global Forecast
+  System} erfordert wesentlich mehr Anfragen, da die Daten auf
+Serverseite in mehreren Dateien gespeichert sind. Für jeden Zeitpunkt
+der Vorhersage existiert auf dem Server eine Datei, in der die Daten
+aller Modellelemente für den entsprechenden Zeitpunkt enthalten
+sind. Dies sind bei einem Vorhersagezeitraum von 180 Stunden im
+3-stündigen Intervall 61 Dateien, $180h / 3h = 60$ für den
+Vorhersagezeitraum, und eine weitere für den Zeitpunkt der Analyse. Um
+alle \textit{Grib} Nachrichten für ein ausgewähltes Element
+herunterzuladen, müssen zunächst die Inhaltsverzeichnisse der
+\textit{Grib} Dateien angefordert werden, damit die Start- und
+Endpositionen des Elements berechnet werden können. Anschließend
+können die eigentlichen Daten des Elements mit \textit{Http-Range}
+Anfragen aus den 61 \textit{Grib} Dateien heruntergeladen werden. Die
+einzelnen \textit{Grib} Nachrichten aus den Dateien werden dann pro
+Element in einer Datei zusammengefasst. Dies kann Dank des
+selbstbeschreibendem Format der einzelnen \textit{Grib} Nachrichten
+mit Standard Unix Kommandos bewerkstelligt werden, beispielsweise mit
+\textit{cat TMP.00h.grib TMP.03h.grib ... TMP.180h.grib >
+  TMP.0h-180h.grib}. Insgesamt sind $ 61 * (N+1) $ Anfragen nötig, 61
+für die Inhaltsverzeichnisse, und pro Element weitere \textit{61}
+Anfragen für die einzelnen Grib Nachrichten. Der Extraktionsprozess
+für das \textit{Global Forecast System} sendet somit für die zurzeit 4
+verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen.
 
 \subsection{Messung der Downloadzeiten}
 
@@ -602,9 +633,9 @@ einer Woche vorgenommen und deren Ergebnisse analysiert.
       WVPER & 2.5 MB & 25.79 s \\
       WVDIR & 3.5 MB & 35.83 s \\
       WIND  & 2.9 MB & 34.36 s \\
-      WDIR  & 3.8 MB & 38.99 s \\      
+      WDIR  & 3.8 MB & 38.99 s \\
       \midrule
-    Gesamt: & 21.4 MB & 3.80 m \\
+      Gesamt: & 21.4 MB & 3.80 m \\
       \bottomrule
     \end{longtable}
   }
@@ -625,7 +656,7 @@ einer Woche vorgenommen und deren Ergebnisse analysiert.
       PWAT  & 317.4 KB & 3.63 s & 18.90 MB & 3.69 m \\
       WEASD & 285.6 KB & 3.27 s & 17.01 MB & 3.33 m \\
       \midrule
-    Gesamt: & 1.12 MB  & 13.69 s & 68.04 MB & 13.92 m \\
+      Gesamt: & 1.12 MB  & 13.69 s & 68.04 MB & 13.92 m \\
       \bottomrule
     \end{longtable}
   }

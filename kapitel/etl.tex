@@ -209,7 +209,7 @@ bisher nur die Daten des globalen Modells.
 \subsection{Konzeptionelle Schema}
 \subsection{Physisches Schema}
 
-\section{Das GRIdded Binary Datenformat}
+\section{Das Gridded Binary Datenformat}
 
 Die Abkürzung \textit{Grib} \nomenclature{GRIB}{Gridded Binary} steht
 für \textit{GRIdded Binary} und ist ein bitorientiertes Datenformat
@@ -360,12 +360,12 @@ die benötigten Daten des \textit{Wave Watch III} Models und des
 einheitlichen Struktur für die Weiterverarbeitung im lokalen
 Dateisystem zu hinterlegen. Da insbesondere das Datenvolumen des
 \textit{Global Forecast System} in seiner höchsten Auflösung sehr
-umfangreich ist (ca. 13 GB), wird hier ein Verfahren angewendet, um
-nur die benötigten Daten beider Modelle zu beziehen. Im diesem
-Abschnitt wird zuerst die Struktur des Quellsystems analysiert, dann
-das erwähnte Verfahren zum Download der reduzierten Daten vorgestellt,
-und anschließend eine Aussage über die Performanz der
-Extraktionsprozesse getroffen.
+umfangreich ist (ca. 13 GB), wird ein Verfahren angewendet, um nur
+ausgewählte Daten beider Modelle zu beziehen. In diesem Abschnitt wird
+zuerst die Struktur des Quellsystems analysiert, dann das erwähnte
+Verfahren zum Download der reduzierten Daten vorgestellt, und
+anschließend eine Aussage über die Performanz der Extraktionsprozesse
+getroffen.
 
 \subsection{Analyse der Quellsystems}
 
@@ -471,7 +471,6 @@ benötigten Elemente zu übertragen, und somit das Datenvolumen zu
 reduzieren.
 
 \subsubsection{Datenorganisation des Wave Watch III Models}
-
 Die Daten des \textit{Wave Watch III} Modells sind ähnlich
 strukturiert wie die des \textit{Global Forecast System}, und werden
 in einer Auflösung von 1.25$^{\circ}$ x 1$^{\circ}$ ebenfalls auf den
@@ -577,57 +576,56 @@ ist trotz der fehlenden Endposition eine gültige \textit{Range} Angabe
 und veranlasst den Server dazu den Rest der Datei ab der gegebenen
 Startposition zu senden.
 
-\subsection{Analyse der Extraktionsprozesse}
+\subsection{Beschreibung der Extraktionsprozesse}
 
-Bei der Extraktion der \textit{Grib} Dateien aus den \textit{NOMADS}
-Servern werden zwei verschiedene Strategien angewendet. Dies ist auf
-die unterschiedliche Datenorganisation der beiden Vorhersagemodelle
-auf der Serverseite zurückzuführen. Ziel der Extraktion ist es alle
-relevanten \textit{Grib} Nachrichten beider Modelle in einer
-einheitlichen Struktur im lokalen Dateisystem zu hinterlegen. Pro
-Element wird dabei eine Datei erstellt, die alle Nachrichten des
-entsprechenden Elements für die verschiedenen Zeitpunkte enthält.
+Ziel der Extraktion ist es alle relevanten \textit{Grib} Nachrichten
+der beiden Modelle in einer einheitlichen Struktur im lokalen
+Dateisystem zu hinterlegen. Pro Element soll dabei eine Datei erstellt
+werden, die alle Nachrichten des entsprechenden Elements für die
+verschiedenen Zeitpunkte der Vorhersage enthält. Beim Download der
+\textit{Grib} Dateien von den \textit{NOMADS} Servern werden zwei
+verschiedene Strategien angewendet, die im Folgenden beschrieben
+werden. Dies ist auf die unterschiedliche Datenorganisation der beiden
+Vorhersagemodelle auf der Serverseite zurückzuführen.
 
-Zwar werden beide Modelle viermal täglich zu fixen Zeitpunkten
-berechnet, wann die \textit{Grib} Dateien auf den \textit{NOMADS}
-Servern allerdings zur Verfügung stehen variiert aber. Deshalb
-überprüfen die Extraktionsprozesse die Verfügbarkeit neuer Daten
-mittels \textit{Polling}. Die durch einen \textit{Cronjob} gesteuerten
-Prozesse überprüfen in einem bestimmten Intervall die Existenz der
-Quelldaten, und führen ihrer eigentlichen Aufgabe erst aus, wenn neue,
-noch nicht integrierte Daten zur Verfügung stehen.
-
-Um eine Aussage über die Performanz der Extraktionsprozesse zu machen,
-wurden die Log Dateien aus einem Zeitraum von einer Woche ausgewertet.
+Die Performanz der Extraktionsprozesse hängt hauptsächlich von der
+Geschwindigkeit ab, mit der die \textit{Grib} Daten heruntergeladen
+werden. Zu verschiedenen Zeiten durchgeführte Benchmark Tests ergaben
+eine eher mäßige durchschnittliche Übertragungsgeschwindigkeit von
+186.30 KB/s. Dies liegt vermutlich an der hohen Auslastung der
+\textit{NOMADS} Server, auf die keinen Einfluss genommen werden
+kann. Um eine besser und einen längerfristigen Zeitraum abdeckende
+Aussage zu machen, wurden die Log Dateien des Extraktionsprozesse aus
+einem Zeitraum von einer Woche ausgewertet und die Ergebnisse
+zusammengefasst.
 
 \subsubsection{Downloadstrategie für das Wave Watch III Model}
-
-Die Daten des \textit{Wave Watch III} Modells werden auf Serverseite
-in einer einzigen \textit{Grib} Datei gespeichert. Der
-Extraktionsprozess für dieses Modell lädt zunächst das
-Inhaltsverzeichnis dieser Datei, extrahiert die Start- und
-Endpositionen der gewünschten Elemente, und sendet dann pro Element
-eine \textit{HTTP-Range} Anfrage an den Server. Insgesamt werden dabei
-8 Anfragen an den Server gesendet, eine für das Inhaltsverzeichnis und
-7 für die \textit{Grib} Nachrichten der entsprechenden Elemente.
+Alle Daten des \textit{Wave Watch III} Modells sind auf Serverseite in
+einer \textit{Grib} Datei gespeichert. Der Extraktionsprozess für
+dieses Modell lädt zunächst das Inhaltsverzeichnis dieser Datei, um
+die Start- und Endpositionen der gewünschten Elemente zu
+berechnen. Anschließend wird pro Element eine \textit{HTTP-Range}
+Anfrage an den Server gesendet, und die in der Antwort enthaltene
+\textit{Grib} Nachricht in einer Datei im lokalen Dateisystem
+gespeichert.
 
 \begin{table*}[h]
   \centering
   {\sf
     \footnotesize
-    \begin{longtable}{@{}ccccc}
+    \begin{longtable}{@{}clccc}
       \toprule
-      \textbf{Element} & \textbf{Größe (Element)} & \textbf{Downloadzeit}  \\
+      \textbf{Element} & \textbf{Beschreibung} & \textbf{Größe (Element)} & \textbf{Zeit (Element)}  \\
       \midrule
-      HTSGW & 2.5 MB & 27.12 s \\
-      PERPW & 2.7 MB & 30.12 s \\
-      DIRPW & 3.5 MB & 35.90 s \\
-      WVPER & 2.5 MB & 25.79 s \\
-      WVDIR & 3.5 MB & 35.83 s \\
-      WIND  & 2.9 MB & 34.36 s \\
-      WDIR  & 3.8 MB & 38.99 s \\
+      HTSGW & Wellenhöhe & 2.5 MB & 27.12 s \\
+      PERPW & Periode des Wellenkamms & 2.7 MB & 30.12 s \\
+      DIRPW & Richtung des Wellenkamms & 3.5 MB & 35.90 s \\
+      WVPER & Wellenperiode & 2.5 MB & 25.79 s \\
+      WVDIR & Wellenrichtung & 3.5 MB & 35.83 s \\
+      WIND  & Windstärke & 2.9 MB & 34.36 s \\
+      WDIR  & Windrichtung & 3.8 MB & 38.99 s \\
       \midrule
-      Gesamt: & 21.4 MB & 3.80 m \\
+      Gesamt: & & 21.4 MB & 3.80 m \\
       \bottomrule
     \end{longtable}
   }
@@ -635,18 +633,28 @@ eine \textit{HTTP-Range} Anfrage an den Server. Insgesamt werden dabei
   \label{tab:download_messung_ww3}
 \end{table*}
 
+Insgesamt werden bei einem Durchlauf 8 Anfragen an den Server
+gesendet, eine für das Inhaltsverzeichnis und 7 für die \textit{Grib}
+Nachrichten der entsprechenden Elemente. In Tabelle
+\ref{tab:download_messung_ww3} sind die durchschnittlichen
+Downloadzeiten für die einzelnen Elemente des \textit{Wave Watch III}
+Modells aufgeführt. Der Extraktionsprozess dauert durchschnittlich 3.8
+Minuten und überträgt \textit{Grib} Daten mit einem Volumen von 21.4
+MB.
+
 \subsubsection{Downloadstrategie für das Global Forecast System}
 
-Der Downloadvorgang für die Elemente des \textit{Global Forecast
-  System} erfordert wesentlich mehr Anfragen, da die Daten auf
-Serverseite in mehreren Dateien gespeichert sind. Für jeden Zeitpunkt
-der Vorhersage existiert auf dem Server eine Datei, in der die Daten
-aller Modellelemente für den entsprechenden Zeitpunkt enthalten
-sind. Dies sind bei einem Vorhersagezeitraum von 180 Stunden im
-3-stündigen Intervall 61 Dateien, $180h / 3h = 60$ für den
-Vorhersagezeitraum, und eine weitere für den Zeitpunkt der Analyse. Um
-alle \textit{Grib} Nachrichten für ein ausgewähltes Element
-herunterzuladen, müssen zunächst die Inhaltsverzeichnisse der
+Der Downloadvorgang für das \textit{Global Forecast System} erfordert
+wesentlich mehr Anfragen als der des \textit{Wave Watch III} Modells,
+da die Daten auf Serverseite in mehreren Dateien gespeichert sind. Für
+jeden Zeitpunkt der Vorhersage existiert auf dem Server eine Datei, in
+der die Daten aller Modellelemente für den entsprechenden Zeitpunkt
+enthalten sind. Dies sind bei einem Vorhersagezeitraum von 180 Stunden
+im 3-stündigen Intervall 61 Dateien, $180h / 3h = 60$ für den
+Vorhersagezeitraum, und eine weitere für den Zeitpunkt der Analyse. 
+
+Um alle \textit{Grib} Nachrichten für ein ausgewähltes Element
+herunterzuladen, müssen zunächst die 61 Inhaltsverzeichnisse aller
 \textit{Grib} Dateien angefordert werden, damit die Start- und
 Endpositionen des Elements berechnet werden können. Anschließend
 können die eigentlichen Daten des Elements mit \textit{Http-Range}
@@ -656,11 +664,8 @@ Element in einer Datei zusammengefasst. Dies kann Dank des
 selbstbeschreibendem Format der einzelnen \textit{Grib} Nachrichten
 mit Standard Unix Kommandos bewerkstelligt werden, beispielsweise mit
 \textit{cat TMP.00h.grib TMP.03h.grib ... TMP.180h.grib >
-  TMP.0h-180h.grib}. Insgesamt sind $ 61 * (N+1) $ Anfragen nötig, 61
-für die Inhaltsverzeichnisse, und pro Element weitere \textit{61}
-Anfragen für die einzelnen Grib Nachrichten. Der Extraktionsprozess
-für das \textit{Global Forecast System} sendet somit für die zurzeit 4
-verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen.
+  TMP.0h-180h.grib}. Bis auf das Anfordern der Inhaltsverzeichnisse
+muss dieser Vorgang für alle gewünschten Elemente wiederholt werden.
 
 \begin{table*}[h]
   \centering
@@ -680,8 +685,43 @@ verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen.
     \end{longtable}
   }
   \caption{Messung der Downloadzeiten des \textit{Global Forecast System}}
-  \label{tab:download_messung_ww3}
+  \label{tab:download_messung_gfs}
 \end{table*}
+
+Insgesamt sind $ 61 * (N+1) $ Anfragen nötig, 61 für die
+Inhaltsverzeichnisse, und pro Element weitere \textit{61} Anfragen für
+die einzelnen Grib Nachrichten. Der Extraktionsprozess für das
+\textit{Global Forecast System} sendet somit für die zurzeit 4
+verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen.
+
+Tabelle \ref{tab:download_messung_gfs} zeigt im linken Teil die Größe
+einer einzelnen Nachrichten und die Zeit die benötigt wird um diese
+herunterzuladen. Im rechten Teil ist die Zusammenfassung dieser Werte
+für das jeweilige Element zu sehen. Des Extraktionsprozess für das
+\textit{Global Forecast System} überträgt insgesamt 68.04 MB und
+benötigt durchschnittlich ca. 14 Minuten.
+
+\subsubsection{Beurteilung der Extraktionsprozesse}
+Trotz der eher mäßigen Übertragungsgeschwindigkeit kann die Performanz
+der beiden Extraktionsprozesse als zufriedenstellend eingestuft
+werden. Kritisch wird es, wenn die beanspruchte Zeit zum Extrahieren
+der Daten sich dem 4-stündigen Intervall der Modellberechnung
+nähert. Von dieser Grenze sind die beiden Prozesse jedoch noch
+ausreichend weit entfernt. Da es den Anschein macht, dass die
+Übertragungsgeschwindigkeit von den \textit{NOMADS} Servern pro
+Verbindung reguliert wird, könnte versucht werden mehrere Anfragen
+gleichzeitig zu stellen um die Daten parallel herunterzuladen und
+somit die Performanz zu verbessern.
+
+\subsubsection{Polling}
+Zwar werden beide Modelle viermal täglich zu fixen Zeitpunkten
+berechnet, wann genau die \textit{Grib} Dateien auf den
+\textit{NOMADS} Servern allerdings zur Verfügung stehen variiert
+allerdings etwas. Deshalb wird die Verfügbarkeit neuer Daten mittels
+\textit{Polling} überprüft. Die durch \textit{Cronjob} gesteuerten
+Prozesse überprüfen in einem bestimmten Intervall die Existenz der
+Quelldaten, und starten den Extraktionsvorgang erst, wenn neue, noch
+nicht integrierte Daten zur Verfügung stehen.
 
 
 \section{Transformation der Daten}

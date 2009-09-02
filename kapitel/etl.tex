@@ -156,6 +156,29 @@ der Deutsche Wetterdienst unter anderem auch Wettervorhersagen mit
 einer Auflösung von 2,8 Kilometern für Deutschlands Anrainerstaaten
 berechnen.
 
+\subsection{Angabe von Gitterauflösungen}
+
+Die geographischen Lage eines Punktes auf der Erdoberfläche wird meist
+durch die geographische Breite (\textit{Latitude}) und Länge
+(\textit{Longitude}) angegeben, und die Distanz zwischen zwei Punkten
+in Kilometern bzw. Meilen. Insbesondere bei der Distanz denken die
+meisten Menschen in einer Längeneinheit an die sie gewöhnt sind und
+unter der sie sich etwas vorstellen können. 
+
+Die hier betrachteten Vorhersagemodelle verwenden zur Festlegung von
+Punkten auf der Erde ein Gitternetz, dessen Grundlage parallel zum
+Äquator verlaufende Breiten- und von Pol zu Pol verlaufende
+Längenkreise sind, die in der Einheit Grad angegeben werden. Bei der
+Umrechnung der Gitterauflösung in Kilometer variiert deren Abstand
+aufgrund der elipsoiden Gestalt der Erdkugel. Ein Grad Latitude
+entspricht dabei durchschnittlich 111 Kilometern und die Umrechnung
+ist weitestgehend konstant. Der Abstand zwischen den Längengraden
+variiert allerdings erheblich. Am Äquator beträgt der Abstand
+ebenfalls ungefähr 111 Kilometer, konvergiert aber an den Polen in
+Richtung Null. Die hier teilweise in Kilometern angegebenen
+Gitterauflösungen sind demnach nur als grobe Richtwerte zur besseren
+Einschätzung der Distanz zu verstehen.
+
 \subsection{Global Forecast System}
 
 Das \textit{Global Forecast System} ist ein globales numerisches
@@ -190,7 +213,7 @@ von Winden entstehen. Wellen die durch andere Ereignisse wie
 z.B. Gewitter, Gezeiten oder Tsunamis verursacht werden, sind in
 diesem Modell nicht berücksichtigt. Da sich Wellen viel zu sehr
 voneinander unterscheiden, werden nicht Vorhersagen für einzelne
-Wellen getroffen, sondern über die Statistik von mehreren Wellen. Das
+Wellen getroffen, sondern über die Statistik mehrerer Wellen. Das
 Modell liefert sowohl Informationen über die Wellenhöhe, Wellenperiode
 und Wellenrichtung als auch über die Windstärke und die Windrichtung
 an einem bestimmten Ort zu einer bestimmten Zeit.
@@ -204,6 +227,14 @@ globale Modell wird mit einer Maschenweite von ca. 80 Kilometern
 berechnet, die lokalen Modelle mit einer Maschenweite von bis zu 20
 Kilometern. Die hier entwickelten \textit{ETL} Prozesse verarbeiten
 bisher nur die Daten des globalen Modells.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{bilder/wave-watch}
+    \caption{Plot einiger Elemente des Wave Watch III Modells}
+    \label{wave-watch-grads}
+  \end{center}
+\end{figure}
 
 \section{Datenbank Design}
 \subsection{Konzeptionelle Schema}
@@ -311,7 +342,7 @@ oder \texttt{dd} flexibel eingesetzt werden können. Das Programm
 Zugriff nach geographischen Positionen ermöglicht wird und die
 Zugriffszeiten erheblich beschleunigt.
 
-\subsection{Inventar einer Grib Dateien}
+\subsection{Inventar einer Grib Datei}
 
 Die beiden Kommandozeilenprogramme \texttt{degrib} und \texttt{wgrib}
 können dazu verwendet werden Inventare von \textit{Grib} Datei zu
@@ -651,7 +682,7 @@ jeden Zeitpunkt der Vorhersage existiert auf dem Server eine Datei, in
 der die Daten aller Modellelemente für den entsprechenden Zeitpunkt
 enthalten sind. Dies sind bei einem Vorhersagezeitraum von 180 Stunden
 im 3-stündigen Intervall 61 Dateien, $180h / 3h = 60$ für den
-Vorhersagezeitraum, und eine weitere für den Zeitpunkt der Analyse. 
+Vorhersagezeitraum, und eine weitere für den Zeitpunkt der Analyse.
 
 Um alle \textit{Grib} Nachrichten für ein ausgewähltes Element
 herunterzuladen, müssen zunächst die 61 Inhaltsverzeichnisse aller
@@ -701,19 +732,44 @@ für das jeweilige Element zu sehen. Des Extraktionsprozess für das
 \textit{Global Forecast System} überträgt insgesamt 68.04 MB und
 benötigt durchschnittlich ca. 14 Minuten.
 
-\subsubsection{Beurteilung der Extraktionsprozesse}
-Trotz der eher mäßigen Übertragungsgeschwindigkeit kann die Performanz
-der beiden Extraktionsprozesse als zufriedenstellend eingestuft
-werden. Kritisch wird es, wenn die beanspruchte Zeit zum Extrahieren
-der Daten sich dem 4-stündigen Intervall der Modellberechnung
-nähert. Von dieser Grenze sind die beiden Prozesse jedoch noch
-ausreichend weit entfernt. Da es den Anschein macht, dass die
-Übertragungsgeschwindigkeit von den \textit{NOMADS} Servern pro
-Verbindung reguliert wird, könnte versucht werden mehrere Anfragen
-gleichzeitig zu stellen um die Daten parallel herunterzuladen und
-somit die Performanz zu verbessern.
+\subsubsection{Lokales Grib Repository}
+Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde liegen
+die \textit{Grib} Daten beider Modelle in einem \textit{Repository}
+auf dem lokalen Dateisystem. Das \textit{Repository} ist dabei nach
+dem Namen des Modells, dem Zeitpunkt an dem das Modell erstellt wurde
+und dem Element der Vorhersage organisiert. Diese in Tabelle
+\ref{tab:repository} zu sehende Struktur bietet den anschließenden
+Transformationsprozessen einen einheitlichen Zugriff auf die Elemente
+der Modelle.
 
-\subsubsection{Polling}
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{@{}cccl}
+      \toprule
+      \textbf{Größe} & \textbf{Datum} & \textbf{Uhrzeit} & \textbf{Pfad im Repository} \\
+      \midrule
+      19 MB & 2009-08-18 & 16:19 & forecasts/gfs/20090818/t06z.PWAT.grib \\
+      14 MB & 2009-08-18 & 16:13 & forecasts/gfs/20090818/t06z.TCDC.grib \\
+      19 MB & 2009-08-18 & 16:09 & forecasts/gfs/20090818/t06z.TMP.grib \\
+      18 MB & 2009-08-18 & 16:24 & forecasts/gfs/20090818/t06z.WEASD.grib \\
+      \midrule
+      3.5 MB & 2009-08-18 & 15:58 & forecasts/nww3/20090818/t06z.DIRPW.grib \\
+      2.4 MB & 2009-08-18 & 15:57 & forecasts/nww3/20090818/t06z.HTSGW.grib \\
+      2.8 MB & 2009-08-18 & 15:57 & forecasts/nww3/20090818/t06z.PERPW.grib \\
+      3.9 MB & 2009-08-18 & 16:02 & forecasts/nww3/20090818/t06z.WDIR.grib \\
+      3.0 MB & 2009-08-18 & 16:01 & forecasts/nww3/20090818/t06z.WIND.grib \\
+      3.5 MB & 2009-08-18 & 16:00 & forecasts/nww3/20090818/t06z.WVDIR.grib \\
+      2.5 MB & 2009-08-18 & 15:59 & forecasts/nww3/20090818/t06z.WVPER.grib \\
+      \bottomrule
+    \end{longtable}
+  }
+  \caption{Verzeichnisstruktur der Grib Daten im lokalen Repository}
+  \label{tab:repository}
+\end{table*}
+
+\subsubsection{Aktualisierung der Daten durch Polling}
 Zwar werden beide Modelle viermal täglich zu fixen Zeitpunkten
 berechnet, wann genau die \textit{Grib} Dateien auf den
 \textit{NOMADS} Servern allerdings zur Verfügung stehen variiert
@@ -723,8 +779,50 @@ Prozesse überprüfen in einem bestimmten Intervall die Existenz der
 Quelldaten, und starten den Extraktionsvorgang erst, wenn neue, noch
 nicht integrierte Daten zur Verfügung stehen.
 
+\subsubsection{Beurteilung der Extraktionsprozesse}
+Trotz der eher mäßigen Übertragungsgeschwindigkeit kann die Performanz
+der beiden Extraktionsprozesse als zufriedenstellend eingestuft
+werden. Kritisch wird es, wenn die beanspruchte Zeit zum Extrahieren
+der Daten sich dem 4-stündigen Intervall der Modellberechnung
+nähert. Von dieser Grenze sind die beiden Prozesse jedoch noch
+ausreichend weit entfernt. Da es den Anschein macht, dass die
+Übertragungsgeschwindigkeit von den \textit{NOMADS} Servern pro
+Verbindung reguliert wird, könnte versucht werden mehrere Anfragen
+gleichzeitig zu stellen, um die Daten parallel herunterzuladen und
+somit die Performanz zu verbessern.
 
 \section{Transformation der Daten}
+
+Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde, und
+die Daten beider Modelle im lokalen \textit{Repository} vorliegen,
+startet die Transformationsphase. In dieser Phase wird die bisher noch
+den gesamten Globus umfassende Datenmenge auf die \textit{Spots}
+reduziert, und alle relevanten Datensätze in einer \textit{CSV}
+\nomenclature{CSV}{Comma-Separated Values} Datei gespeichert, die im
+nächsten Schritt mit dem \textit{Bulk Loader} des Datenbank Management
+Systems importiert werden kann. Zuvor muss allerdings noch auf eine
+Eigenart des \textit{Wave Watch III} Modells eingegangen werden, damit
+sich die Vorhersagedaten sinnvoll und zuverlässig mit \textit{Spots}
+assoziieren lassen.
+
+\subsection{Bestimmung der Wave Watch III Position}
+
+Der Fokus des \textit{Wave Watch III} Modells liegt auf der Vorhersage
+von Wellen und den damit verbundenen physikalischen Größen. Das Modell
+liefert deshalb nur für diejenigen Positionen Vorhersagedaten, die
+sich auch über dem Meer befinden. Für alle anderen Positionen stehen
+keine Daten zur Verfügung.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{bilder/locate-position}
+    \caption{Datenlücken im Wave Watch III Gitternetze}
+    \label{positions-bestimmung}
+  \end{center}
+\end{figure}
+
+
+
 \section{Laden der Daten}
 \section{Verbesserungen}
 

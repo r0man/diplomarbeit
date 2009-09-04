@@ -192,12 +192,12 @@ beispielsweise durch die Angabe \textit{51.479 $^\circ$ N, 0.0
 
 \subsection{Angaben zur Modellauflösung}
 Das \textit{Global Forecast System} und das \textit{Wave Watch III}
-Modell beziehen sich ebenfalls auf dieses Koordinatensystem, weshalb
-deren Gitterauflösung in der Einheit Grad angegeben wird. Da die
-meisten Menschen aber bei Distanzangaben in einer Längeneinheit denken
-an die sie gewöhnt sind und unter der sie sich auch etwas vorstellen
-können, stellt sich die Frage wieviel Kilometer bzw. Meilen der
-Abstand zwischen zwei Knotenpunkten des Gitternetzes beträgt.
+Modell beziehen sich ebenfalls auf dieses Koordinatensystem, und deren
+Gitterauflösung wird der Einheit Grad angegeben. Da die meisten
+Menschen aber bei Distanzangaben in einer Längeneinheit denken an die
+sie gewöhnt sind und unter der sie sich auch etwas vorstellen können,
+stellt sich die Frage wieviel Kilometer bzw. Meilen der Abstand
+zwischen zwei Knotenpunkten des Gitternetzes beträgt.
 
 Aufgrund der elipsoiden Gestalt der Erdkugel kann hierzu jedoch keine
 allgemeingültige Aussage getroffen werden, da dies von der jeweils
@@ -845,19 +845,41 @@ assoziieren lassen.
 
 Der Fokus des \textit{Wave Watch III} Modells liegt auf der Vorhersage
 von Wellen und den damit verbundenen physikalischen Größen. Das Modell
-liefert deshalb nur für diejenigen Positionen Vorhersagedaten, die
-sich auch über dem Meer befinden. Für alle anderen Positionen stehen
-keine Daten zur Verfügung.
+enthält deshalb nur Vorhersagedaten für diejenigen geographischen
+Positionen, die sich auch über dem Meer befinden. Für alle anderen
+Positionen stehen keine Daten zur Verfügung. In Abbildung
+\ref{positions-bestimmung} ist ein Ausschnitt der Küstenregion um den
+Ort Mundaka in Spanien zu sehen, und dem darüber liegenden Gitternetz
+des \textit{Wave Watch III} Modells. Wegen der groben Gitterauflösung
+sind nur an den Knotenpunkten des Gitters Vorhersagedaten vorhanden,
+die in der Abbildung grün eingefärbt sind.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=\textwidth]{bilder/locate-position}
-    \caption{Datenlücken im Wave Watch III Gitternetze}
+    \caption{Visualisierung der Datenlücken im Wave Watch III Modell}
     \label{positions-bestimmung}
   \end{center}
 \end{figure}
 
-
+Da sich die meisten Surf Spots aber genau in solchen Küstenregionen
+befinden, muss eine zufriedenstellende Alternative gefunden werden, um
+für diese Spots trotzdem Vorhersagedaten anbieten zu können. Wie in
+der Einleitung erwähnt, werden die an den Spots brechenden Wellen
+durch den in weit entfernteren Regionen entstandenen und viele
+Kilometer weit gereisten Swell beeinflusst. Zieht man lokale
+Gegebenheiten wie z.B. vorgelagerte Inseln, Hafenbecken oder
+abgeschirmte Buchten nicht in Betracht, dann sind die für Surfer
+wichtigen Eigenschaften eines meist großräumig eintreffenden Swells in
+der näheren Umgebung eines Spots sehr ähnlich. Deshalb werden in der
+hier entwickelten Applikation die Vorhersagedaten aus der Umgebung
+eines Spots herangezogen, falls an der geographischen Position des
+Spots keine Daten vorhanden sind. Eine Möglichkeit wäre dabei den
+Benutzer beim Erstellen eines neuen Spots die Vorhersageposition mir
+angeben zu lassen. Durch ein interaktives Formular in Verbindung mit
+einer Karte könnte man den Benutzer beispielsweise dazu anleiten eine
+Position auszuwählen, die etwas weiter von der Küste entfernt ist und
+für die Vorhersagedaten existieren.
 
 \section{Laden der Daten}
 \section{Verbesserungen}

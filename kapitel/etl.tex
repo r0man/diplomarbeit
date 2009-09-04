@@ -156,28 +156,64 @@ der Deutsche Wetterdienst unter anderem auch Wettervorhersagen mit
 einer Auflösung von 2,8 Kilometern für Deutschlands Anrainerstaaten
 berechnen.
 
-\subsection{Angabe von Gitterauflösungen}
+\subsection{Geographische Breite und Länge}
 
-Die geographischen Lage eines Punktes auf der Erdoberfläche wird meist
-durch die geographische Breite (\textit{Latitude}) und Länge
-(\textit{Longitude}) angegeben, und die Distanz zwischen zwei Punkten
-in Kilometern bzw. Meilen. Insbesondere bei der Distanz denken die
-meisten Menschen in einer Längeneinheit an die sie gewöhnt sind und
-unter der sie sich etwas vorstellen können. 
+Zur Festlegung von Punkten auf der Erde wird meist ein
+Koordinatensystem genutzt, dessen Grundlage parallel zum Äquator
+verlaufende Breitenkreise, und die beiden Pole verbindende
+Längenhalbkreise sind. Der am Äquator angesiedelte Breitenkreis teilt
+die Erde in die nördliche und die südliche Halbkugel. Sowohl auf dem
+nördlichen als auch auf dem südlichen Teil verlaufen jeweils weitere
+90 Kreise, den Äquator mit eingeschlossen also insgesamt 181
+Breitenkreise. Die beiden Pole werden durch 360 nebeneinander liegende
+Längenhalbkreise verbunden, von denen der durch die Sternwarte in
+\textit{Greenwich} verlaufende Halbkreis als Nullmeridian bezeichnet
+wird. Die Zählung fängt am Nullmeridian an, und geht jeweils um 180
+Schritte in beide Richtungen. Nullpunkt des Koordinatensystems ist
+derjenige Punkt, an dem der Nullmeridian den Äquator kreuzt. In
+Abbildung \ref{koordinaten} ist der durch \textit{Greenwich} laufende
+Nullmeridian und der 30 $^\circ$ nördlich verlaufende Breitenkreis zu
+sehen.
 
-Die hier betrachteten Vorhersagemodelle verwenden zur Festlegung von
-Punkten auf der Erde ein Gitternetz, dessen Grundlage parallel zum
-Äquator verlaufende Breiten- und von Pol zu Pol verlaufende
-Längenkreise sind, die in der Einheit Grad angegeben werden. Bei der
-Umrechnung der Gitterauflösung in Kilometer variiert deren Abstand
-aufgrund der elipsoiden Gestalt der Erdkugel. Ein Grad Latitude
-entspricht dabei durchschnittlich 111 Kilometern und die Umrechnung
-ist weitestgehend konstant. Der Abstand zwischen den Längengraden
-variiert allerdings erheblich. Am Äquator beträgt der Abstand
+\begin{figure}[h]
+    \includegraphics[width=310px]{bilder/koordinaten}
+    \caption{Die in Breiten- und Längenkreise unterteilte Erdkugel}
+    \label{koordinaten}
+\end{figure}
+
+Die Position eines Punktes auf der Erde wird durch seine geographische
+Breite (\textit{Latitude}) und Länge (\textit{Longitude})
+angegeben. Dies sind die in der Einheit Grad angegebenen, und vom
+Nullpunkt aus gesehenen Abstände, der durch diesen Punkt verlaufenden
+Breiten- und Längenkreise. Die Position von \textit{Greenwich} ist
+beispielsweise durch die Angabe \textit{51.479 $^\circ$ N, 0.0
+  $^\circ$ E} festgelegt.
+
+
+\subsection{Angaben zur Modellauflösung}
+Das \textit{Global Forecast System} und das \textit{Wave Watch III}
+Modell beziehen sich ebenfalls auf dieses Koordinatensystem, weshalb
+deren Gitterauflösung in der Einheit Grad angegeben wird. Da die
+meisten Menschen aber bei Distanzangaben in einer Längeneinheit denken
+an die sie gewöhnt sind und unter der sie sich auch etwas vorstellen
+können, stellt sich die Frage wieviel Kilometer bzw. Meilen der
+Abstand zwischen zwei Knotenpunkten des Gitternetzes beträgt.
+
+Aufgrund der elipsoiden Gestalt der Erdkugel kann hierzu jedoch keine
+allgemeingültige Aussage getroffen werden, da dies von der jeweils
+betrachteten Region auf der Erdkugel und dem verwendeten
+Referenzellipsoiden abhängig ist. Ein Breitengrad (\textit{Latitude})
+entspricht durchschnittlich etwa 111 Kilometern und ist weitestgehend
+konstant. Der Abstand zwischen den Längengraden (\textit{Longitude})
+variiert allerdings erheblich. Am Äquator beträgt dieser Abstand
 ebenfalls ungefähr 111 Kilometer, konvergiert aber an den Polen in
 Richtung Null. Die hier teilweise in Kilometern angegebenen
 Gitterauflösungen sind demnach nur als grobe Richtwerte zur besseren
-Einschätzung der Distanz zu verstehen.
+Einschätzung der Gitterauflösung zu verstehen und beziehen sich auf
+die Regionen um den Äquator. Praktische Zusammenfassungen mit
+entsprechende Formeln zur Berechnung von Problemen aus dem
+geographischen Bereich sind unter \cite{aviation} und
+\cite{movable_type_scripts} zu finden.
 
 \subsection{Global Forecast System}
 

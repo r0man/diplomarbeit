@@ -828,7 +828,6 @@ gleichzeitig zu stellen, um die Daten parallel herunterzuladen und
 somit die Performanz zu verbessern.
 
 \section{Transformation der Daten}
-
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde, und
 die Daten beider Modelle im lokalen \textit{Repository} vorliegen,
 startet die Transformationsphase. In dieser Phase wird die bisher noch
@@ -836,23 +835,32 @@ den gesamten Globus umfassende Datenmenge auf die \textit{Spots}
 reduziert, und alle relevanten Datensätze in einer \textit{CSV}
 \nomenclature{CSV}{Comma-Separated Values} Datei gespeichert, die im
 nächsten Schritt mit dem \textit{Bulk Loader} des Datenbank Management
-Systems importiert werden kann. Zuvor muss allerdings noch auf eine
-Eigenart des \textit{Wave Watch III} Modells eingegangen werden, damit
-sich die Vorhersagedaten sinnvoll und zuverlässig mit \textit{Spots}
-assoziieren lassen.
+Systems importiert werden kann. 
 
 \subsection{Bestimmung der Wave Watch III Position}
+Bevor der eigentliche Transformationsvorgang beschrieben werden kann,
+muss zuvor noch auf eine Eigenart des \textit{Wave Watch III} Modells
+eingegangen werden. Bei einigen Spots wird die Transformation der
+Vorhersagedaten durch die zu grobe Gitterauflösung des Modells und den
+daraus resultierenden Datenlücken erschwert. In einem für jeden Spot
+einmalig durchzuführenden Berechnungsschritt kann dieses Problem
+jedoch für die meisten Spots zufriedenstellend behoben werden, und
+wird im Folgenden beschrieben.
 
+\subsubsection{Datenlücken im Wave Watch III Modell}
 Der Fokus des \textit{Wave Watch III} Modells liegt auf der Vorhersage
 von Wellen und den damit verbundenen physikalischen Größen. Das Modell
 enthält deshalb nur Vorhersagedaten für diejenigen geographischen
-Positionen, die sich auch über dem Meer befinden. Für alle anderen
-Positionen stehen keine Daten zur Verfügung. In Abbildung
-\ref{positions-bestimmung} ist ein Ausschnitt der Küstenregion um den
-Ort Mundaka in Spanien zu sehen, und dem darüber liegenden Gitternetz
-des \textit{Wave Watch III} Modells. Wegen der groben Gitterauflösung
-sind nur an den Knotenpunkten des Gitters Vorhersagedaten vorhanden,
-die in der Abbildung grün eingefärbt sind.
+Positionen, die sich über dem Meer befinden. Für alle anderen
+Positionen stehen keine Daten zur Verfügung. Wegen der groben
+Gitterauflösung verläuft die Grenze zwischen Land und Meer jedoch
+nicht wirklichkeitsgetreu, sondern in einer sich am rechteckigen
+Gitternetz des Modells orientierenden Zick-Zack Linie. In Abbildung
+\ref{positions-bestimmung} ist die Küstenregion um den spanischen Ort
+Mundaka, mit dem darüber liegenden Gitternetz zu sehen. Die Abbildung
+soll verdeutlichen, dass nur an den grün eingefärbten Knotenpunkten
+des Gitters Vorhersagedaten vorhanden, und an den anderen Stellen
+nicht.
 
 \begin{figure}[h]
   \begin{center}
@@ -862,24 +870,35 @@ die in der Abbildung grün eingefärbt sind.
   \end{center}
 \end{figure}
 
+\subsubsection{Vorhersagedaten aus der näheren Umgebung}
 Da sich die meisten Surf Spots aber genau in solchen Küstenregionen
 befinden, muss eine zufriedenstellende Alternative gefunden werden, um
 für diese Spots trotzdem Vorhersagedaten anbieten zu können. Wie in
 der Einleitung erwähnt, werden die an den Spots brechenden Wellen
-durch den in weit entfernteren Regionen entstandenen und viele
+durch den in weit entfernteren Regionen entstandenen, und viele
 Kilometer weit gereisten Swell beeinflusst. Zieht man lokale
-Gegebenheiten wie z.B. vorgelagerte Inseln, Hafenbecken oder
+Gegebenheiten, wie z.B. vorgelagerte Inseln, Hafenbecken oder
 abgeschirmte Buchten nicht in Betracht, dann sind die für Surfer
 wichtigen Eigenschaften eines meist großräumig eintreffenden Swells in
-der näheren Umgebung eines Spots sehr ähnlich. Deshalb werden in der
-hier entwickelten Applikation die Vorhersagedaten aus der Umgebung
+der Umgebung eines Spots sehr ähnlich. Deshalb werden in der hier
+entwickelten Applikation Vorhersagedaten aus der näheren Umgebung
 eines Spots herangezogen, falls an der geographischen Position des
-Spots keine Daten vorhanden sind. Eine Möglichkeit wäre dabei den
-Benutzer beim Erstellen eines neuen Spots die Vorhersageposition mir
-angeben zu lassen. Durch ein interaktives Formular in Verbindung mit
-einer Karte könnte man den Benutzer beispielsweise dazu anleiten eine
-Position auszuwählen, die etwas weiter von der Küste entfernt ist und
-für die Vorhersagedaten existieren.
+Spots keine Daten vorhanden sind. Das hier zu lösende Problem besteht
+also darin, eine alternative Vorhersageposition für diejenigen Spots
+zu finden, an deren geographischer Position keine Daten vorhanden
+sind.
+
+\subsubsection{Bestimmung der Vorhersageposition durch den Benutzer}
+Eine Möglichkeit wäre dabei den Benutzer beim Erstellen eines neuen
+Spots die Vorhersageposition mir angeben zu lassen. Durch ein
+interaktives Formular in Verbindung mit einer Karte könnte man den
+Benutzer beispielsweise dazu anleiten eine Position auszuwählen, die
+etwas weiter von der Küste entfernt ist und für die Vorhersagedaten
+existieren. Diese Idee wurde hier aber nicht weiter verfolgt, da sie
+das Erstellen neuer Spot verkompliziert und als benutzerunfreundlich
+eingeschätzt wird.
+
+\subsubsection{Binäre Suche zur Bestimmung der Vorhersageposition}
 
 \section{Laden der Daten}
 \section{Verbesserungen}

@@ -1,6 +1,11 @@
 
 \usepackage[usenames,dvipsnames]{color}
 \definecolor{LightGray}{gray}{0.95}
+\definecolor{listcomment}{rgb}{0.0,0.5,0.0}
+\definecolor{listkeyword}{rgb}{0.0,0.0,0.5}
+\definecolor{listnumbers}{gray}{0.65}
+\definecolor{listlightgray}{gray}{0.955}
+\definecolor{listwhite}{gray}{1.0} 
 
 \usepackage[utf8]{inputenc}
 
@@ -50,17 +55,38 @@
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Auflistung}
 \lstset{
-  basicstyle=\ttfamily\footnotesize,
-  breaklines=true,
+  frame = tb,
+  framerule = 0.25pt,
+  float,
+  fontadjust,
+  backgroundcolor={\color{listlightgray}},
+  basicstyle = {\ttfamily\scriptsize},
   captionpos=b,
-  float=htbp,
-  frame=single,
-  showspaces=false,
-  showstringspaces=false,
-  numbers=left,
-  numberstyle=\footnotesize,
-  backgroundcolor=\color{LightGray}
+  keywordstyle = {\ttfamily\color{listkeyword}\textbf},
+  identifierstyle = {\ttfamily},
+  commentstyle = {\ttfamily\color{listcomment}\textit},
+  stringstyle = {\ttfamily},
+  showstringspaces = false,
+  showtabs = false,
+  numbers = left,
+  numbersep = 6pt,
+  numberstyle={\ttfamily\color{listnumbers}},
+  tabsize = 2,
+  floatplacement=!h
 }
+
+% \lstset{
+%   basicstyle=\ttfamily\footnotesize,
+%   breaklines=true,
+%   captionpos=b,
+%   float=htbp,
+%   frame=single,
+%   showspaces=false,
+%   showstringspaces=false,
+%   numbers=left,
+%   numberstyle=\footnotesize,
+%   backgroundcolor=\color{LightGray}
+% }
 
 %%% Local Variables:
 %%% mode: latex

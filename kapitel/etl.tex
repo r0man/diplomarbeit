@@ -360,6 +360,7 @@ ausgenutzt um nur ausgewählte Nachrichten aus einer größeren
 \textit{Grib} Datei zu beziehen.
 
 \subsection{Programme zum Verarbeiten von Grib Dateien}
+\label{grib-reader}
 
 Zum Verarbeiten und Lesen von \textit{Grib} Dateien werden spezielle
 Programme eingesetzt. Werkzeugen für die Kommandozeile, C-Bibliotheken
@@ -831,21 +832,46 @@ somit die Performanz zu verbessern.
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde, und
 die Daten beider Modelle im lokalen \textit{Repository} vorliegen,
 startet die Transformationsphase. In dieser Phase wird die bisher noch
-den gesamten Globus umfassende Datenmenge auf die \textit{Spots}
-reduziert, und alle relevanten Datensätze in einer \textit{CSV}
-\nomenclature{CSV}{Comma-Separated Values} Datei gespeichert, die im
-nächsten Schritt mit dem \textit{Bulk Loader} des Datenbank Management
-Systems importiert werden kann. 
+den gesamten Globus umfassende Datenmenge auf die in der Datenbank
+enthaltenen \textit{Spots} reduziert. Alle relevanten Datensätze
+werden dabei in einer \textit{CSV} \nomenclature{CSV}{Comma-Separated
+  Values} Datei gespeichert, die im nächsten Schritt mit dem
+\textit{Bulk Loader} des Datenbank Management Systems importiert
+werden kann.
+
+\subsection{Auslesen der Vorhersagedaten}
+Um die Vorhersagedaten aus einer \textit{Grib} Datei auszulesen, wird
+ein sogenannten \textit{Grib Reader} benötigt. Hierfür wird das schon
+in Abschnitt \ref{grib-reader} erwähnte Kommandozeilenprogramm
+\textit{degrib} verwendet, da es einen wahlfreien Zugriff nach
+geographischen Positionen auf die Daten einer \textit{Grib} Datei
+ermöglicht. Dabei wird die gegebene geographische Position auf den
+nächstliegenden Knotenpunkt des Gitters interpoliert. Mit einem
+optional zu erstellenden Index kann dieser Datenzugriff zudem noch
+beschleunigt werden, was sich positiv auf die Performanz der im
+Folgenden beschriebenen Transformationsschritte auswirkt.
+
+\lstinputlisting[caption={Auslesen der Temperatur in Berlin mit \textit{degrib}},label=degrib]{listings/degrib.txt}
+
+Die Temperatur in Berlin \textit{(52.523, 13.411)} kann z.B. mit dem
+Befehl in Zeile 1 aus Auflistung \ref{degrib} ermittelt werden. Die
+hier verwendete \textit{Grib} Datei stammt aus der Modellberechnung
+des \textit{Global Forecast System} vom 04. September 2009 um 6 Uhr,
+und bietet Vorhersagewerte im 3-stündigen Intervall für 180
+Stunden. Werden Vorhersagedaten an einer geographischen Position
+ausgelesen, an der keine Daten \footnote{Beispielsweise die Wellenhöhe
+  in Berlin aus dem \textit{Wave Watch III} Modell} vorhanden sind,
+liefert \textit{degrib} Datensätze mit dem als ungültig definierten
+Wert \textit{9999.000}.
 
 \subsection{Bestimmung der Wave Watch III Position}
 Bevor der eigentliche Transformationsvorgang beschrieben werden kann,
 muss zuvor noch auf eine Eigenart des \textit{Wave Watch III} Modells
 eingegangen werden. Bei einigen Spots wird die Transformation der
-Vorhersagedaten durch die zu grobe Gitterauflösung des Modells und den
+Vorhersagedaten durch die zu grobe Gitterauflösung des Modells und
 daraus resultierenden Datenlücken erschwert. In einem für jeden Spot
 einmalig durchzuführenden Berechnungsschritt kann dieses Problem
-jedoch für die meisten Spots zufriedenstellend behoben werden, und
-wird im Folgenden beschrieben.
+jedoch für die meisten Spots zufriedenstellend behoben werden.
 
 \subsubsection{Datenlücken im Wave Watch III Modell}
 Der Fokus des \textit{Wave Watch III} Modells liegt auf der Vorhersage
@@ -883,25 +909,118 @@ wichtigen Eigenschaften eines meist großräumig eintreffenden Swells in
 der Umgebung eines Spots sehr ähnlich. Deshalb werden in der hier
 entwickelten Applikation Vorhersagedaten aus der näheren Umgebung
 eines Spots herangezogen, falls an der geographischen Position des
-Spots keine Daten vorhanden sind. Das hier zu lösende Problem besteht
-also darin, eine alternative Vorhersageposition für diejenigen Spots
-zu finden, an deren geographischer Position keine Daten vorhanden
-sind.
+Spots selbst keine Daten vorhanden sind. Das hier zu lösende Problem
+besteht darin, eine alternative Vorhersageposition für diejenigen
+Spots zu finden, an deren geographischer Position keine Daten
+vorhanden sind.
 
 \subsubsection{Bestimmung der Vorhersageposition durch den Benutzer}
-Eine Möglichkeit wäre dabei den Benutzer beim Erstellen eines neuen
-Spots die Vorhersageposition mir angeben zu lassen. Durch ein
-interaktives Formular in Verbindung mit einer Karte könnte man den
-Benutzer beispielsweise dazu anleiten eine Position auszuwählen, die
-etwas weiter von der Küste entfernt ist und für die Vorhersagedaten
-existieren. Diese Idee wurde hier aber nicht weiter verfolgt, da sie
-das Erstellen neuer Spot verkompliziert und als benutzerunfreundlich
-eingeschätzt wird.
+Eine Möglichkeit wäre den Benutzer beim Erstellen eines neuen Spots
+die Vorhersageposition mit angeben zu lassen. Durch ein interaktives
+Formular in Verbindung mit einer Karte könnte der Benutzer dazu
+angeleitet werden eine Position auszuwählen, die weiter im Meer liegt
+und für die Vorhersagedaten existieren. Diese Idee wurde hier aber
+nicht weiter verfolgt, da sie das Erstellen neuer Spot verkompliziert
+und als zu benutzerunfreundlich eingeschätzt wird.
 
 \subsubsection{Binäre Suche zur Bestimmung der Vorhersageposition}
 
+Die hier verfolgte Idee zur Bestimmung einer alternativen
+Vorhersageposition, basiert auf einer binären Suche im näheren Umkreis
+eines Spots. Das Ziel ist diejenige geographische Position zu finden,
+die am wenigsten weit von dem gegebenen Spot entfernt ist und für die
+Vorhersagedaten verfügbar sind.
+
+Der hier beschriebene Algorithmus verwendet zur Ermittlung der
+alternativen Vorhersageposition eine \textit{Grib} Datei, in der die
+Wellenhöhen des \textit{Wave Watch III} Modells enthalten
+sind. Zunächst wird hier das allgemeine Prinzip des Algorithmus in
+einer linearen Variante beschrieben, die dann durch eine binäre Suche
+erweitert wird.
+
+\begin{enumerate}
+\item Bei der Initialisierung des Algorithmus wird die maximale
+  Distanz $\Delta$ festgelegt, die eine alternative Vorhersageposition
+  $\Omega$ von der Ursprungsposition $\Theta$ entfernt sein
+  darf. Weiterhin eine Schrittweite $\delta < \Delta$, um die der
+  Radius $\rho$ pro Iteration vom Ursprung aus erhöht wird, und der
+  Abstand $\alpha < 360^{\circ}$ , welcher die Schrittweite der
+  Richtung angibt.
+
+\item Zunächst werden die Wellenhöhen an der Ursprungsposition des
+  Spots bei einem Radius von $\rho = 0$ mit dem Programm
+  \textit{degrib} ausgelesen. Falls alle Werte an dieser Position
+  gültig sind (nicht 9999.0), ist der Algorithmus fertig und die
+  ursprüngliche Position des Spots kann als Vorhersageposition
+  verwendet werden.
+
+\item Wurden an den bisher betrachteten Position(en) keine gültigen
+  Werte gefunden, wird der Radius von der Ursprungsposition $\Theta$
+  aus um die Schrittweite $\delta$ erhöht. Falls diese Schrittweite
+  ihr Maximum $\Delta$ erreicht hat, ist der Algorithmus fertig und es
+  konnte keine alternative Vorhersageposition gefunden werden.
+
+\item Nach der Erhöhung des Radius, werden bestimmte geographische
+  Positionen auf dessen Umkreis nach der Existenz gültiger
+  Vorhersagewerte hin überprüft. Dabei werden nur diejenigen
+  Positionen betrachtet, deren in Grad angegebene Richtung durch die
+  Schrittweise $\alpha$ teilbar ist. Wurden an einer dieser Positionen
+  gültige Werte gefunden kann diese als Vorhersageposition verwendet
+  werden, und der Algorithmus ist fertig. Falls nicht, wird mit
+  Schritt 3 weitergemacht.
+
+\end{enumerate}
+
+Bei der Überprüfung einer Position auf gültige Werte wird das Programm
+\textit{degrib} mit den entsprechenden Parametern aufgerufen und
+dessen Ausgabe auf gültige Werte hin überprüft. Die Anzahl dieser
+Programmaufrufe ist dabei mit den bei der Initialisierung festgelegten
+Parametern durch die Obergrenze $(360^{\circ} / \alpha) * (\Delta /
+\delta)$ beschränkt.
+
+Durch die Verwendung einer binären Suche kann die Anzahl der
+Programmaufrufe und die Komplexität des Algorithmus auf
+$O(log(360^{\circ} / \alpha * \Delta / \delta))$ reduziert werden. Im
+Gegensatz zur linearen Suche wird bei der binären Suche die Distanz
+nicht schrittweise bis zur Abbruchbedingung erhöht, sondern das
+\textit{Divide and Conquer} Prinzip angewendet. Nachdem an der
+Ursprungsposition keine gültigen Werte gefunden wurden, werden alle
+Positionen auf dem durch den Radius $r = \Delta / 2$ definierten
+Umkreis auf Gültigkeit hin überprüft. Wurde auf diesem Umkreis eine
+Position gefunden, werden nur noch Positionen mit $r < \Delta / 2$
+überprüft, ansonsten diejenigen Positionen mit $r > \Delta /
+2$. Dieses Prinzip wird in beiden Fällen so lange fortgesetzt, bis
+eine alternative Vorhersageposition gefunden wurde, oder die
+Distanzobergrenze erreicht wurde.
+
+\lstinputlisting[caption={Binäre Suche der alternativen Vorhersageposition},label=locate]{listings/locate.txt}
+
+In Auflistung \ref{locate} ist die Ausgabe der binären Suche für den
+Spot \textit{Esposende} in Portugal zu sehen. Der Algorithmus wurder
+hier mit einer maximalen Distanz $\Delta$ von 100 Kilometern, und
+einer Richtungsschrittweite von $\alpha = 10^{\circ}$
+initialisiert. Auf halber Distanz wurde bereits eine Position mit
+gültigen Werten gefunden und in den weiteren Iterationen nur noch
+Positionen in der unteren Hälfte der maximalen Distanz überprüft. In
+Abbildung \ref{locate-esposende} ist die Ursprungsposition des Spots
+mit einer roten Markierung, und die 3,6 Kilometer weiter südlich
+gefundene alternative Vorhersageposition mit einer grünen Markierung
+gekennzeichnet.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{bilder/locate-esposende}
+    \caption{Alternative Vorhersageposition für Esposende in Portugal}
+    \label{locate-esposende}
+  \end{center}
+\end{figure}
+
+
 \section{Laden der Daten}
 \section{Verbesserungen}
+asas
+
+\texttt{This is Inconsolata.}
 
 %%% Local Variables:
 %%% mode: latex

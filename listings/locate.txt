@@ -1,0 +1,11 @@
+Locating wave watch position for Esposende, Portugal:
+- Sample: Dist: 50.00 km, Deg: 100, Dest: 41.452404, -8.203167, Avg: 1.20
+- Sample: Dist: 25.00 km, Deg: 100, Dest: 41.492580, -8.498402, Avg: 1.20
+- Sample: Dist: 12.50 km, Deg: 110, Dest: 41.493466, -8.652970, Avg: 1.20
+- Sample: Dist: 6.25 km, Deg: 130, Dest: 41.495856, -8.736514, Avg: 1.20
+- Sample: Dist: 4.69 km, Deg: 150, Dest: 41.495485, -8.765856, Avg: 1.20
+- Sample: Dist: 3.91 km, Deg: 160, Dest: 41.498981, -8.777955, Avg: 1.20
+- Sample: Dist: 3.71 km, Deg: 170, Dest: 41.499124, -8.786260, Avg: 1.20
+- Sample: Dist: 3.61 km, Deg: 180, Dest: 41.499499, -8.794000, Avg: 1.20
+- Position: 41.499, -8.794, Dist: 3.61727461421652
+- Done. (8.48 s)

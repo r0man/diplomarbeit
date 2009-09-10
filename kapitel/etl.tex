@@ -840,6 +840,8 @@ werden dabei in einer \textit{CSV} \nomenclature{CSV}{Comma-Separated
 werden kann.
 
 \subsection{Auslesen der Vorhersagedaten}
+\label{auslesen-der-vorhersagedaten}
+
 Um die Vorhersagedaten aus einer \textit{Grib} Datei auszulesen, wird
 ein sogenannten \textit{Grib Reader} benötigt. Hierfür wird das schon
 in Abschnitt \ref{grib-reader} erwähnte Kommandozeilenprogramm
@@ -965,15 +967,15 @@ erweitert wird.
   Vorhersagewerte hin überprüft. Dabei werden nur diejenigen
   Positionen betrachtet, deren in Grad angegebene Richtung durch die
   Schrittweise $\alpha$ teilbar ist. Wurden an einer dieser Positionen
-  gültige Werte gefunden kann diese als Vorhersageposition verwendet
+  gültige Werte gefunden, kann diese als Vorhersageposition verwendet
   werden, und der Algorithmus ist fertig. Falls nicht, wird mit
   Schritt 3 weitergemacht.
 
 \end{enumerate}
 
 Bei der Überprüfung einer Position auf gültige Werte wird das Programm
-\textit{degrib} mit den entsprechenden Parametern aufgerufen und
-dessen Ausgabe auf gültige Werte hin überprüft. Die Anzahl dieser
+\textit{degrib} mit den entsprechenden Parametern aufgerufen, dessen
+Ausgabe geparst und anschließend ausgewertet. Die Anzahl dieser
 Programmaufrufe ist dabei mit den bei der Initialisierung festgelegten
 Parametern durch die Obergrenze $(360^{\circ} / \alpha) * (\Delta /
 \delta)$ beschränkt.
@@ -996,11 +998,11 @@ Distanzobergrenze erreicht wurde.
 \lstinputlisting[caption={Binäre Suche der alternativen Vorhersageposition},label=locate]{listings/locate.txt}
 
 In Auflistung \ref{locate} ist die Ausgabe der binären Suche für den
-Spot \textit{Esposende} in Portugal zu sehen. Der Algorithmus wurder
+Spot \textit{Esposende} in Portugal zu sehen. Der Algorithmus wurde
 hier mit einer maximalen Distanz $\Delta$ von 100 Kilometern, und
 einer Richtungsschrittweite von $\alpha = 10^{\circ}$
-initialisiert. Auf halber Distanz wurde bereits eine Position mit
-gültigen Werten gefunden und in den weiteren Iterationen nur noch
+initialisiert. Auf halber Distanz $\Delta$ wurde hier eine Position
+mit gültigen Werten gefunden und in den weiteren Iterationen nur noch
 Positionen in der unteren Hälfte der maximalen Distanz überprüft. In
 Abbildung \ref{locate-esposende} ist die Ursprungsposition des Spots
 mit einer roten Markierung, und die 3,6 Kilometer weiter südlich
@@ -1014,6 +1016,38 @@ gekennzeichnet.
     \label{locate-esposende}
   \end{center}
 \end{figure}
+
+\subsection{Transformation der Vorhersagedaten}
+Nachdem die alternativen Vorhersagepositionen für das \textit{Wave
+  Watch III} Modell ermittelt wurden, können die Vorhersagedaten der
+Spots mit dem Programm \textit{degrib} ausgelesen und in das
+\textit{CSV} Format umgewandelt werden. Die Vorhersagedaten des
+\textit{Wave Watch III} Modells werden dabei an der alternativen
+Vorhersageposition, die Daten des \textit{Global Forecast System} an
+der Ursprungsposition eines Spots erhoben. Hierzu wird das Programm
+\textit{degrib} mit den entsprechenden Parametern pro Spot $n$-mal
+aufgerufen, wobei $n$ für die Anzahl der Vorhersageelemente steht. Die
+übergebenen Parameter legen den Namen der \textit{Grib} Datei und die
+geographische Position, an der die Daten gelesen werden, fest.
+
+Die Ausgabe dieser Programmaufrufe entspricht der aus Auflistung
+\ref{degrib} bekannten Struktur. Bis auf ein einige Feinheiten ist
+diese Ausgabe schon fast in dem gewünschten \textit{CSV} Format. Damit
+die in der Ausgabe enthaltenen Zeitangaben vom \textit{Bulk} Loader
+des \textit{DBMS} interpretiert werden können, müssen diese noch in
+ein durch \textit{ISO 8601} standardisiertes Datums- und Zeitformat
+konvertiert werden. Zudem wird pro Datensatz noch der Primärschlüssel
+des entsprechenden Spots hinzugefügt, damit die Vorhersagedaten im
+späteren Ladevorgang eindeutig mit einem Spot in Verbindung gebracht
+werden können. Diese Transformation wird durch einen Unix Filter
+bewerkstelligt, der die Ausgabe von \textit{degrib} in ein
+\textit{CSV} \footnote{Statt dem in \textit{CSV} Dateien typischen
+  Komma Zeichen '','' dient das, in der Auflistung nicht sichtbare,
+  Tabulator Zeichen ''\textbackslash t'' als Separator.} Format
+konvertiert, das in Auflistung \ref{degrib-csv} zu sehen ist.
+
+\lstinputlisting[caption={Vorhersagedaten aus Mundaka im CSV Format},label=degrib-csv]{listings/degrib-csv.txt}
+
 
 
 \section{Laden der Daten}

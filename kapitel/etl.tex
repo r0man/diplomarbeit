@@ -176,9 +176,9 @@ Nullmeridian und der 30 $^\circ$ nördlich verlaufende Breitenkreis zu
 sehen.
 
 \begin{figure}[h]
-    \includegraphics[width=310px]{bilder/koordinaten}
-    \caption{Die in Breiten- und Längenkreise unterteilte Erdkugel}
-    \label{koordinaten}
+  \includegraphics[width=310px]{bilder/koordinaten}
+  \caption{Die in Breiten- und Längenkreise unterteilte Erdkugel}
+  \label{koordinaten}
 \end{figure}
 
 Die Position eines Punktes auf der Erde wird durch seine geographische
@@ -271,10 +271,6 @@ bisher nur die Daten des globalen Modells.
     \label{wave-watch-grads}
   \end{center}
 \end{figure}
-
-\section{Datenbank Design}
-\subsection{Konzeptionelle Schema}
-\subsection{Physisches Schema}
 
 \section{Das Gridded Binary Datenformat}
 
@@ -1040,21 +1036,171 @@ konvertiert werden. Zudem wird pro Datensatz noch der Primärschlüssel
 des entsprechenden Spots hinzugefügt, damit die Vorhersagedaten im
 späteren Ladevorgang eindeutig mit einem Spot in Verbindung gebracht
 werden können. Diese Transformation wird durch einen Unix Filter
-bewerkstelligt, der die Ausgabe von \textit{degrib} in ein
-\textit{CSV} \footnote{Statt dem in \textit{CSV} Dateien typischen
-  Komma Zeichen '','' dient das, in der Auflistung nicht sichtbare,
-  Tabulator Zeichen ''\textbackslash t'' als Separator.} Format
-konvertiert, das in Auflistung \ref{degrib-csv} zu sehen ist.
+bewerkstelligt, der die Ausgabe von \textit{degrib} in das in
+Auflistung \ref{degrib-csv} zu sehende \textit{CSV} \footnote{Statt
+  dem in \textit{CSV} Dateien typischen Komma Zeichen '','' dient das,
+  in der Auflistung nicht sichtbare Tabulator Zeichen ''\textbackslash
+  t'' als Separator.} Format konvertiert.
 
 \lstinputlisting[caption={Vorhersagedaten aus Mundaka im CSV Format},label=degrib-csv]{listings/degrib-csv.txt}
 
-
+Der hier beschriebene Vorgang wird für alle Spot ausgeführt, und die
+Ausgabe der Transformationen an eine Datei angehängt. Die so
+entstandene \textit{CSV} Datei enthält schließlich alle relevanten
+Vorhersagedaten in einem Format, das im nächsten Schritt vom Bulk
+Loader des \textit{DBMS} geladen werden kann.
 
 \section{Laden der Daten}
-\section{Verbesserungen}
-asas
 
-\texttt{This is Inconsolata.}
+Die Aufgabe des Ladevorgangs besteht darin, die in den vorigen
+Schritten erhobenen Vorhersagedaten in die operative Datenbasis der
+Web Applikation zu integrieren. Nachdem dieser Ladevorgang erfolgreich
+abgeschlossen wurde, stehen der Web Applikation die aktuellen
+Vorhersagedaten zur Verfügung. Der aus zwei Teilschritten bestehende
+Ladevorgang wird im Folgenden beschrieben.
+
+\subsection{Datenbankschema der Vorhersagedaten}
+
+Das Datenbankschema der Web Applikation orientiert sich an den von
+\textit{ActiveRecord} erwarteten Konventionen, die sich hier zum
+Großteil auch bewährt haben. Beim Entwurf des Datenbankschemas wurden
+die üblichen Methoden zur Normalisierung von Relationen angewendet,
+Primär- und Fremdschlüssel definiert, und Indizes zum schnelleren
+Auffinden von Datensätzen erstellt. Da für die \textit{ETL} Prozesse
+nur zwei Tabellen von Interesse sind, wird hier auf die komplette
+Darstellung des Datenbankschemas verzichtet, und nur auf die
+relevanten Relationen eingegangen.
+
+\subsubsection{Referenzielle Integrität in Ruby on Rails}
+Seltsamerweise scheint in der \textit{Ruby on Rails} Community wenig
+Wert auf die \textit{ACID} \nomenclature{ACID}{Atomicity, Consistency,
+  Isolation, Durability} Eigenschaften eines Datenbank Management
+Systems gelegt zu werden, da \textit{ActiveRecord} nach fast 4 Jahren
+immer noch keine Methoden zur Definition von Fremdschlüsseln
+bietet. Auch in der Dokumentation und in Diskussionen werden die
+Methoden zur Gewährleistung referenzieller Integrität meist
+ignoriert. Dieses Defizit wurde durch die Definition entsprechender
+Methoden in der \textit{ActiveRecord} Bibliothek behoben, so dass
+Fremdschlüssel direkt über die API definiert werden können. Diese
+stellen die referenzielle Integrität der Daten sicher. Bei der
+Entwicklung traten so einige Fehler sehr viel schneller zum Vorschein,
+als wenn man auf die Werkzeuge zur Sicherung der referenzielle
+Integrität verzichtet hätte.
+
+\subsubsection{Repräsentation der Vorhersagedaten}
+Die Vorhersagedaten der Spots werden in einer Relation mit dem Namen
+\textit{forecasts} gespeichert, deren Struktur in Tabelle
+\ref{tab:forecasts} zu sehen ist. In dieser Relation wird für jeden
+Vorhersagezeitpunkt ein Datensatz gespeichert. Die Spalten der Tabelle
+enthalten den Fremdschlüssel eines Spots, den Zeitpunkt der Vorhersage
+und die Werte der Vorhersageelemente. Die Attribute
+\textit{spot\textunderscore id} und \textit{valid\textunderscore time}
+bilden den Schlüsselkandidaten der Relation. Pro Spot
+(\textit{spot\textunderscore id}) existiert für jeden
+Vorhersagezeitpunkt (\textit{valid\textunderscore time}) genau ein
+Datensatz in der Tabelle. Um den \textit{ActiveRecord} Konventionen
+gerecht zu werden, und Datensätze der Tabelle aus anderen Tabellen
+einfacher zu referenzieren wird allerdings als künstlicher
+Primärschlüssel das Attribut \textit{id} verwendet. Das Attribut
+\textit{reference\textunderscore time} enthält den Zeitpunkt, an dem
+die beiden Modell erstellt wurden. Die beiden Attribute
+\textit{created\textunderscore at} und \textit{updated\textunderscore
+  at} sind zwei von \textit{ActiveRecord} automatisch verwaltete
+Attribute, welche die Zeitpunkte an dem der Datensatz erstellt und an
+dem er zuletzt aktualisiert wurde enthalten. Alle anderen Attribute
+repräsentieren die Vorhersageelemente der beiden Modelle und enthalten
+deren Werte.
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{lll}
+
+      \toprule
+      \textbf{Spaltenname} & \textbf{Datentyp} & \textbf{Modifikator} \\
+
+      \midrule
+
+      id & integer & not null default \\
+      spot\textunderscore id & integer & not null \\
+      reference\textunderscore time & timestamp with time zone & not null \\
+      valid\textunderscore time & timestamp with time zone & not null \\
+      significant\textunderscore wave\textunderscore height & double precision & - \\
+      mean\textunderscore wave\textunderscore direction & double precision & - \\
+      mean\textunderscore wave\textunderscore period & double precision & - \\
+      peak\textunderscore wave\textunderscore direction & double precision & - \\
+      peak\textunderscore wave\textunderscore period & double precision & - \\
+      wind\textunderscore direction & double precision & - \\
+      wind\textunderscore speed & double precision & - \\
+      temperature & double precision & - \\
+      total\textunderscore cloud\textunderscore cover & double precision & - \\
+      precipitable\textunderscore water & double precision & - \\
+      water\textunderscore equivalent\textunderscore snow\textunderscore depth & double precision & - \\
+      created\textunderscore at & timestamp with time zone & not null \\
+      updated\textunderscore at & timestamp with time zone & not null \\
+
+      \bottomrule
+
+    \end{longtable}
+  }
+
+  \caption{Schema der \textit{forecasts} Datenbanktabelle}
+  \label{tab:forecasts}
+
+\end{table*}
+
+
+\subsection{Bulk Loading}
+
+Normalerweise werden Datensätze einer Datenbank mit den
+standardisierten \textit{UPDATE} und \textit{INSERT} Befehlen der
+\textit{Structured Query Language (SQL)} aktualisiert,
+bzw. hinzugefügt.
+
+asasas
+\cite{postgresql:populate}
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{lll}
+
+      \toprule
+      \textbf{Spaltenname} & \textbf{Datentyp} & \textbf{Modifikator} \\
+
+      \midrule
+      id & integer & not null default  \\
+      spot\textunderscore id & integer & not null \\
+      latitude & double precision & not null \\
+      longitude & double precision & not null \\
+      element & character varying(255) & not null \\
+      unit & character varying(255) & not null \\
+      reference\textunderscore time & timestamp with time zone & not null \\
+      valid\textunderscore time & timestamp with time zone & not null \\
+      value & double precision & - \\
+
+      \bottomrule
+
+    \end{longtable}
+  }
+
+  \caption{Schema der \textit{grib\textunderscore messages} Datenbanktabelle}
+  \label{tab:grib_messages}
+
+\end{table*}
+
+% Im ersten Schritt werden die Vorhersagedaten unter die
+% Kontrolle des Datenbank Management Systems gebracht. Die in der
+% Transformationsphase erstellte \textit{CSV} Datei wird dabei mit dem
+% \textit{Bulk Loader} des \textit{DBMS} in einen temporären Bereich der
+% Datenbank geladen, die sogenannte \textit{Staging Area}. Der zweite
+% Schritt bringt die operative Datenbasis der Web Applikation auf den
+% neusten Stand, indem bereits vorhandene Datensätze aktualisiert und
+% neue, noch nicht existierende hinzugefügt werden.
+
+\section{Verbesserungen}
 
 %%% Local Variables:
 %%% mode: latex

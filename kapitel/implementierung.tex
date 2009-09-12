@@ -43,10 +43,9 @@ erleichtern den Einstieg erheblich.  Nach der im Dezember 2008
 angekündigten Verschmelzung mit \textit{Merb}, dem zweitgrößten
 Framework zur Entwicklung von Web Applikationen in \textit{Ruby}, ist
 die Entscheidung \textit{Rails} für diese Anwendung zu verwenden noch
-zusätzlich untermauert worden. \cite{AgileRails06} asa
+zusätzlich untermauert worden. 
 
-\subsubsection{Don't Repeat Yourself und Convention over Configuration
-  in ActiveRecord}
+\subsubsection{Don't Repeat Yourself}
 
 \textit{Giving a computer two contradictory pieces of knowledge was
   Captain James T. Kirk's preferred way of disabling a marauding
@@ -54,15 +53,16 @@ zusätzlich untermauert worden. \cite{AgileRails06} asa
 \cite{Hunt99}[S.49] eine Diskussion über das \textit{Don't Repeat
   Yourself} Prinzip eingeleitet. Die Duplikation von Informationen
 wird dort als eines der grundlegenden Probleme im Bereich der
-Softwareentwicklung identifiziert. Mit Information ist hier nicht nur
-der ohnehin zu normalisierende Inhalt von Datenbanken gemeint, sondern
-auch Konfigurationsdaten und Programmcode.
+Softwareentwicklung identifiziert. Mit Information ist nicht nur der
+ohnehin zu normalisierende Inhalt von Datenbanken gemeint, sondern
+auch Konfigurationsdaten und vor allem Programmcode.
 
+\subsubsection{Convention over Configuration in ActiveRecord}
 In \textit{Ruby on Rails} wird die Duplikation von Informationen vor
 allem durch die Anwendung von \textit{Convention over Configuration}
-vermieden, bzw. versucht auf ein Minimum reduziert. Das klassiche
+vermieden, bzw. versucht auf ein Minimum reduziert. Das klassische
 Vorzeigebeispiel ist hier die Bibliothek \textit{ActiveRecord}, der
-von \textit{Ruby on Rails} verwendeter \textit{objekt-relationaler
+von \textit{Ruby on Rails} verwendeter \textit{objekt-relationale
   Mapper (ORM)}. Dieser ist dafür zuständig in einer
 Programmiersprache verwendete Objekte auf das Schema einer
 relationalen Datenbank abzubilden. Dadurch können Daten persistent

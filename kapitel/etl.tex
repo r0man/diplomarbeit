@@ -1087,13 +1087,12 @@ Entwicklung traten so einige Fehler sehr viel schneller zum Vorschein,
 als wenn man auf die Werkzeuge zur Sicherung der referenzielle
 Integrität verzichtet hätte.
 
-\subsubsection{Repräsentation der Vorhersagedaten}
+\subsubsection{Repräsentation der Vorhersagedaten in der Datenbank}
 Die Vorhersagedaten der Spots werden in einer Relation mit dem Namen
 \textit{forecasts} gespeichert, deren Struktur in Tabelle
-\ref{tab:forecasts} zu sehen ist. In dieser Relation wird für jeden
-Vorhersagezeitpunkt ein Datensatz gespeichert. Die Spalten der Tabelle
-enthalten den Fremdschlüssel eines Spots, den Zeitpunkt der Vorhersage
-und die Werte der Vorhersageelemente. Die Attribute
+\ref{tab:forecasts} zu sehen ist. Die Spalten der Tabelle enthalten
+den Fremdschlüssel eines Spots, den Zeitpunkt der Vorhersage und die
+Werte der Vorhersageelemente. Die Attribute
 \textit{spot\textunderscore id} und \textit{valid\textunderscore time}
 bilden den Schlüsselkandidaten der Relation. Pro Spot
 (\textit{spot\textunderscore id}) existiert für jeden
@@ -1103,13 +1102,14 @@ gerecht zu werden, und Datensätze der Tabelle aus anderen Tabellen
 einfacher zu referenzieren wird allerdings als künstlicher
 Primärschlüssel das Attribut \textit{id} verwendet. Das Attribut
 \textit{reference\textunderscore time} enthält den Zeitpunkt, an dem
-die beiden Modell erstellt wurden. Die beiden Attribute
+die beiden Modelle erstellt wurden, und ist im Moment bei beiden
+Modellen identisch. Die beiden Attribute
 \textit{created\textunderscore at} und \textit{updated\textunderscore
   at} sind zwei von \textit{ActiveRecord} automatisch verwaltete
 Attribute, welche die Zeitpunkte an dem der Datensatz erstellt und an
 dem er zuletzt aktualisiert wurde enthalten. Alle anderen Attribute
-repräsentieren die Vorhersageelemente der beiden Modelle und enthalten
-deren Werte.
+repräsentieren die Vorhersageelemente der beiden Modelle und nehmen
+die mit \textit{degrib} ausgelesenen Werte auf.
 
 \begin{table*}[h]
   \centering
@@ -1150,6 +1150,46 @@ deren Werte.
 
 \end{table*}
 
+\subsubsection{Aktualisierung der Vorhersagedaten durch einzelne SQL
+  Befehle}
+Eine offensichtliche Methode die Vorhersagedaten mit \textit{SQL}
+Befehlen zu aktualisieren, ist durch die Datensätzen der \textit{CSV}
+Datei zu iterieren, und für jeden Datensatz eine \textit{UPDATE}
+Operation, gefolgt von einer konditionalen \textit{INSERT} Operation
+auszuführen. Da für einen bestimmten Vorhersagezeitpunkt eines Spots
+bereits ein Datensatz aus einer früheren Modellberechnung existieren
+kann, muss zunächst ein \textit{UPDATE} Befehl ausgeführt
+werden. Durch die Angabe des Schlüsselkandidaten in der \textit{WHERE}
+Klausel des Befehls wird die Menge der zu aktualisierenden Datensätze
+auf genau einen beschränkt. Das Ergebnis des Befehls ist die Anzahl
+der aktualisierten Datensätze und beträgt entweder 0 oder 1. Wurde ein
+Datensatz geändert kann auf die folgende \textit{INSERT} Operation
+verzichtet, und mit dem nächsten Datensatz der \textit{CSV} Datei
+weitergemacht werden. Falls die \textit{UPDATE} Operation nicht
+erfolgreich war, wird der neue Datensatz mit einem \textit{INSERT}
+Befehl hinzugefügt.
+
+Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
+\textit{DBMS} im \textit{Worst-Case} Szenario $2 * n$ Befehle
+ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
+überhaupt keine Vorhersagedaten in der Datenbank sind. Da die
+Vorhersagezeitpunkte zweier aufeinander folgenden Modellberechnungen
+immer nur um 6 Stunden \footnote{in einem 3-stündigen
+  Vorhersageintervall} voneinander abweichen, reicht für den Großteil
+der Datensätze eine \textit{UPDATE} Operation aus. Eine zusätzliche
+\textit{INSERT} Operation ist nur für diejenigen Datensätze nötig, die
+in dem abweichenden Zeitraum liegen. Im Durchschnitt liegt die Anzahl
+der Befehle somit leicht über $n$.
+
+Die hier beschriebene Methode ist selbst mit möglichen Verbesserungen
+wie z.B. der Verwendung von \textit{Prepared Statements}, dem
+Ausschalten von \textit{Auto-Commit} und der Einbettung aller Befehle
+in eine einzelne Transaktion nicht sehr effizient. Die Anzahl der
+auszuführenden Befehle steigt hier mit der Anzahl der Datensätze, und
+der vom \textit{DBMS} betriebene Overhead beim Ausführen der einzelnen
+Befehle wirkt sich negativ auf die Performanz aus. Stattdessen wird
+ein Verfahren angewendet, bei dem die Anzahl der Befehle konstant
+bleibt und aus dem Bereich des \textit{Data Warehousing} bekannt ist.
 
 \subsection{Bulk Loading}
 

@@ -1051,7 +1051,6 @@ Vorhersagedaten in einem Format, das im nächsten Schritt vom Bulk
 Loader des \textit{DBMS} geladen werden kann.
 
 \section{Laden der Daten}
-
 Die Aufgabe des Ladevorgangs besteht darin, die in den vorigen
 Schritten erhobenen Vorhersagedaten in die operative Datenbasis der
 Web Applikation zu integrieren. Nachdem dieser Ladevorgang erfolgreich
@@ -1060,7 +1059,6 @@ Vorhersagedaten zur Verfügung. Der aus zwei Teilschritten bestehende
 Ladevorgang wird im Folgenden beschrieben.
 
 \subsection{Datenbankschema der Vorhersagedaten}
-
 Das Datenbankschema der Web Applikation orientiert sich an den von
 \textit{ActiveRecord} erwarteten Konventionen, die sich hier zum
 Großteil auch bewährt haben. Beim Entwurf des Datenbankschemas wurden
@@ -1185,21 +1183,34 @@ Die hier beschriebene Methode ist selbst mit möglichen Verbesserungen
 wie z.B. der Verwendung von \textit{Prepared Statements}, dem
 Ausschalten von \textit{Auto-Commit} und der Einbettung aller Befehle
 in eine einzelne Transaktion nicht sehr effizient. Die Anzahl der
-auszuführenden Befehle steigt hier mit der Anzahl der Datensätze, und
-der vom \textit{DBMS} betriebene Overhead beim Ausführen der einzelnen
-Befehle wirkt sich negativ auf die Performanz aus. Stattdessen wird
-ein Verfahren angewendet, bei dem die Anzahl der Befehle konstant
-bleibt und aus dem Bereich des \textit{Data Warehousing} bekannt ist.
+auszuführenden Befehle steigt hier mit der Zahl der Datensätze, und
+der vom \textit{DBMS} betriebene Overhead wirkt sich negativ auf die
+Performanz aus. In den folgenden zwei Abschnitten wird ein
+performanteres Verfahren zur Aktualisierung der Vorhersagedaten
+vorgestellt, das unter anderem auch im Bereich des \textit{Data
+  Warehousing} eingesetzt wird.
 
 \subsection{Bulk Loading}
 
-Normalerweise werden Datensätze einer Datenbank mit den
-standardisierten \textit{UPDATE} und \textit{INSERT} Befehlen der
-\textit{Structured Query Language (SQL)} aktualisiert,
-bzw. hinzugefügt.
+Das grundlegende Problem der zuvor beschriebenen Methode besteht
+darin, dass die abgesetzten \textit{SQL} Befehle tupelorientiert
+arbeiten. Die \textit{SQL} Befehle zur Manipulation von Tupeln können
+aber auch mengenorientiert eingesetzt werden, so dass pro Befehl mehr
+als nur ein Tupel geändert bzw. hinzugefügt wird. Voraussetzung
+hierfür ist aber, dass das \textit{DBMS} auf alle zu verarbeitenden
+Daten zugreifen kann. Die war bei der vorigen Methode nicht der Fall,
+da das \textit{DBMS} bei jeder Operation nur einen einzelnen Datensatz
+aus der Eingabe zu Gesicht bekam.
 
-asasas
-\cite{postgresql:populate}
+In diesem Schritt wird beschrieben wie die Vorhersagedaten der
+\textit{CSV} Datei effizient unter die Kontrolle des Datenbank
+Management Systems gebracht werden. Die Daten werden zunächst in einen
+temporären Bereich der Datenbank geladen, der sogenannte
+\textit{Staging Area}. Von dort aus werden sie in einem weiteren
+Schritt in die operative Datenbasis der Web Applikation überführt. Die
+hier verwendete \textit{Staging Area} besteht aus einer einzigen, in
+Tabelle \ref{tab:grib_messages} zu sehenden Relation, deren Attribute
+die Spalten der \textit{CSV} Datei widerspiegeln.
 
 \begin{table*}[h]
   \centering
@@ -1231,6 +1242,61 @@ asasas
 
 \end{table*}
 
+Bevor die Daten in diese Tabelle geladen werden wird diese zunächst
+von den Datensätzen eines vorherigen Ladevorgangs
+bereinigt. Anschließend könnten die Vorhersagedaten mit
+\textit{INSERT} Operationen in diese Relation eingefügt werden. Auch
+hier würde sich die Verwendung eines \textit{Prepared Statement}
+anbieten, da eine hohe Anzahl sich ähnelnder Befehle verarbeitet
+werden müsste.
+
+Im Bereich des \textit{Data Warehousing} wird bei ähnlichen Problemen
+allerdings immer auf die sogenannten \textit{Bulk Loader} der
+verwendeten Datenbank Management Systeme verwiesen. Dies sind meist
+datenbankspezifische Befehle oder Programme, mit denen größere
+Datenmengen effizienter als mit den standardisierten \textit{SQL}
+Befehlen geladen werden können. Der \textit{Bulk Loader} von
+\textit{PostgreSQL} ist durch die \textit{COPY} Befehlsfamilie
+implementiert, mit der Daten im Text-, \textit{CSV-} oder Binärformat
+importiert bzw. exportiert werden können. Der Befehl aus Auflistung
+\ref{lst:copy} veranlasst \textit{PostgreSQL} dazu, die über den
+Standard Eingabekanal gelesenen Datensätze in die Tabelle
+\textit{grib\textunderscore messages} zu importieren. Das Ende der
+Eingabe muss dabei durch eine Zeile signalisiert werden, die aus den
+beiden Zeichen ''\textbackslash .'' und einem weiteren Zeilenumbruch
+besteht.
+
+\begin{lstlisting}[captionpos=b, caption=Befehl zum Import von Datensätzen in \textit{PostgreSQL}, label=lst:copy]
+COPY grib_messages (
+  spot_id, latitude, longitude, element, unit, 
+  reference_time, valid_time, value
+) FROM STDIN;
+\end{lstlisting}
+
+Dieser Befehl wird mit \textit{PostgreSQL}'s Kommandozeilenprogramm
+\textit{psql} ausgeführt und die Datensätze der \textit{CSV} Datei
+über den Standard Eingabekanal weitergereicht. Im Abschnitt
+\textit{Populating a Database} \cite{postgresql:populate} der
+\textit{PostgreSQL} Dokumentation sind weitere nützliche Hinweise zu
+finden, die beim Verarbeiten größerer Datenmengen zu beachten
+sind. Auf der Zielrelation definierte Indizes, \textit{Check
+  Constraints} und \textit{Trigger} wirken sich ebenfalls negativ auf
+die Performanz des Ladevorgangs aus. Hier würde es sich zum Beispiel
+anbieten Indizes vor dem Laden zu entfernen und nachdem die Daten
+geladen wurden neu zu erstellen.
+
+
+% und
+% dessen Ausführen von \textit{INSERT} Operationen könnten die
+% Vorhersagedaten nun in diese Relation eingefügt werden.
+
+% \cite{postgresql:populate}
+
+% Das im Folgenden
+% beschriebene Verfahren versucht dies zu 
+
+%In der Dokumentation von PostgreSQL werden in \cite{postgresql:populate}
+
 % Im ersten Schritt werden die Vorhersagedaten unter die
 % Kontrolle des Datenbank Management Systems gebracht. Die in der
 % Transformationsphase erstellte \textit{CSV} Datei wird dabei mit dem
@@ -1239,6 +1305,7 @@ asasas
 % Schritt bringt die operative Datenbasis der Web Applikation auf den
 % neusten Stand, indem bereits vorhandene Datensätze aktualisiert und
 % neue, noch nicht existierende hinzugefügt werden.
+
 
 \section{Verbesserungen}
 

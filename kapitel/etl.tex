@@ -1074,16 +1074,15 @@ Seltsamerweise scheint in der \textit{Ruby on Rails} Community wenig
 Wert auf die \textit{ACID} \nomenclature{ACID}{Atomicity, Consistency,
   Isolation, Durability} Eigenschaften eines Datenbank Management
 Systems gelegt zu werden, da \textit{ActiveRecord} nach fast 4 Jahren
-immer noch keine Methoden zur Definition von Fremdschlüsseln
-bietet. Auch in der Dokumentation und in Diskussionen werden die
-Methoden zur Gewährleistung referenzieller Integrität meist
-ignoriert. Dieses Defizit wurde durch die Definition entsprechender
+immer noch keine \textit{API} zur Definition von Fremdschlüsseln
+bietet. Dieses Defizit wurde durch die Definition entsprechender
 Methoden in der \textit{ActiveRecord} Bibliothek behoben, so dass
-Fremdschlüssel direkt über die API definiert werden können. Diese
-stellen die referenzielle Integrität der Daten sicher. Bei der
-Entwicklung traten so einige Fehler sehr viel schneller zum Vorschein,
-als wenn man auf die Werkzeuge zur Sicherung der referenzielle
-Integrität verzichtet hätte.
+Fremdschlüssel direkt über die \textit{API} definiert werden
+können. Diese stellen die referenzielle Integrität auf der
+Datenbankebene sicher. Bei der Entwicklung der Web Applikation traten
+so einige Fehler sehr viel schneller zum Vorschein, als wenn man auf
+die Werkzeuge zur Sicherung referenzieller Integrität verzichtet
+hätte.
 
 \subsubsection{Repräsentation der Vorhersagedaten in der Datenbank}
 Die Vorhersagedaten der Spots werden in einer Relation mit dem Namen
@@ -1097,17 +1096,19 @@ bilden den Schlüsselkandidaten der Relation. Pro Spot
 Vorhersagezeitpunkt (\textit{valid\textunderscore time}) genau ein
 Datensatz in der Tabelle. Um den \textit{ActiveRecord} Konventionen
 gerecht zu werden, und Datensätze der Tabelle aus anderen Tabellen
-einfacher zu referenzieren wird allerdings als künstlicher
+einfacher zu referenzieren, wird allerdings als künstlicher
 Primärschlüssel das Attribut \textit{id} verwendet. Das Attribut
 \textit{reference\textunderscore time} enthält den Zeitpunkt, an dem
-die beiden Modelle erstellt wurden, und ist im Moment bei beiden
-Modellen identisch. Die beiden Attribute
-\textit{created\textunderscore at} und \textit{updated\textunderscore
-  at} sind zwei von \textit{ActiveRecord} automatisch verwaltete
-Attribute, welche die Zeitpunkte an dem der Datensatz erstellt und an
-dem er zuletzt aktualisiert wurde enthalten. Alle anderen Attribute
-repräsentieren die Vorhersageelemente der beiden Modelle und nehmen
-die mit \textit{degrib} ausgelesenen Werte auf.
+die beiden Modelle erstellt wurden. Da das \textit{Global Forecast
+  System} und das \textit{Wave Watch III} Modell im Moment zu den
+selben Zeitpunkten erstellt wird, gilt dieses Attribut für beide
+Modelle. Die beiden Attribute \textit{created\textunderscore at} und
+\textit{updated\textunderscore at} sind zwei von \textit{ActiveRecord}
+automatisch verwaltete Attribute, welche die Zeitpunkte an dem der
+Datensatz erstellt und an dem er zuletzt aktualisiert wurde
+enthalten. Alle anderen Attribute repräsentieren die
+Vorhersageelemente der beiden Modelle und nehmen die mit
+\textit{degrib} ausgelesenen Werte auf.
 
 \begin{table*}[h]
   \centering
@@ -1148,59 +1149,78 @@ die mit \textit{degrib} ausgelesenen Werte auf.
 
 \end{table*}
 
-\subsubsection{Aktualisierung der Vorhersagedaten durch einzelne SQL
-  Befehle}
-Eine offensichtliche Methode die Vorhersagedaten mit \textit{SQL}
-Befehlen zu aktualisieren, ist durch die Datensätzen der \textit{CSV}
-Datei zu iterieren, und für jeden Datensatz eine \textit{UPDATE}
-Operation, gefolgt von einer konditionalen \textit{INSERT} Operation
-auszuführen. Da für einen bestimmten Vorhersagezeitpunkt eines Spots
-bereits ein Datensatz aus einer früheren Modellberechnung existieren
-kann, muss zunächst ein \textit{UPDATE} Befehl ausgeführt
-werden. Durch die Angabe des Schlüsselkandidaten in der \textit{WHERE}
-Klausel des Befehls wird die Menge der zu aktualisierenden Datensätze
-auf genau einen beschränkt. Das Ergebnis des Befehls ist die Anzahl
-der aktualisierten Datensätze und beträgt entweder 0 oder 1. Wurde ein
+\subsection{Tupelorientierte Aktualisierung}
+
+Eine offensichtliche Methode die Vorhersagedaten auf den neusten Stand
+zu bringen ist die \textit{tupelorientierte} Aktualisierung mit
+\textit{SQL}. Tupelorientiert deshalb, weil die Datensätze der
+\textit{CSV} Datei nacheinander verarbeitet werden, und pro
+Verarbeitungsschritt genau ein Tupel der Zielrelation geändert
+bzw. hinzugefügt wird. 
+
+Bei der Aktualisierung wird über die Datensätzen der \textit{CSV}
+Datei iteriert, und für jeden Datensatz ein \textit{UPDATE} Befehl,
+gefolgt von einem konditionalen \textit{INSERT} Befehl ausgeführt. Da
+für einen bestimmten Vorhersagezeitpunkt eines Spots bereits ein
+Datensatz aus einer früheren Modellberechnung existieren kann, wird
+zunächst ein \textit{UPDATE} Befehl ausgeführt. Durch die Angabe des
+Schlüsselkandidaten in der \textit{WHERE} Klausel des Befehls wird die
+Menge der zu aktualisierenden Datensätze auf genau einen
+beschränkt. Das Ergebnis des ausgeführten Befehls ist die Anzahl der
+aktualisierten Datensätze und beträgt entweder 0 oder 1. Wurde ein
 Datensatz geändert kann auf die folgende \textit{INSERT} Operation
 verzichtet, und mit dem nächsten Datensatz der \textit{CSV} Datei
 weitergemacht werden. Falls die \textit{UPDATE} Operation nicht
 erfolgreich war, wird der neue Datensatz mit einem \textit{INSERT}
-Befehl hinzugefügt.
+Befehl hinzugefügt. Nachdem alle Datensätze der Eingabe verarbeitet
+wurden ist die Zielrelation auf dem neusten Stand.
 
+\subsubsection{Abschätzung der auszuführenden Befehle}
 Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
 \textit{DBMS} im \textit{Worst-Case} Szenario $2 * n$ Befehle
 ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
-überhaupt keine Vorhersagedaten in der Datenbank sind. Da die
-Vorhersagezeitpunkte zweier aufeinander folgenden Modellberechnungen
-immer nur um 6 Stunden \footnote{in einem 3-stündigen
-  Vorhersageintervall} voneinander abweichen, reicht für den Großteil
-der Datensätze eine \textit{UPDATE} Operation aus. Eine zusätzliche
-\textit{INSERT} Operation ist nur für diejenigen Datensätze nötig, die
-in dem abweichenden Zeitraum liegen. Im Durchschnitt liegt die Anzahl
-der Befehle somit leicht über $n$.
+überhaupt keine Vorhersagedaten in der Datenbank enthalten sind. Da
+die Vorhersagezeitpunkte zweier aufeinander folgenden
+Modellberechnungen immer nur um 6 Stunden \footnote{in einem
+  3-stündigen Vorhersageintervall} voneinander abweichen, reicht für
+die Mehrheit der Datensätze eine \textit{UPDATE} Operation aus. Eine
+zusätzliche \textit{INSERT} Operation ist nur für diejenigen
+Datensätze notwendig, die in dem abweichenden Zeitraum liegen. Im
+Durchschnitt liegt die Anzahl der Befehle somit leicht über $n$. Die
+Anzahl der auszuführenden Befehle ist hier mit der Zahl der Datensätze
+gekoppelt, und der vom \textit{DBMS} betriebene Overhead beim
+Ausführen der vielen Befehle wirkt sich negativ auf die Performanz
+aus.
 
-Die hier beschriebene Methode ist selbst mit möglichen Verbesserungen
-wie z.B. der Verwendung von \textit{Prepared Statements}, dem
+\subsubsection{Verbesserungsvorschläge}
+Das hier beschriebene Verfahren eignet sich vor allem für Anwendungen
+bei denen nur eine geringe Datenmenge zu verarbeiten, und die
+Performanz des Ladevorgangs nicht kritisch ist. Der Vorteil der
+tupelorientierten Aktualisierung liegt in deren Implementierung. Diese
+ist meist \textit{straight forward} und einfacher als auf Performanz
+getrimmten Varianten.
+
+Bevor im nächsten Abschnitt, ein aus dem Bereich des \textit{Data
+  Warehousing} bekanntes Verfahren vorgestellt wird, sollen hier noch
+einige Verbesserungsvorschläge gemacht werden. Um die Laufzeit zu
+verbessern sollte die Dokumentation des verwendeten \textit{DBMS}
+herangezogen und mögliche Optimierungsvorschläge evaluiert
+werden. Durch die Verwendung von \textit{Prepared Statements}, dem
 Ausschalten von \textit{Auto-Commit} und der Einbettung aller Befehle
-in eine einzelne Transaktion nicht sehr effizient. Die Anzahl der
-auszuführenden Befehle steigt hier mit der Zahl der Datensätze, und
-der vom \textit{DBMS} betriebene Overhead wirkt sich negativ auf die
-Performanz aus. In den folgenden zwei Abschnitten wird ein
-performanteres Verfahren zur Aktualisierung der Vorhersagedaten
-vorgestellt, das unter anderem auch im Bereich des \textit{Data
-  Warehousing} eingesetzt wird.
+in eine einzelne Transaktion kann die Performanz meist noch verbessert
+werden.
 
 \subsection{Bulk Loading}
 
 Das grundlegende Problem der zuvor beschriebenen Methode besteht
 darin, dass die abgesetzten \textit{SQL} Befehle tupelorientiert
-arbeiten. Die \textit{SQL} Befehle zur Manipulation von Tupeln können
-aber auch mengenorientiert eingesetzt werden, so dass pro Befehl mehr
-als nur ein Tupel geändert bzw. hinzugefügt wird. Voraussetzung
-hierfür ist aber, dass das \textit{DBMS} auf alle zu verarbeitenden
-Daten zugreifen kann. Die war bei der vorigen Methode nicht der Fall,
-da das \textit{DBMS} bei jeder Operation nur einen einzelnen Datensatz
-aus der Eingabe zu Gesicht bekam.
+arbeiten. Die \textit{SQL} Befehle zur Manipulation von Datensätzen
+können aber auch mengenorientiert eingesetzt werden, so dass pro
+Befehl mehr als nur ein Tupel geändert bzw. hinzugefügt
+wird. Voraussetzung hierfür ist aber, dass das \textit{DBMS} auf alle
+zu verarbeitenden Daten zugreifen kann. Dies war bei der vorigen
+Methode nicht der Fall, da das \textit{DBMS} bei jeder Operation nur
+einen einzelnen Datensatz aus der Eingabe zu Gesicht bekam.
 
 In diesem Schritt wird beschrieben wie die Vorhersagedaten der
 \textit{CSV} Datei effizient unter die Kontrolle des Datenbank

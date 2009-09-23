@@ -2,8 +2,144 @@
 
 \section{Visualisierung von Wetter- und Wellendaten}
 
-\section{Data Mining Verfahren}
-\section{Kooperation mit Low Pressure}
+\section{Verbesserung der Vorhersagen}
+Die aus dem \textit{Global Forecast System} und dem \textit{Wave Watch
+  III} Modell stammenden Wetter- und Wellenvorhersagen beruhen zwar
+auf einem numerisch berechneten Wettermodell, können aber nur bedingt
+zur Vorhersage der tatsächlichen Surfbedingungen verwendet werden. In
+Kombination mit Erfahrungswerten und der Kenntnis lokaler
+Gegebenheiten dienen sie eher als Indikator zur Einschätzung dieser
+Bedingungen. In welcher Verbindung die Vorhersagewerte mit der
+Qualität der vor Ort brechenden Wellen stehen ist unklar und variiert
+wohl von Spot zu Spot. Zudem kommt, dass wegen der groben
+Gitterauflösung der Modelle die Vorhersagewerte teilweise aus der
+näheren Umgebung eines Spots herangezogen werden müssen. Trotzdem sind
+aber vor allem die berechnete Wellenhöhe, die Wellenperiode, die
+Windstärke und die Windrichtung wichtige Indizien, die bei der
+Einschätzung der Surfbedingungen eine große Rolle spielen. Was noch
+fehlt ist eine Komponente mit der die lokalen Gegebenheiten eines Surf
+Spots mit ins Spiel gebracht werden. Außerdem wäre es wünschenswert
+eine Aussage über die Qualität der Surfbedingungen an einem Spot
+treffen zu können.
+
+\subsubsection{Beobachtung lokaler Gegebenheiten}
+Würde man die Qualität der Surfbedingungen an einem Spot mit den dort
+prognostizierten Wetter- und Wellenvorhersagen über einen längeren
+Zeitraum hinweg vergleichen, könnte man wahrscheinlich bestimmte
+Zusammenhänge feststellen. Beispielsweise ist es durchaus üblich, dass
+zwei benachbarte Spots sehr ähnlichen Wetter- und Wellenverhältnissen
+ausgesetzt sind, die Qualität der brechenden Wellen sich aber
+erheblich unterscheidet. Dies kann z.B. daran liegen, dass der eine
+Spot besser bei Flut und der andere besser bei Ebbe bricht. Manche
+Spots fangen erst bei einer bestimmten Wellenhöhe an zu brechen,
+andere hingegen sind bei zu großen Wellen nicht mehr surfbar, da die
+Wellen sofort in sich zusammenfallen. Vor Ort ansässige Surfer,
+sogenannte \textit{Locals}, haben oft ein feines Gespühr für diese
+Zusammenhänge, was wohl auch auf deren langjährige Beobachtungen
+zurückzuführen ist. 
+
+Diese Beobachtungen von den Benutzern der Web Applikation vornehmen zu
+lassen ist eher unrealistisch. Zum einen sind solche Beobachtungen
+sehr aufwendig, und zum anderen müsste sichergestellt sein, dass diese
+diszipliniert und nach den selben Kriterien durchgeführt werden. Zudem
+stellt sich die Frage wie diese Beobachtungen maschinell verwertet und
+in Verbindung mit den Vorhersagen gebracht werden können.
+
+\subsubsection{Abstimmung durch die Benutzer}
+Eine im Rahmen dieser Arbeit leider nicht weiter verfolgbare Idee,
+welche diese Problematik vielleicht lösen könnte, wäre die Einführung
+eines Abstimmungssystems in Kombination mit Data Mining
+Verfahren. Informiert sich ein Benutzer auf der Webseite über die
+Surfbedingungen an einem bestimmten Spot, könnte man ihn zu den
+Bedingungen in den letzten Tagen befragen. Mit etwas Glück kann es
+nämlich durchaus sein, dass der Benutzer dort surfen war und eine
+Aussage über die damalige Qualität der Wellen treffen kann. Diese
+Befragung sollte benutzerfreundlich und schnell von statten gehen,
+damit sich die Besucher nicht belästigt fühlen. Hier würde sich
+z.B. eine Bewertungsskala von 1 bis 5 ''Sternen'' mit einer Auswahl
+des entsprechenden Zeitpunktes anbieten. Die so erhobenen Datensätze
+sollten Informationen über den Spot, den Zeitpunkt, die Qualität der
+Wellen und den Benutzer (optional) enthalten. Sammelt man viele dieser
+Bewertungen kann eine Aussage darüber getroffen werden, wie gut die
+Surfbedingungen in der Vergangenheit waren. Außerdem könnte man mit
+diesen Informationen z.B. die besten Spots in einer Region bestimmen
+oder die Konsistenz der Surfbedingungen an einem Spot ermitteln. Eine
+viel interessantere Verwendung dieser Daten wäre aber, sie für die
+Bewertung von zukünftigen Surfbedingungen einzusetzen.
+
+\subsubsection{Bewertung zukünftiger Surfbedingungen}
+Es wäre wünschenswert, wenn man einem Benutzer zu den Wetter- und
+Wellenvorhersagen auch noch eine Einschätzung zur Qualität der
+Surfbedingungen geben könnte, in der die lokalen Gegebenheiten eines
+Spots mit berücksichtigt sind. Diese Einschätzung sollte dem Benutzer
+in der ihm bekannten Bewertungsskala aus dem Abstimmungssystem
+präsentiert werden. Je besser die Surfbedingungen, desto mehr
+''Sterne''. Der einer Bewertung zugrunde liegende Ansatz besteht in
+der Vermutung, dass ähnliche Wetter- und Wellenvorhersagen auch
+ähnliche Surfbedingungen provozieren. Wurden für einen Zeitpunkt in
+der Vergangenheit positive Bewertung abgegeben, sind die
+Surfbedingungen zu einem zukünftigen Zeitpunkt mit ähnlichen Wetter-
+und Wellenverhältnissen vielleicht auch gut. Durch den Vergleich der
+historischen Vorhersagedaten mit denen der Zukunft, und einer
+Strategie aus den abgegebenen Bewertungen welche für die Zukunft
+vorherzusagen, könnte man in einigen Fällen vielleicht sogar
+vernünftige Ergebnissen erzielen.
+
+\subsubsection{Bewertungen als Klassifikationsproblem}
+Die hier zu lösende Aufgabe ist ein sogenanntes Klassifikationsproblem
+bei dem die Objekte einer Menge, deren Klassenzugehörigkeit nicht
+bekannt ist, einer bestimmten Klasse zugeordnet werden müssen. Als
+Klassifikator bezeichnet man den Algorithmus oder das Verfahren nach
+dem diese Zuordnung durchgeführt wird. Klassen würden hier durch die
+in mehrere Abschnitte unterteilte Bewertungsskala repräsentiert,
+Objekte durch die Vorhersagen der Spots. Die Bewertung der
+Surfbedingungen ist somit davon abhängig, welcher Klasse eine
+Vorhersage zugeordnet wird. Wüsste man für alle Spots wie sich die
+Variablen einer Vorhersage auf die Qualität der Wellen auswirken,
+könnte man für jeden Spot einen Klassifikator konstruieren, der
+idealerweise auch noch die lokalen Gegebenheiten mit einbezieht. Die
+Vorschriften wie solch ein Klassifikator jedoch konstruiert wird sind
+jedoch meistens nicht bekannt, bzw. nur mit sehr hohem Aufwand zu
+ermitteln.
+
+\subsubsection{Anwendung von Data Mining Verfahren}
+Unter \textit{Data Mining} versteht man die Anwendung verschiedenster
+Algorithmen und Verfahren auf einem Datenbestand, mit dem Ziel meist
+noch nicht bekannte Muster zu entdecken. In \cite{Seagaran2007} ist
+nicht nur eine Zusammenfassung der in diesem Gebiet häufig verwendeten
+Algorithmen zu finden, sondern auch eine Diskussion über deren Vor-
+und Nachteile bei der Anwendung auf repräsentative Probleme. Einige
+der dort vorgestellten Algorithmen könnten dazu verwendet werden
+Zusammenhänge zwischen den Vorhersagen, den lokalen Gegebenheiten und
+der Qualität der Surfbedingungen zu finden und daraus zukünftige
+Bewertungen abzuleiten. Der unter dem Namen \textit{Support Vector
+  Machine} bekannte Algorithmus scheint ein viel versprechender
+Kandidat zu sein, um das hier beschriebene Klassifikationsproblem zu
+lösen. Zum einen ist der Algorithmus bei der Klassifikation von
+Objekten im Vergleich zu anderen Algorithmen sehr schnell, und zum
+anderen arbeitet er auch bei einer hohen Anzahl von Dimensionen recht
+zuverlässig. Mit Dimensionen sind bei dem hier betrachteten Problem
+die Vorhersageelemente der beiden Wettermodelle gemeint. Damit man den
+Algorithmus überhaupt einsetzen kann benötigt man sogenannte
+Trainingsdaten. Diese Daten werden bei der Initialisierung des
+Algorithmus analysiert und spielen bei einer späteren Klassifikation
+der Objekte eine Rolle. Für jeden Spot würde man hier eine Instanz des
+Algorithmus initialisieren, und diese Instanz mit den historischen
+Vorhersagedaten und den durchschnittliche Bewertungen des Spots
+trainieren. Werden neue Vorhersagedaten geladen, könnte man die
+Vorhersagedaten der jeweiligen Instanz zur Berechnung einer Bewertung
+übergeben.
+
+\subsubsection{Erfolgsaussichten und Hindernisse}
+Damit mit diesem Algorithmus jedoch gute Ergebnisse erzielt werden
+können benötigt man eine größere Anzahl an Trainingsdaten. Da diese
+zum jetzigen Zeitpunkt nicht vorhanden sind, kann dieser Ansatz leider
+nicht weiter verfolgt werden. Ob dieses Verfahren überhaupt zum Ziel
+führt müsste durch eine Auswertung über einen längeren Zeitraum an
+verschiedenen Spots überprüft werden. Falls die Ergebnisse einer
+solchen Auswertung positiv sind, hätte man einen Weg gefunden die
+lokalen Gegebenheiten an einem Spot über die Abstimmungsdaten indirekt
+in die Vorhersagen mit einfließen zu lassen.
 
 %%% Local Variables:
 %%% mode: latex

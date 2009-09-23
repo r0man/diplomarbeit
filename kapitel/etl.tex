@@ -1055,38 +1055,38 @@ Die Aufgabe des Ladevorgangs besteht darin, die in den vorigen
 Schritten erhobenen Vorhersagedaten in die operative Datenbasis der
 Web Applikation zu integrieren. Nachdem dieser Ladevorgang erfolgreich
 abgeschlossen wurde, stehen der Web Applikation die aktuellen
-Vorhersagedaten zur Verfügung. Der aus zwei Teilschritten bestehende
-Ladevorgang wird im Folgenden beschrieben.
+Vorhersagedaten zur Verfügung. 
 
 \subsection{Datenbankschema der Vorhersagedaten}
 Das Datenbankschema der Web Applikation orientiert sich an den von
 \textit{ActiveRecord} erwarteten Konventionen, die sich hier zum
-Großteil auch bewährt haben. Beim Entwurf des Datenbankschemas wurden
-die üblichen Methoden zur Normalisierung von Relationen angewendet,
+Großteil auch bewährt haben. Beim Entwurf des Schemas wurden die
+üblichen Methoden zur Normalisierung von Relationen angewendet,
 Primär- und Fremdschlüssel definiert, und Indizes zum schnelleren
 Auffinden von Datensätzen erstellt. Da für die \textit{ETL} Prozesse
 nur zwei Tabellen von Interesse sind, wird hier auf die komplette
-Darstellung des Datenbankschemas verzichtet, und nur auf die
-relevanten Relationen eingegangen.
+Darstellung des Datenbankschemas verzichtet, und nur auf die für den
+Ladevorgang relevanten Relationen eingegangen.
 
 \subsubsection{Referenzielle Integrität in Ruby on Rails}
-Seltsamerweise scheint in der \textit{Ruby on Rails} Community wenig
-Wert auf die \textit{ACID} \nomenclature{ACID}{Atomicity, Consistency,
-  Isolation, Durability} Eigenschaften eines Datenbank Management
-Systems gelegt zu werden, da \textit{ActiveRecord} nach fast 4 Jahren
-immer noch keine \textit{API} zur Definition von Fremdschlüsseln
-bietet. Dieses Defizit wurde durch die Definition entsprechender
+Seltsamerweise scheint in der \textit{Ruby on Rails} Community nicht
+allzuviel Wert auf die \textit{ACID} \nomenclature{ACID}{Atomicity,
+  Consistency, Isolation, Durability} Eigenschaften eines Datenbank
+Management Systems gelegt zu werden. Nach fast 4 Jahren fehlen in der
+\textit{API} von \textit{ActiveRecord} leider immer noch Methoden zur
+Definition von Fremdschlüsseln. Auch in vielen Büchern und
+Diskussionen zu \textit{Ruby on Rails} wird auf die Verwendung von
+Fremdschlüsseln zur Sicherung der referenziellen Integrität nicht
+eingegangen. Dieses Defizit wurde durch die Definition entsprechender
 Methoden in der \textit{ActiveRecord} Bibliothek behoben, so dass
-Fremdschlüssel direkt über die \textit{API} definiert werden
-können. Diese stellen die referenzielle Integrität auf der
-Datenbankebene sicher. Bei der Entwicklung der Web Applikation traten
-so einige Fehler sehr viel schneller zum Vorschein, als wenn man auf
-die Werkzeuge zur Sicherung referenzieller Integrität verzichtet
-hätte.
+Fremdschlüssel direkt über die \textit{API} definiert werden können,
+welche die referenzielle Integrität auf Datenbankebene sichern. Bei
+der Entwicklung der Web Applikation traten so einige Fehler sehr viel
+schneller zum Vorschein, als wenn man darauf verzichtet hätte.
 
 \subsubsection{Repräsentation der Vorhersagedaten in der Datenbank}
 Die Vorhersagedaten der Spots werden in einer Relation mit dem Namen
-\textit{forecasts} gespeichert, deren Struktur in Tabelle
+\textit{forecasts} gespeichert, deren Aufbau in Tabelle
 \ref{tab:forecasts} zu sehen ist. Die Spalten der Tabelle enthalten
 den Fremdschlüssel eines Spots, den Zeitpunkt der Vorhersage und die
 Werte der Vorhersageelemente. Die Attribute
@@ -1095,7 +1095,7 @@ bilden den Schlüsselkandidaten der Relation. Pro Spot
 (\textit{spot\textunderscore id}) existiert für jeden
 Vorhersagezeitpunkt (\textit{valid\textunderscore time}) genau ein
 Datensatz in der Tabelle. Um den \textit{ActiveRecord} Konventionen
-gerecht zu werden, und Datensätze der Tabelle aus anderen Tabellen
+gerecht zu werden, und Datensätze dieser Tabelle aus anderen Tabellen
 einfacher zu referenzieren, wird allerdings als künstlicher
 Primärschlüssel das Attribut \textit{id} verwendet. Das Attribut
 \textit{reference\textunderscore time} enthält den Zeitpunkt, an dem
@@ -1150,7 +1150,6 @@ Vorhersageelemente der beiden Modelle und nehmen die mit
 \end{table*}
 
 \subsection{Tupelorientierte Aktualisierung}
-
 Eine offensichtliche Methode die Vorhersagedaten auf den neusten Stand
 zu bringen ist die \textit{tupelorientierte} Aktualisierung mit
 \textit{SQL}. Tupelorientiert deshalb, weil die Datensätze der
@@ -1180,17 +1179,22 @@ Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
 \textit{DBMS} im \textit{Worst-Case} Szenario $2 * n$ Befehle
 ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
 überhaupt keine Vorhersagedaten in der Datenbank enthalten sind. Da
-die Vorhersagezeitpunkte zweier aufeinander folgenden
+die Vorhersagezeitpunkte von zwei aufeinander folgenden
 Modellberechnungen immer nur um 6 Stunden \footnote{in einem
   3-stündigen Vorhersageintervall} voneinander abweichen, reicht für
 die Mehrheit der Datensätze eine \textit{UPDATE} Operation aus. Eine
 zusätzliche \textit{INSERT} Operation ist nur für diejenigen
-Datensätze notwendig, die in dem abweichenden Zeitraum liegen. Im
-Durchschnitt liegt die Anzahl der Befehle somit leicht über $n$. Die
-Anzahl der auszuführenden Befehle ist hier mit der Zahl der Datensätze
-gekoppelt, und der vom \textit{DBMS} betriebene Overhead beim
-Ausführen der vielen Befehle wirkt sich negativ auf die Performanz
-aus.
+Datensätze notwendig, die in dem abweichenden Zeitraum liegen. Da die
+Datensätze der \textit{CSV} Datei in der Reihenfolge Spot
+$\rightarrow$ Vorhersageelement $\rightarrow$ Vorhersagezeitpunkt
+sortiert sind, kann auf eine \textit{INSERT} Operation verzichtet
+werden, falls zuvor schon ein Datensatz für den entsprechenden Spot
+und den Vorhersagezeitpunkt bearbeitet wurde. Im Durchschnitt liegt
+die Anzahl der Befehle somit leicht über $n$. Die Anzahl der
+auszuführenden Befehle ist hier von der Zahl der Datensätze
+abhängig. Bei einer großen Datenmenge wirkt sich der vom \textit{DBMS}
+betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
+Performanz des Ladevorgangs aus.
 
 \subsubsection{Verbesserungsvorschläge}
 Das hier beschriebene Verfahren eignet sich vor allem für Anwendungen
@@ -1203,12 +1207,14 @@ getrimmten Varianten.
 Bevor im nächsten Abschnitt, ein aus dem Bereich des \textit{Data
   Warehousing} bekanntes Verfahren vorgestellt wird, sollen hier noch
 einige Verbesserungsvorschläge gemacht werden. Um die Laufzeit zu
-verbessern sollte die Dokumentation des verwendeten \textit{DBMS}
-herangezogen und mögliche Optimierungsvorschläge evaluiert
-werden. Durch die Verwendung von \textit{Prepared Statements}, dem
-Ausschalten von \textit{Auto-Commit} und der Einbettung aller Befehle
-in eine einzelne Transaktion kann die Performanz meist noch verbessert
-werden.
+verbessern sollte unbedingt die Dokumentation des verwendeten
+\textit{DBMS} herangezogen und mögliche Optimierungsvorschläge
+evaluiert werden. Durch die Verwendung von \textit{Prepared
+  Statements}, dem Ausschalten von \textit{Auto-Commit} und der
+Einbettung aller Befehle in eine einzelne Transaktion kann die
+Performanz in vielen Anwendungen noch verbessert werden. Reichen diese
+Optimierungen nicht aus, sind mit dem im folgenden Abschnitt
+beschriebenen Verfahren sehr viel bessere Ergebnisse zu erzielen.
 
 \subsection{Bulk Loading}
 
@@ -1217,15 +1223,15 @@ darin, dass die abgesetzten \textit{SQL} Befehle tupelorientiert
 arbeiten. Die \textit{SQL} Befehle zur Manipulation von Datensätzen
 können aber auch mengenorientiert eingesetzt werden, so dass pro
 Befehl mehr als nur ein Tupel geändert bzw. hinzugefügt
-wird. Voraussetzung hierfür ist aber, dass das \textit{DBMS} auf alle
-zu verarbeitenden Daten zugreifen kann. Dies war bei der vorigen
-Methode nicht der Fall, da das \textit{DBMS} bei jeder Operation nur
-einen einzelnen Datensatz aus der Eingabe zu Gesicht bekam.
+wird. Voraussetzung hierfür ist, dass das \textit{DBMS} auf alle zu
+verarbeitenden Daten zugreifen kann. Dies war bei der vorigen Methode
+nicht der Fall, da das \textit{DBMS} bei jeder Operation nur einen
+Datensatz der Eingabe zu Gesicht bekam.
 
-In diesem Schritt wird beschrieben wie die Vorhersagedaten der
+In diesem Abschnitt wird beschrieben wie die Vorhersagedaten der
 \textit{CSV} Datei effizient unter die Kontrolle des Datenbank
-Management Systems gebracht werden. Die Daten werden zunächst in einen
-temporären Bereich der Datenbank geladen, der sogenannte
+Management Systems gebracht werden können. Die Daten werden zunächst
+in einen temporären Bereich der Datenbank geladen, der sogenannte
 \textit{Staging Area}. Von dort aus werden sie in einem weiteren
 Schritt in die operative Datenbasis der Web Applikation überführt. Die
 hier verwendete \textit{Staging Area} besteht aus einer einzigen, in
@@ -1268,23 +1274,21 @@ bereinigt. Anschließend könnten die Vorhersagedaten mit
 \textit{INSERT} Operationen in diese Relation eingefügt werden. Auch
 hier würde sich die Verwendung eines \textit{Prepared Statement}
 anbieten, da eine hohe Anzahl sich ähnelnder Befehle verarbeitet
-werden müsste.
-
-Im Bereich des \textit{Data Warehousing} wird bei ähnlichen Problemen
-allerdings immer auf die sogenannten \textit{Bulk Loader} der
-verwendeten Datenbank Management Systeme verwiesen. Dies sind meist
-datenbankspezifische Befehle oder Programme, mit denen größere
-Datenmengen effizienter als mit den standardisierten \textit{SQL}
-Befehlen geladen werden können. Der \textit{Bulk Loader} von
-\textit{PostgreSQL} ist durch die \textit{COPY} Befehlsfamilie
+werden müsste. Im Bereich des \textit{Data Warehousing} wird bei
+ähnlichen Problemen allerdings immer auf die sogenannten \textit{Bulk
+  Loader} der verwendeten Datenbank Management Systeme verwiesen. Dies
+sind meist datenbankspezifische Befehle oder Programme, mit denen
+größere Datenmengen effizienter als mit den standardisierten
+\textit{SQL} Befehlen geladen werden können. Der \textit{Bulk Loader}
+von \textit{PostgreSQL} ist durch die \textit{COPY} Befehlsfamilie
 implementiert, mit der Daten im Text-, \textit{CSV-} oder Binärformat
 importiert bzw. exportiert werden können. Der Befehl aus Auflistung
 \ref{lst:copy} veranlasst \textit{PostgreSQL} dazu, die über den
 Standard Eingabekanal gelesenen Datensätze in die Tabelle
-\textit{grib\textunderscore messages} zu importieren. Das Ende der
-Eingabe muss dabei durch eine Zeile signalisiert werden, die aus den
-beiden Zeichen ''\textbackslash .'' und einem weiteren Zeilenumbruch
-besteht.
+\textit{grib\textunderscore messages} zu importieren. Dieser Befehl
+wird mit \textit{PostgreSQL}'s Kommandozeilenprogramm \textit{psql}
+ausgeführt und die Datensätze der \textit{CSV} Datei über den Standard
+Eingabekanal weitergereicht.
 
 \begin{lstlisting}[captionpos=b, caption=Befehl zum Import von Datensätzen in \textit{PostgreSQL}, label=lst:copy]
 COPY grib_messages (
@@ -1293,18 +1297,173 @@ COPY grib_messages (
 ) FROM STDIN;
 \end{lstlisting}
 
-Dieser Befehl wird mit \textit{PostgreSQL}'s Kommandozeilenprogramm
-\textit{psql} ausgeführt und die Datensätze der \textit{CSV} Datei
-über den Standard Eingabekanal weitergereicht. Im Abschnitt
-\textit{Populating a Database} \cite{postgresql:populate} der
-\textit{PostgreSQL} Dokumentation sind weitere nützliche Hinweise zu
-finden, die beim Verarbeiten größerer Datenmengen zu beachten
+Im Abschnitt \textit{Populating a Database} \cite{postgresql:populate}
+der \textit{PostgreSQL} Dokumentation sind weitere nützliche Hinweise
+zu finden, die beim Verarbeiten größerer Datenmengen zu beachten
 sind. Auf der Zielrelation definierte Indizes, \textit{Check
-  Constraints} und \textit{Trigger} wirken sich ebenfalls negativ auf
-die Performanz des Ladevorgangs aus. Hier würde es sich zum Beispiel
-anbieten Indizes vor dem Laden zu entfernen und nachdem die Daten
-geladen wurden neu zu erstellen.
+  Constraints} und \textit{Trigger} wirken sich negativ auf die
+Performanz des Ladevorgangs aus. Hier wird zum Beispiel vorgeschlagen
+auf der Zielrelation definierte Indizes vor dem Laden zu entfernen und
+anschließend wieder neu zu erstellen. Die Konfiguration des Datenbank
+Management Systems selbst ist auch nicht außer Acht zu lassen. Die
+Performanz von PostgreSQL lässt sich durch das \textit{Tunen} von
+Parametern in der Konfigurationsdatei verbessern, da die Standard
+Werte in einigen Distributionen für heutige Hardware relativ niedrig
+angesetzt sind. Eine optimale Systemkonfiguration benötigt allerdings
+einiges an Erfahrung und Geduld beim Ausprobieren der verschiedenen
+Konfigurationsparameter.
 
+\subsection{Mengenorientierte Aktualisierung}
+Nachdem die zu verarbeitenden Daten unter die Kontrolle des Datenbank
+Management Systems gebracht wurden, kann mit der mengenorientierten
+Aktualisierung der Vorhersagedaten begonnen werden. Wie bei der
+tupelorientierten Aktualisierung ist auch hier das Ziel die
+Vorhersagedaten der \textit{forecasts} Relation auf den neusten Stand
+zu bringen. Die mengenorientierte Aktualisierung erfolgt in zwei
+Schritten. Im ersten Schritt wird durch das Hinzufügen entsprechender
+Datensätze sichergestellt, dass für jeden Spot und jeden
+Vorhersagezeitpunkt der Quellrelation ein Datensatz in der
+Zielrelation existiert. Im zweiten Schritt werden die Vorhersagedaten
+der Zielrelation mit den Daten der Quellrelation aktualisiert. In
+beiden Schritten werden nur Datensätze hinzugefügt bzw. aktualisiert,
+die im Zeitraum der aktuellen Modellberechnung liegen. Dieser Zeitraum
+ist durch die Datensätze der Quellrelation \textit{grib\textunderscore
+  messages} bestimmt, und kann mit dem \textit{SQL} Befehl
+\textit{SELECT MIN(valid\textunderscore time),
+  MAX(valid\textunderscore time) FROM grib\textunderscore messages;}
+ermittelt werden.
+
+\subsubsection{Crosstab}
+Ein Datensatz der \textit{forecasts} Relation besitzt alle
+Vorhersageattribute für einen bestimmten Spot.
+
+Um die Datensätze der Quellrelation in die Zielrelation zu überführen,
+müssen mehrere Datensätze der Quellrelation zu einem Datensatz der
+Zielrelation zusammengefasst werden.
+
+\subsubsection{Hinzufügen von Datensätzen}
+Im ersten Schritt der mengenorientierten Aktualisierung wird
+sichergestellt, dass für jeden Spot und Vorhersagezeitpunkt der
+Quellrelation \textit{grib\textunderscore messages} ein Datensatz in
+der Zielrelation \textit{forecasts} existiert. Um dies zu erreichen
+wird mit einem \textit{SELECT} Befehl diejenige Menge an Datensätzen
+erzeugt, deren Schlüsselkandidaten noch nicht in der Zielrelation
+existieren, sich aber aus den Datensätzen der Quellrelation ableiten
+lassen. 
+
+% werden Datensätze eingefügt die als Platzhalter dienen und nur Werte i
+% Schlüsselkandidaten (\textit{spot\textunderscore id},
+% \textit{valid\textunderscore time}) und den Attributen
+% \textit{created\textunderscore at}, \textit{updated\textunderscore
+%   at}, sowie \textit{reference\textunderscore time}.
+
+% Die Menge der in die
+% Zielrelation einzufügenden Datensätze wird mit einem \textit{SELECT}
+% Befehl erzeugt und besteht aus dem zusammengesetzten
+% Schlüsselkandidaten (\textit{spot\textunderscore id},
+% \textit{valid\textunderscore time}) und den Attributen
+% \textit{created\textunderscore at}, \textit{updated\textunderscore
+%   at}, sowie \textit{reference\textunderscore time}.
+
+\subsubsection{Left Join vs. Subquery}
+Um die Menge der einzufügenden Datensätze zu erzeugen wurde das
+Laufzeitverhalten von zwei äquivalenten \textit{SQL} Befehlen
+untersucht. Der erste Befehl verwendet einen sogenannten \textit{LEFT
+  JOIN} um das Ergebnis zu berechnen, der zweite Befehl eine
+\textit{Subquery}.
+
+\begin{lstlisting}[captionpos=b, caption=Befehl zum Erzeugen der Platzhalter Datensätze (1), label=forecasts:insert_1]
+INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
+                      reference_time)
+     SELECT grib_messages.spot_id, grib_messages.valid_time, NOW(), NOW(), 
+            MAX(grib_messages.reference_time)
+       FROM grib_messages
+  LEFT JOIN forecasts
+         ON forecasts.spot_id = grib_messages.spot_id
+        AND forecasts.valid_time = grib_messages.valid_time
+      WHERE forecasts.id IS NULL
+   GROUP BY grib_messages.spot_id, grib_messages.valid_time;
+\end{lstlisting}
+
+\begin{lstlisting}[captionpos=b, caption=Ausführungsplan zum Erzeugen der Platzhalter Datensätze (1), label=forecasts:insert_1]
+GroupAggregate (cost=14275.00..15496.03 rows=3246 width=20)
+ Merge Left Join (cost=14275.00..15317.53 rows=16226 width=20)
+   Merge Cond: ((grib_messages.spot_id = forecasts.spot_id) AND 
+                (grib_messages.valid_time = forecasts.valid_time))
+   Filter: (forecasts.id IS NULL)
+     Sort (cost=3778.65..3859.78 rows=32452 width=20)
+       Sort Key: grib_messages.spot_id, grib_messages.valid_time
+         Seq Scan on grib_messages  (cost=0.00..678.52 rows=32452 width=20)
+     Materialize (cost=10496.30..11300.77 rows=64358 width=16)
+       Sort (cost=10496.30..10657.19 rows=64358 width=16)
+         Sort Key: forecasts.spot_id, forecasts.valid_time
+           Seq Scan on forecasts  (cost=0.00..4253.58 rows=64358 width=16)
+Total runtime: 213.518 ms
+\end{lstlisting}
+
+
+\begin{lstlisting}[captionpos=b, caption=Befehl zum Erzeugen der Platzhalter Datensätze (2), label=forecasts:insert_2]
+INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
+                      reference_time)
+ SELECT grib_messages.spot_id, grib_messages.valid_time, NOW(), NOW(), 
+            MAX(grib_messages.reference_time)
+       FROM grib_messages
+      WHERE NOT EXISTS (
+              SELECT 1 
+                FROM forecasts 
+               WHERE forecasts.spot_id = grib_messages.spot_id
+                 AND forecasts.valid_time = grib_messages.valid_time)
+   GROUP BY grib_messages.spot_id, grib_messages.valid_time;
+\end{lstlisting}
+
+\begin{lstlisting}[captionpos=b, caption=Befehl zum Erzeugen der Platzhalter Datensätze (2), label=forecasts:insert_2]
+Subquery Scan "*SELECT*"  (cost=270420.52..270481.38 rows=1623 width=36)
+ HashAggregate (cost=270420.52..270448.92 rows=1623 width=20)
+  Seq Scan on grib_messages  (cost=0.00..270298.82 rows=16226 width=20)
+   Filter: (NOT (subplan))
+    SubPlan
+     Index Scan using index_forecasts_on_spot_id_and_valid_time 
+                      on forecasts (cost=0.00..8.31 rows=1 width=0)
+      Index Cond: ((spot_id = $0) AND (valid_time = $1))
+Total runtime: 98.575 ms
+\end{lstlisting}
+
+
+\subsubsection{Aktualisierung der Vorhersagedaten}
+
+% Die Anzahl der
+% Datensätze ist bei der Aktualisierung 
+
+
+% Ziel der
+% mengenorientierten Aktualisierung ist die Quell- und Zielrelation zu
+% vereinigen. Dabei werden die bereits existierenden Datensätze der
+% Zielrelation mit den Daten der Quellrelation aktualisiert.
+
+% Die Datensätze der
+% Quellrelation lassen sich dabei in zwei Klassen aufteilen.
+
+% \begin{enumerate}
+% \item In die Klasse $\exists$ fallen diejenigen Datensätze der
+%   Quellrelation, für die bereits ein Datensatz in der Zielrelation
+%   existiert, der aus einer früheren Modellberechnung stammt. Die
+%   korrespondierenden Datensätze der Zielrelation müssen mit den Werten
+%   aus der Quellrelation aktualisiert werden.
+% \item Alle anderen Datensätze fallen in die Klasse $\not{\exists}$.
+% \end{enumerate}
+
+% Ziel ist es alle existierenden Datensätze zu aktualisieren, die im
+% Zeitraum der aktuellen Modellberechnung liegen.
+
+
+% zu aktualisieren, in denen die Werte der Vorhersageelemente
+% gespeichert sind. Außerdem wird das Attribut
+% \textit{reference\textunderscroe time} auf den Zeitpunkt der aktuellen
+% Modellberechnung gesetzt.
+
+% \begin{enumerate}
+% \item Bei der Initialisierung des Algorithmus wird die maximale
+% \end
 
 % und
 % dessen Ausführen von \textit{INSERT} Operationen könnten die

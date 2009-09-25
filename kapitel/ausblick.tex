@@ -1,6 +1,49 @@
 \chapter{Ausblick}
 
 \section{Visualisierung von Wetter- und Wellendaten}
+Die visuelle Darstellung der Wetterlage wäre eine weitere nützliche
+Anwendung für die man die Wetter- und Wellendaten der beiden Modelle
+verwenden könnte. Um einen besseren Eindruck von der Gesamtwetterlage
+zu bekommen, werden in Wettersendungen im Fernsehen meist sogenannte
+Strömungsfilme gezeigt. Die Wetterlage wird in diesen Filmen meist
+durch unterschiedlich eingefärbte Bereiche über einer Landkarte
+dargestellt. Durch das Abspielen im Zeitraffer kann man so z.B. die
+Ausbreitung von Hoch- und Tiefdruckgebieten verfolgen und sich einen
+besseren Überblick von der Gesamtwetterlage in den nächsten Stunden
+und Tagen verschaffen. Da surfbare Wellen oft durch den viele
+Kilometer weit gereisten Swell entstehen, ist eine globale Betrachtung
+dessen Ausbreitung recht aufschlussreich. In Abbildung
+\ref{wave-watch-grads} ist die graphische Aufbereitung der Wellenhöhe
+und einiger weiterer Vorhersageelement über dem Atlantik zu sehen. Die
+verschiedenen Wellenhöhen sind dort in unterschiedlichen Farben
+gekennzeichnet. Spielt man mehrere, zu verschiedenen Zeitpunkten
+generierte Bilder hintereinander ab, kann man die Ausbreitung der
+Wellen sehr gut veranschaulichen. Durch diese Darstellung kann man
+sehr gut Trends erkennen die bei einer Darstellung der Wellenhöhen in
+bloßen Zahlen gar nicht auffallen würden. Betrachtet man
+beispielsweise nur die Wellenhöhen an einem bestimmten Spot kann man
+nur eine Aussage für die nächsten 180 Stunden machen. Zieht man jedoch
+die visuelle Darstellung der Wellenausbreitung hinzu, kann man oft
+einen dort erst sehr viel später eintreffenden Swell erkennen und eine
+Einschätzung weit über 180 Stunden hinaus bekommen. Eine Darstellung
+solche Strömungsfilme für einige ausgewählte Regionen wäre eine
+wünschenswerte Erweiterung, mit der den Nutzern der Web Applikation
+ein Mehrwert geboten werden könnte. Einige Webseiten
+\footnote{\url{http://nomad5.ncep.noaa.gov/cgi-bin/pdisp_wave.sh}}
+bieten bereits sehr gute \footnote{\url{http://magicseaweed.com}}
+Aufbereitung solcher Vorhersagen an, und eine Integration eines
+solchen Feature in die Web Applikation wäre ebenfalls
+wünschenswert. Um Plots wie der in Abbildung \ref{wave-watch-grads}
+und Strömungsfilme zu erstellen, kann das Programme \textit{Grads}
+\footnote{\url{http://www.iges.org/grads/}} verwendet werden.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{bilder/wave-watch}
+    \caption{Plot einiger Elemente des Wave Watch III Modells}
+    \label{wave-watch-grads}
+  \end{center}
+\end{figure}
 
 \section{Verbesserung der Vorhersagen}
 Die aus dem \textit{Global Forecast System} und dem \textit{Wave Watch
@@ -11,7 +54,7 @@ Kombination mit Erfahrungswerten und der Kenntnis lokaler
 Gegebenheiten dienen sie eher als Indikator zur Einschätzung dieser
 Bedingungen. In welcher Verbindung die Vorhersagewerte mit der
 Qualität der vor Ort brechenden Wellen stehen ist unklar und variiert
-wohl von Spot zu Spot. Zudem kommt, dass wegen der groben
+wohl von Spot zu Spot. Hinzu kommt, dass wegen der groben
 Gitterauflösung der Modelle die Vorhersagewerte teilweise aus der
 näheren Umgebung eines Spots herangezogen werden müssen. Trotzdem sind
 aber vor allem die Wellenhöhe, die Wellenperiode, die Windstärke und
@@ -65,7 +108,7 @@ dieser Bewertungen können diese statistisch ausgewertet und eine
 Aussage darüber getroffen werden, wie gut die Surfbedingungen in der
 Vergangenheit waren. Mit diesen Informationen könnte man z.B. die
 besten Spots in einer Region bestimmen oder die Konsistenz der
-Surfbedingungen an einem Spot ermitteln. Eine viel interessantere
+Surfbedingungen an einem Spot ermitteln. Eine weitaus interessantere
 Verwendung dieser Daten wäre aber, sie für die Bewertung von
 zukünftigen Surfbedingungen einzusetzen.
 
@@ -118,7 +161,7 @@ Gegebenheiten und der Qualität der Surfbedingungen zu finden und
 daraus zukünftige Bewertungen abzuleiten. \textit{Bayesian
   Classifier}, \textit{Decision Trees}, und \textit{Neuronale
   Netzwerke} sind nur einige der vorgestellten Algorithmen, mit denen
-man versuchen könnte das hier beschriebene Problem zu lösen.
+man versuchen könnte dieses Problem zu lösen.
 
 \subsubsection{Supervised Learning}
 Bei Algorithmen aus dem Bereich des maschinellen Lernens unterscheidet
@@ -149,8 +192,8 @@ Surfbedingungen auswirken könnten.
 
 Um nun die Bewertungen zur Qualität der Surfbedingungen zu berechnen,
 würde man für jeden Spot eine separate Instanz des Algorithmus
-erstellen und trainieren. Jede Instanz wird dabei nur mit denjenigen
-Vorhersagedaten und Bewertungen trainiert, die auch zu dem
+erzeugen und diese trainieren. Jede Instanz wird dabei nur mit
+denjenigen Vorhersagedaten und Bewertungen trainiert, die auch zu dem
 entsprechenden Spot gehören. Je mehr Trainingsdaten vorhanden sind
 desto besser sind die Ergebnisse einer solchen Instanz. Da die
 Trainingsphase aufwendiger als die eigentliche Klassifikation ist, und

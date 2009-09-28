@@ -1214,11 +1214,11 @@ Das grundlegende Problem der zuvor beschriebenen Methode besteht
 darin, dass die abgesetzten \textit{SQL} Befehle tupelorientiert
 arbeiten. Die \textit{SQL} Befehle zur Manipulation von Datensätzen
 können aber auch mengenorientiert eingesetzt werden, so dass pro
-Befehl mehr als nur ein Tupel geändert bzw. hinzugefügt
-wird. Voraussetzung hierfür ist, dass das \textit{DBMS} auf alle zu
-verarbeitenden Daten zugreifen kann. Dies war bei der vorigen Methode
-nicht der Fall, da das \textit{DBMS} bei jeder Operation nur einen
-Datensatz der Eingabe zu Gesicht bekam.
+Befehl mehrere Tupel geändert bzw. hinzugefügt werden. Voraussetzung
+hierfür ist, dass das \textit{DBMS} auf alle zu verarbeitenden Daten
+zugreifen kann. Dies war bei der vorigen Methode nicht der Fall, da
+das \textit{DBMS} bei jeder Operation nur einen Datensatz der Eingabe
+zu Gesicht bekam.
 
 In diesem Abschnitt wird beschrieben wie die Vorhersagedaten der
 \textit{CSV} Datei effizient unter die Kontrolle des Datenbank
@@ -1266,15 +1266,15 @@ bereinigt. Anschließend könnten die Vorhersagedaten mit
 \textit{INSERT} Operationen in diese Relation eingefügt werden. Auch
 hier würde sich die Verwendung eines \textit{Prepared Statement}
 anbieten, da eine hohe Anzahl sich ähnelnder Befehle verarbeitet
-werden müsste. Im Bereich des \textit{Data Warehousing} wird bei
-ähnlichen Problemen allerdings immer auf die sogenannten \textit{Bulk
+werden müsste. Im Bereich des \textit{Data Warehousing} wird beim
+Laden von Daten allerdings immer auf die sogenannten \textit{Bulk
   Loader} der verwendeten Datenbank Management Systeme verwiesen. Dies
 sind meist datenbankspezifische Befehle oder Programme, mit denen
 größere Datenmengen effizienter als mit den standardisierten
 \textit{SQL} Befehlen geladen werden können. Der \textit{Bulk Loader}
 von \textit{PostgreSQL} ist durch die \textit{COPY} Befehlsfamilie
 implementiert, mit der Daten im Text-, \textit{CSV-} oder Binärformat
-importiert bzw. exportiert werden können. Der Befehl aus Auflistung
+importiert und exportiert werden können. Der Befehl aus Auflistung
 \ref{lst:copy} veranlasst \textit{PostgreSQL} dazu, die über den
 Standard Eingabekanal gelesenen Datensätze in die Tabelle
 \textit{grib\textunderscore messages} zu importieren. Dieser Befehl
@@ -1298,7 +1298,7 @@ Performanz des Ladevorgangs aus. Hier wird zum Beispiel vorgeschlagen
 auf der Zielrelation definierte Indizes vor dem Laden zu entfernen und
 anschließend wieder neu zu erstellen. Die Konfiguration des Datenbank
 Management Systems selbst ist auch nicht außer Acht zu lassen. Die
-Performanz von PostgreSQL lässt sich durch das \textit{Tunen} von
+Performanz von PostgreSQL lässt sich durch das Einstellen bestimmter
 Parametern in der Konfigurationsdatei verbessern, da die Standard
 Werte in einigen Distributionen für heutige Hardware relativ niedrig
 angesetzt sind. Eine optimale Systemkonfiguration benötigt allerdings
@@ -1308,16 +1308,13 @@ Konfigurationsparameter.
 \subsection{Mengenorientierte Aktualisierung}
 Nachdem die zu verarbeitenden Daten unter die Kontrolle des Datenbank
 Management Systems gebracht wurden, kann mit der mengenorientierten
-Aktualisierung der Vorhersagedaten begonnen werden. Wie bei der
-tupelorientierten Aktualisierung ist auch hier das Ziel die
-Vorhersagedaten der \textit{forecasts} Relation auf den neusten Stand
-zu bringen. Die mengenorientierte Aktualisierung erfolgt in zwei
-Schritten. Im ersten Schritt wird durch das Hinzufügen entsprechender
-Datensätze sichergestellt, dass für jeden Spot und jeden
-Vorhersagezeitpunkt der Quellrelation ein Datensatz in der
-Zielrelation existiert. Im zweiten Schritt werden die Vorhersagedaten
-der Zielrelation mit den Daten der Quellrelation aktualisiert. In
-beiden Schritten werden nur Datensätze hinzugefügt bzw. aktualisiert,
+Aktualisierung der Vorhersagedaten begonnen werden. Ziel ist die
+Vorhersagedaten der Relation \textit{grib\textunderscore messages} in
+die \textit{forecasts} Relation zu überführen. Dabei werden die
+existierenden und aus einer früheren Modellberechnung stammenden
+Datensätze der \textit{forecasts} Relation mit den Werten der neueren
+Berechnung überschrieben, und noch nicht existierende Datensätze
+hinzugefügt. Es werden nur Datensätze aktualisiert bzw hinzugefügt,
 die im Zeitraum der aktuellen Modellberechnung liegen. Dieser Zeitraum
 ist durch die Datensätze der Quellrelation \textit{grib\textunderscore
   messages} bestimmt, und kann mit dem \textit{SQL} Befehl
@@ -1325,46 +1322,99 @@ ist durch die Datensätze der Quellrelation \textit{grib\textunderscore
   MAX(valid\textunderscore time) FROM grib\textunderscore messages;}
 ermittelt werden.
 
-\subsubsection{Crosstab}
-Ein Datensatz der \textit{forecasts} Relation besitzt alle
-Vorhersageattribute für einen bestimmten Spot.
-
-Um die Datensätze der Quellrelation in die Zielrelation zu überführen,
-müssen mehrere Datensätze der Quellrelation zu einem Datensatz der
-Zielrelation zusammengefasst werden.
+\subsubsection{Transposition von Spalten und Zeilen}
+Idealerweise würde man bei der mengenorientierten Aktualisierung genau
+zwei Befehle ausführen. Ein \textit{UPDATE} Befehl, der alle
+existierenden Datensätze der \textit{forecasts} Relation aktualisiert
+und ein \textit{INSERT} Befehl mit dem neue Datensätze hinzugefügt
+werden. Die Art und Weise wie die Daten aber in der Relation
+\textit{grib\textunderscore messages} vorliegen, würde zu sehr
+komplexen \textit{SQL} Befehlen oder dem Einsatz datenbankspezifischer
+Erweiterungen führen. Das Problem besteht darin, dass mehrere
+Datensätze der Relation \textit{grib\textunderscore messages} zu einem
+Datensatz der Relation \textit{forecasts} überführt werden
+müssen. Oder anders ausgedrückt: Die Zeilen der Quellrelation müssen
+zu Spalten der Zielrelation transponiert werden. Die Konstruktion
+solcher Anfragen lässt sich nur umständlich in \textit{SQL} ausdrücken
+und führt üblicherweise zu sehr komplexen Befehlen, deren Performanz
+sich gegenüber anderer Alternativen anzweifeln lässt. Für diese Art
+von Anfragen werden in \textit{PostgreSQL} üblicherweise die
+sogenannten \textit{crosstab} Funktionen aus dem \textit{tablefunc}
+Modul verwendet. Da bei einem Engpass des Ladevorgangs allerdings eine
+Vorverarbeitung der \textit{CSV} Datei mit \textit{awk} und ähnlichen
+Programmen als vielversprechender angesehen wird, wurde diese
+Alternative hier ebenfalls nicht weiter verfolgt.
 
 \subsubsection{Hinzufügen von Datensätzen}
-Im ersten Schritt der mengenorientierten Aktualisierung wird
-sichergestellt, dass für jeden Spot und Vorhersagezeitpunkt der
-Quellrelation \textit{grib\textunderscore messages} ein Datensatz in
-der Zielrelation \textit{forecasts} existiert. Um dies zu erreichen
-wird mit einem \textit{SELECT} Befehl diejenige Menge an Datensätzen
-erzeugt, deren Schlüsselkandidaten noch nicht in der Zielrelation
-existieren, sich aber aus den Datensätzen der Quellrelation ableiten
-lassen. 
-
-% werden Datensätze eingefügt die als Platzhalter dienen und nur Werte i
-% Schlüsselkandidaten (\textit{spot\textunderscore id},
-% \textit{valid\textunderscore time}) und den Attributen
-% \textit{created\textunderscore at}, \textit{updated\textunderscore
-%   at}, sowie \textit{reference\textunderscore time}.
-
-% Die Menge der in die
-% Zielrelation einzufügenden Datensätze wird mit einem \textit{SELECT}
-% Befehl erzeugt und besteht aus dem zusammengesetzten
-% Schlüsselkandidaten (\textit{spot\textunderscore id},
-% \textit{valid\textunderscore time}) und den Attributen
-% \textit{created\textunderscore at}, \textit{updated\textunderscore
-%   at}, sowie \textit{reference\textunderscore time}.
+Die hier implementierte Aktualisierung erfolgt in zwei Schritten. Im
+ersten Schritt wird durch das Hinzufügen entsprechender Datensätze
+sichergestellt, dass für jeden Spot und jeden Vorhersagezeitpunkt der
+Quellrelation ein Datensatz in der Zielrelation existiert. Diese
+hinzugefügten Datensätze dienen als Platzhalter und werden im zweiten
+Schritt mit den Daten der Quellrelation aktualisiert. Mit einer
+\textit{SQL} Anfrage wird diejenige Menge an Datensätze erzeugt, deren
+Schlüsselkandidaten noch nicht in der Zielrelation existieren, sich
+aber aus den Datensätzen der Quellrelation ableiten lassen. Diese
+Datensätze dienen als Platzhalter und enthalten nur gültige Werte in
+den Attributen \textit{spot\textunderscore id},
+\textit{valid\textunderscore time}, \textit{created\textunderscore
+  at}, \textit{updated\textunderscore at} und
+\textit{reference\textunderscore time}. Alle anderen Attribute
+repräsentieren die Vorhersageelemente und werden vorübergehend mit dem
+Wert \textit{NULL} belegt.
 
 \subsubsection{Left Join vs. Subquery}
-Um die Menge der einzufügenden Datensätze zu erzeugen wurde das
-Laufzeitverhalten von zwei äquivalenten \textit{SQL} Befehlen
-untersucht. Der erste Befehl verwendet einen sogenannten \textit{LEFT
-  JOIN} um das Ergebnis zu berechnen, der zweite Befehl eine
-\textit{Subquery}.
+Die Menge der hinzuzufügenden Datensätze kann durch Anwendung
+verschiedener \textit{SQL} Konstrukte erzeugt werden. Eine der
+Aufgaben des Datenbank Management Systems ist es für eine Anfrage den
+besten Ausführungsplan zu finden. Idealerweise sollten dabei zwei
+äquivalente Befehle in den optimalen Ausführungsplan übersetzt
+werden. Diese komplexe Aufgabe wird von den Optimierern der
+verschiedenen Datenbank Management Systemen allerdings unterschiedlich
+gut gelöst. Durch die Verwendung verschiedener \textit{SQL} Konstrukte
+kann der Optimierer eines Datenbank Management Systems teilweise
+beeinflusst werden. Hier wurde das Laufzeitverhalten von zwei
+äquivalenten \textit{SQL} Befehlen durch die Analyse der
+Ausführungspläne untersucht. Beide Befehle wurden auf einer Datenbank
+ausgeführt, in der 32452 Datensätze in der Relation
+\textit{grib\textunderscore messages} enthalten waren. Diese
+Datensätze repräsentierten die Vorhersagedaten für 78 Spots über einen
+Zeitraum von ca. 4 Monaten. Der erste Befehl verwendet einen
+sogenannten \textit{Left Join} um das Ergebnis zu berechnen, im
+zweiten Befehl wird eine \textit{Subquery} benutzt.
 
-\begin{lstlisting}[captionpos=b, caption=Befehl zum Erzeugen der Platzhalter Datensätze (1), label=forecasts:insert_1]
+\subsubsection{Analyse der Ausführungspläne}
+Da der Optimierer von \textit{PostgreSQL} bei der Wahl des
+Ausführungsplans Statistiken über Tabellen verwendet ist es wichtig
+diese regelmäßig zu aktualisieren. Üblicherweise wird dies in einem
+bestimmten Intervall durch einen Hintergrundprozess erledigt, sollte
+aber nach dem Einfügen oder Entfernen von vielen Datensätzen manuell
+mit dem \textit{ANALYZE} Befehl durchgeführt werden. Um den
+Ausführunsplan eines \textit{SQL} Befehls in \textit{PostgreSQL}
+anzuzeigen wird der \textit{EXPLAIN} Befehl benutzt. Durch die Angabe
+der \textit{ANALYZE} Option wird der zu untersuchende Befehl
+ausgeführt und Informationen über dessen Laufzeit ausgegeben. Die hier
+gezeigten Ausführungspläne wurden zwar mit der \textit{ANALYZE} Option
+erstellt, enthalten der Übersichtlichkeit halber aber nicht alle
+Informationen. Vor der Analyse der Ausführungspläne wurden auf allen
+Attributen, die in Anfragen referenziert werden, Indizes definiert und
+die Statistiken der Tabellen aktualisiert. Auf den aus den beiden
+Attributen \textit{spot\textunderscore id} und
+\textit{valid\textunderscore time} bestehenden Schlüsselkandidaten
+wurden zusätzlich noch zusammengesetzte Indizes definiert.
+
+\paragraph{Left Join}
+In Auflistung \ref{forecasts:insert_1} ist die \textit{Left Join}
+Variante zu sehen, mit der die Menge der hinzuzufügenden Datensätze
+erzeugt wird. Der Befehl verknüpft die Datensätze der Relation
+\textit{grib\textunderscore messages} über die Attribute
+\textit{spot\textunderscore id} und \textit{valid\textunderscore time}
+mit den Datensätzen der Relation \textit{forecasts}. Durch die
+Bedingung in der \textit{WHERE} Klausel wird das Ergebnis auf die
+Menge von Datensätzen reduziert, deren Schlüsselkandidat noch nicht in
+der Relation \textit{forecasts} existiert.
+
+\begin{lstlisting}[captionpos=b, caption=Einfügen von Platzhalter Datensätze mittels Left Join, label=forecasts:insert_1]
 INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
                       reference_time)
      SELECT grib_messages.spot_id, grib_messages.valid_time, NOW(), NOW(), 
@@ -1377,7 +1427,15 @@ INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at,
    GROUP BY grib_messages.spot_id, grib_messages.valid_time;
 \end{lstlisting}
 
-\begin{lstlisting}[captionpos=b, caption=Ausführungsplan zum Erzeugen der Platzhalter Datensätze (1), label=forecasts:insert_1]
+Obwohl auf den entsprechenden Attributen beider Relationen Indizes
+definiert sind, kann man im Ausführungsplan in Auflistung
+\ref{forecasts:insert_2} sehen, dass kein Index benutzt wird, sondern
+ein \textit{Sequence Scan} auf den beiden Relationen
+\textit{forecasts} und \textit{grib\textunderscore messages}
+durchgeführt wird. Die Ausführungszeit des Befehls beträgt 214
+Millisekunden.
+
+\begin{lstlisting}[captionpos=b, caption=Ausführungsplan des Left Joins, label=forecasts:insert_2]
 GroupAggregate (cost=14275.00..15496.03 rows=3246 width=20)
  Merge Left Join (cost=14275.00..15317.53 rows=16226 width=20)
    Merge Cond: ((grib_messages.spot_id = forecasts.spot_id) AND 
@@ -1393,6 +1451,14 @@ GroupAggregate (cost=14275.00..15496.03 rows=3246 width=20)
 Total runtime: 213.518 ms
 \end{lstlisting}
 
+Zwar kann die Laufzeit von 214 Millisekunden noch als akzeptabel
+eingeschätzt werden, falls aber historische Daten von vielen Spots
+über einen längeren Zeitraum behalten werden, könnte man hier auf
+Dauer ein Performanzproblem bekommen, da die \textit{forecasts}
+Relation stetig anwachsen würde. Selbst das erzwungene Benutzen von
+Indizes ergab bei dieser Anfrage ein schlechteres Laufzeitverhalten,
+weshalb der vom Optimierer ausgewählte Plan als akzeptabel eingestuft
+wird.
 
 \begin{lstlisting}[captionpos=b, caption=Befehl zum Erzeugen der Platzhalter Datensätze (2), label=forecasts:insert_2]
 INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 

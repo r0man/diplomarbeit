@@ -1314,11 +1314,11 @@ die \textit{forecasts} Relation zu überführen. Dabei werden die
 existierenden und aus einer früheren Modellberechnung stammenden
 Datensätze der \textit{forecasts} Relation mit den Werten der neueren
 Berechnung überschrieben, und noch nicht existierende Datensätze
-hinzugefügt. Es werden nur Datensätze aktualisiert bzw hinzugefügt,
-die im Zeitraum der aktuellen Modellberechnung liegen. Dieser Zeitraum
-ist durch die Datensätze der Quellrelation \textit{grib\textunderscore
-  messages} bestimmt, und kann mit dem \textit{SQL} Befehl
-\textit{SELECT MIN(valid\textunderscore time),
+hinzugefügt. Es werden nur diejenigen Datensätze aktualisiert bzw.
+hinzugefügt, die auch im Zeitraum der aktuellen Modellberechnung
+liegen. Dieser Zeitraum ist durch die Datensätze der Quellrelation
+\textit{grib\textunderscore messages} bestimmt, und kann mit dem
+\textit{SQL} Befehl \textit{SELECT MIN(valid\textunderscore time),
   MAX(valid\textunderscore time) FROM grib\textunderscore messages;}
 ermittelt werden.
 
@@ -1343,38 +1343,40 @@ sogenannten \textit{crosstab} Funktionen aus dem \textit{tablefunc}
 Modul verwendet. Da bei einem Engpass des Ladevorgangs allerdings eine
 Vorverarbeitung der \textit{CSV} Datei mit \textit{awk} und ähnlichen
 Programmen als vielversprechender angesehen wird, wurde diese
-Alternative hier ebenfalls nicht weiter verfolgt.
+Alternativen hier nicht weiter verfolgt sondern eine einfachere
+Strategie gewählt.
 
 \subsubsection{Hinzufügen von Datensätzen}
-Die hier implementierte Aktualisierung erfolgt in zwei Schritten. Im
-ersten Schritt wird durch das Hinzufügen entsprechender Datensätze
-sichergestellt, dass für jeden Spot und jeden Vorhersagezeitpunkt der
-Quellrelation ein Datensatz in der Zielrelation existiert. Diese
-hinzugefügten Datensätze dienen als Platzhalter und werden im zweiten
-Schritt mit den Daten der Quellrelation aktualisiert. Mit einer
-\textit{SQL} Anfrage wird diejenige Menge an Datensätze erzeugt, deren
-Schlüsselkandidaten noch nicht in der Zielrelation existieren, sich
-aber aus den Datensätzen der Quellrelation ableiten lassen. Diese
-Datensätze dienen als Platzhalter und enthalten nur gültige Werte in
-den Attributen \textit{spot\textunderscore id},
+Die gewählte Strategie zur Aktualisierung der Vorhersagedaten erfolgt
+in zwei Schritten. Im ersten Schritt wird durch das Hinzufügen
+entsprechender Datensätze sichergestellt, dass für jeden Spot und
+jeden Vorhersagezeitpunkt der Quellrelation ein Datensatz in der
+Zielrelation existiert. Diese hinzugefügten Datensätze dienen als
+Platzhalter und werden im zweiten Schritt mit den Daten der
+Quellrelation aktualisiert. Mit einer \textit{SQL} Anfrage wird
+diejenige Menge an Datensätze erzeugt, deren Schlüsselkandidaten noch
+nicht in der Zielrelation existieren, sich aber aus den Datensätzen
+der Quellrelation ableiten lassen. Diese Datensätze dienen
+vorübergehend als Platzhalter und enthalten nur gültige Werte in den
+Attributen \textit{spot\textunderscore id},
 \textit{valid\textunderscore time}, \textit{created\textunderscore
   at}, \textit{updated\textunderscore at} und
 \textit{reference\textunderscore time}. Alle anderen Attribute
-repräsentieren die Vorhersageelemente und werden vorübergehend mit dem
-Wert \textit{NULL} belegt.
+repräsentieren die Vorhersageelemente und werden mit dem Wert
+\textit{NULL} belegt.
 
-\subsubsection{Left Join vs. Subquery}
-Die Menge der hinzuzufügenden Datensätze kann durch Anwendung
+\subsubsection{Beeinflussung des Anfrageoptimierers}
+Die Menge der hinzuzufügenden Datensätze kann durch Verwendung
 verschiedener \textit{SQL} Konstrukte erzeugt werden. Eine der
-Aufgaben des Datenbank Management Systems ist es für eine Anfrage den
-besten Ausführungsplan zu finden. Idealerweise sollten dabei zwei
-äquivalente Befehle in den optimalen Ausführungsplan übersetzt
+Aufgaben des Datenbank Management Systems besteht darin, einen guten
+Ausführungsplan für eine Anfrage zu finden. Idealerweise sollten dabei
+zwei äquivalente Befehle in den optimalen Ausführungsplan übersetzt
 werden. Diese komplexe Aufgabe wird von den Optimierern der
 verschiedenen Datenbank Management Systemen allerdings unterschiedlich
-gut gelöst. Durch die Verwendung verschiedener \textit{SQL} Konstrukte
+gut gelöst. Durch das Verwenden verschiedener \textit{SQL} Konstrukte
 kann der Optimierer eines Datenbank Management Systems teilweise
 beeinflusst werden. Hier wurde das Laufzeitverhalten von zwei
-äquivalenten \textit{SQL} Befehlen durch die Analyse der
+äquivalenten \textit{SQL} Befehlen durch die Analyse ihrer
 Ausführungspläne untersucht. Beide Befehle wurden auf einer Datenbank
 ausgeführt, in der 32452 Datensätze in der Relation
 \textit{grib\textunderscore messages} enthalten waren. Diese
@@ -1398,23 +1400,24 @@ gezeigten Ausführungspläne wurden zwar mit der \textit{ANALYZE} Option
 erstellt, enthalten der Übersichtlichkeit halber aber nicht alle
 Informationen. Vor der Analyse der Ausführungspläne wurden auf allen
 Attributen, die in Anfragen referenziert werden, Indizes definiert und
-die Statistiken der Tabellen aktualisiert. Auf den aus den beiden
-Attributen \textit{spot\textunderscore id} und
-\textit{valid\textunderscore time} bestehenden Schlüsselkandidaten
+die Statistiken der Tabellen aktualisiert. Auf den Schlüsselkandidaten
+\textit{spot\textunderscore id} und \textit{valid\textunderscore time}
 wurden zusätzlich noch zusammengesetzte Indizes definiert.
 
-\paragraph{Left Join}
-In Auflistung \ref{forecasts:insert_1} ist die \textit{Left Join}
-Variante zu sehen, mit der die Menge der hinzuzufügenden Datensätze
-erzeugt wird. Der Befehl verknüpft die Datensätze der Relation
-\textit{grib\textunderscore messages} über die Attribute
-\textit{spot\textunderscore id} und \textit{valid\textunderscore time}
-mit den Datensätzen der Relation \textit{forecasts}. Durch die
-Bedingung in der \textit{WHERE} Klausel wird das Ergebnis auf die
-Menge von Datensätzen reduziert, deren Schlüsselkandidat noch nicht in
-der Relation \textit{forecasts} existiert.
+\subsubsection{Ausführungsplan der Left Join Anfrage}
+In Auflistung \ref{forecasts:insert_1} ist der \textit{SQL} Befehl als
+\textit{Left Join} Variante zu sehen, mit der die Menge der
+hinzuzufügenden Datensätze erzeugt wird. Der Befehl verknüpft die
+Datensätze der Relation \textit{grib\textunderscore messages} über die
+Attribute \textit{spot\textunderscore id} und
+\textit{valid\textunderscore time} mit den Datensätzen der Relation
+\textit{forecasts}. Durch die Bedingung in der \textit{WHERE} Klausel
+wird das Ergebnis auf diejenigen Datensätze reduziert, deren
+Schlüsselkandidat noch nicht in der Relation \textit{forecasts}
+existiert. Dies sind genau die Vorhersagezeitpunkte, die seit der
+letzten Modellberechnung neu hinzugekommen sind.
 
-\begin{lstlisting}[captionpos=b, caption=Einfügen von Platzhalter Datensätze mittels Left Join, label=forecasts:insert_1]
+\begin{lstlisting}[captionpos=b, caption=Hinzufügen von Datensätze mittels Left Join, label=forecasts:insert_1]
 INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
                       reference_time)
      SELECT grib_messages.spot_id, grib_messages.valid_time, NOW(), NOW(), 
@@ -1429,13 +1432,23 @@ INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at,
 
 Obwohl auf den entsprechenden Attributen beider Relationen Indizes
 definiert sind, kann man im Ausführungsplan in Auflistung
-\ref{forecasts:insert_2} sehen, dass kein Index benutzt wird, sondern
-ein \textit{Sequence Scan} auf den beiden Relationen
+\ref{forecasts:explain_1} sehen, dass kein einziger Index benutzt wird,
+sondern ein \textit{Sequence Scan} auf den beiden Relationen
 \textit{forecasts} und \textit{grib\textunderscore messages}
-durchgeführt wird. Die Ausführungszeit des Befehls beträgt 214
-Millisekunden.
+durchgeführt wird. Falls viele Spots hinzukommen oder historische
+Vorhersagedaten für statistische Zwecke und \textit{Data Mining}
+Verfahren über einen längeren Zeitraum behalten werden, könnte man
+hier auf Dauer Probleme bekommen. Der Optimierer scheint bei dieser
+Anfrage nicht zu erkennen, dass die Ergebnismenge im Vergleich zur
+Anzahl von Datensätzen in der \textit{forecasts} Relation sehr gering
+ist. Im Ergebnis befinden sich nämlich nur diejenigen Datensätze, die
+seit der letzten Modellberechnung hinzugekommen sind. Das Problem
+liegt hier in der Verwendung des \textit{Left Joins}, der den
+Optimierer dazu veranlasst alle Datensätze der beiden Relationen zu
+verknüpfen und erst anschließend den Großteil der Datensätze wieder
+weg zuwerfen.
 
-\begin{lstlisting}[captionpos=b, caption=Ausführungsplan des Left Joins, label=forecasts:insert_2]
+\begin{lstlisting}[captionpos=b, caption=Ausführungsplan des Left Joins, label=forecasts:explain_1]
 GroupAggregate (cost=14275.00..15496.03 rows=3246 width=20)
  Merge Left Join (cost=14275.00..15317.53 rows=16226 width=20)
    Merge Cond: ((grib_messages.spot_id = forecasts.spot_id) AND 
@@ -1451,19 +1464,38 @@ GroupAggregate (cost=14275.00..15496.03 rows=3246 width=20)
 Total runtime: 213.518 ms
 \end{lstlisting}
 
-Zwar kann die Laufzeit von 214 Millisekunden noch als akzeptabel
-eingeschätzt werden, falls aber historische Daten von vielen Spots
-über einen längeren Zeitraum behalten werden, könnte man hier auf
-Dauer ein Performanzproblem bekommen, da die \textit{forecasts}
-Relation stetig anwachsen würde. Selbst das erzwungene Benutzen von
-Indizes ergab bei dieser Anfrage ein schlechteres Laufzeitverhalten,
-weshalb der vom Optimierer ausgewählte Plan als akzeptabel eingestuft
-wird.
+Die auf beiden Relationen definierten Indizes erweisen sich bei dieser
+Anfrage als nutzlos. Der Optimierer von \textit{PostgreSQL} kann durch
+das Setzen entsprechender Parameter allerdings beeinflusst werden. Die
+Ausführung des selben Befehls mit einem erzwungenen \textit{Index
+  Scan} ergab ein sehr viel schlechteres Ergebnis als der im
+Allgemeinen als negativ bewertete \textit{Sequence Scan}. Das Problem
+dieser Anfrage lässt sich also nicht durch die geschickte Definition
+von Indizes lösen, sondern durch die Vermeidung des \textit{Left
+  Joins}.
 
-\begin{lstlisting}[captionpos=b, caption=Befehl zum Erzeugen der Platzhalter Datensätze (2), label=forecasts:insert_2]
+Nichts desto trotz traten bei der Verwendung dieses Befehls über einen
+Zeitraum von ca. 3 Monaten hinweg keine Probleme auf. Der Befehl wurde
+alle 4 Stunden durch einen \textit{Cronjob} ausgeführt und provozierte
+dabei keinerlei Auffälligkeiten. Die Ausführungszeit des Befehls
+beträgt bei der jetzigen Datenmenge ca. 214 Millisekunden und kann als
+akzeptabel angesehen werden. Die Ausführungszeit wird aber mit dem
+Wachsen der \textit{forecasts} Relation stetig zunehmen.
+
+\subsubsection{Ausführungsplan der Subquery Anfrage}
+Ein äquivalenter Befehl zum Einfügen der Platzhalter Datensätze ist in
+Auflistung \ref{forecasts:insert_2} zu sehen. Bei dieser Variante wird
+eine sogenannte \textit{korrelierte Subquery} verwendet, die im
+Allgemeinen als kritisch hinsichtlich der Performanz angesehen
+wird. Bei einer \textit{korrelierten Subquery} werden in der inneren
+Anfrage Attribute der äußeren Anfrage referenziert, was bei der
+Ausführung dazu führt, dass die innere Anfrage für jeden Datensatz
+ausgeführt werden muss, der durch die Äußere erzeugt wird.
+
+\begin{lstlisting}[captionpos=b, caption=Hinzufügen von Datensätzen mittels Subquery, label=forecasts:insert_2]
 INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
                       reference_time)
- SELECT grib_messages.spot_id, grib_messages.valid_time, NOW(), NOW(), 
+     SELECT grib_messages.spot_id, grib_messages.valid_time, NOW(), NOW(), 
             MAX(grib_messages.reference_time)
        FROM grib_messages
       WHERE NOT EXISTS (
@@ -1474,7 +1506,20 @@ INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at,
    GROUP BY grib_messages.spot_id, grib_messages.valid_time;
 \end{lstlisting}
 
-\begin{lstlisting}[captionpos=b, caption=Befehl zum Erzeugen der Platzhalter Datensätze (2), label=forecasts:insert_2]
+Wie man aber am Ausführungsplan aus Auflistung
+\ref{forecasts:explain_2} erkennen kann, ist diese Anfrage mit ca. 100
+Millisekunden jedoch doppelt so schnell wie die eben untersuchte
+\textit{Left Join} Variante. Der \textit{Sequence Scan} auf der
+\textit{grib\textunderscore messages} Relation ist hier kein Problem,
+da ohnehin alle Datensätze dieser Relation betrachtet werden müssen um
+das Ergebnis zu berechnen. Der teure \textit{Sequence Scan} auf der
+Relation \textit{forecasts} konnte hier jedoch vermieden
+werden. Stattdessen wird für jeden Datensatz aus der Tabelle
+\textit{grib\textunderscore messages} der zusammengesetzte Index auf
+dem Schlüsselkandidaten benutzt, um die Existenz eines entsprechenden
+Datensatzes in der Tabelle \textit{forecasts} zu überprüfen.
+
+\begin{lstlisting}[captionpos=b, caption=Ausführungsplan der Subquery, label=forecasts:explain_2]
 Subquery Scan "*SELECT*"  (cost=270420.52..270481.38 rows=1623 width=36)
  HashAggregate (cost=270420.52..270448.92 rows=1623 width=20)
   Seq Scan on grib_messages  (cost=0.00..270298.82 rows=16226 width=20)
@@ -1485,6 +1530,31 @@ Subquery Scan "*SELECT*"  (cost=270420.52..270481.38 rows=1623 width=36)
       Index Cond: ((spot_id = $0) AND (valid_time = $1))
 Total runtime: 98.575 ms
 \end{lstlisting}
+
+Die Performanz der \textit{Subquery} Variante wird bei einer Zunahme
+von Datensätzen der \textit{forecasts} Relation nur minimal
+beeinflusst, da die Anzahl der \textit{Subquery} Aufrufe durch die
+Zahl der Datensätze in der Tabelle \textit{grib\textunderscore
+  messages} beschränkt ist. Die Größe der \textit{forecasts} Relation
+kann sich hier nur beim Auffinden von Datensätze über den stetig
+wachsenden Index negativ auswirken. Diese Beeinflussung ist allerdings
+gerade wegen der Verwendung geeigneter Indexstrukturen so gering, dass
+sie hier vernachlässigt werden kann.
+
+Zusammenfassend kann man zu diesem Beispiel sagen, dass durch die Wahl
+entsprechender \textit{SQL} Konstrukte der Anfrageoptimierer eines
+Datenbank Management Systems stark beeinflusst werden kann. Dies
+spielt bei der hier zu Analysezwecken verwendeten Datenmenge zwar noch
+keine große Rolle, kann bei einer größeren Datenmengen aber fatale
+Auswirkungen auf die Laufzeit der Anfragen haben. Wie man sehen konnte
+war die \textit{Subquery} Anfrage im Gegensatz zur \textit{Left Join}
+Anfrage durch die Anzahl der Datensätze in der Tabelle
+\textit{grib\textunderscore messages} beschränkt. Diese Beschränkung
+ist wiederum Abhängig von der Anzahl der Spots, was auch genau so sein
+sollte. Wichtig ist hier nicht, dass die Laufzeit um das doppelte
+beschleunigt wurde, sondern dass die Anfrage durch die Anzahl der
+Spots und nicht durch die Anzahl der historischen Daten beschränkt
+ist.
 
 
 \subsubsection{Aktualisierung der Vorhersagedaten}

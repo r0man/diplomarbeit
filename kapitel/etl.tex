@@ -1732,14 +1732,17 @@ er in der selben Transaktion wie ein zuvor abgesetzter \textit{CREATE
   TABLE} oder \textit{TRUNCATE} Befehl ausgeführt wird. In diesem Fall
 kann auf das sonst zu verwaltende \textit{Write Ahead Log} verzichtet
 werden, da bei einem Fehler die Daten wieder gelöscht
-würden. Weiterhin wird vorgeschlagen die Indizes einer zu ladenden
+werden. Weiterhin wird vorgeschlagen die Indizes einer zu ladenden
 Tabelle vor dem Laden zu löschen und erst danach wieder zu erstellen,
 da der Aufbau eines neuen Index schneller ist als dessen zeilenweise
-Aktualisierung.
+Aktualisierung. Bei der jetzigen Datenmenge wird der Umsetzung dieser
+Verbesserungsvorschläge allerdings eine eher geringe Priorität
+eingeräumt, da der zu erzielenden Geschwindigkeitsvorteil im Vergleich
+zu anderen Vorschlägen als nicht sehr hoch eingestuft wird.
 
-Viel mehr Potential zur Beschleunigung des gesamten Ladevorgangs wird
-aber in einer Vorverarbeitung der Vorhersagedaten gesehen. Durch
-diesen zusätzlichen Schritt könnte man die Vorhersagedaten in eine
+Viel mehr Potential zur Beschleunigung des Ladevorgangs wird aber in
+einer Vorverarbeitung der Vorhersagedaten gesehen. Durch diesen
+zusätzlichen Schritt könnte man die Vorhersagedaten in eine
 \textit{CSV} Datei transformieren, die der Struktur der
 \textit{forecasts} Tabelle entspricht. Die bisher in der Datenbank
 durchgeführte Transposition von Zeilen zu Spalten würde so in ein
@@ -1779,9 +1782,12 @@ Die Verbesserung des gesamten \textit{ETL} Prozesses erfordert ein
 gründliches Abwägen der verschiedenen Vor- und Nachteile. Oft stellt
 sich heraus, dass man mit einem Geschwindigkeitsvorteil an der einen
 Stelle, Flexibilität an einer anderen einbüßt oder zusätzliche
-Komplexität erzeugt. Stoßen die hier entwickelten \textit{ETL}
+Komplexität erzeugt wird. Stoßen die hier entwickelten \textit{ETL}
 Prozesse an ihre Grenzen würde in Hinblick auf das \textit{Map Reduce}
-Verfahren wohl der Weg in Richtung Vorverarbeitung eingeschlagen.
+Verfahren wohl der Weg in Richtung Vorverarbeitung
+eingeschlagen. Grundsätzlich sollten jedoch die Stellen der
+\textit{ETL} Prozesse optimiert werden, von denen der größte
+Geschwindigkeitsvorteil zu erwarten ist.
 
 %%% Local Variables:
 %%% mode: latex

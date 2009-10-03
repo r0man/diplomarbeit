@@ -2,6 +2,8 @@
  (lambda ()
     (LaTeX-add-labels
      "piktogramm"
+     "google-maps"
      "sec:Wetter- und Wellendaten"
-     "subsec:Kommentare")))
+     "subsec:Kommentare"
+     "locals-only")))
 

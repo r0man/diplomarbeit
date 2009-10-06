@@ -110,69 +110,92 @@ in einer bestimmten Region oder an einem Spot besser einzuschätzen zu
 können.
 
 \section{Bilder \& Videos}
+Um Surfern einen visuellen Eindruck der Spots bieten zu können, sollen
+diese mit Bildern und Videos verknüpft werden. Diese in der Surf
+Community gerne gesehenen Bilder und Videos sind ideal um das bisher
+aus Beschreibungen, Wetter- und Wellenvorhersagen bestehende
+Informationsangebot zu erweitern. Zum einen sollen externe Bilder und
+Videos durch die Nutzung von Web Services in die Applikation
+integriert werden, und zum anderen soll den Nutzern die Möglichkeit
+gegeben werden ihre eigenen Bilder und Videos auf der Plattform zu
+publizieren.
 
-Um Surfern einen visuellen Eindruck von einem Spot zu bieten, sollen
-die Spots mit Bildern und Videos verknüpft und somit aufgewertet
-werden. Auf Internetseiten wie \textit{Flickr} und \textit{YouTube}
-sind von vielen bekannten Spots Bilder und Videos zu finden. Eine
-Suchanfrage nach einem der bekanntesten Spots mit den Stichwörtern
-\textit{Mavericks} und \textit{Surf} ergab im Juni 2009 bei
-\textit{Flickr} 2319 und bei \textit{YouTube} 548 Ergebnisse. Diese in
-der Surf Community gerne gesehenen Bilder und Videos sind ideal um das
-bisher aus Beschreibungen und Wetter- und Wellenvorhersagen bestehende
-Informationsangebot zu erweitern. Sowohl \textit{Flickr} als auch
-\textit{YouTube} bieten eine Webservice Schnittstelle an, mit der es
-möglich ist deren Bilder und Videos in eigene Anwendungen zu
-integrieren. Zudem soll den Nutzern die Möglichkeit gegeben werden
-ihre eigenen Bilder und Videos auf die Community Plattform zu laden
-und dort zu veröffentlichen.
+\subsubsection{Integration externer Bilder und Videos}
+Auf Internetseiten wie \textit{Flickr} und \textit{YouTube} sind von
+vielen bekannten Spots Bilder und Videos zu finden. Eine Suchanfrage
+nach einem bekannten Spot mit den Stichwörtern \textit{Mavericks} und
+\textit{Surf} ergab im Juni 2009 bei \textit{Flickr} 2319 und bei
+\textit{YouTube} 548 Ergebnisse. Die Integration diese externen
+Informationen ist insbesondere im Anfangsstadium der Web Applikation
+nützlich, da in dieser Phase noch wenig Content durch die Nutzer
+generiert wurde. Durch Einbindung externer Bilder und Videos kann
+somit die Qualität des gesamten Content verbessert werden. Sowohl
+\textit{Flickr} als auch \textit{YouTube} bieten zur Integration Web
+Service Schnittstellen an, mit denen es möglich ist deren Bilder und
+Videos in eigene Anwendungen zu integrieren.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=\textwidth]{bilder/photos-flickr}
-    \caption{Integration von Bildern durch den Flickr Webservice}
+    \caption{Integration von Bildern durch den \textit{Flickr}
+      Webservice}
     \label{piktogramm}
   \end{center}
 \end{figure}
 
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[width=\textwidth]{bilder/videos-youtube}
-    \caption{Integration von Videos durch den YouTube Webservice}
-    \label{piktogramm}
-  \end{center}
-\end{figure}
+\subsubsection{Publikation eigener Bilder und Videos}
+Zudem soll den Nutzern die Möglichkeit gegeben werden ihre eigenen
+Bilder und Videos auf die Community Plattform zu laden und diese dort
+zu veröffentlichen. Im Moment wird genau diese Funktionalität mit
+großem Erfolg zwar auch von \textit{Flickr} und \textit{YouTube}
+angeboten, aber mit Blick auf zukünftige Erweiterungen ist es sinnvoll
+die volle Kontrolle über die auf der Plattform angezeigten Bilder und
+Videos zu haben. Der Einbau eines Abstimmungssystems und ähnlicher
+Funktionen kann mit externen Abhängigkeiten schnell problematisch
+werden. Um das vor allem durch Videos erhöhte Datenvolumen in den
+Griff zu bekommen, werden die Bilder und Videos auf \textit{Amazon's
+  Simple Storage Service} \footnote{http://aws.amazon.com/s3}
+gehostet. Dadurch können Probleme wie mangelnder Speicherplatz,
+Skalierbarkeit und hohe Verfügbarkeit der Daten ausgelagert und die
+Komplexität beim Deployment der Plattform reduziert werden.
 
 \section{Community Funktionen}
+Community Plattformen wie \textit{Facebook}, \textit{MySpace} und
+\textit{StudiVZ} erfreuen sich in den letzten Jahren einer sehr großen
+Beliebtheit. Einige der dort bewährten Funktionalitäten sind auch in
+der hier entwickelten Web Applikation sinnvoll und könnten einen
+Beitrag dazu leisten den Nutzern einen Mehrwert zu bieten und sie
+somit enger an die Plattform zu binden. Beispielsweise sollen die
+gemeinsam erstellten Spot Beschreibungen (die eine objektive Sicht auf
+einen Spot darstellen sollen) durch die subjektiven Kommentare und
+Meinungen der Nutzer angereichert werden um dadurch eine Diskussion zu
+ermöglichen. Auf der Plattform publizierte Bilder und Videos sollen
+ebenfalls kommentiert und bewertet werden können. Damit die Plattform
+lebendiger wird sollen die Nutzer ihr eigenes Profilbild erstellen und
+Freundschaften mit anderen Nutzern eingehen können. Darauf aufbauend
+soll es möglich sein sowohl private als auch öffentliche Nachrichten
+anderen Nutzern zukommen zu lassen und in freigegebenen Profilseiten
+anderer Nutzer zu stöbern. Um die Privatsphäre der Nutzer zu schützen
+müssen einige diese Funktionalitäten von den Anwendern freigeschalten
+bzw. gesperrt werden können. Einige dieser Funktionen werden zwar von
+vielen als ''Spielerei'' angesehen, für andere sind dies aber wichtige
+Gründe eine Community Plattform zu nutzen und tragen wohl auch einen
+großen Teil zum Erfolg vieler bereits etablierter Community
+Plattformen bei.
 
-Einige Funktionen, die aus Community Plattformen wie \textit{Facebook}
-und \textit{StudiVZ} bekannt sind sollen auch in dieser Web
-Applikation zu Verfügung stehen. Ziel ist auch hier einen Mehrwert für
-die Nutzer zu generieren, um diese näher an die Plattform zu binden.
-
-\subsection{Freundschaften}
-Nutzer sollen in der Lage sein Freundschaftsanfragen an andere Nutzer
-zu stellen, und Anfragen anderer Nutzern zu akzeptieren
-bzw. abzulehnen.
-
-\subsection{Nachrichten}
-
-\subsection{Kommentare}
-\label{subsec:Kommentare}
-
-Spot Beschreibungen sollen eine objektive Sicht auf die
-
-
-\subsection{Secret Spots}
+\section{Nachhaltiges Publizieren}
 Ein relativ unschönes aber teilweise auch verständliches Phänomen in
 der Surf Szene ist der sogenannte Lokalismus oder \textit{Localism} im
 Englischen. Entgegen dem allgemeinen Klischee, dass Surfer friedliche
 und entspannte Menschen sind, wird dieser Eindruck an einigen Spots
 durch unsportliches Verhalten einiger weniger getrübt. Beim Surfen
 bekommt meist derjenige die Welle, der sie am schnellsten anpaddelt
-und die bessere Technik antrainiert hat. Bei guten Surfbedingungen mit
-vielen Leuten führt dies unweigerlich dazu, dass einige Surfer die
-Wellen fast immer und andere fast nie bekommen.
+und die bessere Technik hat. Bei guten Surfbedingungen mit vielen
+Leuten führt dies unweigerlich dazu, dass einige Surfer die Wellen
+fast immer und andere fast nie bekommen. Insbesondere an Wochenenden
+und Feiertagen, an denen viele Surfer ihrem Hobby nachgehen, sind
+viele Spots überfüllt und es kann zu aggressivem Verhalten auf dem
+Wasser kommen. 
 
 \begin{figure}[h]
   \begin{center}
@@ -183,33 +206,30 @@ Wellen fast immer und andere fast nie bekommen.
   \end{center}
 \end{figure}
 
-Insbesondere an Wochenenden und Feiertagen, an denen viele Surfer
-ihrem Hobby nachgehen, sind viele Spots überfüllt und es kann zu
-aggressivem Verhalten auf dem Wasser kommen. Vor Ort ansässige Surfer,
-sogenannte \textit{Locals}, fühlen sich durch die vielen Besucher an
-''ihren'' Spots bedrängt und reagieren auf diese teilweise sehr
-aggressiv. Wie in Abbildung \ref{locals-only} zu sehen ist wird
-fremden Surfern deshalb oft durch Grafittis oder ähnlichen
-Markierungen nahe gelegt, dass sie an einem Spot nichts zu suchen
-haben. Dies gelingt teilweise auch, da es zuweilen vorkommt, dass man
-einen Spots zwar nicht ängstlich aber zumindest mit einem unguten
-Gefühl besucht. Grundsätzlich gilt je weniger Surfer an einem Spot
-sind, desto entspannter ist die Atmosphäre und desto besser kommt
+Vor Ort ansässige Surfer, sogenannte \textit{Locals}, fühlen sich
+durch die vielen Besucher an ''ihren'' Spots bedrängt und reagieren
+auf diese teilweise sehr aggressiv. Wie in Abbildung \ref{locals-only}
+zu sehen ist wird fremden Surfern deshalb oft durch Grafittis oder
+ähnlichen Markierungen nahe gelegt, dass sie an einem Spot nichts zu
+suchen haben. Dies gelingt teilweise auch, da es zuweilen vorkommt,
+dass man einen Spots zwar nicht ängstlich aber zumindest mit einem
+unguten Gefühl besucht. Grundsätzlich gilt je weniger Surfer an einem
+Spot sind, desto entspannter ist die Atmosphäre und desto besser kommt
 jeder auf seine Kosten. Abgelegenere Spots werden deshalb auch oft als
-geheim gehandelt, gegenüber Fremden nicht erwähnt oder diese sogar in
-die Irre geführt.
+geheim gehandelt, gegenüber Fremden nicht erwähnt oder diese beim
+Suchen nach Spots in die Irre geführt.
 
 Um die vor Ort ansässigen Surfer zu respektieren und nicht sofort
 jeden neuen Spot in die Welt hinaus zu posaunen wurde hier das Konzept
-der sogenannten \textit{Secret Spots} eingeführt. Auf der Plattform
-sollen nur die allgemein bekannten Spots für jeden sichtbar
-sein. Diese Spots befinden sich meist an bekannten Stränden, sind
-ausgeschildert und auch in den Karten vieler Tourismusbüros
-verzeichnet. Andere Spots können beim Erstellen als \textit{Secret
-  Spots} markiert werden und sind dann nur für den Ersteller selbst
-und seine Freunde sichtbar. Alle anderen Funktionen, wie Wetter- und
-Wellenvorhersagen stehen für diese Spots ebenfalls zur Verfügung,
-allerdings nur für einen eingeschränkten Nutzerkreis.
+sogenannter \textit{Secret Spots} eingeführt. Auf der Plattform sollen
+nur die allgemein bekannten Spots für jeden sichtbar sein. Diese Spots
+befinden sich meist an bekannten Stränden, sind ausgeschildert und
+auch in den Karten vieler Tourismusbüros verzeichnet. Andere Spots
+können beim Erstellen als \textit{Secret Spots} markiert werden und
+sind dann nur für den Ersteller selbst und seine Freunde
+sichtbar. Alle anderen Funktionen, wie Wetter- und Wellenvorhersagen
+stehen für diese Spots ebenfalls zur Verfügung, allerdings nur für
+einen eingeschränkten Nutzerkreis.
 
 %%% Local Variables:
 %%% mode: latex

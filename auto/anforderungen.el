@@ -4,5 +4,6 @@
      "piktogramm"
      "google-maps"
      "sec:Wetter- und Wellendaten"
-     "locals-only")))
+     "locals-only"
+     "secret-spot")))
 

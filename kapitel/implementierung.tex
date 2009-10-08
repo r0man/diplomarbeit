@@ -9,10 +9,10 @@ zur Entwicklung von dynamische Webseiten, Web Applikationen und Web
 Services. Ein solches Framework baut meist auf der in Abschnit
 \ref{Model View Controller} beschriebenen \textit{Model View
   Controller (MVC)} \nomenclature{MVC}{Model View Controller}
-Architektur auf und bietet Lösungen und Abstraktionen für die im
-Bereich der Web Programmierung häufig auftretenden Probleme und
-verwendeten Konzepte. Hierzu gehört z.B. der Zugriff auf Datenbanken,
-das Routing von URLs, Caching und Template Systeme zur Generierung von
+Architektur auf und bietet Lösungen und Abstraktionen für im Bereich
+der Web Programmierung häufig auftretenden Probleme und
+Konzepte. Hierzu gehört unter anderem der Zugriff auf Datenbanken, das
+Routing von URLs, Caching und Template Systeme zur Generierung von
 Benutzeroberfächen.
 
 \subsubsection{Ruby on Rails - Web development that doesn't hurt}
@@ -26,24 +26,24 @@ verarbeitet, Benutzeroberflächen erstellt, Daten persistent
 gespeichert und viele weitere Probleme bewältigt werden
 können. \textit{Rails} basiert auf der bewährten \textit{MVC}
 Architektur, greift aber auch neuere Techniken, wie den in Abschnitt
-\ref{rest} beschriebenen Architekturstil \textit{REST}
-\nomenclature{REST}{Representational State Transfer} auf und ebnet so
-den Weg zu einer zukunftsorientierten Entwicklung von Web
-Applikationen. Viele dieser bewährten Konzepte, aber auch neue und
+\ref{rest} beschriebenen \textit{REST}
+\nomenclature{REST}{Representational State Transfer} Architekturstil
+auf und ebnet so den Weg zu einer zukunftsorientierten Entwicklung von
+Web Applikationen. Viele dieser bewährten Konzepte, aber auch neue und
 innovative Ideen haben dazu beigetragen, dass \textit{Rails} in
 letzter Zeit viel Aufmerksamkeit auf sich gezogen hat. Durch
 Prinzipien wie \textit{Don't Repeat Yourself (DRY)}
 \nomenclature{DRY}{Don't Repeat Yourself} und \textit{Convention over
   Configuration} hat \textit{Ruby on Rails} die Art und Weise wie Web
-Anwendungen entwickelt werden revolutioniert. Die integrierten
+Anwendungen entwickelt werden verändert. Die integrierten
 Testumgebungen für den in \textit{Model}, \textit{View},
 \textit{Controller} und \textit{Helper} Klassen aufgeteilten
 Programmcode motivieren zum \textit{Test Driven Development} und
-erleichtern den Einstieg erheblich.  Nach der im Dezember 2008
-angekündigten Verschmelzung mit \textit{Merb}, dem zweitgrößten
-Framework zur Entwicklung von Web Applikationen in \textit{Ruby}, ist
-die Entscheidung \textit{Rails} für diese Anwendung zu verwenden noch
-zusätzlich untermauert worden. 
+erleichtern den Einstieg.  Nach der im Dezember 2008 angekündigten
+Verschmelzung mit \textit{Merb}, dem zweitgrößten Framework zur
+Entwicklung von Web Applikationen in \textit{Ruby}, ist die
+Entscheidung \textit{Ruby on Rails} für diese Anwendung zu verwenden
+noch zusätzlich untermauert worden.
 
 \subsubsection{Don't Repeat Yourself}
 
@@ -54,25 +54,24 @@ zusätzlich untermauert worden.
   Yourself} Prinzip eingeleitet. Die Duplikation von Informationen
 wird dort als eines der grundlegenden Probleme im Bereich der
 Softwareentwicklung identifiziert. Mit Information ist nicht nur der
-ohnehin zu normalisierende Inhalt von Datenbanken gemeint, sondern
-auch Konfigurationsdaten und vor allem Programmcode.
+üblicherweise ohnehin zu normalisierende Inhalt von Datenbanken
+gemeint, sondern auch Konfigurationsdaten und vor allem Programmcode.
 
 \subsubsection{Convention over Configuration in ActiveRecord}
 In \textit{Ruby on Rails} wird die Duplikation von Informationen vor
 allem durch die Anwendung von \textit{Convention over Configuration}
-vermieden, bzw. versucht auf ein Minimum reduziert. Das klassische
+vermieden, bzw. versucht auf ein Minimum zu reduzieren. Das klassische
 Vorzeigebeispiel ist hier die Bibliothek \textit{ActiveRecord}, der
 von \textit{Ruby on Rails} verwendeter \textit{objekt-relationale
   Mapper (ORM)}. Dieser ist dafür zuständig in einer
 Programmiersprache verwendete Objekte auf das Schema einer
 relationalen Datenbank abzubilden. Dadurch können Daten persistent
-gespeichert und später wieder angefragt werden.
-
-Als Beispiel soll hier die \textit{One-To-Many} Beziehung zwischen den
-beiden zu persistierenden Klassen aus Auflistung \ref{ar_models}
-dienen: Ein Surf Spot ist in einem bestimmten Land, und ein Land hat
-mehrere Surf Spots. Klassen repräsentieren hier die Tabellen einer
-Datenbank und Instanzen einer Klasse die Zeilen einer Tabelle.
+gespeichert und später wieder geladen werden. Als Beispiel soll hier
+die \textit{One-To-Many} Beziehung zwischen den beiden zu
+persistierenden Klassen aus Auflistung \ref{ar_models} dienen: Ein
+Surf Spot ist in einem bestimmten Land, und ein Land hat mehrere Surf
+Spots. Klassen repräsentieren hier die Tabellen einer Datenbank und
+Instanzen einer Klasse die Zeilen einer Tabelle.
 
 \lstinputlisting[caption={\textit{Convention over Configuration} in
   \textit{ActiveRecord}}, label=ar_models]{listings/models.rb}
@@ -103,8 +102,8 @@ vorgegeben:
   \textit{country\_id} auf der Tabelle \textit{spots}.
 \end{itemize}
 
-Mit \textit{ActiveRecord} lassen sich persistente Daten eines Systems
-und deren Beziehungen untereinander schnell und ohne größeren
+Mit \textit{ActiveRecord} lassen sich persistente Objekte und deren
+Beziehungen untereinander schnell und ohne größeren
 Konfigurationsaufwand modellieren. Im Vergleich zu den aus
 \textit{Java} bekannten \textit{Container Managed Entity Beans} wird
 der Entwicklungsaufwand hier erheblich reduziert. Die verwendeten
@@ -128,30 +127,30 @@ dabei durch dynamischen Inhalt ersetzt, und Instruktionen bieten die
 Möglichkeit den zu generierenden Inhalt durch Schleifen oder
 Bedingungen programmatisch zu kontrollieren. Einige bekannte Template
 Systeme sind z.B. \textit{XSL/XSLT}, \textit{Java Server Pages (JSP)}
-oder das in die Ruby Standardbibliothek integrierte \textit{Erb}.
+oder das aus der Ruby Standardbibliothek bekannte \textit{Erb}.
 
 \subsubsection{Erb - Ruby Templating}
 
 \textit{Erb} ist ein in die Ruby Standardbibliothek integriertes
-Template System, das beliebige Text Dokumente verarbeiten kann und im
-Moment noch das Standard Template System in Ruby on Rails Anwendungen
-ist. In Auflistung \ref{template_erb} ist ein Rails-typisches Erb
-Template zu sehen, in dem Platzhalter verwendet werden um \textit{XHTML}
-\nomenclature{XHTML}{Extensible Hypertext Markup Language} mit
-dynamischem Inhalt zu generieren. Platzhalter werden in Erb Templates
-durch die speziellen Tags \textit{$<$\%=} und \textit{\%$>$}
-markiert. Der zwischen diesen Tags stehende Ruby Code wird vom
-Template System evaluiert und der Rückgabe\-wert verwendet um den
-Platzhalter zu ersetzen.
+Template System, das beliebige Text Dokumente verarbeiten kann und zur
+Zeit noch das Standard Template System in \textit{Ruby on Rails}
+Anwendungen ist. In Auflistung \ref{template_erb} ist ein \textit{Erb}
+Template zu sehen, in dem Platzhalter verwendet werden um
+\textit{XHTML} \nomenclature{XHTML}{Extensible Hypertext Markup
+  Language} mit dynamischem Inhalt zu generieren. Platzhalter werden
+in \textit{Erb} Templates durch die speziellen Tags \textit{$<$\%=} und
+\textit{\%$>$} markiert. Der zwischen diesen Tags stehende Ruby Code
+wird vom Template System evaluiert und der Rückgabe\-wert verwendet um
+den Platzhalter zu ersetzen.
 
 \lstinputlisting[caption={Beispiel eines Erb Templates},
 label=template_erb]{listings/template.erb}
 
-Die Flexibilität von Erb beliebige Eingabeformate verarbeiten zu
+Die Flexibilität von \textit{Erb} beliebige Eingabeformate verarbeiten zu
 können ist gleichzeitig auch einer der großen Nachteile. Tippfehler,
 unbalancierte Tags und ähnliche Fehler bereiten oft Probleme. Durch
 inkorrektes Markup verursachte Layoutfehler lassen sich bei der
-Verwendung von Erb oft schwer finden und erforden meist ein
+Verwendung von \textit{Erb} oft schwer finden und erforden oft ein
 zeitaufwendiges Debugging.
 
 \subsubsection{Haml - Markup Haiku}
@@ -160,58 +159,69 @@ zeitaufwendiges Debugging.
   writing code in Haml, it’s highly addictive.''}
 
 Eine sehr zu empfehlende und produktivitätssteigernde Alternative zu
-Erb ist \textit{Haml}. Haml steht für \textit{XHTML Abstraction Markup
-  Language} und spielt mit seinem Untertitel berechtigterweise auf die
-kürzeste, aus dem japanischen stammende Gedichtsform \textit{Haiku}
-an. Mit Haml lassen sich \textit{XHTML} Dokumente auf einer sehr viel
-kompakterern, lesbareren und somit übersichtlicheren Art und Weise
-beschreiben. In Auflistung \ref{template_haml} ist ein Haml Template
-zu sehen, das äquivalent zum Beispiel aus Auflistung
-\ref{template_erb} ist und das selbe Markup generiert.
+\textit{Erb} ist \textit{Haml}. \textit{Haml} steht für \textit{XHTML
+  Abstraction Markup Language} und spielt mit seinem Untertitel
+berechtigterweise auf die kürzeste, aus dem japanischen stammende
+Gedichtsform \textit{Haiku} an. Mit \textit{Haml} lassen sich \textit{XHTML}
+Dokumente auf einer sehr viel kompakterern, lesbareren und somit
+übersichtlicheren Art und Weise beschreiben. In Auflistung
+\ref{template_haml} ist ein \textit{Haml} Template zu sehen, das äquivalent zum
+Beispiel aus Auflistung \ref{template_erb} ist und das selbe Markup
+generiert.
 
 \lstinputlisting[caption={Beispiel eines Haml Templates},
 label=template_haml]{listings/template.haml}
 
 Insbesondere in \textit{XHTML} Dokumenten, die in Verbindung mit Javascript und
 \textit{CSS} verwendet werden, lassen sich einige immer wiederkehrende Muster
-identifizieren, die in Haml durch eine kompakterer Syntax ersetzt
+identifizieren, die in \textit{Haml} durch eine kompakterer Syntax ersetzt
 wurden.
 
-Ein weiterer Vorteil von Haml gegenüber Erb ist, dass der Parser das
-zu verarbeitende Template auf syntaktische Korrektheit überprüfen
-kann, mögliche Fehler sofort meldet und damit sicherstellt ist, dass
-immer valides \textit{XHTML} erzeugt wird.
+Ein weiterer Vorteil von \textit{Haml} gegenüber \textit{Erb} ist,
+dass der Parser das zu verarbeitende Template auf syntaktische
+Korrektheit überprüfen kann, mögliche Fehler sofort meldet und damit
+sicherstellt ist, dass immer valides \textit{XHTML} erzeugt
+wird. Layoutfehler wie sie bei fehlerhaften \textit{Erb} Templates
+gang und gäbe sind, werden durch den \textit{Haml} Parser sofort
+erkannt und treten deshalb erst gar nicht auf.
 
-Statt der in \textit{XHTML} Dokumenten verwendeten und sehr viel Redundanz
-erzeugenden Start- und Ende-Tags wird in Haml Dokumenten nur ein Tag
-benötigt. Haml generiert den durch XML \nomenclature{XML}{Extensible
-  Markup Language} vorgeschriebenen und zum Start Tag gehörenden Ende
-Tag automatisch. Um Elemente zu verschachteln wird eine Einrückung von
-zwei Leerzeichen verwendet. Die in \textit{XHTML} Dokumenten häufig in
-Verbindung mit \textit{id} oder \textit{class} Attributen verwendeten
-\textit{$<$div$>$} Elemente wurden in Haml mit einer speziellen Syntax
-versehen. Ein \textit{\#} Zeichen gefolgt von einem String wird wird
-zu einem \textit{$<$div$>$} Element transformiert, dessen \textit{id}
-Attribut den Wert des Strings enthält. Ein ähnliches Prinzip wird auch
-für den Punkt ''\textit{.}''  in Verbindung mit dem \textit{class}
-Attribut verwendet, so dass Zeilen 1 und 2 in beiden Auflistungen
-äquivalent sind.
+Statt der in \textit{XHTML} Dokumenten verwendeten und sehr viel
+Redundanz erzeugenden Start- und Ende-Tags wird in \textit{Haml}
+Dokumenten nur ein Tag benötigt. \textit{Haml} generiert den durch XML
+\nomenclature{XML}{Extensible Markup Language} vorgeschriebenen und
+zum Start Tag gehörenden Ende Tag automatisch. Um Elemente zu
+verschachteln wird eine Einrückung von zwei Leerzeichen verwendet. Die
+in \textit{XHTML} Dokumenten häufig in Verbindung mit \textit{id} oder
+\textit{class} Attributen verwendeten \textit{$<$div$>$} Elemente
+wurden in \textit{Haml} mit einer speziellen Syntax versehen. Ein
+\textit{\#} Zeichen gefolgt von einem String wird wird zu einem
+\textit{$<$div$>$} Element transformiert, dessen \textit{id} Attribut
+den Wert des Strings enthält. Ein ähnliches Prinzip wird auch für den
+Punkt ''\textit{.}''  in Verbindung mit dem \textit{class} Attribut
+verwendet, so dass Zeilen 1 und 2 in beiden Auflistungen äquivalent
+sind. Diese beiden Erweiterungen der Syntax erleichtern die Arbeit
+beim Erstellen von Templates erheblich und führen insgesamt zu
+wesentlich übersichtlicheren und kürzeren Dateien.
 
-Das eng mit Haml verwandte Template System \textit{Sass} bietet
-ähnlicher Vorteile und kann verwendet werden um \textit{Cascading
+Das eng mit \textit{Haml} verwandte Template System \textit{Sass}
+bietet ähnlicher Vorteile und wird dazu verwendet \textit{Cascading
   Style Sheets (CSS)} zu generieren. Das Template System definiert
 ebenfalls eine auf syntaktische Korrektheit überprüfbare Sprache und
 generiert als Ausgabeformat \textit{CSS}. Zudem bietet es die in
 \textit{CSS} nicht vorhandene Möglichkeit Variablen zu definieren,
-simple arithmetische Operationen auszuführen und einige weitere sehr
-nützliche Funktionalitäten.
+simple arithmetische Operationen auszuführen, Vererbung und einige
+weitere nützliche Funktionen.
 
-Die durch Haml und Sass definierten Sprachen sind sehr einfach zu
-erlernen und die Verwendung dieser Systeme hat sich bei der
-Entwicklung der Web Applikation als sehr hilfreich herausgestellt. Die
-übersichtlicheren und kompakteren Templates und deren Überprüfung auf
-Korrektheit überzeugten nach einiger Zeit so sehr, dass vor allem der
-Syntax von \textit{CSS} leicht in Vergessenheit geriet.
+Die durch \textit{Haml} und \textit{Sass} definierten Sprachen sind
+sehr einfach zu erlernen und die Verwendung dieser Systeme hat sich
+bei der Entwicklung der Web Applikation als sehr hilfreich
+herausgestellt. Die übersichtlicheren und kompakteren Templates und
+deren Überprüfung auf Korrektheit überzeugten nach einiger Zeit so
+sehr, dass vor allem der Syntax von \textit{CSS} leicht in
+Vergessenheit geriet. Diese beiden alternativen Template Systeme sind
+für die Entwicklung von \textit{Ruby on Rails} Anwendungen sehr zu
+empfehlen, können aber auch unabhängig von \textit{Rails} eingesetzt
+werden.
 
 \subsection{Datenbank Management System}
 
@@ -220,8 +230,8 @@ Speicherung meist ein \textit{objekt-relationaler Mapper (ORM)}
 verwendet. Dieser ist dafür zuständig in einer Programmiersprache
 verwendete Objekte auf das Schema einer relationalen Datenbank
 abzubilden. Dadurch können Daten persistent gespeichert und später
-wieder angefragt werden. In Ruby on Rails Anwendungen kommt hier
-meistens das \textit{ActiveRecord} Framework zum Einsatz, das die
+wieder geladen werden. In \textit{Ruby on Rails} Anwendungen kommt
+hier meistens das \textit{ActiveRecord} Framework zum Einsatz, das die
 meisten der gängigen Datenbank Management Systeme (DMBS) unterstützt.
 
 Bei der Auswahl des für die Web Applikation verwendeten Datenbank
@@ -230,16 +240,15 @@ DB2 von IBM aus Kostengründen nicht in Frage. Insbesondere die
 integrierten Möglichkeiten zur Auswertung von großen Datenbeständen
 \footnote{hier die Historie der Vorhersagedaten und deren
   Klassifikation durch Benutzer} mit Data Mining Verfahren wären bei
-diesen Produkten eine interessante Anwendung. Jedoch sind diese
-Optionen in den kostenlosen Varianten dieser Produkte leider nur
+diesen Produkten eine interessante Anwendung. Leider sind diese
+Optionen in den kostenlosen Varianten dieser Produkte jedoch nur
 eingeschränkt oder überhaupt nicht nutzbar.
 
 Bei den Open Source Datenbank Management Systemen viel die Auswahl auf
-\textit{PostgreSQL, ''the world's most advanced open source
-  database''}. Zum einen wurden schon in der dieser Diplomarbeit
+\textit{PostgreSQL}. Zum einen wurden schon in der dieser Diplomarbeit
 vorausgegangenen Studienarbeit gute und tiefgründige Erfahrungen mit
-diesem \textit{DBMS} gesammelt, zum anderen wird die Funktionalität von
-\textit{PostgreSQL} selbst und einiger der zur Verfügung stehenden
+diesem \textit{DBMS} gesammelt, zum anderen wird die Funktionalität
+von \textit{PostgreSQL} selbst und einiger der zur Verfügung stehenden
 Erweiterungen den benötigten Anforderungen gerecht. Einige dieser
 Anforderungen sollen hier beschrieben werden.
 
@@ -250,7 +259,7 @@ Anforderungen sollen hier beschrieben werden.
   in verschiedenen Formaten sehr viel schneller als mit den sonst
   üblichen \textit{SELECT}, \textit{INSERT} und \textit{UPDATE}
   Befehlen verarbeitet werden können. Diese Funktionalität wird unter
-  anderem für die Vorhersagedaten verarbeitenden ELT Prozesse
+  anderem für die Vorhersagedaten verarbeitenden \textit{ELT} Prozesse
   benötigt.
 
 \item Das \textit{PostGIS} Projekt erweitert \textit{PostgreSQL} mit
@@ -260,20 +269,27 @@ Anforderungen sollen hier beschrieben werden.
   in dem weit verbreiteten \textit{Shapefile} Format verarbeitet
   werden. Insbesonder mit Hinblick auf die Integration von
   \textit{Google Maps} bieten sich hier einige interessante
-  Anwendungen.
+  Anwendungsmöglichkeiten.
 
-\item Aufbauend auf dem PostGIS Projekt stellt das \textit{pgRouting}
-  Funktionalitäten zur Routenplanung bereit. In das DMBS integrierte
-  \textit{Shortest Path} Algorithmen wie \textit{Dijkstra},
-  \textit{Shooting Star} und \textit{Traveling Sales Person} können so
-  effizient ausgeführt werden. Der Dijkstra Algorithmus wird
-  beispielsweise in der Web Applikation dazu verwendet, die aus vielen
-  anderen Community Plattformen bekannten Freundschaftsbeziehungen
-  zwischen Benutzern zu berechnen.
+\item Aufbauend auf dem \textit{PostGIS} Projekt stellt die
+  \textit{pgRouting} Erweiterung Funktionalitäten zur Routenplanung
+  bereit. In das DMBS integrierte \textit{Shortest Path} Algorithmen
+  wie \textit{Dijkstra}, \textit{Shooting Star} und \textit{Traveling
+    Sales Person} können so effizient ausgeführt werden. Der
+  \textit{Dijkstra} Algorithmus wird beispielsweise in der Web
+  Applikation dazu verwendet, die aus vielen anderen Community
+  Plattformen bekannten Freundschaftsbeziehungen zwischen Benutzern zu
+  berechnen.
 
 \end{itemize}
 
 \section{Architektur der Web Applikation}
+In diesem Abschnitt wird auf die Architektur der Web Applikation
+eingegangen. Das \textit{Ruby on Rails} Framework baut selbst auf der
+\textit{Model View Controller} Architektur auf und ermöglicht es Web
+Anwendungen in dem in letzter Zeit häufig diskutierten \textit{REST}
+Architekturstil zu entwickeln, dessen Vorteile im folgenden
+vorgestellt werden.
 
 \subsection{Model View Controller}
 \label{Model View Controller}

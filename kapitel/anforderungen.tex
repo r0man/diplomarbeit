@@ -22,8 +22,8 @@ Kategorien zugeordnet, welche die Gegebenheiten vor Ort durch eine
 vereinfachte grafische Darstellung widerspiegeln. Einige dieser
 Kategorien sind die bevorzugte Windrichtung, die optimale Gezeit, die
 Art der brechenden Welle, Beschaffenheit des Bodens, sowie mögliche
-Gefahren. Kennt man die Piktogramme, ist durch einen kurzen Blick
-schnell ersichtlich welche Bedingungen an einem Spot herrschen.
+Gefahren. Durch die Piktogramme ist mit einen kurzen Blick schnell
+ersichtlich welche Bedingungen an einem Spot herrschen.
 
 \begin{figure}[h]
   \begin{center}
@@ -55,12 +55,13 @@ Diskussionen sollen zusätzlich Kommentarfunktionen zur Verfügung
 gestellt werden.
 
 Um Spam und anderer mutwilliger Zerstörung oder Verunreinigung des
-Contents vorzubeugen ist eine Registrierung der Nutzer
-erforderlich. Für alle Informationen die zu einem Spot gehören und von
-Nutzern der Web Applikation verändert werden können, soll eine
-Historie verwaltet werden. Dies soll sicherstellen, dass bei einer
-eventuellen Veruneinigung des Contents auf eine frührere Version der
-Information zurückgegriffen, und diese wiederhergestellt werden kann.
+Contents vorzubeugen ist für bestimmte Funktionen eine Registrierung
+der Nutzer erforderlich. Für alle Informationen die gemeinschaftlich
+von Nutzern der Web Applikation verändert werden können, soll eine
+Historie verwaltet werden. Dadurch soll sichergestellt werden, dass
+bei einer eventuellen Veruneinigung des Contents auf eine frührere
+Version der Information zurückgegriffen, und der ursprüngliche Zustand
+wieder hergestellt werden kann.
 
 \section{Kartenmaterial}
 
@@ -71,7 +72,7 @@ Karte dargestellt werden. Webservice Dienste wie \textit{Google Maps},
 die Möglichkeit interaktive Karten per Java\-script oder Flash in eine
 Webseite einzubetten. Diese Dienste bieten nicht nur die typischen
 Land- bzw. Straßenkarten an, sondern stellen auch Satelitenbilder und
-teilweise 3-dimensionale Ansichten für bestimmte Gebiete zur
+teilweise dreidimensionale Ansichten für bestimmte Gebiete zur
 Verfügung. In Abbildung \ref{google-maps} ist eine Karten- und eine
 Satellitenansicht von dem Surf Spot in \textit{Mundaka} zu
 sehen. Insbesondere die Satellitenansicht ist beim Auffinden von neuen
@@ -93,7 +94,7 @@ Wie schon in der Einleitung erwähnt ist das Vorhandensein von Swell
 eine der Grundvoraussetzungen zum Surfen. Viele Surfer nutzen deshalb
 regelmäßig Dienste im Internet um sich über die Wetter- und
 Wellenverhältnisse in den nächsten Tagen zu informieren. Dabei ist
-hauptsächlich die Wellenhöhe, die Wellenperiode und die Stärke und
+hauptsächlich die Wellenhöhe, die Wellenperiode, sowie Stärke und
 Richtung des Windes von Interesse. Die Spot Beschreibungen sollen
 deshalb mit aktuellen Wetter- und Wellenvorhersagen verknüpft werden,
 um den Benutzern der Web Applikation einen Mehrwert zu bieten. Die
@@ -104,20 +105,20 @@ besteht aus 5 größeren Organisationen, zu denen unter anderen auch der
   Service} gehören, welche die benötigten Wetter- und Wellendaten zur
 Verfügung stellen. Viele der im Internet verfügbaren Dienste, die
 Wetter- oder Wellenvorhersagen anbieten, beziehen ihre Daten ebenfalls
-von diesen Organisationen. Diese Vorhersagen sind zwar nicht sehr
-genau, tragen aber einen wichtigen Teil dazu bei die Surfbedingungen
-in einer bestimmten Region oder an einem Spot besser einzuschätzen zu
-können.
+von diesen Organisationen. Diese Vorhersagen sind zwar insbesondere an
+Küstengegenden nicht sehr genau, tragen aber einen wichtigen Teil dazu
+bei die Surfbedingungen in einer bestimmten Region oder an einem Spot
+besser einzuschätzen zu können.
 
 \section{Bilder \& Videos}
 Um Surfern einen visuellen Eindruck der Spots bieten zu können, sollen
 diese mit Bildern und Videos verknüpft werden. Diese in der Surf
 Community gerne gesehenen Bilder und Videos sind ideal um das bisher
 aus Beschreibungen, Wetter- und Wellenvorhersagen bestehende
-Informationsangebot zu erweitern. Zum einen sollen externe Bilder und
+Informationsangebot aufzuwerten. Zum einen sollen externe Bilder und
 Videos durch die Nutzung von Web Services in die Applikation
-integriert werden, und zum anderen soll den Nutzern die Möglichkeit
-gegeben werden ihre eigenen Bilder und Videos auf der Plattform zu
+integriert werden, und zum anderen den Nutzern die Möglichkeit gegeben
+werden ihre eigenen Bilder und Videos auf der Plattform zu
 publizieren.
 
 \subsubsection{Integration externer Bilder und Videos}
@@ -135,12 +136,10 @@ Service Schnittstellen an, mit denen es möglich ist deren Bilder und
 Videos in eigene Anwendungen zu integrieren.
 
 \begin{figure}[h]
-  \begin{center}
-    \includegraphics[width=\textwidth]{bilder/photos-flickr}
-    \caption{Integration von Bildern durch den \textit{Flickr}
+ \includegraphics[width=\textwidth]{bilder/photos-flickr}
+ \caption{Integration von Bildern durch den \textit{Flickr}
       Webservice}
-    \label{piktogramm}
-  \end{center}
+ \label{piktogramm}
 \end{figure}
 
 \subsubsection{Publikation eigener Bilder und Videos}
@@ -152,12 +151,13 @@ angeboten, aber mit Blick auf zukünftige Erweiterungen ist es sinnvoll
 die volle Kontrolle über die auf der Plattform angezeigten Bilder und
 Videos zu haben. Der Einbau eines Abstimmungssystems und ähnlicher
 Funktionen kann mit externen Abhängigkeiten schnell problematisch
-werden. Um das vor allem durch Videos erhöhte Datenvolumen in den
-Griff zu bekommen, werden die Bilder und Videos auf \textit{Amazon's
-  Simple Storage Service} \footnote{http://aws.amazon.com/s3}
-gehostet. Dadurch können Probleme wie mangelnder Speicherplatz,
-Skalierbarkeit und hohe Verfügbarkeit der Daten ausgelagert und die
-Komplexität beim Deployment der Plattform reduziert werden.
+werden, und soll deshalb vermieden werden. Um das vor allem durch
+Videos erhöhte Datenvolumen in den Griff zu bekommen, werden Bilder
+und Videos auf \textit{Amazon's Simple Storage Service (S3)}
+\footnote{http://aws.amazon.com/s3} gehostet. Dadurch können Probleme
+wie mangelnder Speicherplatz, Skalierbarkeit und hohe Verfügbarkeit
+der Daten ausgelagert werden und zugleich die Komplexität beim
+Deployment der Plattform reduziert werden.
 
 \section{Community Funktionen}
 Community Plattformen wie \textit{Facebook}, \textit{MySpace} und
@@ -165,23 +165,24 @@ Community Plattformen wie \textit{Facebook}, \textit{MySpace} und
 Beliebtheit. Einige der dort bewährten Funktionalitäten sind auch in
 der hier entwickelten Web Applikation sinnvoll und könnten einen
 Beitrag dazu leisten den Nutzern einen Mehrwert zu bieten und sie
-somit enger an die Plattform zu binden. Beispielsweise sollen die
-gemeinsam erstellten Spot Beschreibungen (die eine objektive Sicht auf
-einen Spot darstellen sollen) durch die subjektiven Kommentare und
-Meinungen der Nutzer angereichert werden um dadurch eine Diskussion zu
-ermöglichen. Auf der Plattform publizierte Bilder und Videos sollen
-ebenfalls kommentiert und bewertet werden können. Damit die Plattform
-lebendiger wird sollen die Nutzer ihr eigenes Profilbild erstellen und
-Freundschaften mit anderen Nutzern eingehen können. Darauf aufbauend
-soll es möglich sein sowohl private als auch öffentliche Nachrichten
-anderen Nutzern zukommen zu lassen und in freigegebenen Profilseiten
-anderer Nutzer zu stöbern. Um die Privatsphäre der Nutzer zu schützen
-müssen einige diese Funktionalitäten von den Anwendern freigeschalten
-bzw. gesperrt werden können. Einige dieser Funktionen werden zwar von
-vielen als ''Spielerei'' angesehen, für andere sind dies aber wichtige
-Gründe eine Community Plattform zu nutzen und tragen wohl auch einen
-großen Teil zum Erfolg vieler bereits etablierter Community
-Plattformen bei.
+enger an die Plattform zu binden. Beispielsweise sollen die gemeinsam
+erstellten Spot Beschreibungen (die eine objektive Sicht auf einen
+Spot darstellen) mit den subjektiven Kommentare und Meinungen der
+Nutzer verknüpft werden um eine Diskussion zu ermöglichen. Auf der
+Plattform publizierte Bilder und Videos sollen ebenfalls kommentiert
+und bewertet werden, damit diese nach verschiedenen Kriterien wie
+Relevanz, Beliebtheit usw. sortiert und angezeigt werden können. Damit
+die Plattform lebendiger wird können Nutzer ihr eigenes Profilbild
+verwalten und Freundschaften mit anderen Nutzern eingehen. Darauf
+aufbauend soll es möglich sein sowohl private als auch öffentliche
+Nachrichten an andere Nutzer zu senden und in den freigegebenen
+Profilseiten der registrierten Surfer zu stöbern. Um die Privatsphäre
+der Nutzer zu respektieren müssen einige diese Funktionen von den
+Anwendern freigeschalten bzw. gesperrt werden können. Einige dieser
+Konzepte werden zwar von vielen als ''Spielerei'' angesehen, für
+andere sind dies aber einige der Gründe eine Community Plattform zu
+nutzen und tragen wohl auch einen großen Teil zum Erfolg vieler
+bereits etablierter Community Plattformen bei.
 
 \section{Nachhaltiges Publizieren}
 Ein relativ unschönes aber teilweise auch verständliches Phänomen in
@@ -198,26 +199,24 @@ viele Spots überfüllt und es kann zu aggressivem Verhalten auf dem
 Wasser kommen. 
 
 \begin{figure}[h]
-  \begin{center}
-    \includegraphics[width=\textwidth]{bilder/locals-only}
-    \caption{\textit{''Only Rodiles Locals''} - Lokalismus in Rodiles,
-      Spanien}
-    \label{locals-only}
-  \end{center}
+  \includegraphics[width=\textwidth]{bilder/locals-only}
+  \caption{\textit{''Only Rodiles Locals''} - Lokalismus in Rodiles,
+    Spanien}
+  \label{locals-only}
 \end{figure}
 
 Vor Ort ansässige Surfer, sogenannte \textit{Locals}, fühlen sich
-durch die vielen Besucher an ''ihren'' Spots bedrängt und reagieren
-auf diese teilweise sehr aggressiv. Wie in Abbildung \ref{locals-only}
-zu sehen ist wird fremden Surfern deshalb oft durch Grafittis oder
-ähnlichen Markierungen nahe gelegt, dass sie an einem Spot nichts zu
-suchen haben. Dies gelingt teilweise auch, da es zuweilen vorkommt,
-dass man einen Spots zwar nicht ängstlich aber zumindest mit einem
-unguten Gefühl besucht. Grundsätzlich gilt je weniger Surfer an einem
-Spot sind, desto entspannter ist die Atmosphäre und desto besser kommt
-jeder auf seine Kosten. Abgelegenere Spots werden deshalb auch oft als
-geheim gehandelt, gegenüber Fremden nicht erwähnt oder diese beim
-Suchen nach Spots in die Irre geführt.
+teilweise durch die vielen Besucher an ''ihren'' Spots bedrängt und
+reagieren auf diese mit aggressivem Verhalten. Wie in Abbildung
+\ref{locals-only} zu sehen ist wird fremden Surfern deshalb oft durch
+Grafittis oder ähnlichen Markierungen nahe gelegt, dass sie an einem
+Spot nichts zu suchen haben. Dies gelingt teilweise auch, da es
+zuweilen vorkommt, dass man einen Spots zwar nicht ängstlich aber
+zumindest mit einem unguten Gefühl besucht. Grundsätzlich gilt je
+weniger Surfer an einem Spot sind, desto entspannter ist die
+Atmosphäre und desto besser kommt jeder auf seine Kosten. Abgelegenere
+Spots werden deshalb auch oft als geheim gehandelt, gegenüber Fremden
+nicht erwähnt oder diese beim Suchen nach Spots in die Irre geführt.
 
 Um die vor Ort ansässigen Surfer zu respektieren und nicht sofort
 jeden neuen Spot in die Welt hinaus zu posaunen wurde hier das Konzept
@@ -226,10 +225,17 @@ nur die allgemein bekannten Spots für jeden sichtbar sein. Diese Spots
 befinden sich meist an bekannten Stränden, sind ausgeschildert und
 auch in den Karten vieler Tourismusbüros verzeichnet. Andere Spots
 können beim Erstellen als \textit{Secret Spots} markiert werden und
-sind dann nur für den Ersteller selbst und seine Freunde
+sind dann nur für den Ersteller selbst und eingeladene Freunde
 sichtbar. Alle anderen Funktionen, wie Wetter- und Wellenvorhersagen
 stehen für diese Spots ebenfalls zur Verfügung, allerdings nur für
 einen eingeschränkten Nutzerkreis.
+
+\begin{figure}[t]
+ \includegraphics[width=\textwidth]{bilder/secret-spot}
+ \caption{Ansicht der Einladungen zu einem Secret Spot}
+ \label{secret-spot}
+\end{figure}
+
 
 %%% Local Variables:
 %%% mode: latex

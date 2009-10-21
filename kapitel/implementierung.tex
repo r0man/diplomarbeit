@@ -326,13 +326,12 @@ Das Akronym \textit{REST} steht für \textit{Representational State
 \footnote{\url{http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm}}
 von Roy T. Fielding. In dieser Arbeit werden verschiedene
 Architekturstile für das Design netzwerkbasierter Hypermedia Systeme
-vorgestellt und deren Verhalten bezüglich Effizienz, Skalierbarkeit
-und einiger weiterer Kriterien untersucht. In Kapitel 5 wird
-\textit{REST} als Architekturstil vorgestellt, der bewährte Konzepte
-aus den zuvor anayliserten Architekturen aufgreift und Regeln und
-Anforderungen für das Design moderner Web- Architekturen und
-Anwendungen vorgibt. Fielding, der auch an der Spezifikation des
-\textit{Hypertext Transfer Protocol (HTTP)}
+vorgestellt und deren Verhalten unter anderem bezüglich Effizienz und
+Skalierbarkeit untersucht. In Kapitel 5 wird \textit{REST} als
+Architekturstil vorgestellt, der bewährte Konzepte aus den zuvor
+anayliserten Architekturen aufgreift und Regeln und Anforderungen für
+das Design moderner Web Architekturen vorgibt. Fielding, der auch an
+der Spezifikation des \textit{Hypertext Transfer Protocol (HTTP)}
 \nomenclature{HTTP}{Hypertext Transfer Protocol} beteiligt war, führt
 den großen Erfolg des \textit{World Wide Web (WWW)}
 \nomenclature{WWW}{World Wide Web} unter anderem auf dessen
@@ -345,19 +344,18 @@ In \textit{RESTful Web Services} \cite{Richardson07} werden Fielding's
 Vorschläge auf die Architektur moderner \textit{Web Services}
 übertragen und \textit{Resource-Oriented Architecture (ROA)} als ein
 konkreter Architekturstil vorgestellt, der sich an den Konzepten von
-\textit{REST} orientiert. Im Folgenden sollen die zugrunde liegenden
-Konzepte und deren Anwendung anhand einiger Beispiele vorgestellt
-werden.
+\textit{REST} orientiert. Im Folgenden werden die zugrunde liegenden
+Konzepte und deren Anwendung anhand einiger Beispiele vorgestellt.
 
 \paragraph{Ressourcen}
-
-Der Begriff \textit{Ressource} ist eine Abstraktion und wird in
-\textit{ROA} verwendet um Dinge zu bezeichnen, die auf einem Computer
-gespeichert, in einer Folge von Bits repräsentiert und auf irgendeine
-Art und Weise identifiziert und referenziert werden können. Dokumente
-auf einem Web Server, Zeilen einer Datenbanktabelle oder das Ergebnis
-eines Algorithmus auf einer bestimmten Eingabe können als Ressource
-modelliert werden. Einige konkrete Beispiele für eine Ressource sind:
+Der Begriff \textit{Ressource} wird in der \textit{Resource Oriented
+  Architecture} als Abstraktion verwendet um Dinge zu bezeichnen, die
+auf einem Computer gespeichert, in einer Folge von Bits repräsentiert
+und auf irgendeine Art und Weise identifiziert und referenziert werden
+können. Dokumente auf einem Web Server, Zeilen einer Datenbanktabelle
+oder das Ergebnis eines Algorithmus auf einer bestimmten Eingabe
+können als Ressource modelliert werden. Einige konkrete Beispiele für
+eine Ressource sind:
 
 \begin{itemize}
 \item Die Version 3.0.12 eines Softwarepakets.
@@ -369,14 +367,15 @@ modelliert werden. Einige konkrete Beispiele für eine Ressource sind:
 
 \paragraph{Identifizierung}
 \label{paragraph:identifizierung}
-Ressourcen müssen identifiziert werden können. Im Web werden hierfür
-üblicherweise \textit{Uniform Resource Identifier (URI)}
-\nomenclature{URI}{Uniform Resource Identifier} verwendet. Eine
-Ressource muß mindestens einen \textit{URI} besitzen, die von
-Anwendungen verwendet wird um Informationen über eine Ressource zu
-bekommen oder diese zu verändern. Die eben als Beispiel erwähnten
-Ressourcen könnten z.B. über die folgenden \textit{URI}s identifiziert
-werden:
+Damit man auf eine bestimmte Ressource zugreifen kann müssen diese auf
+irgendeine Art und Weise identifiziert werden können. Im Web werden
+hierfür üblicherweise sogenannte \textit{Uniform Resource Identifier
+  (URI)} \nomenclature{URI}{Uniform Resource Identifier}
+verwendet. Eine Ressource muß mindestens einen \textit{URI} besitzen,
+die von Anwendungen verwendet wird um Informationen über eine
+Ressource zu bekommen oder diese zu verändern. Die eben als Beispiel
+erwähnten Ressourcen könnten z.B. über die folgenden \textit{URI}s
+identifiziert werden:
 
 {\sf \small
   \begin{itemize}
@@ -393,8 +392,8 @@ identifiziert werden: Zu einem bestimmten Zeitpunkt war Version 3.0.12
 der Software auch die aktuellste Version. Der Aufbau oder die Struktur
 von \textit{URI}s wird durch \textit{REST} nicht strikt vorgegeben.
 Eine durch den Clienten vorhersehbare Struktur wird aber in
-\textit{ROA} empfohlen, da dies zum einen gutes Design ausmacht und
-zugleich dem Clienten die Möglichkeiten gibt flexibel auf den Web
+\textit{Resource Oriented Architecture} empfohlen, da dies dem
+Clienten die Möglichkeiten gibt sehr viel flexibler auf den Web
 Service zuzugreifen.
 
 \paragraph{Adressierbarkeit}
@@ -404,7 +403,7 @@ gestellten Informationen als Ressourcen publiziert werden und auf
 diese durch \textit{URI}s zugegriffen werden kann. Die Anzahl der
 \textit{URI}s, die von solch einem \textit{Web Service} angeboten
 werden ist durch die Vielzahl der möglichen Eingaben meist unbegrenzt.
-Vertreter solch eines \textit{Web Services} ist z.B. die Suche nach
+Vertreter eines solchen \textit{Web Services} ist z.B. die Suche nach
 dem Wort ''REST'' bei \textit{Google}, welche durch folgenden
 \textit{URI} adressierbar ist:
 \url{http://www.google.de/search?q=REST}.
@@ -415,9 +414,9 @@ Anwendungsmöglichkeiten mit sich, als das ''bloße Publizieren'' von
 Informationen. Beispiele hierfür sind:
 
 \begin{itemize}
-\item Die Informationen referenzierenden Adressen können z.B. in
-  Büchern abgedruckt, als Lesezeichen gespeichert, per Mail
-  weitergeleitet und als Eingabe für Programme dienen, welche den
+\item Die Adressen, mit denen Informationen referenziert werden,
+  können z.B. in Büchern abgedruckt, als Lesezeichen gespeichert, per
+  Mail weitergeleitet und als Eingabe für Programme dienen, welche den
   Inhalt weiterverarbeiten. Dadurch muss nicht der eigentliche Inhalt
   verbreitet oder kommuniziert werden werden sondern nur die Adresse
   unter der dieser Inhalt zu finden ist.
@@ -434,7 +433,6 @@ Informationen. Beispiele hierfür sind:
 \end{itemize}
 
 \paragraph{Zustandslosigkeit}
-
 Unter Zustandslosigkeit bzw. \textit{Statelessness} versteht man in
 Protokollen zur Client-Server Kommunikation, dass alle Anfragen des
 Clienten an den Server komplett unabhängig voneinander sind. Anfragen
@@ -444,29 +442,27 @@ wird keinerlei Information über den Zustand von Anfragen
 verwaltet. Dadurch wird dessen Implementierung vereinfacht, spart
 Ressourcen beim Verarbeiten von Anfragen ein und bietet die
 Möglichkeit \textit{Load Balancing} in Form von horizontaler
-Skalierung zu betreiben. Zustandslosigkeit ist ebenfalls eine der von
-Fielding geforderten Eigenschaften \textit{REST}-basierter
-Architekturen.
+Skalierung zu betreiben. 
 
 \paragraph{Repräsentation}
-
 Das abstrakte Konzept einer Ressource wird durch ihre Repräsentation
 bzw. Darstellung konkretisiert. Fordert ein Client Informationen über
-eine Ressource an, wird nicht die Ressource selbst, sondern eine
-bestimmte Repräsentation dieser Ressource als Sequenz von Bytes
-übertragen. Eine Ressource kann viele verschiedene Repräsentationen
-haben, beispielsweise als \textit{HTML-},
-\nomenclature{HTML}{Hypertext Markup Language} \textit{XML-} oder
-\textit{JSON-}Dokument \nomenclature{JSON}{Javascript Object Notation}
-kodiert. Die Darstellungen in unterschiedlichen Sprachen sind
-ebenfalls mögliche Repräsentationen einer Ressource.
+eine Ressource an wird eine bestimmte Repräsentation dieser Ressource
+als Sequenz von Bytes übertragen. Eine Ressource kann viele
+verschiedene Repräsentationen haben, beispielsweise als
+\textit{HTML-}, \nomenclature{HTML}{Hypertext Markup Language}
+\textit{XML-} oder \textit{JSON-}Dokument
+\nomenclature{JSON}{Javascript Object Notation} kodiert. Darstellungen
+in unterschiedlichen konkreten Sprachen sind ebenfalls mögliche
+Repräsentationen einer Ressource.
 
-In \textit{ROA} wird empfohlen die Information welche Repräsentation
-einer Ressource der Server ausliefern soll, in den \textit{URI} oder
-in die Metadaten des verwendeten Übertragungsprotokolls
-einzubetten. Mögliche Repräsentationen der Wettervorhersage für
-\textit{Mundaka} am 26. Juli 2009 um 15:00h könnten z.B. als
-''Dateiendung'' im \textit{URI} kodiert werden:
+In der \textit{Resource Oriented Architecture} wird empfohlen die
+Information welche Art der Repräsentation einer Ressource der Server
+ausliefern soll, in den \textit{URI} oder in die Metadaten des
+verwendeten Übertragungsprotokolls einzubetten. Mögliche
+Repräsentationen der Wettervorhersage für \textit{Mundaka} am 26. Juli
+2009 um 15:00h könnten z.B. als ''Dateiendung'' im \textit{URI}
+kodiert werden:
 
 {\sf \small
   \begin{itemize}
@@ -481,7 +477,7 @@ Durch Differenzierung von Repräsentationen einer Ressource kann ein
 bedienen. \textit{Web Browsern} kann z.B. eine aufwendigere, auf
 Interaktivität fokussierte Darstellung gesendet werden,
 datenverarbeitenden Programmen eine Variante in \textit{XML} und
-mobilen Endgeräten eine leicht-gewichtigere Version im \textit{JSON}
+mobilen Endgeräten eine leicht gewichtige Version im \textit{JSON}
 Format.
 
 \paragraph{Einheitliche Schnittstelle}
@@ -522,12 +518,15 @@ definierten \textit{GET}, \textup{POST}, \textit{PUT} und
 \item Der Zustand existierender Ressourcen wird mit der \textit{PUT}
   Methode verändert. Im \textit{HTTP-Body} der Anfrage wird eine
   Repräsentation \footnote{In Web Applikationen üblicherweise in XML
-    oder Form-Encoded} der Ressource mitgsesendet, die den veränderten
-  Zustand widerspiegelt. Im folgenden Beispiel wird der Spot
-  \textit{Mundaka} mit der im \textit{HTTP-Body} enthaltenen, hier
-  aber nicht gezeigten, Repräsentation aktualisiert.
+    oder Form-Encoded} der Ressource mitgesendet, die den veränderten
+  Zustand widerspiegelt. Im folgenden Beispiel wird die geographische
+  Position des Spot \textit{Mundaka} mit der im \textit{HTTP-Body}
+  enthaltenen Repräsentation aktualisiert.
 
   \texttt{PUT http://example.com/spots/03-Mundaka}
+
+  \texttt{HTTP Body: <lat>43.406</lat><lng>-2.691</lng>}
+
 
 \item Neue Ressourcen werden entweder mit der \textit{POST}- oder der
   \textit{PUT} Methode erstellt. Eine den Zustand der Ressource
@@ -557,32 +556,47 @@ definierten \textit{GET}, \textup{POST}, \textit{PUT} und
   konstruiert. Hier legt also der Client den \textit{URI} der neuen
   Ressource fest.
 
-  \texttt{ PUT http://example.com/users/bob}
+  \texttt{PUT http://example.com/users/bob}
 
 \end{itemize}
+
+Die Konzepte der \textit{Resource Oriented Architecture} wurden bei
+der Implementierung der Web Applikation angewendet und haben sich bei
+der Entwicklung als sehr hilfreich erwiesen. Insbesondere die
+Modellierung von Ressourcen unter Berücksichtigung der einheitlichen
+Schnittstelle hat sich bewährt. Das ''Denken'' in Ressourcen und deren
+Implementierung führt nicht nur zu sauberen Schnittstellen nach außen
+hin, sondern auch zu modularem Programmcode. Die implementierten
+Ressourcen werden hauptsächlich im \textit{XHTML} Format, vereinzelt
+aber auch im \textit{JSON} Format repräsentiert. Das \textit{JSON}
+Format wird in Verbindung mit \textit{Google Maps} eingesetzt um mit
+Javascript asynchron auf die Ressourcen zugreifen zu können. Die
+Regeln der \textit{Resource Oriented Architecture} können als
+\textit{''Best Practices''} verstanden werden und sind bei der
+Konzeption und beim Design von Web Anwendungen überaus hilfreich.
 
 \section{Behaviour \& Test Driven Development}
 
 \textit{Behaviour Driven Development} ist eine Erweiterung des
-\textit{Test Driven Development}, einer Methode aus dem Bereich der
-\textit{Agilen Softwareentwicklung}. Ziel der Agilen
+\textit{Test Driven Development} und eine Methode aus dem Bereich der
+\textit{Agilen Softwareentwicklung}. Ziel der agilen
 Softwareentwicklung ist es den klassischen Softwareentwicklungsprozess
 schlanker und flexibler zu gestalten und sich mehr auf die zu
 erreichenden Ziele und Anforderungen zu
 fokussieren. Paarprogrammierung, ständige Refaktorisierung des Codes
-und testgetriebene Entwicklung sind einige der dabei verwendeten
-Methoden \cite{wiki:agile}.
-
-Behaviour Driven Development ist ein durch Dan North geprägter Begriff
-und eine Erweiterung der Philosophie des Test Driven Developments
+und testgetriebene Entwicklung sind nur einige der dabei verwendeten
+Methoden \cite{wiki:agile}. \textit{Behaviour Driven Development} ist
+ein durch Dan North geprägter Begriff und eine Erweiterung der
+Philosophie des \textit{Test Driven Developments}
 \cite{wiki:bdd}. Durch die Einführung eines gemeinsamen Vokabulars
-soll die Zusammenarbeit zwischen Programmieren und nicht-technischen
+soll die Zusammenarbeit zwischen Programmierern und nicht-technisch
 Beteiligten an einem Softwareprojekt erhöht werden. Das gemeinsame
 Vokabular wird benutzt um das Verhalten, bzw. die Anforderungen der
 Software gemeinsam zu beschreiben und eine Spezifikation zu erstellen.
-
 Diese Spezifikation wird in Form von automatischen Tests in einer
-domänen\-spezifische Sprache vom Programmierer implementiert.
+domänen\-spezifische Sprache vom Programmierer implementiert. Die
+Spezifikation und die eigentliche Implementierung des Verhaltens
+geschieht dabei zeitgleich.
 
 \subsection{Red, Green, Refactor}
 
@@ -601,18 +615,15 @@ Kunst ist hierbei, immer nur sehr kleine Schritte pro Zyklus zu
 spezifizieren und zu implementieren.
 
 \subsubsection{Red - Die Spezifikation des Verhaltens}
-
-In der \textit{Red} Phase wird ein korrekter, aber fehlschlagender,
+In der \textit{Red} Phase wird ein korrekter, aber fehlschlagender
 Test geschrieben, der ein bestimmtes Verhalten eines noch nicht
 implementiertes Features spezifiziert. Dieser Test sollte nur einen
-sehr geringen Teil des gesamten Features
-verifizieren. Beispielsweise, dass eine Methode ein Array zurück gibt,
-die Elemente eines Arrays Instanzen einer bestimmten Klasse sind oder
-die Distanz zwischen zwei gegebenen geografischen Positionen korrekt
-berechnet wird.
+sehr geringen Teil des gesamten Features verifizieren. Beispielsweise,
+dass eine Methode ein Array zurück gibt, die Elemente eines Arrays
+Instanzen einer bestimmten Klasse sind oder die Distanz zwischen zwei
+gegebenen geografischen Positionen korrekt berechnet wird.
 
 \subsubsection{Green - Die Implementierung des Verhaltens}
-
 Ziel der \textit{Green} Phase ist es den soeben geschriebenen und
 fehlschlagenden Test (und alle bisher erfolgreichen) durch eine
 geeignete Implementierung zum Erfolg zu bringen. Hierbei ist zu
@@ -627,7 +638,6 @@ Test aufgedeckt und durch eine korrekte Implementierung ausgetauscht.
 
 \subsubsection{Refactor - Besserer Programmcode durch
   Umstrukturierung}
-
 Die \textit{Refactor} Phase dient dazu, bisher entwickelten
 Programmcode durch Umstrukturierung aufzuräumen. Dazu zählt die
 Eliminierung doppelten oder ähnlichen Codes, das Extrahieren von
@@ -640,42 +650,39 @@ werden. Probleme treten oft auch an nicht offensichtlich mit den
 Änderungen in Verbindung stehenden Teilen des Programms auf. Ein
 deshalb notwendiger, manueller Systemtest kann dann oft zu aufwendig
 sein, dass die Vorteile des Refactoring in den Hintergrund rücken und
-oftmals darauf verzichtet wird.  \textit{''Never change a running
-  system''. \footnote{Oft falsch verwendeter Pseudoanglizismus}}
+oftmals darauf verzichtet wird.
 
 \subsection{Vorteile Behaviour \& Test Driven Developments}
-
 Diese Art der Softwareentwicklung wird heute oft immer noch aus den
 verschiedensten Gründen abgelehnt. \textit{''Nicht notwendig, bei gut
-  entwickeltem Code''}, \textit{''zu aufwendig''}, oder Barrieren,
-seine gewohnte Arbeitsweise zu ändern, sind einige dieser Gründe. Der
-Klassiker \textit{''man würde ja, aber habe keine Zeit Tests zu
-  schreiben''} zeigt, dass die Vorteile des Test Driven Development
-oft nicht erkannt werden. Dies liegt unter anderem wohl daran, dass es
-einige Zeit in Anspruch nimmt seine gewohnte Arbeitsweise zu ändern,
-und die Früchte erst nach einiger Zeit und Praxis deutlich zu sehen
-sind. Einige der Vorteile sollen im Folgenden deutlich gemacht werden.
+  entwickeltem Code''}, \textit{''zu aufwendig''}, oder Barrieren
+seine gewohnte Arbeitsweise zu ändern sind nur einige dieser
+Gründe. Der Klassiker \textit{''man würde ja, aber habe keine Zeit
+  Tests zu schreiben''} zeigt, dass die Vorteile des \textit{Test
+  Driven Development} oft nicht erkannt werden. Dies liegt unter
+anderem wohl daran, dass es einige Zeit in Anspruch nimmt seine
+gewohnte Arbeitsweise zu ändern, und die Früchte erst nach einiger
+Zeit und Praxis deutlich zu sehen sind. Einige der Vorteile sollen im
+Folgenden deutlich gemacht werden.
 
 \subsubsection{Steigerung der eigenen Produktivität}
-
 Martin Fowler beschreibt in \cite{Fowler1999}[S.89], dass viele
 Programmierer ihre Zeit nicht mit der Entwicklung des eigentlichen
-Programmcodes verbringen. Ein Großteil der Zeit wird für Debugging und
-das manuelle Testen des gerade zu entwickelten Codes
-verwendet. Produziert wird hier nur der eigentliche Programmcode. Beim
-Test Driven Development wird diese Zeit für die selben Ziele
-verwendet, doch als Nebenprodukt entstehen automatische
-Tests. Manuelles Testen und Debugging muss unter Umständen immer
-wieder von neuem wiederholt werden, während automatische Tests
-sicherstellen, dass bestimmte Dinge funktionieren und nicht nochmals
-verifiziert werden müssen. Die Entwicklung von Tests bedeutet mehr
-Code, was mit mehr Arbeit gleichzusetzen ist. Dieser Mehraufwand
-scheint auf den ersten Blick keinen Sinn zu machen, bis man selbst
-erfahren hat wie sehr dieses Vorgehen die eigene Produktivität
-steigern kann.
+Programmcodes verbringen, sondern den Großteil der Zeit für Debugging
+und das manuelle Testen des gerade zu entwickelten Codes verwendet
+wird. Wirklich produziert wird hier aber nur der Programmcode der
+Implementierung. Beim \textit{Test Driven Development} wird diese Zeit
+für die selben Ziele verwendet, doch als Nebenprodukt entstehen
+automatische Tests. Manuelles Testen und Debugging muss unter
+Umständen immer wieder von neuem wiederholt werden, während
+automatische Tests sicherstellen, dass bestimmte Dinge funktionieren
+und nicht nochmals verifiziert werden müssen. Die Entwicklung von
+Tests bedeutet mehr Code, was mit mehr Arbeit gleichzusetzen
+ist. Dieser Mehraufwand scheint auf den ersten Blick keinen Sinn zu
+machen, bis man selbst erfahren hat wie sehr dieses Vorgehen die
+eigene Produktivität steigern kann.
 
 \subsubsection{Besserer Programmcode}
-
 Schreibt man Tests vor der eigentlichen Implementierung blickt man von
 vornherein aus der Rolle eines Anwenders auf die zu entwickelnde
 Schnittstelle. Die API des zu implementierenden Codes kann so während
@@ -692,7 +699,7 @@ Methoden verkürzen und verbessert dadurch die Lesbarkeit des
 Codes. Die extrahierten Methoden und die verkürzte Methode selbst
 lassen sich nun in Isolation meist viel besser und einfacher testen
 als zuvor. Zudem können die extrahierten Hilfsmethoden potentiell von
-anderem Programmcode mitverwendet werden.
+anderem Programmcode wiederverwendet werden.
 
 \subsubsection{Qualitätsmanagment und Teamwork}
 
@@ -878,9 +885,9 @@ Schlüsselwort \textit{Given} beschreibt man welche Vorbedingungen in
 der gegebenen Situation herrschen müssen. \textit{When} beschreibt
 auszuführende Aktionen, wie z.B. das Ausfüllen eines Formulars oder
 das Klicken eines Links. Das Schlüsselwort \textit{Then} beschreibt
-denn Zustand nach dem ausführen der Aktionen. Mit \textit{And} wird
-eine weitere Zeile des selben Typs der vorigen Zeile definiert, und
-dient zur Verknüpfung und der besseren Lesbarkeit.
+den erwarteten Zustand nach dem Ausführen der Aktionen. Mit
+\textit{And} wird eine weitere Zeile des selben Typs der vorigen Zeile
+definiert, und dient zur Verknüpfung und der besseren Lesbarkeit.
 
 Cucumber verarbeitet solch eine Spezifikation zeilenweise und führt
 für bestimmte Zeilen Code aus der die beschriebenen Vorbedingungen

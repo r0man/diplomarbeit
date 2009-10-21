@@ -2,46 +2,48 @@
 \chapter{Aufbau und Analyse der ETL Prozesse}
 
 \section{Überblick über die verwendeten Datenquellen}
-
-Eine der Anforderungen an die Web Applikation ist es den Nutzern
-aktuelle Informationen über die Wetter- und die Wellenverhältnisse in
-den nächsten Tagen zu bieten. Hierfür werden die frei erhältlichen
-Ergebnisse von zwei numerischen Wettermodelle verwendet, dem
+Eine der Anforderungen an die Web Applikation ist den Nutzern aktuelle
+Informationen über die Wetter- und die Wellenverhältnisse in den
+nächsten Tagen zu bieten. Hierfür werden die frei erhältlichen
+Ergebnisse von zwei numerischen Wettermodellen verwendet, dem
 \textit{Global Forecast System} und dem \textit{Wave Watch III}
-Modell.
+Modell. Bevor diese beiden Wettermodelle näher beschrieben werden und
+wie auf die Ergebnisse der Modellberechnungen zugegriffen werden kann,
+wird zunächst kurz erklärt wie heutige Wettervorhersagen zustande
+kommen und welche Rolle dabei numerische Wettermodelle spielen.
 
 \subsection{Wettervorhersagen}
-
 Wettervorhersagen haben das Ziel den Zustand der Erdatmosphäre zu
 einer bestimmten Zeit an einem bestimmten Ort zu prognostizieren. Sie
-werden meist von staatlichen oder privaten Wetterdiensten erstellt,
-die sich an den Erkenntnissen der Meteorologie bedienen. Heutige
-Wettervorhersagen basieren auf den aufwendig berechneten Ergebnissen
-numerischer Wettermodelle.
+werden meist von staatlichen aber auch privaten Wetterdiensten
+erstellt, die sich an den Erkenntnissen der Meteorologie
+bedienen. Heutige Wettervorhersagen basieren auf den aufwendig
+berechneten Ergebnissen numerischer Wettermodelle.
 
 Die Vorhersage des Wetters ist ein Anfangswertproblem, das meist in
 drei Schritten gelöst wird. Im ersten Schritt, der Analyse, wird der
 Ausgangszustand der Atmosphäre bestimmt. Dieser Zustand wird durch
 verschiedene physikalische Größen festgelegt, die von Wetterstationen,
-Satelliten, Bojen oder Flugzeugen gemessenen werden. Typische Größen
-repräsentieren dabei Luftdruck, Temperatur, Wind, Wasserdampf, Wolken
-und Niederschlag.
+Satelliten, Bojen oder Flugzeugen gemessenen werden. Einige typische
+Größen sind Luftdruck, Temperatur, Wind, Wasserdampf, Wolken und
+Niederschlag.
 
-Die Modellberechnung ist der zweite Schritt, und simuliert die
-Entwicklung der Atmosphäre in die Zukunft. Die Berechnung dieser
-Simulation ist sehr aufwendig, weshalb meist Supercomputer eingesetzt
-werden. Ergebnis der Modellberechnung ist der Zustand der Atmosphäre
-zu verschiedenen Zeitpunkten in der Zukunft, dargestellt durch
-physikalischen Größen.
+Die Modellberechnung ist der zweite Schritt. Mit ihr wird die
+zukünftige Entwicklung der Atmosphäre in Form der physikalischen
+Größen simuliert. Die Berechnung dieser Simulation ist sehr aufwendig
+und wird deshalb mit Hilfe von Supercomputern durchgeführt. Ergebnis
+der Modellberechnung ist der Zustand der Atmosphäre zu verschiedenen
+Zeitpunkten in der Zukunft, dargestellt durch die physikalischen
+Größen.
 
 Im letzten Schritt, der Nachbereitung, werden die Ergebnisse der
 Simulation schließlich für die verschiedensten Nutzer
-aufbereitet. Dies beinhaltet die Generierung von Wetterkarten,
-Warnhinweisen für Technisches Hilfswerk und Feuerwehr oder die
-Visualisierung von Strömungsfilmen.
+aufbereitet. Dies beinhaltet die Generierung von Wetterkarten und
+Strömungsfilmen für das Fernsehen, das Erstellen von Warnhinweisen für
+Technisches Hilfswerk und Feuerwehr oder die Interpretation und
+Analyse verschiedenster Wetterphänomene.
 
 \subsection{Numerische Wettermodelle}
-
 Numerische Wettermodelle versuchen den Zustand der Erdatmosphäre und
 deren Veränderung im Laufe der Zeit als mathematisches Problem zu
 beschreiben. Dabei werden die physikalischen Größen und Beziehungen,
@@ -59,9 +61,9 @@ voneinander abweichen können.
 Der Deutsche Wetterdienst betreibt drei verschiedene
 Wettermodelle. Die lokalen \textit{COSMO-DE} und \textit{COSMO-EU}
 Modelle liefern Vorhersagen für Deutschland und Europa, das globale
-Modell \textit{GME} hingegen Vorhersagen für die ganze Welt. Weitere
-bekannte Modelle sind das von der US-amerikanischen \textit{National
-  Oceanic and Atmospheric Administration} betriebene \textit{Global
+Modell \textit{GME} Vorhersagen für die ganze Welt. Weitere bekannte
+Modelle sind das von der US-amerikanischen \textit{National Oceanic
+  and Atmospheric Administration (NOAA)} betriebene \textit{Global
   Forecast System (GFS)} \nomenclature{GFS}{Global Forecast System}
 und das neuere \textit{Weather Research and Forecasting (WRF)}
 \nomenclature{WRF}{Weather Research and Forecasting} Modell, das vom
@@ -75,13 +77,15 @@ Um die sich verändernde Atmosphäre der Erde auf ein Modell abbilden zu
 können wird eine Diskretisierung von Raum und Zeit vorgenommen. Dabei
 wird die Oberfläche der Erde mit einem aus Drei- oder Vierecken
 bestehenden Gitternetz überzogen, und die Atmosphäre vertikal in
-mehrere Luftschichten aufgeteilt. Damit wird die unendlich Zahl der
+mehrere Luftschichten aufgeteilt. Damit wird die unendliche Zahl der
 möglichen Vorhersagepunkte in der Atmosphäre auf die endliche Zahl der
 so entstandenen Kreuzungspunkte reduziert. In Abbildung
 \ref{gitternetz} ist das dreieckige Gitternetz des zur Zeit vom
 Deutschen Wetterdienst und des Max-Planck-Instituts für Meteorologie
 neu entwickelten \textit{ICON} \nomenclature{ICON}{Icosahedral
-  Non-hydrostatic General Circulation Model} Wettermodells zu sehen.
+  Non-hydrostatic General Circulation Model} Wettermodells zu
+sehen. Das \textit{Global Forecast System} und das \textit{Wave Watch
+  III} Modell verwendet ein aus Vierecken bestehendes Gitternetz.
 
 \begin{figure}[h]
   \begin{center}
@@ -95,30 +99,31 @@ Mit der Maschenweite bezeichnet man den horizontalen Abstand zwischen
 zwei benachbarten Gitterpunkten. Je feiner das Gitter, bzw. je höher
 die Auflösung des Modells ist, desto genauer kann die Erdoberfläche
 und die darüber liegenden atmosphärischen Strukturen erfasst werden,
-was sich auf die Genauigkeit der Wettervorhersage auswirkt. Die
-benötigten Ressourcen zu Berechnung der Modellgleichungen steigt mit
-der Anzahl der verwendeten Gitterpunkte.
+was sich wiederum auf die Genauigkeit der Wettervorhersage
+auswirkt. Die benötigten Ressourcen zu Berechnung der
+Modellgleichungen steigt mit der Anzahl der verwendeten Gitterpunkte.
 
 Da eine sehr hohe Auflösungen selbst die Leistungsfähigkeit der
-schnellsten Supercomputer übersteigt werden von den Wetterdiensten
+schnellsten Supercomputer übersteigt, werden von den Wetterdiensten
 meist verschiedene Modelle in unterschiedlichen Auflösungen
-berechnet. Globale, den gesamten Globus umfassende Modelle werden mit
-einer geringeren Auflösung als lokale, Länder oder Kontinente
-abdeckende Modelle berechnet. Je weiter in die Zukunft prognostiziert
-werden soll, desto mehr spielen aber wieder Wetterphänomene aus
-Gebieten die nicht vom lokalen Modell abgedeckt werden eine Rolle. Für
-Vorhersagen ab 5 Tagen in die Zukunft benötigen die lokalen Modelle
-wiederum Informationen aus der gesamten Atmosphäre. Deshalb verwenden
-die höher auflösenden lokalen Modelle oft Informationen als Randwerte
-aus einem zuvor berechneten globalen Modell.
+berechnet. Globale Modelle, die den gesamten Globus umfassen werden
+mit einer geringeren Auflösung berechnet als lokale Modelle, die nur
+einzelne Länder oder Kontinente abdecken. Je weiter aber in die
+Zukunft prognostiziert wird, desto mehr spielen aber wieder
+Wetterphänomene aus Gebieten die nicht vom lokalen Modell abgedeckt
+werden eine Rolle. Für Vorhersagen ab 5 Tagen in die Zukunft benötigen
+die lokalen Modelle wiederum Informationen aus der gesamten
+Atmosphäre. Deshalb verwenden die höher auflösenden lokalen Modelle
+oft Informationen als Randwerte aus einem zuvor berechneten globalen
+Modell.
 
 Die zeitliche Diskretisierung hingegen ist weniger problematisch. Die
 meisten Modelle bieten mindestens Prognosen um 12 und 24 Uhr für
 diejenigen Tage an, über die sich der Vorhersagezeitraum
-erstreckt. Das \textit{Global Forecast System} Modell bietet
-beispielsweise Vorhersagen im drei Stunden Intervall an, wobei das
-lokale \textit{COSMO-DE} Modell mit einem 25 Sekunden Intervall
-betrieben wird.
+erstreckt. Das \textit{Global Forecast System} und das \textit{Wave
+  Watch III} Modell bieten Vorhersagen im drei Stunden Intervall an,
+das lokale \textit{COSMO-DE} Modell sogar in einem Intervall von 25
+Sekunden.
 
 \subsubsection{Rechenaufwand heutiger Modelle}
 
@@ -193,7 +198,7 @@ beispielsweise durch die Angabe \textit{51.479 $^\circ$ N, 0.0
 \subsection{Angaben zur Modellauflösung}
 Das \textit{Global Forecast System} und das \textit{Wave Watch III}
 Modell beziehen sich ebenfalls auf dieses Koordinatensystem, und deren
-Gitterauflösung wird der Einheit Grad angegeben. Da die meisten
+Gitterauflösung wird in der Einheit Grad angegeben. Da die meisten
 Menschen aber bei Distanzangaben in einer Längeneinheit denken an die
 sie gewöhnt sind und unter der sie sich auch etwas vorstellen können,
 stellt sich die Frage wieviel Kilometer bzw. Meilen der Abstand
@@ -210,10 +215,9 @@ ebenfalls ungefähr 111 Kilometer, konvergiert aber an den Polen in
 Richtung Null. Die hier teilweise in Kilometern angegebenen
 Gitterauflösungen sind demnach nur als grobe Richtwerte zur besseren
 Einschätzung der Gitterauflösung zu verstehen und beziehen sich auf
-die Regionen um den Äquator. Praktische Zusammenfassungen mit
-entsprechende Formeln zur Berechnung von Problemen aus dem
-geographischen Bereich sind unter \cite{aviation} und
-\cite{movable_type_scripts} zu finden.
+die Regionen um den Äquator. Eine praktische Zusammenfassungen mit
+Formeln zur Berechnung von Problemen aus dem geographischen Bereich
+sind unter \cite{aviation} und \cite{movable_type_scripts} zu finden.
 
 \subsection{Global Forecast System}
 
@@ -222,7 +226,7 @@ Wettermodell das vom \textit{National Weather Service} betrieben wird
 und den gesamten Erdball abdeckt. Da die Ergebnisse der
 Modellberechnung über das Internet
 \footnote{\url{http://nomad5.ncep.noaa.gov/pub/gfs}} erhältlich sind
-und von jedermann verwendet werden dürfen erfreut es sich einer großen
+und von jedem verwendet werden dürfen, erfreut es sich einer großen
 Beliebtheit. Das Modell liefert Vorhersagen bis zu 384 Stunden (16
 Tage) in die Zukunft und wird mit variierenden Auflösungen viermal
 täglich berechnet, jeweils um 0h, 6h, 12h und 18h koordinierter
@@ -236,8 +240,8 @@ Das Modell berechnet eine Vielzahl von physikalischen Größen, von
 denen hier hauptsächlich die Temperatur, die Gesamtbewölkung und das
 Niederschlagswasser von Bedeutung sind. Da weithin Einverständnis
 darüber herrscht, dass Vorhersagen über 180 Stunden hinaus sehr
-ungenau sind verwenden die hier entwickelten \textit{ETL} Prozessen
-nur die ersten 180 Stunden in der hohen Auflösung.
+ungenau sind, verwenden die hier entwickelten \textit{ETL} Prozessen
+nur die ersten 180 Stunden in der höchsten Auflösung.
 
 \subsection{Wave Watch III}
 
@@ -249,23 +253,25 @@ von Winden entstehen. Wellen die durch andere Ereignisse wie
 z.B. Gewitter, Gezeiten oder Tsunamis verursacht werden, sind in
 diesem Modell nicht berücksichtigt. Da sich Wellen viel zu sehr
 voneinander unterscheiden, werden nicht Vorhersagen für einzelne
-Wellen getroffen, sondern über die Statistik mehrerer Wellen. Das
-Modell liefert sowohl Informationen über die Wellenhöhe, Wellenperiode
-und Wellenrichtung als auch über die Windstärke und die Windrichtung
-an einem bestimmten Ort zu einer bestimmten Zeit.
+Wellen getroffen, sondern über die Statistik von mehreren Wellen. Das
+Modell liefert sowohl Informationen über die Wellenhöhe, die
+Wellenperiode und die Wellenrichtung als auch über die Windstärke und
+die Windrichtung.
 
 Das Modell wird wie das \textit{Global Forecast System} viermal
-täglich neu berechnet, liefert Vorhersagen im 3 Stunden Intervall für
-180 Stunden in die Zukunft und die Ergebnisse sind ebenfalls frei
+täglich neu berechnet und liefert Vorhersagen im 3 Stunden Intervall
+für 180 Stunden in die Zukunft. Die Ergebnisse sind ebenfalls frei
 erhältlich
 \footnote{\url{http://polar.ncep.noaa.gov/waves/index2.shtml}}. Das
 globale Modell wird mit einer Maschenweite von ca. 80 Kilometern
 berechnet, die lokalen Modelle mit einer Maschenweite von bis zu 20
 Kilometern. Die hier entwickelten \textit{ETL} Prozesse verarbeiten
-bisher nur die Daten des globalen Modells.
+bisher nur die Daten des globalen Modells. Die Integration der lokalen
+Modelle ist für eine der nächsten Version der Web Applikation geplant,
+um insbesondere in den Küstenregionen bessere Ergebnisse anbieten zu
+können.
 
 \section{Das Gridded Binary Datenformat}
-
 Die Abkürzung \textit{Grib} \nomenclature{GRIB}{Gridded Binary} steht
 für \textit{GRIdded Binary} und ist ein bitorientiertes Datenformat
 zum Speichern und Übertragen von Wetterdaten. Das Format wurde von der
@@ -275,32 +281,35 @@ zum Speichern und Übertragen von Wetterdaten. Das Format wurde von der
 \nomenclature{WMO}{World Meteorological Organization} standardisiert
 \footnote{\url{http://www.wmo.int/pages/prog/www/WMOCodes/Guides/GRIB/GRIB1-Contents.html}}
 und wird von vielen Wetterorganisationen dazu verwendet die Ergebnisse
-ihrer Modellberechnungen kompakt und plattformunabhängig zu
-speichern. Insgesamt wurden drei verschiedenen Versionen spezifiziert,
-von denen sich die Versionen 1 und 2 etabliert haben. Die mit der
-Nummer 0 bezeichnete Version wird als veraltet angesehen und befindet
-sich bei den meisten Wetterorganisationen nicht mehr im operativen
-Einsatz.
+ihrer Modellberechnungen kompakt und plattformunabhängig zu speichern
+und auszutauschen. Insgesamt wurden drei verschiedenen Versionen
+spezifiziert, von denen sich mittlerweile die Versionen 1 und 2
+etabliert haben. Die mit der Nummer 0 bezeichnete Version gilt als
+veraltet und befindet sich bei den meisten Wetterorganisationen nicht
+mehr im operativen Einsatz.
 
 \subsection{Struktur von Grib Dateien}
-
 Eine \textit{Grib} Datei besteht aus eigenständigen, sich selbst
 beschreibenden Datensätzen, den sogenannten \textit{Grib}
 Nachrichten. Eine Nachricht enthält dabei alle Daten eines bestimmten
 Vorhersageelements, für eine auf ein Gitternetz diskretisierte
 geographische Region zu einem bestimmten Zeitpunkt. Beispielsweise die
-Temperaturen um 12 Uhr mittags für Europa aus dem \textit{Global
-  Forecast System}, oder die signifikanten Wellenhöhen des
-\textit{Wave Watch III} Modells um 9 Uhr morgens für die gesamte
-Erdkugel.
+Temperaturen um 12 Uhr mittags der gesamten Erdkugel aus dem
+\textit{Global Forecast System}, oder die signifikanten Wellenhöhen
+des \textit{Wave Watch III} Modells um 9 Uhr morgens für Europa.
 
 Eine \textit{Grib} Nachricht besteht wiederum aus mehreren Sektionen,
-die deren Inhalt genauer beschreiben und in Tabelle \ref{tab:grib}
-aufgelistet sind. Die Sektionen enthalten neben den eigentlichen Daten
-u.a. Informationen über die Dimension und Auflösung des verwendeten
-Gitternetzes, die Herkunft der Daten, die Art des verwendeten
-Komprimierungsverfahrens und die physikalische Einheit in der die
-Daten gespeichert sind.
+die den Inhalt einer Nachricht genauer beschreiben und in Tabelle
+\ref{tab:grib} aufgelistet sind. Die Sektionen enthalten neben den
+eigentlichen Daten Informationen über die Dimension und Auflösung des
+verwendeten Gitternetzes, die Herkunft der Daten, die Art des
+verwendeten Komprimierungsverfahrens und die physikalische Einheit in
+der die Daten gespeichert sind. \textit{Grib} Nachrichten können
+beliebig oft aneinandergereiht werden, was eine individuelle
+Komposition von unterschiedlichen Nachrichten in einer Datei
+erlaubt. Dies wird in Abschnitt \ref{subsec:download} ausgenutzt um
+nur ausgewählte Nachrichten aus einer größeren \textit{Grib} Datei zu
+beziehen.
 
 \begin{table*}
   \centering
@@ -336,39 +345,30 @@ Daten gespeichert sind.
     \end{longtable}
   }
 
-  \caption{Die aufeinander folgenden Sektionen einer \textit{Grib2} Nachricht}
+  \caption{Die Sektionen einer \textit{Grib} Nachricht (Version 2)}
   \label{tab:grib}
 
 \end{table*}
 
-\textit{Grib} Nachrichten können beliebig oft aneinandergereiht
-werden, was eine individuelle Komposition von beliebigen Nachrichten
-in einer Datei erlaubt. Dies wird in Abschnitt \ref{subsec:download}
-ausgenutzt um nur ausgewählte Nachrichten aus einer größeren
-\textit{Grib} Datei zu beziehen.
-
 \subsection{Programme zum Verarbeiten von Grib Dateien}
 \label{grib-reader}
-
 Zum Verarbeiten und Lesen von \textit{Grib} Dateien werden spezielle
-Programme eingesetzt. Werkzeugen für die Kommandozeile, C-Bibliotheken
+Programme eingesetzt. Werkzeuge für die Kommandozeile, C-Bibliotheken
 und Programmen zur Visualisierung der \textit{Grib} Daten sind für
 verschiedene Plattformen und Programmiersprachen erhältlich. Eine
 Übersicht gängiger Software ist bei \textit{Wikipedia}
-zusammengestellt.
-\footnote{\url{http://en.wikipedia.org/wiki/GRIB\#Applications}} Zur
-Weiterverarbeitung sind insbesondere die Kommandozeilenprogramme
-\texttt{wgrib} und \texttt{degrib} zu empfehlen, da sie als typische
-\textit{UNIX} Filter konzipiert sind und in Kombination mit
-\textit{UNIX} Standardwerkzeugen wie z.B. \texttt{cat}, \texttt{curl}
-oder \texttt{dd} flexibel eingesetzt werden können. Das Programm
-\texttt{degrib} bietet die Möglichkeit einen Index für eine
-\textit{Grib} Datei zu generieren, mit dessen Hilfe ein wahlfreier
+\footnote{\url{http://en.wikipedia.org/wiki/GRIB\#Applications}} zu
+finden. Zur Weiterverarbeitung sind insbesondere die
+Kommandozeilenprogramme \texttt{wgrib} und \texttt{degrib} zu
+empfehlen, da sie als typische \textit{UNIX} Filter konzipiert sind
+und in Kombination mit Standardwerkzeugen wie \texttt{cat},
+\texttt{curl} oder \texttt{dd} flexibel eingesetzt werden können. Das
+Programm \texttt{degrib} bietet zudem die Möglichkeit einen Index für
+eine \textit{Grib} Datei zu erstellen, mit dessen Hilfe ein wahlfreier
 Zugriff nach geographischen Positionen ermöglicht wird und die
 Zugriffszeiten erheblich beschleunigt.
 
 \subsection{Inventar einer Grib Datei}
-
 Die beiden Kommandozeilenprogramme \texttt{degrib} und \texttt{wgrib}
 können dazu verwendet werden Inventare von \textit{Grib} Datei zu
 erstellen. Ein Inventar ist eine Art Inhaltsverzeichnis und liefert
@@ -377,14 +377,14 @@ Informationen über die in der Datei enthaltenen Nachrichten. Da
 Wetterorganisationen aus praktischen Gründen zusätzlich die Inventare
 zur Verfügung. Ein Inventar ist zur Verarbeitung einer \textit{Grib}
 Datei zwar nicht zwingend erforderlich, vereinfacht aber den Umgang,
-da nicht immer die kompletten \textit{Grib} Dateien übertragen werden
-müssen, sondern nur die sehr viel kleineren Inventare. In Abbildung
-\ref{abbildung:inventar} ist der Ausschnitt eines Inventars von einer
-\textit{Grib} Datei des \textit{Global Forecast System} zu sehen. Pro
-Nachricht ist in diesem Inventar eine Zeile enthalten, die unter
-anderem Informationen über die Nummer der Nachricht, deren Position in
-Bytes und den Zeitpunkt als auch das Element der Vorhersage, bzw. der
-Analyse liefert.
+da zur Inspektion nicht immer die kompletten \textit{Grib} Dateien
+übertragen werden müssen, sondern nur die sehr viel kleineren
+Inventare. In Abbildung \ref{abbildung:inventar} ist der Ausschnitt
+eines Inventars von einer \textit{Grib} Datei des \textit{Global
+  Forecast System} zu sehen. Pro Nachricht ist in diesem Inventar eine
+Zeile enthalten, die unter anderem Informationen über die Nummer der
+Nachricht, deren Position in Bytes und den Zeitpunkt als auch das
+Element der Vorhersage liefert.
 
 \begin{figure}[h]
   \begin{Verbatim}[frame=lines,framerule=0.5pt,framesep=3mm]
@@ -405,11 +405,15 @@ Beispiel Auskunft darüber, dass die Nachricht mit der Nummer 2 in der
 Werte der Nachricht für den 18. August 2009 um 12 Uhr gelten, und das
 Element die Temperatur (TMP) auf einer Höhe von 10 Hektopascal (10 mb)
 darstellt. Zudem handelt es sich bei den Werten nicht um eine
-Vorhersage (fcst), sondern um eine Analyse (anl) für die kein
-durchschnittlicher Wert (NAve=0) vorhanden ist.
+Vorhersage (fcst), sondern um eine Analyse (anl) für die hier kein
+durchschnittlicher Wert (NAve=0) berechnet ist. Mit Analyse wird hier
+der Ausgangszustand der Atmosphäre zum Zeitpunkt der Modellberechnung
+bezeichnet, und mit Vorhersage der simulierte Zustand in der
+Zukunft. Diese Inhaltsverzeichnisse werden in den \textit{ETL}
+Prozessen verwendet um nur die benötigten Nachrichten einer
+\textit{Grib} Datei zu extrahieren.
 
 \section{Extraktion aus dem Quellsystem}
-
 Die Aufgabe der hier entwickelten Extraktionsprozesse besteht darin,
 die benötigten Daten des \textit{Wave Watch III} Models und des
 \textit{Global Forecast Systems} herunterzuladen, und diese in einer
@@ -417,11 +421,10 @@ einheitlichen Struktur für die Weiterverarbeitung im lokalen
 Dateisystem zu hinterlegen. Da insbesondere das Datenvolumen des
 \textit{Global Forecast System} in seiner höchsten Auflösung sehr
 umfangreich ist (ca. 13 GB), wird ein Verfahren angewendet, um nur
-ausgewählte Daten beider Modelle zu beziehen. In diesem Abschnitt wird
-zuerst die Struktur des Quellsystems analysiert, dann das erwähnte
-Verfahren zum Download der reduzierten Daten vorgestellt, und
-anschließend eine Aussage über die Performanz der Extraktionsprozesse
-getroffen.
+ausgewählte Daten zu beziehen. In diesem Abschnitt wird zuerst die
+Struktur des Quellsystems analysiert, dann das Verfahren zum Download
+der ausgewählten Daten vorgestellt, und anschließend eine Aussage über
+die Performanz des Extraktionsprozesses getroffen.
 
 \subsection{Analyse der Quellsystems}
 
@@ -429,11 +432,10 @@ Sowohl das \textit{Global Forecast System} als auch das \textit{Wave
   Watch III} Modell werden viermal täglich, jeweils um 0h, 6h, 12h und
 18h koordinierter Weltzeit berechnet. Danach werden die Ergebnisse in
 \textit{Grib} Dateien auf mehreren, teilweise von Unterorganisationen
-der \textit{National Oceanic and Atmospheric Administration}
-betriebenen Servern veröffentlicht, die verschiedensten Anforderungen
-gerecht werden. Auf einigen Server sind nur die aktuellen Ergebnisse
-verfügbar, andere wiederum dienen zur Archivierung und bieten eine
-Historie über mehrere Jahre hinweg.
+der \textit{NOAA} betriebenen Servern veröffentlicht, die
+verschiedensten Anforderungen gerecht werden. Auf einigen Server sind
+nur die aktuellen Ergebnisse verfügbar, andere wiederum dienen zur
+Archivierung und bieten eine Historie über mehrere Jahre hinweg.
 
 Die Ergebnisse der Modellberechnung werden in einem, meist nach Datum
 und Uhrzeit strukturierten Dateisystem hinterlegt, das per
@@ -441,19 +443,19 @@ und Uhrzeit strukturierten Dateisystem hinterlegt, das per
 Benennung der Verzeichnisse und Dateien variiert dabei zwischen den
 Servern, ist aber innerhalb eines Servers konsistent und folgt einem
 vorhersehbaren Muster. Die \textit{URI}s der benötigten Daten können
-so für einem bestimmten Server im voraus konstruiert werden und deren
-Existenz mit einem der unterstützten Protokolle überprüft
-werden. Dieses Verfahren kann als Anwendungsbeispiel zur
-Identifizierung von Ressourcen durch vorhersehbare \textit{URI}s
-angesehen werden, und ist einer der in Abschnitt
-\ref{paragraph:identifizierung} beschriebenen Vorschläge der
-\textit{Ressource Oriented Architecture}.
+so für einem bestimmten Server im voraus konstruiert werden und die
+Existenz der \textit{Grib} Daten mit einem der unterstützten
+Protokolle überprüft werden. Dieses Verfahren ist ein Beispiel zur
+Identifizierung von Ressourcen durch vorhersehbare \textit{URI}s, und
+ist einer der in Abschnitt \ref{paragraph:identifizierung}
+beschriebenen Vorschläge aus der \textit{Ressource Oriented
+  Architecture}.
 
 \subsubsection{Datenorganisation des Global Forecast System}
 
 Aktuelle Daten des \textit{Global Forecast System} können in
 verschiedenen Auflösung von den Servern des \textit{National Oceanic
-  And Atmospheric Administration Operational Model Archive and
+  and Atmospheric Administration Operational Model Archive and
   Distribution System (NOMADS)} \nomenclature{NOMADS}{NOAA Operational
   Model Archive and Distribution System}
 \footnote{\url{http://nomads.ncdc.noaa.gov}} bezogen werden. In
@@ -461,7 +463,8 @@ Tabelle \ref{tab:gfs_auflösungen} sind die Dateigrößen und
 Bezugsquellen der \textit{Grib} Dateien in den verschiedenen
 Auflösungen dargestellt. Die Dateigröße bezieht sich dabei immer auf
 eine einzelne \textit{Grib} Datei, die alle Vorhersageelemente des
-\textit{GFS} für einen bestimmten Zeitpunkt in der Zukunft enthält.
+\textit{Global Forecast System} für einen bestimmten Zeitpunkt in der
+Zukunft enthält.
 
 \begin{table*}[h]
   \centering
@@ -483,7 +486,7 @@ eine einzelne \textit{Grib} Datei, die alle Vorhersageelemente des
     \end{longtable}
   }
 
-  \caption{Dateigrößen der verschiedenen Auflösungen des GFS}
+  \caption{Dateigrößen des \textit{Global Forecast System}}
   \label{tab:gfs_auflösungen}
 
 \end{table*}
@@ -505,13 +508,13 @@ aufgelistet.  \footnote{Der Server \texttt{nomad5.ncep.noaa.gov}
 
 In den nach Tagen geordneten Verzeichnissen befinden sich
 \textit{Grib} Dateien die nach dem Muster
-\texttt{gfs.t\textbf{XX}z.master.grbf\textbf{YY}} benannt sind. Die Zeichen
-\texttt{XX} stehen dabei für den Zeitpunkt der Modellberechnung (00,
-06, 12 oder 18), und die Zeichen \texttt{YY} für die Stunde der
-Vorhersage in der Zukunft (00-180 im 3 Stunden Intervall). Die
-Vorhersagedaten des \textit{GFS} für den 16. August 2009 um 18 Uhr
-abends, die am selben Tag um 6 Uhr morgens berechnet wurden, waren
-somit in der \textit{Grib} Datei mit der \textit{URI}
+\texttt{gfs.t\textbf{XX}z.master.grbf\textbf{YY}} benannt sind. Die
+Zeichen \texttt{XX} stehen dabei für den Zeitpunkt der
+Modellberechnung (00, 06, 12 oder 18), und die Zeichen \texttt{YY} für
+die Stunde der Vorhersage in der Zukunft (00-180 im 3 Stunden
+Intervall). Die Vorhersagedaten des \textit{GFS} für den 16. August
+2009 um 18 Uhr abends, die am selben Tag um 6 Uhr morgens berechnet
+wurden, waren somit in der \textit{Grib} Datei mit dem \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/gfs.t06z.master.grbf12}
 zu finden.
 
@@ -520,11 +523,11 @@ für einen bestimmten Zeitpunkt 63 verschiedene Vorhersageelemente und
 ist zwischen 200 und 215 Megabyte groß. Die Größe aller \textit{Grib}
 Daten für einen Vorhersagezeitraum von 180 Stunden (und für den
 Berechnungszeitpunkt selbst) mit einem 3-stündigen Intervall beträgt
-somit $(180h / 3h + 1) * 215 Mb = 13115 Mb$. Da aber nur sehr wenige
-Vorhersageelemente der \textit{Grib} Dateien benötigt werden, wird in
-Abschnitt \ref{subsec:download} ein Verfahren vorgestellt, um nur die
-benötigten Elemente zu übertragen, und somit das Datenvolumen zu
-reduzieren.
+somit $(180h / 3h + 1) * 215 Mb = 13115 Mb$. Da hier aber nur sehr
+wenige Vorhersageelemente der \textit{Grib} Dateien benötigt werden,
+wird in Abschnitt \ref{subsec:download} ein Verfahren vorgestellt, um
+nur die benötigten Elemente zu übertragen, und somit das zu
+übertragende Datenvolumen zu reduzieren.
 
 \subsubsection{Datenorganisation des Wave Watch III Models}
 Die Daten des \textit{Wave Watch III} Modells sind ähnlich
@@ -542,7 +545,7 @@ Datei gespeichert werden. Diese ist nach dem Muster
 \texttt{nww3.t\textbf{XX}z.grib} benannt, wobei \texttt{XX} hier
 ebenfalls für den Zeitpunkt der Modellberechnung (00, 06, 12 oder 18)
 steht. Die Ergebnisse des \textit{Wave Watch III} Modells, das z.B. am
-16. August 2009 um 18 Uhr berechnet wurde, konnten unter der
+16. August 2009 um 18 Uhr berechnet wurde, konnten unter dem
 \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/waves/nww3/nww320090816/nww3.t18z.grib}
 bezogen werden.
@@ -554,7 +557,6 @@ Vorhersagedaten für 180 Stunden in die Zukunft.
 
 \subsection{Download einzelner Grib Nachrichten}
 \label{subsec:download}
-
 Die eben beschriebenen Vorhersagemodelle bieten sehr viel mehr
 Informationen zum Download an, als von der hier entwickelten
 Anwendungen überhaupt benötigt wird. Vom \textit{Global Forecast
@@ -578,7 +580,7 @@ stehen. Das Verfahren besteht aus den folgende drei Schritten.
 
 Im ersten Schritt wird das Inhaltsverzeichnis der entsprechenden
 \textit{Grib} Datei heruntergeladen. Die Inhaltsverzeichnisse auf den
-\textit{NOMADS} Servern sind mit dem \textit{wgrib} Programm erstellt,
+\textit{NOMADS} Servern sind mit dem Programm \textit{wgrib} erstellt,
 und deren \textit{URI} lässt sich durch das Anhängen der Endung
 ''.inv'', an die \textit{URI} der \textit{Grib} Datei konstruieren.
 
@@ -630,13 +632,16 @@ letzte Nachricht nicht bekannt ist, wird dadurch abgedeckt, dass die
 Endposition im \textit{Range} Header einfach weggelassen wird. Dies
 ist trotz der fehlenden Endposition eine gültige \textit{Range} Angabe
 und veranlasst den Server dazu den Rest der Datei ab der gegebenen
-Startposition zu senden.
+Startposition zu senden. Zum Download der einzelnen \textit{Grib}
+Nachrichten wird das Programm \textit{curl}
+\footnote{\url{http://curl.haxx.se}} verwendet, da es das
+\textit{HTTP/1.1} Protokoll unterstützt und man beliebige Felder im
+\textit{HTTP} Header angeben kann.
 
 \subsection{Beschreibung der Extraktionsprozesse}
-
 Ziel der Extraktion ist es alle relevanten \textit{Grib} Nachrichten
 der beiden Modelle in einer einheitlichen Struktur im lokalen
-Dateisystem zu hinterlegen. Pro Element soll dabei eine Datei erstellt
+Dateisystem zu hinterlegen. Pro Element wird eine Datei erstellt
 werden, die alle Nachrichten des entsprechenden Elements für die
 verschiedenen Zeitpunkte der Vorhersage enthält. Beim Download der
 \textit{Grib} Dateien von den \textit{NOMADS} Servern werden zwei
@@ -650,7 +655,7 @@ werden. Zu verschiedenen Zeiten durchgeführte Benchmark Tests ergaben
 eine eher mäßige durchschnittliche Übertragungsgeschwindigkeit von
 186.30 KB/s. Dies liegt vermutlich an der hohen Auslastung der
 \textit{NOMADS} Server, auf die keinen Einfluss genommen werden
-kann. Um eine besser und einen längerfristigen Zeitraum abdeckende
+kann. Um eine bessere und einen längerfristigen Zeitraum abdeckende
 Aussage zu machen, wurden die Log Dateien des Extraktionsprozesse aus
 einem Zeitraum von einer Woche ausgewertet und die Ergebnisse
 zusammengefasst.
@@ -689,17 +694,15 @@ gespeichert.
   \label{tab:download_messung_ww3}
 \end{table*}
 
-Insgesamt werden bei einem Durchlauf 8 Anfragen an den Server
-gesendet, eine für das Inhaltsverzeichnis und 7 für die \textit{Grib}
-Nachrichten der entsprechenden Elemente. In Tabelle
-\ref{tab:download_messung_ww3} sind die durchschnittlichen
-Downloadzeiten für die einzelnen Elemente des \textit{Wave Watch III}
-Modells aufgeführt. Der Extraktionsprozess dauert durchschnittlich 3.8
-Minuten und überträgt \textit{Grib} Daten mit einem Volumen von 21.4
-MB.
+Insgesamt werden dabei 8 Anfragen an den Server gesendet, eine für das
+Inhaltsverzeichnis und 7 für die \textit{Grib} Nachrichten der
+entsprechenden Elemente. In Tabelle \ref{tab:download_messung_ww3}
+sind die durchschnittlichen Downloadzeiten für die einzelnen Elemente
+des \textit{Wave Watch III} Modells aufgeführt. Der Extraktionsprozess
+dauert durchschnittlich 3.8 Minuten und überträgt 21.4 MB an
+\textit{Grib} Daten.
 
 \subsubsection{Downloadstrategie für das Global Forecast System}
-
 Der Downloadvorgang für das \textit{Global Forecast System} erfordert
 wesentlich mehr Anfragen als der des \textit{Wave Watch III} Modells,
 da die Daten auf Serverseite in mehreren Dateien gespeichert sind. Für
@@ -707,7 +710,8 @@ jeden Zeitpunkt der Vorhersage existiert auf dem Server eine Datei, in
 der die Daten aller Modellelemente für den entsprechenden Zeitpunkt
 enthalten sind. Dies sind bei einem Vorhersagezeitraum von 180 Stunden
 im 3-stündigen Intervall 61 Dateien, $180h / 3h = 60$ für den
-Vorhersagezeitraum, und eine weitere für den Zeitpunkt der Analyse.
+Vorhersagezeitraum, und eine weitere für den Zeitpunkt der
+Modellberechnung (Analyse).
 
 Um alle \textit{Grib} Nachrichten für ein ausgewähltes Element
 herunterzuladen, müssen zunächst die 61 Inhaltsverzeichnisse aller
@@ -721,7 +725,18 @@ selbstbeschreibendem Format der einzelnen \textit{Grib} Nachrichten
 mit Standard Unix Kommandos bewerkstelligt werden, beispielsweise mit
 \textit{cat TMP.00h.grib TMP.03h.grib ... TMP.180h.grib >
   TMP.0h-180h.grib}. Bis auf das Anfordern der Inhaltsverzeichnisse
-muss dieser Vorgang für alle gewünschten Elemente wiederholt werden.
+muss dieser Vorgang für alle gewünschten Elemente wiederholt
+werden. Insgesamt sind $ 61 * (N+1) $ Anfragen nötig, 61 für die
+Inhaltsverzeichnisse, und pro Element weitere \textit{61} Anfragen für
+die einzelnen Grib Nachrichten. Der Extraktionsprozess für das
+\textit{Global Forecast System} sendet somit für die zurzeit 4
+verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen. Tabelle
+\ref{tab:download_messung_gfs} zeigt im linken Teil die Größe einer
+einzelnen Nachrichten und die Zeit die benötigt wird um diese
+herunterzuladen. Im rechten Teil ist die Zusammenfassung dieser Werte
+für das jeweilige Element zu sehen. Des Extraktionsprozess für das
+\textit{Global Forecast System} überträgt insgesamt 68.04 MB und
+benötigt durchschnittlich ca. 14 Minuten.
 
 \begin{table*}[h]
   \centering
@@ -744,30 +759,17 @@ muss dieser Vorgang für alle gewünschten Elemente wiederholt werden.
   \label{tab:download_messung_gfs}
 \end{table*}
 
-Insgesamt sind $ 61 * (N+1) $ Anfragen nötig, 61 für die
-Inhaltsverzeichnisse, und pro Element weitere \textit{61} Anfragen für
-die einzelnen Grib Nachrichten. Der Extraktionsprozess für das
-\textit{Global Forecast System} sendet somit für die zurzeit 4
-verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen.
-
-Tabelle \ref{tab:download_messung_gfs} zeigt im linken Teil die Größe
-einer einzelnen Nachrichten und die Zeit die benötigt wird um diese
-herunterzuladen. Im rechten Teil ist die Zusammenfassung dieser Werte
-für das jeweilige Element zu sehen. Des Extraktionsprozess für das
-\textit{Global Forecast System} überträgt insgesamt 68.04 MB und
-benötigt durchschnittlich ca. 14 Minuten.
-
 \subsubsection{Lokales Grib Repository}
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde liegen
 die \textit{Grib} Daten beider Modelle in einem \textit{Repository}
-auf dem lokalen Dateisystem. Das \textit{Repository} ist dabei nach
-dem Namen des Modells, dem Zeitpunkt an dem das Modell erstellt wurde
-und dem Element der Vorhersage organisiert. Diese in Tabelle
+auf dem lokalen Dateisystem. Das \textit{Repository} ist nach dem
+Namen des Modells, dem Zeitpunkt an dem das Modell erstellt wurde und
+dem Element der Vorhersage organisiert. Diese in Tabelle
 \ref{tab:repository} zu sehende Struktur bietet den anschließenden
 Transformationsprozessen einen einheitlichen Zugriff auf die Elemente
-der Modelle.
+der beiden Modelle.
 
-\begin{table*}[h]
+\begin{table*}
   \centering
   {\sf
     \footnotesize
@@ -795,10 +797,10 @@ der Modelle.
 \end{table*}
 
 \subsubsection{Aktualisierung der Daten durch Polling}
-Zwar werden beide Modelle viermal täglich zu fixen Zeitpunkten
+Zwar werden beide Modelle viermal täglich zu festen Zeitpunkten
 berechnet, wann genau die \textit{Grib} Dateien auf den
-\textit{NOMADS} Servern allerdings zur Verfügung stehen variiert
-allerdings etwas. Deshalb wird die Verfügbarkeit neuer Daten mittels
+\textit{NOMADS} Servern zur Verfügung stehen variiert
+allerdings. Deshalb wird die Verfügbarkeit neuer Daten mittels
 \textit{Polling} überprüft. Die durch \textit{Cronjob} gesteuerten
 Prozesse überprüfen in einem bestimmten Intervall die Existenz der
 Quelldaten, und starten den Extraktionsvorgang erst, wenn neue, noch
@@ -806,15 +808,27 @@ nicht integrierte Daten zur Verfügung stehen.
 
 \subsubsection{Beurteilung der Extraktionsprozesse}
 Trotz der eher mäßigen Übertragungsgeschwindigkeit kann die Performanz
-der beiden Extraktionsprozesse als zufriedenstellend eingestuft
-werden. Kritisch wird es, wenn die beanspruchte Zeit zum Extrahieren
-der Daten sich dem 4-stündigen Intervall der Modellberechnung
-nähert. Von dieser Grenze sind die beiden Prozesse jedoch noch
-ausreichend weit entfernt. Da es den Anschein macht, dass die
+der beiden Extraktionsprozesse als unproblematisch eingestuft
+werden. Kritisch wird es, wenn die von den gesamten \textit{ETL}
+Prozessen beanspruchte Zeit sich dem 4-stündigen Intervall der
+Modellberechnung nähert. Die Downloadzeit von 18 Minuten ist für die
+zu übertragende Datenmenge zwar sehr schlecht, aber nicht weiter
+problematisch. Der Download der \textit{Grib} Daten beansprucht im
+Vergleich zu den anschließenden Transformations- und Ladeprozessen
+sehr wenig Ressourcen, und wirkt sich nur negativ auf die Aktualität
+der Vorhersagen aus. Da gravierende Veränderungen in den Vorhersagen
+zwischen zwei Modellberechnungen eher selten sind und die Vorhersagen
+nicht in Echtzeit benötigt werden, kann diese Verzögerung
+vernachlässigt werden. Da es den Anschein macht, dass die
 Übertragungsgeschwindigkeit von den \textit{NOMADS} Servern pro
 Verbindung reguliert wird, könnte versucht werden mehrere Anfragen
 gleichzeitig zu stellen, um die Daten parallel herunterzuladen und
-somit die Performanz zu verbessern.
+somit die Performanz zu verbessern. Wohin dies führt ist allerdings
+fraglich, da man davon ausgehen kann, dass die Anzahl der Verbindungen
+von einer IP Adresse ebenfalls beschränkt wird, falls schon die
+Übertragungsgeschwindigkeit gedrosselt wurde. Um die \textit{NOMADS}
+Server nicht unnötig zu überlasten und sich fair gegenüber anderen zu
+verhalten wurden Tricks dieser Art nicht weiter verfolgt.
 
 \section{Transformation der Daten}
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde, und
@@ -824,70 +838,76 @@ den gesamten Globus umfassende Datenmenge auf die in der Datenbank
 enthaltenen \textit{Spots} reduziert. Alle relevanten Datensätze
 werden dabei in einer \textit{CSV} \nomenclature{CSV}{Comma-Separated
   Values} Datei gespeichert, die im nächsten Schritt mit dem
-\textit{Bulk Loader} des Datenbank Management Systems importiert
-werden kann.
+\textit{Bulk Loader} des Datenbank Management Systems in die Datenbank
+importiert wird.
 
 \subsection{Auslesen der Vorhersagedaten}
 \label{auslesen-der-vorhersagedaten}
-
 Um die Vorhersagedaten aus einer \textit{Grib} Datei auszulesen, wird
-ein sogenannten \textit{Grib Reader} benötigt. Hierfür wird das schon
-in Abschnitt \ref{grib-reader} erwähnte Kommandozeilenprogramm
-\textit{degrib} verwendet, da es einen wahlfreien Zugriff nach
-geographischen Positionen auf die Daten einer \textit{Grib} Datei
-ermöglicht. Dabei wird die gegebene geographische Position auf den
-nächstliegenden Knotenpunkt des Gitters interpoliert. Mit einem
-optional zu erstellenden Index kann dieser Datenzugriff zudem noch
-beschleunigt werden, was sich positiv auf die Performanz der im
-Folgenden beschriebenen Transformationsschritte auswirkt.
+ein sogenannter \textit{Grib Reader} benötigt. Hierfür wird das
+Kommandozeilenprogramm \textit{degrib} verwendet, da mit ihm ein
+schneller und wahlfreier Zugriff nach geographischen Positionen auf
+die Vorhersagedaten einer \textit{Grib} Datei möglich
+ist. Vorhersagewerte für geographische Positionen, die nicht genau auf
+einem der Gitterpunkte des Modells liegen, werden von \textit{degrib}
+entweder durch \textit{bilineare} oder \textit{nearest-neighbor}
+Interpolation berechnet. Durch das Erstellen eines Index kann der
+wahlfreie Zugriff auf die Vorhersagedaten einer \textit{Grib} Datei
+beschleunigt werden.
 
 \lstinputlisting[caption={Auslesen der Temperatur in Berlin mit \textit{degrib}},label=degrib]{listings/degrib.txt}
 
-Die Temperatur in Berlin \textit{(52.523, 13.411)} kann z.B. mit dem
-Befehl in Zeile 1 aus Auflistung \ref{degrib} ermittelt werden. Die
-hier verwendete \textit{Grib} Datei stammt aus der Modellberechnung
-des \textit{Global Forecast System} vom 04. September 2009 um 6 Uhr,
-und bietet Vorhersagewerte im 3-stündigen Intervall für 180
-Stunden. Werden Vorhersagedaten an einer geographischen Position
+Die Temperatur in Berlin \textit{(52.523, 13.411)} kann mit dem Befehl
+in Zeile 1 aus Auflistung \ref{degrib} ermittelt werden. Die hier
+verwendete \textit{Grib} Datei stammt aus der Modellberechnung des
+\textit{Global Forecast System} vom 04. September 2009 um 6 Uhr, und
+bietet Vorhersagewerte im 3-stündigen Intervall für 180 Stunden in die
+Zukunft. Werden Vorhersagedaten an einer geographischen Position
 ausgelesen, an der keine Daten \footnote{Beispielsweise die Wellenhöhe
   in Berlin aus dem \textit{Wave Watch III} Modell} vorhanden sind,
 liefert \textit{degrib} Datensätze mit dem als ungültig definierten
-Wert \textit{9999.000}.
+Wert \textit{9999.0}. 
 
 \subsection{Bestimmung der Wave Watch III Position}
-Bevor der eigentliche Transformationsvorgang beschrieben werden kann,
-muss zuvor noch auf eine Eigenart des \textit{Wave Watch III} Modells
-eingegangen werden. Bei einigen Spots wird die Transformation der
-Vorhersagedaten durch die zu grobe Gitterauflösung des Modells und
-daraus resultierenden Datenlücken erschwert. In einem für jeden Spot
-einmalig durchzuführenden Berechnungsschritt kann dieses Problem
-jedoch für die meisten Spots zufriedenstellend behoben werden.
+Bevor der eigentliche Transformationsvorgang beschrieben wird, muss
+zuvor noch auf eine Eigenart des \textit{Wave Watch III} Modells
+eingegangen werden. Bei einigen Spots wird das Auslesen der
+Wellenvorhersagen durch die zu grobe Gitterauflösung des Modells und
+daraus resultierenden Datenlücken erschwert. Mit einem zusätzlichen
+Berechnungsschritt, der für jeden Spot einmalig durchzuführen ist,
+kann dieses Problem jedoch für die meisten Spots zufriedenstellend
+gelöst werden. In diesem Abschnitt wird zunächst näher auf diese
+Datenlücken eingegangen und anschließend ein prototypischer
+Algorithmus zur Lösung des Problems vorgestellt.
 
 \subsubsection{Datenlücken im Wave Watch III Modell}
 Der Fokus des \textit{Wave Watch III} Modells liegt auf der Vorhersage
-von Wellen und den damit verbundenen physikalischen Größen. Das Modell
-enthält deshalb nur Vorhersagedaten für diejenigen geographischen
-Positionen, die sich über dem Meer befinden. Für alle anderen
-Positionen stehen keine Daten zur Verfügung. Wegen der groben
-Gitterauflösung verläuft die Grenze zwischen Land und Meer jedoch
-nicht wirklichkeitsgetreu, sondern in einer sich am rechteckigen
-Gitternetz des Modells orientierenden Zick-Zack Linie. In Abbildung
+von Wellen und den damit verbundenen physikalischen Größen. Im
+Ergebnis der Modellberechnung sind deshalb nur Vorhersagedaten für
+geographische Positionen enthalten, die sich auch über dem Meer
+befinden. Für alle anderen Positionen stehen keine Daten zur
+Verfügung. Wegen der groben Gitterauflösung des \textit{Wave Watch
+  III} Modells verläuft die Grenze zwischen Land und Meer jedoch nicht
+wirklichkeitsgetreu, sondern in einer Zick-Zack Linie, die sich am
+rechteckigen Gitternetz des Modells orientiert. In Abbildung
 \ref{positions-bestimmung} ist die Küstenregion um den spanischen Ort
-Mundaka, mit dem darüber liegenden Gitternetz zu sehen. Die Abbildung
+Mundaka mit dem darüber liegenden Gitternetz zu sehen. Die Abbildung
 soll verdeutlichen, dass nur an den grün eingefärbten Knotenpunkten
-des Gitters Vorhersagedaten vorhanden, und an den anderen Stellen
-nicht.
+des Gitters Vorhersagedaten existieren. An allen anderen Stellen sind
+keine Daten vorhanden, da diese Positionen im Modell als Land
+betrachtet werden. Deshalb würde man beim Auslesen der Vorhersagedaten
+des \textit{Wave Watch III} Modells an der geographischen Position des
+Spots Mundaka nur ungültige Werte erhalten.
 
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[width=\textwidth]{bilder/locate-position}
-    \caption{Visualisierung der Datenlücken im Wave Watch III Modell}
-    \label{positions-bestimmung}
-  \end{center}
+\begin{figure}
+ \includegraphics[width=\textwidth]{bilder/locate-position}
+ \caption{Visualisierung der Datenlücken im \textit{Wave Watch III}
+   Modell}
+ \label{positions-bestimmung}
 \end{figure}
 
 \subsubsection{Vorhersagedaten aus der näheren Umgebung}
-Da sich die meisten Surf Spots aber genau in solchen Küstenregionen
+Da sich die meisten Spots aber genau in solchen Küstenregionen
 befinden, muss eine zufriedenstellende Alternative gefunden werden, um
 für diese Spots trotzdem Vorhersagedaten anbieten zu können. Wie in
 der Einleitung erwähnt, werden die an den Spots brechenden Wellen
@@ -895,47 +915,64 @@ durch den in weit entfernteren Regionen entstandenen, und viele
 Kilometer weit gereisten Swell beeinflusst. Zieht man lokale
 Gegebenheiten, wie z.B. vorgelagerte Inseln, Hafenbecken oder
 abgeschirmte Buchten nicht in Betracht, dann sind die für Surfer
-wichtigen Eigenschaften eines meist großräumig eintreffenden Swells in
-der Umgebung eines Spots sehr ähnlich. Deshalb werden in der hier
+wichtigen Eigenschaften eines großräumig eintreffenden Swells in der
+Umgebung eines Spots sehr ähnlich. Deshalb werden in der hier
 entwickelten Applikation Vorhersagedaten aus der näheren Umgebung
 eines Spots herangezogen, falls an der geographischen Position des
-Spots selbst keine Daten vorhanden sind. Das hier zu lösende Problem
+Spots selbst keine Daten vorhanden sind. Das zu lösende Problem
 besteht darin, eine alternative Vorhersageposition für diejenigen
-Spots zu finden, an deren geographischer Position keine Daten
+Spots zu finden, an deren geographischer Position selbst keine Daten
 vorhanden sind.
 
 \subsubsection{Bestimmung der Vorhersageposition durch den Benutzer}
-Eine Möglichkeit wäre den Benutzer beim Erstellen eines neuen Spots
-die Vorhersageposition mit angeben zu lassen. Durch ein interaktives
-Formular in Verbindung mit einer Karte könnte der Benutzer dazu
-angeleitet werden eine Position auszuwählen, die weiter im Meer liegt
-und für die Vorhersagedaten existieren. Diese Idee wurde hier aber
-nicht weiter verfolgt, da sie das Erstellen neuer Spot verkompliziert
-und als zu benutzerunfreundlich eingeschätzt wird.
+Eine Möglichkeit dieses Problem zu Lösen wäre den Benutzer beim
+Erstellen eines neuen Spots die Vorhersageposition selbst angeben zu
+lassen. Auf einer interaktiven Karte könnte man den Spot mit dem
+darüber liegenden Gitternetz des \textit{Wave Watch III} Modells
+einzeichnen und die gültigen Positionen bzw. Gebiete ähnlich wie in
+Abbildung \ref{positions-bestimmung} einfärben. Mit einem Klick auf
+die Karte kann der Benutzer dann eine alternative Vorhersageposition
+auswählen. Wurde eine Position selektiert für die keine
+Vorhersagedaten vorhanden sind, müsste dies dem Anwender unmittelbar
+signalisiert werden. Diese Idee wurde hier aber wegen ihrer
+Benutzerunfreundlichkeit nicht weiter verfolgt. Der Nutzer müsste
+zunächst über Sinn und Zweck der alternativen Vorhersageposition
+aufgeklärt werden. Dies verständlich zu kommunizieren und in einer
+intuitiven Benutzeroberfläche darzustellen wird als eines der
+Hauptprobleme bei diesem Ansatz angesehen.  Benutzer der Plattform mit
+internen Details der Web Applikation zu konfrontieren, die zudem nicht
+unbedingt sofort verständlich sind, wird als nicht zumutbar
+eingestuft. Eine bessere und zudem automatisierte Alternative wäre
+einen Algorithmus zu entwickeln, der für einen gegebenen Spot eine
+alternative Vorhersageposition in dessen näherer Umgebung findet.
 
-\subsubsection{Binäre Suche zur Bestimmung der Vorhersageposition}
-
-Die hier verfolgte Idee zur Bestimmung einer alternativen
-Vorhersageposition, basiert auf einer binären Suche im näheren Umkreis
-eines Spots. Das Ziel ist diejenige geographische Position zu finden,
-die am wenigsten weit von dem gegebenen Spot entfernt ist und für die
-Vorhersagedaten verfügbar sind.
-
-Der hier beschriebene Algorithmus verwendet zur Ermittlung der
-alternativen Vorhersageposition eine \textit{Grib} Datei, in der die
-Wellenhöhen des \textit{Wave Watch III} Modells enthalten
-sind. Zunächst wird hier das allgemeine Prinzip des Algorithmus in
-einer linearen Variante beschrieben, die dann durch eine binäre Suche
-erweitert wird.
+\subsubsection{Algorithmus zur Bestimmung der Vorhersageposition}
+Der hier entwickelte Algorithmus sucht im näheren Umkreis eines Spots
+nach einer alternativen Vorhersageposition. Zur Ermittlung dieser
+Position wird eine \textit{Grib} Datei verwendet, in der die
+Wellenhöhen des \textit{Wave Watch III} Modells gespeichert sind. Da
+die Entwicklung von speziellen Routinen zum Auslesen einer
+\textit{Grib} Datei und zur effizienteren Suche einer alternativen
+Vorhersageposition zu viel Zeit in Anspruch genommen hätte, wurde die
+\textit{Grib} Datei hier als \textit{Black Box} betrachtet, auf die
+nur mit den zur Verfügung stehenden Werkzeugen zugegriffen werden
+kann. Zunächst wird das allgemeine Vorgehen des Algorithmus in einer
+beschrieben. Anschließend wird der Algorithmus durch Anwendung des
+\textit{Divide and Conquer} Prinzips erweitert, und ein Verfahren
+angewendet das gewisse Parallelen zu einer binären aufweist. Ziel des
+Algorithmus ist es diejenige geographische Position zu finden, die dem
+gegebenen Spot am nächsten liegt und für die Vorhersagedaten
+existieren.
 
 \begin{enumerate}
+
 \item Bei der Initialisierung des Algorithmus wird die maximale
   Distanz $\Delta$ festgelegt, die eine alternative Vorhersageposition
-  $\Omega$ von der Ursprungsposition $\Theta$ entfernt sein
-  darf. Weiterhin eine Schrittweite $\delta < \Delta$, um die der
-  Radius $\rho$ pro Iteration vom Ursprung aus erhöht wird, und der
-  Abstand $\alpha < 360^{\circ}$ , welcher die Schrittweite der
-  Richtung angibt.
+  $\Omega$ von der Ursprungsposition $\Theta$ des gegebenen Spots
+  entfernt sein darf. Weiterhin eine Schrittweite $\delta < \Delta$,
+  um die der Radius $\rho$ pro Iteration vom Ursprung aus erhöht wird,
+  und der Abstand $\alpha < 360^{\circ}$ , welcher die Schrittweite
+  der Richtung angibt.
 
 \item Zunächst werden die Wellenhöhen an der Ursprungsposition des
   Spots bei einem Radius von $\rho = 0$ mit dem Programm
@@ -944,14 +981,14 @@ erweitert wird.
   ursprüngliche Position des Spots kann als Vorhersageposition
   verwendet werden.
 
-\item Wurden an den bisher betrachteten Position(en) keine gültigen
-  Werte gefunden, wird der Radius von der Ursprungsposition $\Theta$
-  aus um die Schrittweite $\delta$ erhöht. Falls diese Schrittweite
-  ihr Maximum $\Delta$ erreicht hat, ist der Algorithmus fertig und es
-  konnte keine alternative Vorhersageposition gefunden werden.
+\item Wurden an der/den bisher betrachteten Position(en) keine
+  gültigen Werte gefunden, wird der Radius $\rho$ um die Schrittweite
+  $\delta$ erhöht. Falls der Radius $\rho$ den Maximalwert $\Delta$
+  überschritten hat, ist der Algorithmus fertig und es wurde keine
+  alternative Vorhersageposition gefunden.
 
-\item Nach der Erhöhung des Radius, werden bestimmte geographische
-  Positionen auf dessen Umkreis nach der Existenz gültiger
+\item Nach der Erhöhung des Radius werden bestimmte geographische
+  Positionen auf dem Umkreis des Spots auf die Existenz gültiger
   Vorhersagewerte hin überprüft. Dabei werden nur diejenigen
   Positionen betrachtet, deren in Grad angegebene Richtung durch die
   Schrittweise $\alpha$ teilbar ist. Wurden an einer dieser Positionen
@@ -963,25 +1000,61 @@ erweitert wird.
 
 Bei der Überprüfung einer Position auf gültige Werte wird das Programm
 \textit{degrib} mit den entsprechenden Parametern aufgerufen, dessen
-Ausgabe geparst und anschließend ausgewertet. Die Anzahl dieser
-Programmaufrufe ist dabei mit den bei der Initialisierung festgelegten
-Parametern durch die Obergrenze $(360^{\circ} / \alpha) * (\Delta /
-\delta)$ beschränkt.
+Ausgabe geparst und anschließend ausgewertet. Eine alternative
+Vorhersageposition wurde genau dann gefunden, wenn alle Werte in der
+Ausgabe von \textit{degrib} gültig sind. Die Anzahl der
+Programmaufrufe ist mit den bei der Initialisierung festgelegten
+Parametern durch die Obergrenze $1 + (360^{\circ} / \alpha) * (\Delta
+/ \delta)$ beschränkt. 
 
-Durch die Verwendung einer binären Suche kann die Anzahl der
-Programmaufrufe und die Komplexität des Algorithmus auf
-$O(log(360^{\circ} / \alpha * \Delta / \delta))$ reduziert werden. Im
-Gegensatz zur linearen Suche wird bei der binären Suche die Distanz
-nicht schrittweise bis zur Abbruchbedingung erhöht, sondern das
-\textit{Divide and Conquer} Prinzip angewendet. Nachdem an der
-Ursprungsposition keine gültigen Werte gefunden wurden, werden alle
-Positionen auf dem durch den Radius $r = \Delta / 2$ definierten
-Umkreis auf Gültigkeit hin überprüft. Wurde auf diesem Umkreis eine
-Position gefunden, werden nur noch Positionen mit $r < \Delta / 2$
-überprüft, ansonsten diejenigen Positionen mit $r > \Delta /
-2$. Dieses Prinzip wird in beiden Fällen so lange fortgesetzt, bis
-eine alternative Vorhersageposition gefunden wurde, oder die
-Distanzobergrenze erreicht wurde.
+\subsubsection{Beobachtungen bei der Anwendung des Algorithmus}
+Der Algorithmus wurde auf 68 Spots angewendet, von denen zwei in Nord
+Amerika, 4 in Indonesien und die restlichen in Europa liegen. Als
+Abbruchbedingung wurde die maximale Distanz $\Delta$ bei der
+Initialisierung des Algorithmus auf 100 Kilometer gesetzt. Für die
+Schrittweite der Richtung wurde $\alpha = 10^{\circ}$ gewählt und der
+Radius bei jeder Iteration um einen Kilometer erhöht. Bei 31 Spots
+wurden an der Ursprungsposition gültige Vorhersagewerte gefunden und
+der Algorithmus konnte bereits nach einem Aufruf des Programms
+\textit{degrib} terminieren. Für zwei Spots in Italien konnten keine
+alternativen Vorhersageposition gefunden werden, da das \textit{Wave
+  Watch III} Modell für das Mittelmeer keine Vorhersagedaten
+anbietet. Für diese beiden Spots wurde das Programm \textit{degrib}
+vom Algorithmus $1 + (360^{\circ} / 10^{\circ}) * (100km / 1km) =
+3601$ mal ohne Erfolg aufgerufen. Bei allen anderen Spots war die
+alternative Vorhersageposition zwischen 3 und 80 Kilometern von der
+Ursprungsposition entfernt. 
+
+\subsubsection{Verbesserung des Algorithmus}
+Damit der Algorithmus zu einem Spot auch wirklich die nächste
+alternative Vorhersageposition findet, muss die Schrittweite $\delta$,
+um die der Radius pro Iteration erhöht wird, sehr klein gewählt
+werden. Ist diese Schrittweite zu hoch angesetzt, kann es vorkommen
+dass eine in Wirklichkeit viel näher am Ursprung liegende alternative
+Vorhersageposition nicht gefunden wird, da sie bei einer Iteration
+übersprungen wurde. Wählt man die Schrittweite allerdings zu klein,
+führt dies zu sehr vielen und teuren Aufrufen des Programms
+\textit{degrib} und einer schlechten Laufzeit des Algorithmus. Das
+selbe gilt für die Wahl der Schrittweise $\alpha$, mit der die
+verschiedenen Richtungen der zu suchenden Position berechnet wird.
+
+
+
+
+% Durch die Verwendung einer binären Suche kann die Anzahl der
+% Programmaufrufe und die Komplexität des Algorithmus auf
+% $O(log(360^{\circ} / \alpha * \Delta / \delta))$ reduziert werden. Im
+% Gegensatz zur linearen Suche wird bei der binären Suche die Distanz
+% nicht schrittweise bis zur Abbruchbedingung erhöht, sondern das
+% \textit{Divide and Conquer} Prinzip angewendet. Nachdem an der
+% Ursprungsposition keine gültigen Werte gefunden wurden, werden alle
+% Positionen auf dem durch den Radius $r = \Delta / 2$ definierten
+% Umkreis auf Gültigkeit hin überprüft. Wurde auf diesem Umkreis eine
+% Position gefunden, werden nur noch Positionen mit $r < \Delta / 2$
+% überprüft, ansonsten diejenigen Positionen mit $r > \Delta /
+% 2$. Dieses Prinzip wird in beiden Fällen so lange fortgesetzt, bis
+% eine alternative Vorhersageposition gefunden wurde, oder die
+% Distanzobergrenze erreicht wurde.
 
 \lstinputlisting[caption={Binäre Suche der alternativen Vorhersageposition},label=locate]{listings/locate.txt}
 
@@ -1012,7 +1085,7 @@ Spots mit dem Programm \textit{degrib} ausgelesen und in das
 \textit{CSV} Format umgewandelt werden. Die Vorhersagedaten des
 \textit{Wave Watch III} Modells werden dabei an der alternativen
 Vorhersageposition, die Daten des \textit{Global Forecast System} an
-der Ursprungsposition eines Spots erhoben. Hierzu wird das Programm
+der Ursprungsposition eines Spots ausgelesen. Hierzu wird das Programm
 \textit{degrib} mit den entsprechenden Parametern pro Spot $n$-mal
 aufgerufen, wobei $n$ für die Anzahl der Vorhersageelemente steht. Die
 übergebenen Parameter legen den Namen der \textit{Grib} Datei und die
@@ -1102,10 +1175,11 @@ Diskussionen zu \textit{Ruby on Rails} wird auf die Verwendung von
 Fremdschlüsseln zur Sicherung der referenziellen Integrität nicht
 eingegangen. Dieses Defizit wurde durch die Definition entsprechender
 Methoden in der \textit{ActiveRecord} Bibliothek behoben, so dass
-Fremdschlüssel direkt über die \textit{API} definiert werden können,
-welche die referenzielle Integrität auf Datenbankebene sichern. Bei
-der Entwicklung der Web Applikation traten so einige Fehler sehr viel
-schneller zum Vorschein, als wenn man darauf verzichtet hätte.
+Fremdschlüssel direkt über die \textit{API} definiert werden
+können. Diese stellen die referenzielle Integrität auf Datenbankebene
+sichern. Bei der Entwicklung der Web Applikation traten so einige
+Fehler sehr viel schneller zum Vorschein, als wenn man darauf
+verzichtet hätte.
 
 \subsubsection{Repräsentation der Vorhersagedaten in der Datenbank}
 Die Vorhersagedaten der Spots werden in einer Relation mit dem Namen
@@ -1127,7 +1201,7 @@ die beiden Modelle erstellt wurden. Da das \textit{Global Forecast
 selben Zeitpunkten erstellt wird, gilt dieses Attribut für beide
 Modelle. Die beiden Attribute \textit{created\textunderscore at} und
 \textit{updated\textunderscore at} sind zwei von \textit{ActiveRecord}
-automatisch verwaltete Attribute, welche die Zeitpunkte an dem der
+automatisch verwaltete Attribute, welche die Zeitpunkte an dem ein
 Datensatz erstellt und an dem er zuletzt aktualisiert wurde
 enthalten. Alle anderen Attribute repräsentieren die
 Vorhersageelemente der beiden Modelle und nehmen die mit
@@ -1225,7 +1299,7 @@ bei denen nur eine geringe Datenmenge zu verarbeiten, und die
 Performanz des Ladevorgangs nicht kritisch ist. Der Vorteil der
 tupelorientierten Aktualisierung liegt in deren Implementierung. Diese
 ist meist \textit{straight forward} und einfacher als auf Performanz
-getrimmten Varianten.
+getrimmte Varianten.
 
 Bevor im nächsten Abschnitt, ein aus dem Bereich des \textit{Data
   Warehousing} bekanntes Verfahren vorgestellt wird, sollen hier noch
@@ -1345,9 +1419,9 @@ Nachdem die zu verarbeitenden Daten unter die Kontrolle des Datenbank
 Management Systems gebracht wurden, kann mit der mengenorientierten
 Aktualisierung der Vorhersagedaten begonnen werden. Ziel ist die
 Vorhersagedaten der Relation \textit{grib\textunderscore messages} in
-die \textit{forecasts} Relation zu überführen. Dabei werden die
-existierenden und aus einer früheren Modellberechnung stammenden
-Datensätze der \textit{forecasts} Relation mit den Werten der neueren
+die Relation \textit{forecasts} zu überführen. Dabei werden
+existierende, aus einer früheren Modellberechnung stammenden
+Datensätze der Tabelle \textit{forecasts} mit den Werten der neueren
 Berechnung überschrieben, und noch nicht existierende Datensätze
 hinzugefügt. Es werden nur diejenigen Datensätze aktualisiert bzw.
 hinzugefügt, die auch im Zeitraum der aktuellen Modellberechnung
@@ -1355,7 +1429,7 @@ liegen. Dieser Zeitraum ist durch die Datensätze der Quellrelation
 \textit{grib\textunderscore messages} bestimmt, und kann mit dem
 \textit{SQL} Befehl \textit{SELECT MIN(valid\textunderscore time),
   MAX(valid\textunderscore time) FROM grib\textunderscore messages;}
-ermittelt werden.
+ermittelt werden. 
 
 \subsubsection{Transposition von Spalten und Zeilen}
 Idealerweise würde man bei der mengenorientierten Aktualisierung genau

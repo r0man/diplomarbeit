@@ -8,9 +8,9 @@ Wettersendungen im Fernsehen bekannt. Dort wird den Zuschauern die
 Gesamtwetterlage einer Region oft in Form von Wetterkarten oder
 Strömungsfilmen präsentiert. Der Wertebereich eines Vorhersageelements
 wird dabei auf eine Farbpalette reduziert, und die unterschiedlichen
-Werte durch Einfärben der Landkarte dargestellt. Strömungsfilme werden
-wiederum aus mehreren Wetterkarten erstellt, die die Wetterlage zu
-verschiedenen Zeitpunkten zeigen und im Zeitraffer hintereinander
+Werte durch Einfärben der Wetterkarte dargestellt. Strömungsfilme
+werden wiederum aus mehreren Wetterkarten erstellt, die die Wetterlage
+zu verschiedenen Zeitpunkten zeigen und im Zeitraffer hintereinander
 abgespielt werden. In Strömungsfilmen wird beispielsweise die
 Ausbreitung von Hoch- und Tiefdruckgebieten oder die Bewegung von
 Wolken in den nächsten Stunden und Tagen gezeigt. Die Reduzierung des
@@ -24,22 +24,22 @@ aufschlussreich. In Abbildung \ref{wave-watch-grads} ist eine
 Wetterkarte mit den Wellenhöhen und einiger weiterer Vorhersageelement
 über dem Atlantik zu sehen. Die verschiedenen Wellenhöhen sind dort in
 unterschiedlichen Farben gekennzeichnet. Durch diese Darstellung kann
-man sehr gut Trends erkennen die bei einem Blick auf die bloßen Zahlen
-gar nicht auffallen würden. Betrachtet man beispielsweise nur die
-Wellenhöhen an einem bestimmten Spot kann man nur eine Aussage für die
-nächsten 180 Stunden machen. Zieht man jedoch die visuelle Darstellung
-der Wellenausbreitung hinzu, kann man oft einen dort erst sehr viel
-später eintreffenden Swell erkennen und eine Einschätzung weit über
-180 Stunden hinaus bekommen. Eine Darstellung solche Strömungsfilme
-für einige ausgewählte Regionen wäre eine wünschenswerte Erweiterung,
-mit der den Nutzern der Web Applikation ein Mehrwert geboten werden
-könnte. Einige Webseiten
+man sehr gut Trends erkennen die bei einem Blick auf bloße Zahlen gar
+nicht auffallen würden oder nur schwer erkennbar wären. Betrachtet man
+beispielsweise nur die Wellenhöhen an einem bestimmten Spot kann man
+nur eine Aussage für die nächsten 180 Stunden machen. Zieht man jedoch
+die visuelle Darstellung der Wellenausbreitung hinzu, kann man oft
+einen dort erst sehr viel später eintreffenden Swell erkennen und eine
+Einschätzung weit über 180 Stunden hinaus bekommen. Eine Darstellung
+solche Strömungsfilme für einige ausgewählte Regionen wäre eine
+wünschenswerte Erweiterung, mit der den Nutzern der Web Applikation
+ein Mehrwert geboten werden könnte. Einige Webseiten
 \footnote{\url{http://nomad5.ncep.noaa.gov/cgi-bin/pdisp_wave.sh}}
 bieten bereits sehr gute \footnote{\url{http://magicseaweed.com}}
-Aufbereitung solcher Vorhersagen an, und eine Integration eines
-solchen Feature in die Web Applikation wäre ebenfalls
-wünschenswert. Um Plots wie der in Abbildung \ref{wave-watch-grads}
-und Strömungsfilme zu erstellen, kann das Programme \textit{Grads}
+Aufbereitung solcher Vorhersagen an, und solch eine Integration wäre
+für die Web Applikation ebenfalls wünschenswert. Um Plots wie in
+Abbildung \ref{wave-watch-grads} zu sehen und Strömungsfilme zu
+erstellen, kann das Open Source Programm \textit{Grads}
 \footnote{\url{http://www.iges.org/grads/}} verwendet werden.
 
 \begin{figure}[h]
@@ -175,20 +175,20 @@ man zwischen Verfahren des \textit{Supervised-} und
 werden sogenannte Trainingsdaten benötigt, die von den Algorithmen
 analysiert und zur Lösung des Problems herangezogen werden. Die
 Trainingsdaten für Klassifikationsprobleme bestehen dabei aus einer
-Menge von Objekten, deren Klassenzugehörigkeit bekannt ist. Die durch
-das Abstimmungssystem erhobenen Daten können somit nicht nur für
-statistische Zwecke verwendet werden, sondern bieten sich auch als
-Trainingsdaten für diese Kategorie der Algorithmen an. Die
-Vorhersagedaten sind die Attribute eines Objekts, und die
-Klassenzugehörigkeit wurde durch die Bewertung des Benutzers
+Menge von Objekten, deren Klassenzugehörigkeit bekannt ist. Die zuvor
+durch ein Abstimmungssystem erhobenen Daten können nicht nur für
+statistische Zwecke verwendet werden, sondern würden sich auch als
+Trainingsdaten für diese Art von Algorithmen anbieten. Die
+Vorhersagedaten wären dabei die Attribute eines Objekts, und die
+Klassenzugehörigkeit des Objekts ist durch die Bewertung des Benutzers
 festgelegt.
 
 \subsubsection{Support Vector Machine}
 Der unter dem Namen \textit{Support Vector Machine} bekannte
 Algorithmus scheint ein viel versprechender Kandidat zu sein, um das
-hier beschriebene Klassifikationsproblem anzugehen. Zum einen ist der
+hier beschriebene Klassifikationsproblem zu lösen. Zum einen ist der
 Algorithmus bei der Klassifikation von Objekten sehr schnell, und zum
-anderen liefert er auch bei einer hohen Anzahl an Dimensionen recht
+anderen liefert er auch bei einer hohen Anzahl von Dimensionen recht
 zuverlässige Ergebnisse. Als Dimension bezeichnet man die Attribute
 eines zu klassifizierenden Objekts. Bei dem hier zu lösenden Problem
 wären dies die Elemente einer Vorhersage und evtl. weitere bekannte
@@ -197,15 +197,17 @@ Surfbedingungen auswirken könnten.
 
 Um nun die Bewertungen zur Qualität der Surfbedingungen zu berechnen,
 würde man für jeden Spot eine separate Instanz des Algorithmus
-erzeugen und diese trainieren. Jede Instanz wird dabei nur mit
-denjenigen Vorhersagedaten und Bewertungen trainiert, die auch zu dem
+erzeugen und diese mit den bereits abgegebenen Bewertungen aus der
+Vergangenheit trainieren. Jede Instanz wird dabei nur mit denjenigen
+Vorhersagedaten und Bewertungen trainiert, die auch zu dem
 entsprechenden Spot gehören. Je mehr Trainingsdaten vorhanden sind
 desto besser sind die Ergebnisse einer solchen Instanz. Da die
 Trainingsphase aufwendiger als die eigentliche Klassifikation ist, und
 bei hinzukommenden Trainingsdaten die Instanz erneut mit allen
 Trainingsdaten initialisiert werden muss, bieten die meisten
 Implementierungen des Algorithmus die Möglichkeit das Ergebnis der
-Trainingsphase in einem sogenannten Modell zu speichern und zu laden.
+Trainingsphase in einem sogenannten Modell zu speichern und wieder zu
+laden.
 
 Zur Berechnung einer Bewertung wird eine Vorhersage der entsprechenden
 Instanz des Algorithmus übergeben, der dann das Ergebnis unter
@@ -228,12 +230,12 @@ Gegebenheiten bestehen können mit diesem Verfahren nicht ermittelt
 werden.
 
 \subsubsection{Erfolgsaussichten und Hindernisse}
-Damit mit dem Algorithmus gute Ergebnisse erzielt werden können
-benötigt man allerdings eine größere Menge an Trainingsdaten. Da diese
-zum jetzigen Zeitpunkt nicht vorhanden sind, kann dieser Ansatz hier
-leider nicht weiter verfolgt werden. Diese müssten im produktiven
-Betrieb der Web Applikation über einen längeren Zeitraum durch die
-Benutzern erstellt werden.
+Damit mit dem Algorithmus gute Ergebnisse erzielt werden, benötigt man
+allerdings eine größere Menge an Trainingsdaten. Da diese zum jetzigen
+Zeitpunkt nicht vorhanden sind, kann dieser Ansatz hier leider nicht
+weiter verfolgt werden. Diese müssten im produktiven Betrieb der Web
+Applikation über einen längeren Zeitraum durch die Benutzern erstellt
+werden.
 
 Ob dieses Verfahren überhaupt zum Ziel führt, müsste durch eine
 Auswertung der Ergebnisse an verschiedenen Spots überprüft
@@ -243,12 +245,11 @@ Bewertungen auswirken. Diese Parameter variieren von Problem zu
 Problem können, aber durch ein Verfahren das sich
 \textit{Crossvalidation} nennt ermittelt werden. Eine ausführliche
 Auswertung und Probephase ist deshalb auf jeden Fall erforderlich, um
-die Erfolgsaussichten einschätzen zu können.
-
-Falls die Ergebnisse einer solchen Auswertung jedoch positiv
-ausfallen, hätte man einen guten Weg gefunden die lokalen
-Gegebenheiten eines Spots indirekt über die Trainingsdaten in die
-Vorhersagen in Form einer Bewertung mit einfließen zu lassen.
+die Erfolgsaussichten einschätzen zu können. Falls die Ergebnisse
+einer solchen Auswertung jedoch positiv ausfallen, hätte man einen Weg
+gefunden die lokalen Gegebenheiten eines Spots indirekt über die
+Trainingsdaten in die Vorhersagen in Form einer Bewertung mit
+einfließen zu lassen.
 
 %%% Local Variables:
 %%% mode: latex

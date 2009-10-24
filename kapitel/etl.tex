@@ -957,55 +957,76 @@ Vorhersageposition zu viel Zeit in Anspruch genommen hätte, wurde die
 \textit{Grib} Datei hier als \textit{Black Box} betrachtet, auf die
 nur mit den zur Verfügung stehenden Werkzeugen zugegriffen werden
 kann. Zunächst wird das allgemeine Vorgehen des Algorithmus in einer
-beschrieben. Anschließend wird der Algorithmus durch Anwendung des
-\textit{Divide and Conquer} Prinzips erweitert, und ein Verfahren
-angewendet das gewisse Parallelen zu einer binären aufweist. Ziel des
-Algorithmus ist es diejenige geographische Position zu finden, die dem
-gegebenen Spot am nächsten liegt und für die Vorhersagedaten
-existieren.
+vereinfachten Variante beschrieben, die anschließend durch Anwendung
+des \textit{Divide and Conquer} Prinzips erweitert wird und gewisse
+Parallelen zu einer binären Suche aufweist. Ziel des Algorithmus ist
+es diejenige geographische Position zu finden, die am nächsten an der
+Ursprungsposition des Spots liegt und für die gültige Vorhersagedaten
+existieren. Eingabe für den Algorithmus ist die geographische Position
+eines Spots, Ausgabe die gefundene Vorhersageposition. Eine erste
+Variante des Algorithmus arbeitet wie folgt.
 
 \begin{enumerate}
 
 \item Bei der Initialisierung des Algorithmus wird die maximale
   Distanz $\Delta$ festgelegt, die eine alternative Vorhersageposition
-  $\Omega$ von der Ursprungsposition $\Theta$ des gegebenen Spots
-  entfernt sein darf. Weiterhin eine Schrittweite $\delta < \Delta$,
-  um die der Radius $\rho$ pro Iteration vom Ursprung aus erhöht wird,
-  und der Abstand $\alpha < 360^{\circ}$ , welcher die Schrittweite
-  der Richtung angibt.
+  von der Ursprungsposition des Spots entfernt sein darf. Weiterhin
+  eine Schrittweite $\delta < \Delta$, um die der Radius $\rho$ vom
+  Ursprung aus pro Iteration erhöht wird, und eine Schrittweite
+  $\alpha < 360^{\circ}$, mit der die zu untersuchenden Richtungen
+  berechnet werden.
 
 \item Zunächst werden die Wellenhöhen an der Ursprungsposition des
-  Spots bei einem Radius von $\rho = 0$ mit dem Programm
-  \textit{degrib} ausgelesen. Falls alle Werte an dieser Position
-  gültig sind (nicht 9999.0), ist der Algorithmus fertig und die
-  ursprüngliche Position des Spots kann als Vorhersageposition
-  verwendet werden.
+  Spots mit dem Programm \textit{degrib} ausgelesen. Falls alle Werte
+  an dieser Position gültig sind (nicht 9999.0), ist der Algorithmus
+  fertig und die ursprüngliche Position des Spots kann als
+  Vorhersageposition verwendet werden.
 
 \item Wurden an der/den bisher betrachteten Position(en) keine
   gültigen Werte gefunden, wird der Radius $\rho$ um die Schrittweite
   $\delta$ erhöht. Falls der Radius $\rho$ den Maximalwert $\Delta$
-  überschritten hat, ist der Algorithmus fertig und es wurde keine
-  alternative Vorhersageposition gefunden.
+  überschritten hat, ist der Algorithmus fertig und es konnte keine
+  alternative Vorhersageposition gefunden werden.
 
 \item Nach der Erhöhung des Radius werden bestimmte geographische
-  Positionen auf dem Umkreis des Spots auf die Existenz gültiger
-  Vorhersagewerte hin überprüft. Dabei werden nur diejenigen
-  Positionen betrachtet, deren in Grad angegebene Richtung durch die
-  Schrittweise $\alpha$ teilbar ist. Wurden an einer dieser Positionen
-  gültige Werte gefunden, kann diese als Vorhersageposition verwendet
-  werden, und der Algorithmus ist fertig. Falls nicht, wird mit
-  Schritt 3 weitergemacht.
+  Positionen, die auf dem Umkreis des Spots liegen, auf Existenz
+  gültiger Vorhersagewerte hin überprüft. Dabei werden im
+  Uhrzeigersinn \footnote{In welche Reihenfolge die Positionen auf dem
+    Umkreis am besten überprüft werden ist allerdings
+    fraglich. Mögliche Alternativen wären gegen den Uhrzeigersinn,
+    gegenüberliegend oder randomisiert.} nur diejenigen Positionen
+  betrachtet, deren vom Ursprung aus in Grad angegebene Richtung durch
+  die Schrittweise $\alpha$ teilbar ist. Sobald an einer dieser
+  Positionen gültige Werte gefunden wurden, kann diese als
+  Vorhersageposition verwendet werden, und der Algorithmus ist
+  fertig. Falls nicht, wird mit Schritt 3 weitergemacht.
 
 \end{enumerate}
 
+In dieser und der folgenden Variante des Algorithmus werden bestimmte
+Positionen, die auf dem Umkreis des Radius liegen, auf Existenz
+gültiger Vorhersagedaten hin überprüft. Um die geographischen
+Koordinaten der alternativen Vorhersageposition ($lat_2,lon_2$) aus
+der Ursprungsposition ($lat_1,lon_1$), dem Radius $\rho$ und der
+Richtung $\theta$ zu berechnen, werden die folgenden zwei Formeln
+\footnote{\url{http://www.movable-type.co.uk/scripts/latlong.html\#destPoint}}
+verwendet, wobei der Erdradius mit $R = 6371 km$ festgelegt ist.
+\begin{align*}
+  lat_2 & = asin(sin(lat_1)*cos(\rho/R) + cos(lat_1)*sin(\rho/R)*cos(\theta)) \\
+  lon_2 & = lon_1 + atan2(sin(\theta)*sin(\rho/R)*cos(lat_1), cos(\rho/R)- \\ & sin(lat_1)*sin(lat_2))
+\end{align*}
+
 Bei der Überprüfung einer Position auf gültige Werte wird das Programm
 \textit{degrib} mit den entsprechenden Parametern aufgerufen, dessen
-Ausgabe geparst und anschließend ausgewertet. Eine alternative
-Vorhersageposition wurde genau dann gefunden, wenn alle Werte in der
-Ausgabe von \textit{degrib} gültig sind. Die Anzahl der
-Programmaufrufe ist mit den bei der Initialisierung festgelegten
-Parametern durch die Obergrenze $1 + (360^{\circ} / \alpha) * (\Delta
-/ \delta)$ beschränkt. 
+Ausgabe geparst und anschließend auf Gültigkeit hin überprüft. Eine
+alternative Vorhersageposition wurde genau dann gefunden, wenn alle
+Werte in der Ausgabe von \textit{degrib} gültig (nicht 9999.0)
+sind. Die Anzahl der Aufrufe des Programms \textit{degrib} ist mit den
+bei der Initialisierung festgelegten Parametern durch die Obergrenze
+$1 + (360^{\circ} / \alpha) * (\Delta / \delta)$ beschränkt. Da die
+Wahl der Parameter die Laufzeit und die Genauigkeit des Algorithmus
+erheblich beeinflusst, wurde der Algorithmus auf einige Spots
+angewendet und die Ergebnisse untersucht.
 
 \subsubsection{Beobachtungen bei der Anwendung des Algorithmus}
 Der Algorithmus wurde auf 68 Spots angewendet, von denen zwei in Nord
@@ -1021,62 +1042,111 @@ alternativen Vorhersageposition gefunden werden, da das \textit{Wave
   Watch III} Modell für das Mittelmeer keine Vorhersagedaten
 anbietet. Für diese beiden Spots wurde das Programm \textit{degrib}
 vom Algorithmus $1 + (360^{\circ} / 10^{\circ}) * (100km / 1km) =
-3601$ mal ohne Erfolg aufgerufen. Bei allen anderen Spots war die
-alternative Vorhersageposition zwischen 3 und 80 Kilometern von der
-Ursprungsposition entfernt. 
-
-\subsubsection{Verbesserung des Algorithmus}
-Damit der Algorithmus zu einem Spot auch wirklich die nächste
-alternative Vorhersageposition findet, muss die Schrittweite $\delta$,
-um die der Radius pro Iteration erhöht wird, sehr klein gewählt
-werden. Ist diese Schrittweite zu hoch angesetzt, kann es vorkommen
-dass eine in Wirklichkeit viel näher am Ursprung liegende alternative
-Vorhersageposition nicht gefunden wird, da sie bei einer Iteration
-übersprungen wurde. Wählt man die Schrittweite allerdings zu klein,
-führt dies zu sehr vielen und teuren Aufrufen des Programms
-\textit{degrib} und einer schlechten Laufzeit des Algorithmus. Das
-selbe gilt für die Wahl der Schrittweise $\alpha$, mit der die
-verschiedenen Richtungen der zu suchenden Position berechnet wird.
-
-
-
-
-% Durch die Verwendung einer binären Suche kann die Anzahl der
-% Programmaufrufe und die Komplexität des Algorithmus auf
-% $O(log(360^{\circ} / \alpha * \Delta / \delta))$ reduziert werden. Im
-% Gegensatz zur linearen Suche wird bei der binären Suche die Distanz
-% nicht schrittweise bis zur Abbruchbedingung erhöht, sondern das
-% \textit{Divide and Conquer} Prinzip angewendet. Nachdem an der
-% Ursprungsposition keine gültigen Werte gefunden wurden, werden alle
-% Positionen auf dem durch den Radius $r = \Delta / 2$ definierten
-% Umkreis auf Gültigkeit hin überprüft. Wurde auf diesem Umkreis eine
-% Position gefunden, werden nur noch Positionen mit $r < \Delta / 2$
-% überprüft, ansonsten diejenigen Positionen mit $r > \Delta /
-% 2$. Dieses Prinzip wird in beiden Fällen so lange fortgesetzt, bis
-% eine alternative Vorhersageposition gefunden wurde, oder die
-% Distanzobergrenze erreicht wurde.
-
-\lstinputlisting[caption={Binäre Suche der alternativen Vorhersageposition},label=locate]{listings/locate.txt}
-
-In Auflistung \ref{locate} ist die Ausgabe der binären Suche für den
-Spot \textit{Esposende} in Portugal zu sehen. Der Algorithmus wurde
-hier mit einer maximalen Distanz $\Delta$ von 100 Kilometern, und
-einer Richtungsschrittweite von $\alpha = 10^{\circ}$
-initialisiert. Auf halber Distanz $\Delta$ wurde hier eine Position
-mit gültigen Werten gefunden und in den weiteren Iterationen nur noch
-Positionen in der unteren Hälfte der maximalen Distanz überprüft. In
-Abbildung \ref{locate-esposende} ist die Ursprungsposition des Spots
-mit einer roten Markierung, und die 3,6 Kilometer weiter südlich
-gefundene alternative Vorhersageposition mit einer grünen Markierung
+3601$ mal ohne Erfolg aufgerufen. Für alle anderen Spots konnte mit
+dem Algorithmus eine alternative Vorhersageposition ermitteln werden,
+die zwischen 3 und 80 Kilometern von der Ursprungsposition entfernt
+war. In Abbildung \ref{locate-esposende} ist die Ursprungsposition des
+portugiesischen Spot \textit{Esposende} mit einer roten Markierung,
+und die vom Algorithmus 3,6 Kilometer weiter südlich gefundene
+alternative Vorhersageposition mit einer grünen Markierung
 gekennzeichnet.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=\textwidth]{bilder/locate-esposende}
-    \caption{Alternative Vorhersageposition für Esposende in Portugal}
+    \caption{Alternative Vorhersageposition für Esposende, Portugal}
     \label{locate-esposende}
   \end{center}
 \end{figure}
+
+\subsubsection{Verbesserung des Algorithmus}
+Damit der Algorithmus für einen Spot auch wirklich die nächste
+alternative Vorhersageposition findet, muss die Schrittweite $\delta$,
+um die der Radius pro Iteration erhöht wird, sehr klein gewählt
+werden. Ist diese Schrittweite zu groß, kann es vorkommen dass eine in
+Wirklichkeit viel näher am Ursprung liegende alternative
+Vorhersageposition nicht gefunden wird, da sie bei einer der
+Iterationen übersprungen wurde. Wählt man die Schrittweite zu klein,
+führt dies zu sehr vielen und teuren Aufrufen des Programms
+\textit{degrib} und einer schlechten Laufzeit des Algorithmus. Das
+selbe gilt für die Wahl der Schrittweite $\alpha$, mit der die
+verschiedenen Richtungen um die Ursprungsposition herum berechnet
+werden. Um im Durchschnitt die Anzahl der \textit{degrib}
+Programmaufrufe zu reduzieren wurde hier ein Verfahren angewendet, das
+dem einer binären Suche ähnelt und als \textit{Divide and Conquer}
+Prinzip bekannt ist. Diese Variante des Algorithmus arbeitet
+folgendermaßen:
+
+\begin{enumerate}
+
+\item Bei der Initialisierung wird wieder die maximale Distanz
+  $\Delta$ festgelegt, die eine alternative Vorhersageposition von der
+  Ursprungsposition eines Spots entfernt sein darf, und die
+  Schrittweite $\alpha < 360^{\circ}$, mit der die verschiedenen
+  Richtungen auf dem Umkreis des untersuchenden Radius berechnet
+  werden. Außerdem wird ein Schwellwert $d$ benötigt, der als
+  Abbruchkriterium verwendet wird und im 3. Schritt näher erklärt
+  wird.
+
+\item Da bei vielen Spots bereits an der Ursprungsposition
+  Vorhersagedaten vorhanden sind, wird zunächst diese Position auf
+  gültige Werte überprüft. Wurden dort gültige Vorhersagedaten
+  gefunden, kann die Ursprungsposition als Vorhersageposition
+  verwendet werden und der Algorithmus ist fertig.
+
+\item In den nächsten beiden Schritten wird die alternative
+  Vorhersageposition durch Anwendung des \textit{Divide and Conquer}
+  Prinzips gesucht. Hierzu wird eine untere Schranke mit $l = 0$ und
+  eine obere Schranke mit $u = \Delta$ festgelegt. Der Abstand der
+  unteren und oberen Schranke wird in den folgenden Iterationen
+  halbiert, bis dieser kleiner ist als der zuvor angegebene
+  Schwellwert $d$.
+
+\item Mit dem Programm \textit{degrib} werden bestimmte Positionen auf
+  gültige Vorhersagewerte hin überprüft, die auf dem Umkreis liegen,
+  der durch den Radius $l + (u - l)/2$ definiert ist. Dabei werden
+  wieder nur diejenigen Positionen betrachtet, deren in Grad
+  angegebene Richtung durch die Schrittweise $\alpha$ teilbar ist.
+
+  \begin{enumerate}
+
+  \item Wurde auf dem Umkreis eine Position mit gültigen
+    Vorhersagewerten gefunden, wird diese als alternative
+    Vorhersageposition vorgemerkt, und die obere Schranke auf $u = u - (u
+    - l)/2$ gesetzt.
+
+  \item Wurde auf dem Umkreis keine Position mit gültigen
+    Vorhersagewerten gefunden, wird die untere Schranke auf $l = l + (u -
+    l)/2$ gesetzt.
+
+  \end{enumerate}
+
+\item Solange $u - l > 1m$ ist, wird mit Schritt 4
+  weitergemacht. Ansonsten ist der Algorithmus fertig und die
+  vorgemerkte Position kann als alternative Vorhersageposition
+  verwendet werden. Wurde keine Position vorgemerkt konnte der
+  Algorithmus keine alternative Vorhersageposition finden.
+
+\end{enumerate}
+
+\lstinputlisting[caption={Ausgabe bei der Suche einer alternativen
+  Vorhersageposition},label=locate]{listings/locate.txt}
+
+In Auflistung \ref{locate} ist die Ausgabe des Algorithmus für den
+Spot \textit{Esposende} in Portugal zu sehen. Der Algorithmus wurde
+mit einer maximalen Distanz $\Delta$ von 100 Kilometern, einer
+Richtungsschrittweite $\alpha$ von $10^{\circ}$ und einem Schwellwert
+$d$ von einem Meter initialisiert. Da an der Ursprungsposition keine
+gültigen Vorhersagewerte gefunden wurden, sucht der Algorithmus
+zunächst nach gültigen Position auf dem Umkreis mit einem Radius von
+50 Kilometern. In Zeile 2 kann man erkennen, dass auf diesem Umkreis
+eine gültige Position gefunden wurde. Daher müssen Positionen, die
+mehr als 50km von der Ursprungsposition entfernt sind, nicht weiter
+untersucht werden. In den folgenden Iterationen werden weitere
+Positionen untersucht und die untere oder obere Schranke entsprechend
+angepasst. Nachdem der Schwellwert unterschritten wurde terminiert der
+Algorithmus nach ca. 8 Sekunden mit einer alternativen
+Vorhersageposition, die 3,6 Kilometern weiter südlich liegt.
 
 \subsection{Transformation der Vorhersagedaten}
 Nachdem die alternativen Vorhersagepositionen für das \textit{Wave
@@ -1789,11 +1859,11 @@ dass $N=12$ Vorhersageelemente für jeden Spot verarbeitet werden.
 
 \end{table*}
 
-Wie weit die hier vorgestellte Hochrechnung an der Realität ist
-beleibt allerdings offen. Da davon ausgegangen wird, dass die Laufzeit
+Wie nahe die hier vorgestellte Hochrechnung an der Realität ist,
+bleibt allerdings offen. Da davon ausgegangen wird, dass die Laufzeit
 $l$ eines einzelnen Befehls bei Zunahme der Datenmenge ebenfalls
-steigt, würden in der Realität wohl eher schlechtere Ergebnisse
-als in Tabelle \ref{tab:sql_laufzeit} erzielt werden.
+steigt, würden in der Realität wohl eher schlechtere Ergebnisse als in
+Tabelle \ref{tab:sql_laufzeit} erzielt werden.
 
 \subsection{Verbesserung des Ladevorgangs}
 Das Laden der Vorhersagedaten mit dem \textit{Bulk Loader} von
@@ -1808,60 +1878,61 @@ kann auf das sonst zu verwaltende \textit{Write Ahead Log} verzichtet
 werden, da bei einem Fehler die Daten wieder gelöscht
 werden. Weiterhin wird vorgeschlagen die Indizes einer zu ladenden
 Tabelle vor dem Laden zu löschen und erst danach wieder zu erstellen,
-da der Aufbau eines neuen Index schneller ist als dessen zeilenweise
+da der Aufbau eines neuen Index schneller ist als eine zeilenweise
 Aktualisierung. Bei der jetzigen Datenmenge wird der Umsetzung dieser
 Verbesserungsvorschläge allerdings eine eher geringe Priorität
 eingeräumt, da der zu erzielenden Geschwindigkeitsvorteil im Vergleich
 zu anderen Vorschlägen als nicht sehr hoch eingestuft wird.
 
-Viel mehr Potential zur Beschleunigung des Ladevorgangs wird aber in
-einer Vorverarbeitung der Vorhersagedaten gesehen. Durch diesen
-zusätzlichen Schritt könnte man die Vorhersagedaten in eine
-\textit{CSV} Datei transformieren, die der Struktur der
-\textit{forecasts} Tabelle entspricht. Die bisher in der Datenbank
-durchgeführte Transposition von Zeilen zu Spalten würde so in ein
-externes Programm verlagert werden, mit der Aussicht diese effizienter
-durchführen zu können als dies mit den Boardmitteln des Datenbank
-Management Systems möglich ist. Die transformierte Datei kann dann in
-eine entsprechende \textit{Staging Area} geladen werden und mit einem
-\textit{UPDATE-} und einem \textit{INSERT} Befehl in die
-\textit{forecasts} Relation integriert werden. Eine noch bessere
-Alternative wäre, die zu aktualisierenden Datensätze der
-\textit{forecasts} Tabelle vor dem Laden zu löschen und die
-\textit{CSV} Datei mit einem \textit{COPY} Befehl direkt in diese
-Relation zu integrieren. Ein Nachteil an diesem Vorschlag ist, dass
-der Transformationsschritt vom Aktualisierungszeitplan der beiden
-Modelle abhängig ist. Da die Daten beider Modelle zu einem Datensatz
-der \textit{forecasts} Relation transformiert werden, stellt sich die
-Frage welche Strategie man bei der Transformation und beim späteren
-Laden wählt, falls die Modelle erst zu unterschiedlichen Zeitpunkten
-zur Verfügung stehen (was in der Regel der Fall ist). Hier wäre die
-einfachste Möglichkeit den Transformationsschritt erst dann
-anzustoßen, wenn die Daten beider Modelle verfügbar sind. Andernfalls
-müsste man die aktuellen Daten des einen Modells mit den schon
-geladenen Daten des anderen Modells verknüpfen.
+Viel mehr Potential zur Beschleunigung des Ladevorgangs wird in einer
+Vorverarbeitung der Vorhersagedaten gesehen. Durch diesen zusätzlichen
+Schritt könnte man die Vorhersagedaten in eine \textit{CSV} Datei
+transformieren, die der Struktur der \textit{forecasts} Tabelle
+entspricht. Die bisher in der Datenbank durchgeführte Transposition
+von Zeilen zu Spalten würde so in ein externes Programm verlagert
+werden, mit der Aussicht diese effizienter durchführen zu können als
+dies mit den Boardmitteln des Datenbank Management Systems möglich
+ist. Die transformierte Datei kann dann in eine entsprechende
+\textit{Staging Area} geladen werden und mit einem \textit{UPDATE-}
+und einem \textit{INSERT} Befehl in die \textit{forecasts} Relation
+integriert werden. Eine noch bessere Alternative wäre, die zu
+aktualisierenden Datensätze der \textit{forecasts} Tabelle vor dem
+Laden zu löschen und die \textit{CSV} Datei mit einem \textit{COPY}
+Befehl direkt in diese Relation zu integrieren. Ein Nachteil an diesem
+Vorschlag ist, dass der Transformationsschritt vom
+Aktualisierungszeitplan der beiden Modelle abhängig ist. Da die Daten
+beider Modelle zu einem Datensatz der \textit{forecasts} Relation
+transformiert werden, stellt sich die Frage welche Strategie man bei
+der Transformation und beim späteren Laden wählt, falls die Modelle
+erst zu unterschiedlichen Zeitpunkten zur Verfügung stehen (was in der
+Regel der Fall ist). Hier wäre die einfachste Möglichkeit den
+Transformationsschritt erst dann anzustoßen, wenn die Daten beider
+Modelle verfügbar sind. Andernfalls müsste man die aktuellen Daten des
+einen Modells mit den schon geladenen Daten des anderen Modells
+verknüpfen.
 
-Eine Vorverarbeitung der Daten bietet sich insbesondere beim heutigen
-Trend in Richtung \textit{Cloud Computing} an. Die Extraktion und
-Transformation der Vorhersagedaten wäre ein guter Kandidat für das
-\textit{Map Reduce} Verfahren. Die Extraktion und Transformation der
-Vorhersagedaten könnte auf mehrere Systeme aufgeteilt und durch die
-parallele Verarbeitung sehr viel schneller durchgeführt werden.
-Dieses Verfahren ist mittlerweile durch Web Services wie
-z.B. \textit{Amazon's Elastic Map Reduce}
+Eine Vorverarbeitung der Daten bietet sich insbesondere bei dem zur
+Zeit stattfindenden Trend in Richtung \textit{Cloud Computing} an. Die
+Extraktion und Transformation der Vorhersagedaten wäre ein guter
+Kandidat für das \textit{Map Reduce} Verfahren. Die Extraktion und
+Transformation der Vorhersagedaten könnte auf mehrere Systeme
+aufgeteilt und durch parallele Verarbeitung sehr viel schneller
+durchgeführt werden.  Dieses Verfahren ist mittlerweile durch Web
+Services wie z.B. \textit{Amazon's Elastic Map Reduce}
 \footnote{\url{http://aws.amazon.com/elasticmapreduce}} auch für
-kleiner Projekte erschwinglich und somit sehr interessant geworden.
+kleiner Projekte ohne Anschaffung der benötigten Hardware
+erschwinglich und interessant geworden.
 
 Die Verbesserung des gesamten \textit{ETL} Prozesses erfordert ein
 gründliches Abwägen der verschiedenen Vor- und Nachteile. Oft stellt
-sich heraus, dass man mit einem Geschwindigkeitsvorteil an der einen
-Stelle, Flexibilität an einer anderen einbüßt oder zusätzliche
-Komplexität erzeugt wird. Stoßen die hier entwickelten \textit{ETL}
-Prozesse an ihre Grenzen würde in Hinblick auf das \textit{Map Reduce}
-Verfahren wohl der Weg in Richtung Vorverarbeitung
-eingeschlagen. Grundsätzlich sollten jedoch die Stellen der
-\textit{ETL} Prozesse optimiert werden, von denen der größte
-Geschwindigkeitsvorteil zu erwarten ist.
+sich heraus, dass man mit einem Geschwindigkeitsvorteil an einer
+Stelle, Flexibilität an einer anderen einbüßt und/oder zusätzliche
+Komplexität erzeugt. Stoßen die hier entwickelten \textit{ETL}
+Prozesse an ihre Grenzen, würde mit Hinblick auf das \textit{Map
+  Reduce} Verfahren der Weg in Richtung Vorverarbeitung
+eingeschlagen. Grundsätzlich sollte bei der Optimierung von
+\textit{ETL} Prozessen an den Stellen angesetzt werden, an denen der
+größte Geschwindigkeitsvorteil zu erwarten ist.
 
 %%% Local Variables:
 %%% mode: latex

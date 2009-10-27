@@ -1370,69 +1370,84 @@ Vorhersageelemente der beiden Modelle und nehmen die mit
 \subsection{Tupelorientierte Aktualisierung}
 Eine offensichtliche Methode die Vorhersagedaten auf den neusten Stand
 zu bringen ist die \textit{tupelorientierte} Aktualisierung mit
-\textit{SQL}. Tupelorientiert deshalb, weil die Datensätze der
-\textit{CSV} Datei nacheinander verarbeitet werden, und pro
-Verarbeitungsschritt genau ein Tupel der Zielrelation geändert
-bzw. hinzugefügt wird. 
+\textit{SQL}. Tupelorientiert deshalb, weil für jedes Tupel, das in
+die Zielrelation eingefügt, bzw. dort aktualisiert wird, ein
+\textit{SQL} Befehl ausgeführt wird.
 
-Bei der Aktualisierung wird über die Datensätzen der \textit{CSV}
-Datei iteriert, und für jeden Datensatz ein \textit{UPDATE} Befehl,
-gefolgt von einem konditionalen \textit{INSERT} Befehl ausgeführt. Da
-für einen bestimmten Vorhersagezeitpunkt eines Spots bereits ein
-Datensatz aus einer früheren Modellberechnung existieren kann, wird
-zunächst ein \textit{UPDATE} Befehl ausgeführt. Durch die Angabe des
-Schlüsselkandidaten in der \textit{WHERE} Klausel des Befehls wird die
-Menge der zu aktualisierenden Datensätze auf genau einen
-beschränkt. Das Ergebnis des ausgeführten Befehls ist die Anzahl der
-aktualisierten Datensätze und beträgt entweder 0 oder 1. Wurde ein
-Datensatz geändert kann auf die folgende \textit{INSERT} Operation
-verzichtet, und mit dem nächsten Datensatz der \textit{CSV} Datei
-weitergemacht werden. Falls die \textit{UPDATE} Operation nicht
-erfolgreich war, wird der neue Datensatz mit einem \textit{INSERT}
-Befehl hinzugefügt. Nachdem alle Datensätze der Eingabe verarbeitet
-wurden ist die Zielrelation auf dem neusten Stand.
-
-\subsubsection{Abschätzung der auszuführenden Befehle}
-Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
-\textit{DBMS} im \textit{Worst-Case} Szenario $2 * n$ Befehle
-ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
-überhaupt keine Vorhersagedaten in der Datenbank enthalten sind. Da
-die Vorhersagezeitpunkte von zwei aufeinander folgenden
-Modellberechnungen immer nur um 6 Stunden \footnote{in einem
-  3-stündigen Vorhersageintervall} voneinander abweichen, reicht für
-die Mehrheit der Datensätze eine \textit{UPDATE} Operation aus. Eine
-zusätzliche \textit{INSERT} Operation ist nur für diejenigen
-Datensätze notwendig, die in dem abweichenden Zeitraum liegen. Da die
-Datensätze der \textit{CSV} Datei in der Reihenfolge Spot
-$\rightarrow$ Vorhersageelement $\rightarrow$ Vorhersagezeitpunkt
-sortiert sind, kann auf eine \textit{INSERT} Operation verzichtet
-werden, falls zuvor schon ein Datensatz für den entsprechenden Spot
-und den Vorhersagezeitpunkt bearbeitet wurde. Im Durchschnitt liegt
-die Anzahl der Befehle somit leicht über $n$. Die Anzahl der
-auszuführenden Befehle ist hier von der Zahl der Datensätze
-abhängig. Bei einer großen Datenmenge wirkt sich der vom \textit{DBMS}
+Hierzu müsste man zunächst die Zeilen der \textit{CSV} Datei zu
+Datensätzen transformieren, die der Struktur der \textit{forecasts}
+Relation entsprechen. Anschließend könnte man die zu aktualisierenden
+Datensätze mit einem \textit{UPDATE} Befehl ändern, und die neu
+hinzugekommenen Datensätze mit einem \textit{INSERT} Befehl
+einfügen. Bei einem Vorhersagezeitraum von 180 Stunden in einem 3
+stündigen Intervall sind dies pro Spot $(180 / 3) + 1 = 61$
+auszuführende \textit{SQL} Befehle, den Zeitpunkt der Analyse mit
+berücksichtigt. Für die verwendeten 73 Spots wären das $61 * 73 =
+4.453$, bei den zuvor erwähnten 8.300 Spots einer ähnlichen Webseite
+$61 * 8.300 = 506.300$ auszuführende \textit{SQL} Befehle. Da sich bei
+einer größeren Datenmenge der vom Datenbank Management System
 betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
-Performanz des Ladevorgangs aus.
+Performanz des Ladevorgangs auswirkt \cite{postgresql:populate}, wurde
+diese Methode zur Aktualisierung der Vorhersagedaten nicht weiter
+verfolgt.
 
-\subsubsection{Verbesserungsvorschläge}
-Das hier beschriebene Verfahren eignet sich vor allem für Anwendungen
-bei denen nur eine geringe Datenmenge zu verarbeiten, und die
-Performanz des Ladevorgangs nicht kritisch ist. Der Vorteil der
-tupelorientierten Aktualisierung liegt in deren Implementierung. Diese
-ist meist \textit{straight forward} und einfacher als auf Performanz
-getrimmte Varianten.
+Das hier beschriebene Verfahren eignet sich für Anwendungen bei denen
+nur eine geringe Datenmenge zu verarbeiten, und die Performanz des
+Ladevorgangs nicht kritisch ist. Der Vorteil der tupelorientierten
+Aktualisierung liegt in der Implementierung. Diese ist meist
+verständlicher und einfacher, als auf Performanz getrimmte Varianten.
 
 Bevor im nächsten Abschnitt, ein aus dem Bereich des \textit{Data
   Warehousing} bekanntes Verfahren vorgestellt wird, sollen hier noch
-einige Verbesserungsvorschläge gemacht werden. Um die Laufzeit zu
-verbessern sollte unbedingt die Dokumentation des verwendeten
-\textit{DBMS} herangezogen und mögliche Optimierungsvorschläge
-evaluiert werden. Durch die Verwendung von \textit{Prepared
-  Statements}, dem Ausschalten von \textit{Auto-Commit} und der
-Einbettung aller Befehle in eine einzelne Transaktion kann die
-Performanz in vielen Anwendungen noch verbessert werden. Reichen diese
-Optimierungen nicht aus, sind mit dem im folgenden Abschnitt
-beschriebenen Verfahren sehr viel bessere Ergebnisse zu erzielen.
+einige Verbesserungsvorschläge gemacht werden. Um die Laufzeit einer
+tupelorientierten Aktualisierung zu verbessern sollte die
+Dokumentation des verwendeten \textit{DBMS} herangezogen und mögliche
+Optimierungsvorschläge in Betracht gezogen werden. Durch die
+Verwendung von \textit{Prepared Statements}, dem Ausschalten der
+\textit{Auto-Commit} Einstellung und der Einbettung aller Befehle in
+eine einzelne Transaktion kann die Performanz in vielen Anwendungen
+gesteigert werden. Reichen diese Optimierungen nicht aus, sind mit dem
+im folgenden Abschnitt beschriebenen Verfahren sehr viel bessere
+Ergebnisse zu erzielen.
+
+% Bei der Aktualisierung wird über die Datensätzen der \textit{CSV}
+% Datei iteriert, und für jeden Datensatz ein \textit{UPDATE} Befehl,
+% gefolgt von einem konditionalen \textit{INSERT} Befehl ausgeführt. Da
+% für einen bestimmten Vorhersagezeitpunkt eines Spots bereits ein
+% Datensatz aus einer früheren Modellberechnung existieren kann, wird
+% zunächst ein \textit{UPDATE} Befehl ausgeführt. Durch die Angabe des
+% Schlüsselkandidaten in der \textit{WHERE} Klausel des Befehls wird die
+% Menge der zu aktualisierenden Datensätze auf genau einen
+% beschränkt. Das Ergebnis des ausgeführten Befehls ist die Anzahl der
+% aktualisierten Datensätze und beträgt entweder 0 oder 1. Wurde ein
+% Datensatz geändert kann auf die folgende \textit{INSERT} Operation
+% verzichtet, und mit dem nächsten Datensatz der \textit{CSV} Datei
+% weitergemacht werden. Falls die \textit{UPDATE} Operation nicht
+% erfolgreich war, wird der neue Datensatz mit einem \textit{INSERT}
+% Befehl hinzugefügt. Nachdem alle Datensätze der Eingabe verarbeitet
+% wurden ist die Zielrelation auf dem neusten Stand.
+
+% \subsubsection{Abschätzung der auszuführenden Befehle}
+% Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
+% \textit{DBMS} im \textit{Worst-Case} Szenario $2 * n$ Befehle
+% ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
+% überhaupt keine Vorhersagedaten in der Datenbank enthalten sind. Da
+% die Vorhersagezeitpunkte von zwei aufeinander folgenden
+% Modellberechnungen immer nur um 6 Stunden \footnote{in einem
+%   3-stündigen Vorhersageintervall} voneinander abweichen, reicht für
+% die Mehrheit der Datensätze eine \textit{UPDATE} Operation aus. Eine
+% zusätzliche \textit{INSERT} Operation ist nur für diejenigen
+% Datensätze notwendig, die in dem abweichenden Zeitraum liegen. Da die
+% Datensätze der \textit{CSV} Datei in der Reihenfolge Spot
+% $\rightarrow$ Vorhersageelement $\rightarrow$ Vorhersagezeitpunkt
+% sortiert sind, kann auf eine \textit{INSERT} Operation verzichtet
+% werden, falls zuvor schon ein Datensatz für den entsprechenden Spot
+% und den Vorhersagezeitpunkt bearbeitet wurde. Im Durchschnitt liegt
+% die Anzahl der Befehle somit leicht über $n$. Die Anzahl der
+% auszuführenden Befehle ist hier von der Zahl der Datensätze
+% abhängig. Bei einer großen Datenmenge wirkt sich der vom \textit{DBMS}
+% betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
+% Performanz des Ladevorgangs aus.
 
 \subsection{Bulk Loading}
 

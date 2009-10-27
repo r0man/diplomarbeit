@@ -557,14 +557,14 @@ Vorhersagedaten für 180 Stunden in die Zukunft.
 
 \subsection{Download einzelner Grib Nachrichten}
 \label{subsec:download}
-Die eben beschriebenen Vorhersagemodelle bieten sehr viel mehr
-Informationen zum Download an, als von der hier entwickelten
-Anwendungen überhaupt benötigt wird. Vom \textit{Global Forecast
-  System} werden im Moment lediglich 4 der 63 verschiedenen
-Vorhersagelemente, und vom \textit{Wave Watch III} Modell 7 von 11
-Elementen verwendet. Um nicht unnötig Bandbreite zu verschwenden, und
-den Extraktionsprozess zu beschleunigen, wird hier ein Verfahren
-verwendet, das in dem Dokument \textit{Fast Downloading of Grib Files}
+Die beiden Vorhersagemodelle bieten sehr viel mehr Informationen, als
+von der hier entwickelten Anwendungen überhaupt benötigt werden. Vom
+\textit{Global Forecast System} werden im Moment lediglich 4 der 63
+verschiedenen Vorhersagelemente, und vom \textit{Wave Watch III}
+Modell 7 von 11 Elementen verwendet. Um nicht unnötig Bandbreite zu
+verschwenden, und den Extraktionsprozess zu beschleunigen, wird hier
+ein Verfahren verwendet, das in dem Dokument \textit{Fast Downloading
+  of Grib Files}
 \footnote{\url{http://www.cpc.noaa.gov/products/wesley/fast_downloading_grib.html}}
 beschrieben ist. Ziel ist es nur die gewünschten Nachrichten einer
 \textit{Grib} Datei herunterzuladen. Voraussetzung dafür ist, dass die
@@ -973,13 +973,13 @@ Variante des Algorithmus arbeitet wie folgt.
   von der Ursprungsposition des Spots entfernt sein darf. Weiterhin
   eine Schrittweite $\delta < \Delta$, um die der Radius $\rho$ vom
   Ursprung aus pro Iteration erhöht wird, und eine Schrittweite
-  $\alpha < 360^{\circ}$, mit der die zu untersuchenden Richtungen
-  berechnet werden.
+  $\alpha < 360^{\circ}$, mit der die Richtungen der zu untersuchenden
+  Positionen berechnet werden.
 
 \item Zunächst werden die Wellenhöhen an der Ursprungsposition des
-  Spots mit dem Programm \textit{degrib} ausgelesen. Falls alle Werte
-  an dieser Position gültig sind (nicht 9999.0), ist der Algorithmus
-  fertig und die ursprüngliche Position des Spots kann als
+  Spots mit dem Programm \textit{degrib} ausgelesen. Falls der
+  Vorhersagewert an dieser Position gültig ist (nicht 9999.0), ist der
+  Algorithmus fertig und die ursprüngliche Position des Spots kann als
   Vorhersageposition verwendet werden.
 
 \item Wurden an der/den bisher betrachteten Position(en) keine
@@ -997,7 +997,7 @@ Variante des Algorithmus arbeitet wie folgt.
     gegenüberliegend oder randomisiert.} nur diejenigen Positionen
   betrachtet, deren vom Ursprung aus in Grad angegebene Richtung durch
   die Schrittweise $\alpha$ teilbar ist. Sobald an einer dieser
-  Positionen gültige Werte gefunden wurden, kann diese als
+  Positionen ein gültiger Wert gefunden wurden, kann diese als
   Vorhersageposition verwendet werden, und der Algorithmus ist
   fertig. Falls nicht, wird mit Schritt 3 weitergemacht.
 
@@ -1019,17 +1019,17 @@ verwendet, wobei der Erdradius mit $R = 6371 km$ festgelegt ist.
 Bei der Überprüfung einer Position auf gültige Werte wird das Programm
 \textit{degrib} mit den entsprechenden Parametern aufgerufen, dessen
 Ausgabe geparst und anschließend auf Gültigkeit hin überprüft. Eine
-alternative Vorhersageposition wurde genau dann gefunden, wenn alle
-Werte in der Ausgabe von \textit{degrib} gültig (nicht 9999.0)
-sind. Die Anzahl der Aufrufe des Programms \textit{degrib} ist mit den
-bei der Initialisierung festgelegten Parametern durch die Obergrenze
-$1 + (360^{\circ} / \alpha) * (\Delta / \delta)$ beschränkt. Da die
-Wahl der Parameter die Laufzeit und die Genauigkeit des Algorithmus
+alternative Vorhersageposition wurde genau dann gefunden, wenn der
+Wert in der Ausgabe von \textit{degrib} gültig (nicht 9999.0) ist. Die
+Anzahl der Aufrufe des Programms \textit{degrib} ist mit den bei der
+Initialisierung festgelegten Parametern durch die Obergrenze $1 +
+(360^{\circ} / \alpha) * (\Delta / \delta)$ beschränkt. Da die Wahl
+der Parameter die Laufzeit und die Genauigkeit des Algorithmus
 erheblich beeinflusst, wurde der Algorithmus auf einige Spots
 angewendet und die Ergebnisse untersucht.
 
 \subsubsection{Beobachtungen bei der Anwendung des Algorithmus}
-Der Algorithmus wurde auf 68 Spots angewendet, von denen zwei in Nord
+Der Algorithmus wurde auf 73 Spots angewendet, von denen zwei in Nord
 Amerika, 4 in Indonesien und die restlichen in Europa liegen. Als
 Abbruchbedingung wurde die maximale Distanz $\Delta$ bei der
 Initialisierung des Algorithmus auf 100 Kilometer gesetzt. Für die
@@ -1040,11 +1040,11 @@ der Algorithmus konnte bereits nach einem Aufruf des Programms
 \textit{degrib} terminieren. Für zwei Spots in Italien konnten keine
 alternativen Vorhersageposition gefunden werden, da das \textit{Wave
   Watch III} Modell für das Mittelmeer keine Vorhersagedaten
-anbietet. Für diese beiden Spots wurde das Programm \textit{degrib}
-vom Algorithmus $1 + (360^{\circ} / 10^{\circ}) * (100km / 1km) =
-3601$ mal ohne Erfolg aufgerufen. Für alle anderen Spots konnte mit
-dem Algorithmus eine alternative Vorhersageposition ermitteln werden,
-die zwischen 3 und 80 Kilometern von der Ursprungsposition entfernt
+enthält. Für diese beiden Spots wurde das Programm \textit{degrib} vom
+Algorithmus $1 + (360^{\circ} / 10^{\circ}) * (100km / 1km) = 3601$
+mal ohne Erfolg aufgerufen. Für alle anderen Spots konnte mit dem
+Algorithmus eine alternative Vorhersageposition ermitteln werden, die
+zwischen 3 und 80 Kilometern von der Ursprungsposition entfernt
 war. In Abbildung \ref{locate-esposende} ist die Ursprungsposition des
 portugiesischen Spot \textit{Esposende} mit einer roten Markierung,
 und die vom Algorithmus 3,6 Kilometer weiter südlich gefundene
@@ -1072,8 +1072,8 @@ führt dies zu sehr vielen und teuren Aufrufen des Programms
 selbe gilt für die Wahl der Schrittweite $\alpha$, mit der die
 verschiedenen Richtungen um die Ursprungsposition herum berechnet
 werden. Um im Durchschnitt die Anzahl der \textit{degrib}
-Programmaufrufe zu reduzieren wurde hier ein Verfahren angewendet, das
-dem einer binären Suche ähnelt und als \textit{Divide and Conquer}
+Programmaufrufe zu reduzieren, wurde hier ein Verfahren angewendet,
+das dem einer binären Suche ähnelt und als \textit{Divide and Conquer}
 Prinzip bekannt ist. Diese Variante des Algorithmus arbeitet
 folgendermaßen:
 
@@ -1082,15 +1082,14 @@ folgendermaßen:
 \item Bei der Initialisierung wird wieder die maximale Distanz
   $\Delta$ festgelegt, die eine alternative Vorhersageposition von der
   Ursprungsposition eines Spots entfernt sein darf, und die
-  Schrittweite $\alpha < 360^{\circ}$, mit der die verschiedenen
-  Richtungen auf dem Umkreis des untersuchenden Radius berechnet
-  werden. Außerdem wird ein Schwellwert $d$ benötigt, der als
-  Abbruchkriterium verwendet wird und im 3. Schritt näher erklärt
-  wird.
+  Schrittweite $\alpha < 360^{\circ}$, mit der die Richtungen der zu
+  untersuchenden Positionen berechnet werden. Außerdem wird ein
+  Schwellenwert $d$ benötigt, der als Abbruchkriterium dient und im
+  3. Schritt näher erklärt wird.
 
 \item Da bei vielen Spots bereits an der Ursprungsposition
   Vorhersagedaten vorhanden sind, wird zunächst diese Position auf
-  gültige Werte überprüft. Wurden dort gültige Vorhersagedaten
+  Gültigkeit überprüft. Wurde dort ein gültiger Vorhersagewert
   gefunden, kann die Ursprungsposition als Vorhersageposition
   verwendet werden und der Algorithmus ist fertig.
 
@@ -1100,7 +1099,7 @@ folgendermaßen:
   eine obere Schranke mit $u = \Delta$ festgelegt. Der Abstand der
   unteren und oberen Schranke wird in den folgenden Iterationen
   halbiert, bis dieser kleiner ist als der zuvor angegebene
-  Schwellwert $d$.
+  Schwellenwert $d$. 
 
 \item Mit dem Programm \textit{degrib} werden bestimmte Positionen auf
   gültige Vorhersagewerte hin überprüft, die auf dem Umkreis liegen,
@@ -1110,10 +1109,10 @@ folgendermaßen:
 
   \begin{enumerate}
 
-  \item Wurde auf dem Umkreis eine Position mit gültigen
-    Vorhersagewerten gefunden, wird diese als alternative
-    Vorhersageposition vorgemerkt, und die obere Schranke auf $u = u - (u
-    - l)/2$ gesetzt.
+  \item Wurde auf dem Umkreis eine Position mit einem gültigen
+    Vorhersagewert gefunden, wird diese als alternative
+    Vorhersageposition vorgemerkt, und die obere Schranke auf $u = u -
+    (u - l)/2$ gesetzt.
 
   \item Wurde auf dem Umkreis keine Position mit gültigen
     Vorhersagewerten gefunden, wird die untere Schranke auf $l = l + (u -
@@ -1125,7 +1124,8 @@ folgendermaßen:
   weitergemacht. Ansonsten ist der Algorithmus fertig und die
   vorgemerkte Position kann als alternative Vorhersageposition
   verwendet werden. Wurde keine Position vorgemerkt konnte der
-  Algorithmus keine alternative Vorhersageposition finden.
+  Algorithmus keine alternative Vorhersageposition finden und
+  terminiert ohne Erfolg.
 
 \end{enumerate}
 
@@ -1135,18 +1135,18 @@ folgendermaßen:
 In Auflistung \ref{locate} ist die Ausgabe des Algorithmus für den
 Spot \textit{Esposende} in Portugal zu sehen. Der Algorithmus wurde
 mit einer maximalen Distanz $\Delta$ von 100 Kilometern, einer
-Richtungsschrittweite $\alpha$ von $10^{\circ}$ und einem Schwellwert
-$d$ von einem Meter initialisiert. Da an der Ursprungsposition keine
-gültigen Vorhersagewerte gefunden wurden, sucht der Algorithmus
-zunächst nach gültigen Position auf dem Umkreis mit einem Radius von
-50 Kilometern. In Zeile 2 kann man erkennen, dass auf diesem Umkreis
-eine gültige Position gefunden wurde. Daher müssen Positionen, die
-mehr als 50km von der Ursprungsposition entfernt sind, nicht weiter
-untersucht werden. In den folgenden Iterationen werden weitere
-Positionen untersucht und die untere oder obere Schranke entsprechend
-angepasst. Nachdem der Schwellwert unterschritten wurde terminiert der
-Algorithmus nach ca. 8 Sekunden mit einer alternativen
-Vorhersageposition, die 3,6 Kilometern weiter südlich liegt.
+Richtungsschrittweite $\alpha$ von $10^{\circ}$ und einem
+Schwellenwert $d$ von einem Meter initialisiert. Da an der
+Ursprungsposition keine gültigen Vorhersagewerte gefunden wurden,
+sucht der Algorithmus zunächst nach gültigen Position auf dem Umkreis
+mit einem Radius von 50 Kilometern. In Zeile 2 kann man erkennen, dass
+auf diesem Umkreis eine gültige Position gefunden wurde. Daher müssen
+Positionen, die mehr als 50km von der Ursprungsposition entfernt sind,
+nicht weiter untersucht werden. In den folgenden Iterationen werden
+weitere Positionen untersucht und die untere oder obere Schranke
+entsprechend angepasst. Nachdem der Schwellenwert unterschritten wurde
+terminiert der Algorithmus nach ca. 8 Sekunden mit einer alternativen
+Vorhersageposition, die 3,6 Kilometern weiter südlich liegt. 
 
 \subsection{Transformation der Vorhersagedaten}
 Nachdem die alternativen Vorhersagepositionen für das \textit{Wave
@@ -1158,8 +1158,8 @@ Vorhersageposition, die Daten des \textit{Global Forecast System} an
 der Ursprungsposition eines Spots ausgelesen. Hierzu wird das Programm
 \textit{degrib} mit den entsprechenden Parametern pro Spot $n$-mal
 aufgerufen, wobei $n$ für die Anzahl der Vorhersageelemente steht. Die
-übergebenen Parameter legen den Namen der \textit{Grib} Datei und die
-geographische Position, an der die Daten gelesen werden, fest.
+übergebenen Parameter sind der Name der \textit{Grib} Datei und die
+geographische Position, an der die Daten gelesen werden.
 
 Die Ausgabe dieser Programmaufrufe entspricht der aus Auflistung
 \ref{degrib} bekannten Struktur. Bis auf ein einige Feinheiten ist
@@ -1170,29 +1170,61 @@ ein durch \textit{ISO 8601} standardisiertes Datums- und Zeitformat
 konvertiert werden. Zudem wird pro Datensatz noch der Primärschlüssel
 des entsprechenden Spots hinzugefügt, damit die Vorhersagedaten im
 späteren Ladevorgang eindeutig mit einem Spot in Verbindung gebracht
-werden können. Diese Transformation wird durch einen Unix Filter
-bewerkstelligt, der die Ausgabe von \textit{degrib} in das in
-Auflistung \ref{degrib-csv} zu sehende \textit{CSV} \footnote{Statt
-  dem in \textit{CSV} Dateien typischen Komma Zeichen '','' dient das,
-  in der Auflistung nicht sichtbare Tabulator Zeichen ''\textbackslash
-  t'' als Separator.} Format konvertiert.
+werden können. Das Ergebnis dieser Transformation ist in Auflistung
+\ref{degrib-csv} zu sehen.
 
 \lstinputlisting[caption={Vorhersagedaten aus Mundaka im CSV Format},label=degrib-csv]{listings/degrib-csv.txt}
 
-Der hier beschriebene Vorgang wird für alle Spot ausgeführt, und die
-Ausgabe der Transformationen durch Anhängen in eine Datei
+Der hier beschriebene Vorgang wird für alle Spots ausgeführt, und die
+Ausgabe der Transformation durch Anhängen in eine Datei
 umgeleitet. Die so entstandene \textit{CSV} Datei enthält schließlich
 alle relevanten Vorhersagedaten in einem Format, das im nächsten
-Schritt vom Bulk Loader des \textit{DBMS} geladen werden kann.
+Schritt vom Bulk Loader des \textit{DBMS} geladen werden kann. Die
+\textit{Grib} Dateien werden nach diesem Schritt nicht weiter benötigt
+und können gelöscht werden.
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{c|c|c|c|c|c}
+
+      \toprule
+      \textbf{Element(e)} & \textbf{1 Spot} & \textbf{10 Spots} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} \\
+      \midrule
+      1 & 17 ms & 170 ms & 1,7 s & 17 s & 2,83 m \\
+      10 & 170 ms & 1,7 s & 17 s & 2,83 m & 28,3 m \\
+      \textbf{11} & \textbf{187 ms} &  \textbf{1,87 s} & \textbf{18,7 s} & \textbf{3,12 m} & \textbf{31,17 m} \\
+      15 & 255 ms & 2,55 s & 25,5 s & 4,25 m & 42,5 m \\
+      \bottomrule
+    \end{longtable}
+  }
+
+  \caption{Hochrechnung der Laufzeit des Transformationsvorgangs}
+  \label{tab:transformation_laufzeit}
+
+\end{table*}
+
+Nach dem Erstellen der Indexstruktur dauert das Auslesen und die
+Transformation der Vorhersagedaten für ein Element ca. 17
+Millisekunden (ohne Index ca. 320 ms). In Tabelle
+\ref{tab:transformation_laufzeit} ist eine Hochrechnung der Laufzeit
+für mehrere Spots zu sehen. Wie viele Spots weltweit existieren,
+bzw. mit welcher Anzahl an zu verarbeitenden Spots zu rechnen ist,
+kann an dieser Stelle nur geschätzt werden. Auf einer ähnlichen
+Webseite \footnote{\url{http://www.wannasurf.com}} waren Mitte Oktober
+2009 ungefähr 8300 Spots weltweit gelistet. Das Auslesen der
+Vorhersagedaten für 11 Elemente und deren Transformation in eine
+\textit{CSV} Datei würde für diese 8300 Spots somit ca. 26 Minuten
+dauern.
 
 \subsection{Verbesserung des Transformationsvorgangs}
 Sowohl hinsichtlich der Geschwindigkeit als auch der Korrektheit ist
 das Auffinden der alternativen Vorhersageposition nicht optimal. Das
 eigentlich zur Extraktion von Daten konzipierte Programm
-\textit{degrib} wird hier missbraucht um eine Position zu finden, an
-der Vorhersagedaten zur Verfügung stehen. Hierfür wird das Programm
+\textit{degrib} wird hier ''missbraucht'' um eine Position zu finden,
+an der Vorhersagedaten zur Verfügung stehen. Hierfür wird das Programm
 mehrmals aufgerufen um an verschiedenen Positionen Vorhersagedaten zu
-extrahieren und diese auf Gültigkeit hin zu überprüfen. Diese vielen
+extrahieren und diese auf Gültigkeit zu überprüfen. Diese vielen
 Programmaufrufe könnten durch die Entwicklung geeigneter Routinen, die
 direkt auf dem \textit{Grib} Format arbeiten, vermieden werden und
 somit die Geschwindigkeit zum Auffinden der Vorhersageposition erhöht
@@ -1207,14 +1239,33 @@ südlich des eigentlichen Spots gefunden. Weiter westlich, auf gleicher
 Höhe wie \textit{Esposende} sind allerdings auch Vorhersagedaten
 vorhanden. Welche Position nun besser zur Extraktion der
 Vorhersagedaten geeignet ist, bzw. welche Vorhersagewerte am ehesten
-dem Spot entsprechen müsste hier im Detail noch untersucht werden. Die
-bisher erzielten Ergebnisse machen einen realistischen Eindruck und
-liefern nachvollziehbare Resultate, die erstmal als zufriedenstellend
-eingestuft werden. Die Geschwindigkeit bei der Extraktion der
-Vorhersagedaten mit dem Programm \textit{degrib} kann an dieser Stelle
-nicht bemängelt werden. Nachdem ein Index erstellt wurde ist ein
-schneller und wahlfreier Zugriff auf die Daten einer \textit{Grib}
-Datei möglich, der hier allen Anforderungen gerecht wird.
+dem Spot entsprechen müsste im Detail noch untersucht werden. Die
+bisher erzielten Ergebnisse machen jedoch einen realistischen Eindruck
+und liefern nachvollziehbare Resultate, die als zufriedenstellend
+bewertet werden.
+
+Die Geschwindigkeit bei der Extraktion der Vorhersagedaten mit dem
+Programm \textit{degrib} kann nicht bemängelt werden. Nachdem ein
+Index erstellt wurde ist ein schneller und wahlfreier Zugriff auf die
+Daten einer \textit{Grib} Datei möglich. Zwar wurde das Programm nicht
+auf mögliche Optimierungen hin untersucht, es kann aber davon
+ausgegangen werden, dass die Implementierung durch das
+\textit{Meteorological Development Laboratory}
+\footnote{\url{http://www.weather.gov/mdl}} sehr auf Effizienz
+ausgerichtet ist. Stößt die Transformationsphase an ihre Grenzen würde
+sich eine parallele Verarbeitung der \textit{Grib} Dateien
+anbieten. Da die Transformationsphase eines Spots nicht von anderen
+Spots abhängig ist, ist eine sequentielle Verarbeitung nicht zwingend
+erforderlich. Durch eine parallele Verarbeitung könnte die Performanz
+der Transformationsphase erheblich verbessert werden und ein sehr viel
+größerer Geschwindigkeitsvorteil erzielt werden, als dies mit
+Optimierungen einer sequentiellen Verarbeitung möglich wäre. Das
+Auslesen und die Transformation der Vorhersagedaten der 8300 Spots
+könnte man beispielsweise auf zwei Computern parallel durchführen, und
+somit die bisher benötigte Zeit von 26 Minuten auf 13 Minuten
+halbieren. Möglichkeiten zur parallelen Verarbeitung werden noch in
+den Verbesserungsvorschlägen des Ladevorgangs vorgestellt, denen
+deshalb hier nicht vorweggegriffen werden soll.
 
 \section{Laden der Daten}
 Die Aufgabe des Ladevorgangs besteht darin, die in den vorigen
@@ -1281,7 +1332,7 @@ Vorhersageelemente der beiden Modelle und nehmen die mit
   \centering
   {\sf
     \footnotesize
-    \begin{longtable}{lll}
+    \begin{longtable}{l|l|l}
 
       \toprule
       \textbf{Spaltenname} & \textbf{Datentyp} & \textbf{Modifikator} \\
@@ -1409,7 +1460,7 @@ die Spalten der \textit{CSV} Datei widerspiegeln.
   \centering
   {\sf
     \footnotesize
-    \begin{longtable}{lll}
+    \begin{longtable}{l|l|l}
 
       \toprule
       \textbf{Spaltenname} & \textbf{Datentyp} & \textbf{Modifikator} \\
@@ -1844,11 +1895,11 @@ dass $N=12$ Vorhersageelemente für jeden Spot verarbeitet werden.
     \begin{longtable}{l|c|c|c|c|c}
 
       \toprule
-      \textbf{Laufzeit} & \textbf{10 Spots} & \textbf{100 Spots} & \textbf{1000 Spots} & \textbf{10000 Spots} & \textbf{100000 Spots} \\
+      \textbf{Laufzeit} & \textbf{10 Spots} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots} \\
       \midrule
-      $l$ = 200 ms & 307.69 ms & 3.08 s & 30.76 s &  5.14 m &  51.28 m \\
-      $l$ = 400 ms & 615.39 ms & 6.15 s & 61.54 s & 10.26 m & 102.56 m \\
-      $l$ = 600 ms & 923.08 ms & 9.23 s & 92.31 s & 15.38 m & 153.84 m \\
+      $l$ = 200 ms & 307 ms & 3,08 s & 30,76 s &  5,14 m &  51,28 m \\
+      $l$ = 400 ms & 615 ms & 6,15 s & 61,54 s & 10,26 m & 102,56 m \\
+      $l$ = 600 ms & 923 ms & 9,23 s & 92,31 s & 15,38 m & 153,84 m \\
       \bottomrule
 
     \end{longtable}

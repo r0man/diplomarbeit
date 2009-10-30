@@ -1120,7 +1120,7 @@ folgendermaßen:
 
   \end{enumerate}
 
-\item Solange $u - l > 1m$ ist, wird mit Schritt 4
+\item Solange $u - l > d$ ist, wird mit Schritt 4
   weitergemacht. Ansonsten ist der Algorithmus fertig und die
   vorgemerkte Position kann als alternative Vorhersageposition
   verwendet werden. Wurde keine Position vorgemerkt konnte der
@@ -1165,13 +1165,13 @@ Die Ausgabe dieser Programmaufrufe entspricht der aus Auflistung
 \ref{degrib} bekannten Struktur. Bis auf ein einige Feinheiten ist
 diese Ausgabe schon fast in dem gewünschten \textit{CSV} Format. Damit
 die in der Ausgabe enthaltenen Zeitangaben vom \textit{Bulk} Loader
-des \textit{DBMS} interpretiert werden können, müssen diese noch in
-ein durch \textit{ISO 8601} standardisiertes Datums- und Zeitformat
-konvertiert werden. Zudem wird pro Datensatz noch der Primärschlüssel
-des entsprechenden Spots hinzugefügt, damit die Vorhersagedaten im
-späteren Ladevorgang eindeutig mit einem Spot in Verbindung gebracht
-werden können. Das Ergebnis dieser Transformation ist in Auflistung
-\ref{degrib-csv} zu sehen.
+des Datenbank Management Systems interpretiert werden können, müssen
+diese noch in ein durch \textit{ISO 8601} standardisiertes Datums- und
+Zeitformat konvertiert werden. Zudem wird pro Datensatz noch der
+Primärschlüssel des entsprechenden Spots hinzugefügt, damit die
+Vorhersagedaten im späteren Ladevorgang eindeutig mit einem Spot in
+Verbindung gebracht werden können. Das Ergebnis dieser Transformation
+ist in Auflistung \ref{degrib-csv} zu sehen.
 
 \lstinputlisting[caption={Vorhersagedaten aus Mundaka im CSV Format},label=degrib-csv]{listings/degrib-csv.txt}
 
@@ -1179,7 +1179,7 @@ Der hier beschriebene Vorgang wird für alle Spots ausgeführt, und die
 Ausgabe der Transformation durch Anhängen in eine Datei
 umgeleitet. Die so entstandene \textit{CSV} Datei enthält schließlich
 alle relevanten Vorhersagedaten in einem Format, das im nächsten
-Schritt vom Bulk Loader des \textit{DBMS} geladen werden kann. Die
+Schritt vom Bulk Loader des Datenbank Management System geladen werden kann. Die
 \textit{Grib} Dateien werden nach diesem Schritt nicht weiter benötigt
 und können gelöscht werden.
 \begin{table*}[h]
@@ -1212,9 +1212,9 @@ für mehrere Spots zu sehen. Wie viele Spots weltweit existieren,
 bzw. mit welcher Anzahl an zu verarbeitenden Spots zu rechnen ist,
 kann an dieser Stelle nur geschätzt werden. Auf einer ähnlichen
 Webseite \footnote{\url{http://www.wannasurf.com}} waren Mitte Oktober
-2009 ungefähr 8300 Spots weltweit gelistet. Das Auslesen der
+2009 ungefähr 8.300 Spots weltweit gelistet. Das Auslesen der
 Vorhersagedaten für 11 Elemente und deren Transformation in eine
-\textit{CSV} Datei würde für diese 8300 Spots somit ca. 26 Minuten
+\textit{CSV} Datei würde für diese 8.300 Spots somit ca. 26 Minuten
 dauern.
 
 \subsection{Verbesserung des Transformationsvorgangs}
@@ -1260,7 +1260,7 @@ erforderlich. Durch eine parallele Verarbeitung könnte die Performanz
 der Transformationsphase erheblich verbessert werden und ein sehr viel
 größerer Geschwindigkeitsvorteil erzielt werden, als dies mit
 Optimierungen einer sequentiellen Verarbeitung möglich wäre. Das
-Auslesen und die Transformation der Vorhersagedaten der 8300 Spots
+Auslesen und die Transformation der Vorhersagedaten der 8.300 Spots
 könnte man beispielsweise auf zwei Computern parallel durchführen, und
 somit die bisher benötigte Zeit von 26 Minuten auf 13 Minuten
 halbieren. Möglichkeiten zur parallelen Verarbeitung werden noch in
@@ -1401,9 +1401,9 @@ Bevor im nächsten Abschnitt, ein aus dem Bereich des \textit{Data
   Warehousing} bekanntes Verfahren vorgestellt wird, sollen hier noch
 einige Verbesserungsvorschläge gemacht werden. Um die Laufzeit einer
 tupelorientierten Aktualisierung zu verbessern sollte die
-Dokumentation des verwendeten \textit{DBMS} herangezogen und mögliche
-Optimierungsvorschläge in Betracht gezogen werden. Durch die
-Verwendung von \textit{Prepared Statements}, dem Ausschalten der
+Dokumentation des verwendeten Datenbank Management Systems herangezogen
+und mögliche Optimierungsvorschläge in Betracht gezogen werden. Durch
+die Verwendung von \textit{Prepared Statements}, dem Ausschalten der
 \textit{Auto-Commit} Einstellung und der Einbettung aller Befehle in
 eine einzelne Transaktion kann die Performanz in vielen Anwendungen
 gesteigert werden. Reichen diese Optimierungen nicht aus, sind mit dem
@@ -1429,7 +1429,7 @@ Ergebnisse zu erzielen.
 
 % \subsubsection{Abschätzung der auszuführenden Befehle}
 % Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
-% \textit{DBMS} im \textit{Worst-Case} Szenario $2 * n$ Befehle
+% Datenbank Management System im \textit{Worst-Case} Szenario $2 * n$ Befehle
 % ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
 % überhaupt keine Vorhersagedaten in der Datenbank enthalten sind. Da
 % die Vorhersagezeitpunkte von zwei aufeinander folgenden
@@ -1445,7 +1445,7 @@ Ergebnisse zu erzielen.
 % und den Vorhersagezeitpunkt bearbeitet wurde. Im Durchschnitt liegt
 % die Anzahl der Befehle somit leicht über $n$. Die Anzahl der
 % auszuführenden Befehle ist hier von der Zahl der Datensätze
-% abhängig. Bei einer großen Datenmenge wirkt sich der vom \textit{DBMS}
+% abhängig. Bei einer großen Datenmenge wirkt sich der vom Datenbank Management System
 % betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
 % Performanz des Ladevorgangs aus.
 
@@ -1456,10 +1456,10 @@ darin, dass die abgesetzten \textit{SQL} Befehle tupelorientiert
 arbeiten. Die \textit{SQL} Befehle zur Manipulation von Datensätzen
 können aber auch mengenorientiert eingesetzt werden, so dass pro
 Befehl mehrere Tupel geändert bzw. hinzugefügt werden. Voraussetzung
-hierfür ist, dass das \textit{DBMS} auf alle zu verarbeitenden Daten
-zugreifen kann. Dies war bei der vorigen Methode nicht der Fall, da
-das \textit{DBMS} bei jeder Operation nur einen Datensatz der Eingabe
-zu Gesicht bekam.
+hierfür ist, dass das Datenbank Management System auf alle zu
+verarbeitenden Daten zugreifen kann. Dies war bei der vorigen Methode
+nicht der Fall, da das Datenbank Management System bei jeder Operation
+nur einen Datensatz der Eingabe zu Gesicht bekam.
 
 In diesem Abschnitt wird beschrieben wie die Vorhersagedaten der
 \textit{CSV} Datei effizient unter die Kontrolle des Datenbank

@@ -4,11 +4,11 @@
 
 \subsection{Web Application Framework}
 
-Ein \textit{Web Application Framework} ist eine Software Bibliothek
-zur Entwicklung von dynamische Webseiten, Web Applikationen und Web
-Services. Ein solches Framework baut meist auf der in Abschnit
+Ein \textit{Web Application Framework} ist eine Softwarebibliothek zur
+Entwicklung von dynamischen Webseiten, Web-Applikationen und Web
+Services. Ein solches Framework baut meist auf der in Abschnitt
 \ref{Model View Controller} beschriebenen \textit{Model View
-  Controller (MVC)} \nomenclature{MVC}{Model View Controller}
+  Controller (MVC)} \nomenclature{MVC}{Model View Controller} -
 Architektur auf und bietet Lösungen und Abstraktionen für im Bereich
 der Web Programmierung häufig auftretenden Probleme und
 Konzepte. Hierzu gehört unter anderem der Zugriff auf Datenbanken, das
@@ -19,9 +19,9 @@ Benutzeroberfächen.
 
 \textit{Ruby on Rails} ist ein ursprünglich von David Heinemeier
 Hansson in der Programmiersprache \textit{Ruby} geschriebenes
-Framework zur Entwicklung von Web Applikationen. Es besteht aus den
+Framework zur Entwicklung von Web-Applikationen. Es besteht aus den
 vier größeren Bibliotheken \textit{ActionMailer}, \textit{ActionPack},
-\textit{ActiveSupport} und \textit{ActiveRecord} mit denen Emails
+\textit{ActiveSupport} und \textit{ActiveRecord}, mit denen Emails
 verarbeitet, Benutzeroberflächen erstellt, Daten persistent
 gespeichert und viele weitere Probleme bewältigt werden
 können. \textit{Rails} basiert auf der bewährten \textit{MVC}
@@ -29,20 +29,20 @@ Architektur, greift aber auch neuere Techniken, wie den in Abschnitt
 \ref{rest} beschriebenen \textit{REST}
 \nomenclature{REST}{Representational State Transfer} Architekturstil
 auf und ebnet so den Weg zu einer zukunftsorientierten Entwicklung von
-Web Applikationen. Viele dieser bewährten Konzepte, aber auch neue und
+Web-Applikationen. Viele dieser bewährten Konzepte, aber auch neue und
 innovative Ideen haben dazu beigetragen, dass \textit{Rails} in
 letzter Zeit viel Aufmerksamkeit auf sich gezogen hat. Durch
 Prinzipien wie \textit{Don't Repeat Yourself (DRY)}
 \nomenclature{DRY}{Don't Repeat Yourself} und \textit{Convention over
-  Configuration} hat \textit{Ruby on Rails} die Art und Weise wie Web
-Anwendungen entwickelt werden verändert. Die integrierten
+  Configuration} hat \textit{Ruby on Rails} die Art und Weise, wie Web
+Anwendungen entwickelt werden, verändert. Die integrierten
 Testumgebungen für den in \textit{Model}, \textit{View},
 \textit{Controller} und \textit{Helper} Klassen aufgeteilten
 Programmcode motivieren zum \textit{Test Driven Development} und
 erleichtern den Einstieg.  Nach der im Dezember 2008 angekündigten
 Verschmelzung mit \textit{Merb}, dem zweitgrößten Framework zur
-Entwicklung von Web Applikationen in \textit{Ruby}, ist die
-Entscheidung \textit{Ruby on Rails} für diese Anwendung zu verwenden
+Entwicklung von Web-Applikationen in \textit{Ruby}, ist die
+Entscheidung, \textit{Ruby on Rails} für diese Anwendung zu verwenden,
 noch zusätzlich untermauert worden.
 
 \subsubsection{Don't Repeat Yourself}
@@ -60,10 +60,10 @@ gemeint, sondern auch Konfigurationsdaten und vor allem Programmcode.
 \subsubsection{Convention over Configuration in ActiveRecord}
 In \textit{Ruby on Rails} wird die Duplikation von Informationen vor
 allem durch die Anwendung von \textit{Convention over Configuration}
-vermieden, bzw. versucht auf ein Minimum zu reduzieren. Das klassische
+vermieden bzw. versucht, auf ein Minimum zu reduzieren. Das klassische
 Vorzeigebeispiel ist hier die Bibliothek \textit{ActiveRecord}, der
 von \textit{Ruby on Rails} verwendeter \textit{objekt-relationale
-  Mapper (ORM)}. Dieser ist dafür zuständig in einer
+  Mapper (ORM)}. Dieser ist dafür zuständig, in einer
 Programmiersprache verwendete Objekte auf das Schema einer
 relationalen Datenbank abzubilden. Dadurch können Daten persistent
 gespeichert und später wieder geladen werden. Als Beispiel soll hier
@@ -77,7 +77,7 @@ Instanzen einer Klasse die Zeilen einer Tabelle.
   \textit{ActiveRecord}}, label=ar_models]{listings/models.rb}
 
 Vorausgesetzt man hält sich an die durch \textit{ActiveRecord}
-definierten Konventionen, reichen diese 6 Zeilen Code aus um Länder
+definierten Konventionen, reichen diese 6 Zeilen Code aus, um Länder
 und Spots zu speichern, zu finden, zu löschen und auf die
 Assoziationen zuzugreifen. Einzige Voraussetzung hierfür ist eine
 bestimmte, von \textit{ActiveRecord} erwartete Struktur der
@@ -112,19 +112,19 @@ Entwickler, treffen auf viele der Anwendunggsfälle zu und können als
 \textit{''Best Practices''} verstanden und über\-nommen
 werden. \textit{ActiveRecord} ist nur eine der von \textit{Ruby on
   Rails} verwendeten Bibliotheken, die gut dokumentiert sind,
-innovative Konzepte bieten, und somit eine einfache und flexible
+innovative Konzepte bieten und somit eine einfache und flexible
 Entwicklung ermöglichen.
 
 \subsubsection{Template Systeme}
 
 Dynamische Webseiten und Web Applikation verwenden meist eine
 \textit{Template Engine}, oder auch \textit{Template System} genannt,
-um Markup \footnote{in Web Applikationen üblicherweise HTML oder XML}
+um Markup \footnote{in Web-Applikationen üblicherweise HTML oder XML}
 zu generieren. Als \textit{Template} bezeichnet man eine mit
 Platzhaltern und Instruktionen annotierte Datei, die vom Template
 System in ein Ausgabeformat transformiert wird. Platzhalter werden
-dabei durch dynamischen Inhalt ersetzt, und Instruktionen bieten die
-Möglichkeit den zu generierenden Inhalt durch Schleifen oder
+dabei durch dynamischen Inhalt ersetzt und Instruktionen bieten die
+Möglichkeit, den zu generierenden Inhalt durch Schleifen oder
 Bedingungen programmatisch zu kontrollieren. Einige bekannte Template
 Systeme sind z.B. \textit{XSL/XSLT}, \textit{Java Server Pages (JSP)}
 oder das aus der Ruby Standardbibliothek bekannte \textit{Erb}.
@@ -135,23 +135,23 @@ oder das aus der Ruby Standardbibliothek bekannte \textit{Erb}.
 Template System, das beliebige Text Dokumente verarbeiten kann und zur
 Zeit noch das Standard Template System in \textit{Ruby on Rails}
 Anwendungen ist. In Auflistung \ref{template_erb} ist ein \textit{Erb}
-Template zu sehen, in dem Platzhalter verwendet werden um
+Template zu sehen, in dem Platzhalter verwendet werden, um
 \textit{XHTML} \nomenclature{XHTML}{Extensible Hypertext Markup
   Language} mit dynamischem Inhalt zu generieren. Platzhalter werden
-in \textit{Erb} Templates durch die speziellen Tags \textit{$<$\%=} und
-\textit{\%$>$} markiert. Der zwischen diesen Tags stehende Ruby Code
-wird vom Template System evaluiert und der Rückgabe\-wert verwendet um
-den Platzhalter zu ersetzen.
+in \textit{Erb} Templates durch die speziellen Tags \textit{$<$\%=}
+und \textit{\%$>$} markiert. Der zwischen diesen Tags stehende Ruby
+Code wird vom Template System evaluiert und der Rückgabe\-wert
+verwendet, um den Platzhalter zu ersetzen.
 
 \lstinputlisting[caption={Beispiel eines Erb Templates},
 label=template_erb]{listings/template.erb}
 
-Die Flexibilität von \textit{Erb} beliebige Eingabeformate verarbeiten zu
-können ist gleichzeitig auch einer der großen Nachteile. Tippfehler,
-unbalancierte Tags und ähnliche Fehler bereiten oft Probleme. Durch
-inkorrektes Markup verursachte Layoutfehler lassen sich bei der
-Verwendung von \textit{Erb} oft schwer finden und erforden oft ein
-zeitaufwendiges Debugging.
+Die Flexibilität von \textit{Erb}, beliebige Eingabeformate
+verarbeiten zu können, ist gleichzeitig auch einer der großen
+Nachteile. Tippfehler, unbalancierte Tags und ähnliche Fehler bereiten
+oft Probleme. Durch inkorrektes Markup verursachte Layoutfehler lassen
+sich bei der Verwendung von \textit{Erb} oft schwer finden und
+erforden oft ein zeitaufwendiges Debugging.
 
 \subsubsection{Haml - Markup Haiku}
 
@@ -162,20 +162,20 @@ Eine sehr zu empfehlende und produktivitätssteigernde Alternative zu
 \textit{Erb} ist \textit{Haml}. \textit{Haml} steht für \textit{XHTML
   Abstraction Markup Language} und spielt mit seinem Untertitel
 berechtigterweise auf die kürzeste, aus dem japanischen stammende
-Gedichtsform \textit{Haiku} an. Mit \textit{Haml} lassen sich \textit{XHTML}
-Dokumente auf einer sehr viel kompakterern, lesbareren und somit
-übersichtlicheren Art und Weise beschreiben. In Auflistung
-\ref{template_haml} ist ein \textit{Haml} Template zu sehen, das äquivalent zum
-Beispiel aus Auflistung \ref{template_erb} ist und das selbe Markup
-generiert.
+Gedichtsform \textit{Haiku} an. Mit \textit{Haml} lassen sich
+\textit{XHTML} Dokumente auf einer sehr viel kompakteren, lesbareren
+und somit übersichtlicheren Art und Weise beschreiben. In Auflistung
+\ref{template_haml} ist ein \textit{Haml} Template zu sehen, das
+äquivalent zum Beispiel aus Auflistung \ref{template_erb} ist und
+dasselbe Markup generiert.
 
 \lstinputlisting[caption={Beispiel eines Haml Templates},
 label=template_haml]{listings/template.haml}
 
-Insbesondere in \textit{XHTML} Dokumenten, die in Verbindung mit Javascript und
-\textit{CSS} verwendet werden, lassen sich einige immer wiederkehrende Muster
-identifizieren, die in \textit{Haml} durch eine kompakterer Syntax ersetzt
-wurden.
+Insbesondere in \textit{XHTML} Dokumenten, die in Verbindung mit
+Javascript und \textit{CSS} verwendet werden, lassen sich einige immer
+wiederkehrende Muster identifizieren, die in \textit{Haml} durch eine
+kompaktere Syntax ersetzt wurden.
 
 Ein weiterer Vorteil von \textit{Haml} gegenüber \textit{Erb} ist,
 dass der Parser das zu verarbeitende Template auf syntaktische
@@ -190,21 +190,22 @@ Redundanz erzeugenden Start- und Ende-Tags wird in \textit{Haml}
 Dokumenten nur ein Tag benötigt. \textit{Haml} generiert den durch XML
 \nomenclature{XML}{Extensible Markup Language} vorgeschriebenen und
 zum Start Tag gehörenden Ende Tag automatisch. Um Elemente zu
-verschachteln wird eine Einrückung von zwei Leerzeichen verwendet. Die
-in \textit{XHTML} Dokumenten häufig in Verbindung mit \textit{id} oder
-\textit{class} Attributen verwendeten \textit{$<$div$>$} Elemente
-wurden in \textit{Haml} mit einer speziellen Syntax versehen. Ein
-\textit{\#} Zeichen gefolgt von einem String wird wird zu einem
-\textit{$<$div$>$} Element transformiert, dessen \textit{id} Attribut
-den Wert des Strings enthält. Ein ähnliches Prinzip wird auch für den
-Punkt ''\textit{.}''  in Verbindung mit dem \textit{class} Attribut
-verwendet, so dass Zeilen 1 und 2 in beiden Auflistungen äquivalent
-sind. Diese beiden Erweiterungen der Syntax erleichtern die Arbeit
-beim Erstellen von Templates erheblich und führen insgesamt zu
-wesentlich übersichtlicheren und kürzeren Dateien.
+verschachteln, wird eine Einrückung von zwei Leerzeichen
+verwendet. Die in \textit{XHTML} Dokumenten häufig in Verbindung mit
+\textit{id} oder \textit{class} Attributen verwendeten
+\textit{$<$div$>$} Elemente wurden in \textit{Haml} mit einer
+speziellen Syntax versehen. Ein \textit{\#} Zeichen gefolgt von einem
+String wird wird zu einem \textit{$<$div$>$} Element transformiert,
+dessen \textit{id} Attribut den Wert des Strings enthält. Ein
+ähnliches Prinzip wird auch für den Punkt ''\textit{.}''  in
+Verbindung mit dem \textit{class} Attribut verwendet, so dass Zeilen 1
+und 2 in beiden Auflistungen äquivalent sind. Diese beiden
+Erweiterungen der Syntax erleichtern die Arbeit beim Erstellen von
+Templates erheblich und führen insgesamt zu wesentlich
+übersichtlicheren und kürzeren Dateien.
 
 Das eng mit \textit{Haml} verwandte Template System \textit{Sass}
-bietet ähnlicher Vorteile und wird dazu verwendet \textit{Cascading
+bietet ähnliche Vorteile und wird dazu verwendet, \textit{Cascading
   Style Sheets (CSS)} zu generieren. Das Template System definiert
 ebenfalls eine auf syntaktische Korrektheit überprüfbare Sprache und
 generiert als Ausgabeformat \textit{CSS}. Zudem bietet es die in
@@ -225,7 +226,7 @@ werden.
 
 \subsection{Datenbank Management System}
 
-In Web Applikationen wird für Anfragen an Daten und deren persistente
+In Web-Applikationen wird für Anfragen an Daten und deren persistente
 Speicherung meist ein \textit{objekt-relationaler Mapper (ORM)}
 verwendet. Dieser ist dafür zuständig in einer Programmiersprache
 verwendete Objekte auf das Schema einer relationalen Datenbank
@@ -253,7 +254,7 @@ Erweiterungen den benötigten Anforderungen gerecht. Einige dieser
 Anforderungen sollen hier beschrieben werden.
 
 \begin{itemize}
-\item Ein sogenannter \textit{Bulk Loader} wird benötigt um größere
+\item Ein sogenannter \textit{Bulk Loader} wird benötigt, um größere
   Datenmengen zu exportieren bzw. zu importieren. \textit{PostgreSQL}
   bietet hierfür die \textit{COPY FROM/TO} Befehle, mit denen Dateien
   in verschiedenen Formaten sehr viel schneller als mit den sonst
@@ -267,7 +268,7 @@ Anforderungen sollen hier beschrieben werden.
   \textit{Simple Features Specification for SQL} des \textit{Open
     Geospatial Consortium} sind. Hiermit können geografische Objekte
   in dem weit verbreiteten \textit{Shapefile} Format verarbeitet
-  werden. Insbesonder mit Hinblick auf die Integration von
+  werden. Insbesondere mit Hinblick auf die Integration von
   \textit{Google Maps} bieten sich hier einige interessante
   Anwendungsmöglichkeiten.
 
@@ -286,7 +287,7 @@ Anforderungen sollen hier beschrieben werden.
 \section{Architektur der Web Applikation}
 In diesem Abschnitt wird auf die Architektur der Web Applikation
 eingegangen. Das \textit{Ruby on Rails} Framework baut selbst auf der
-\textit{Model View Controller} Architektur auf und ermöglicht es Web
+\textit{Model View Controller} Architektur auf und ermöglicht es, Web
 Anwendungen in dem in letzter Zeit häufig diskutierten \textit{REST}
 Architekturstil zu entwickeln, dessen Vorteile im folgenden
 vorgestellt werden.
@@ -296,15 +297,15 @@ vorgestellt werden.
 
 Die \textit{Model View Controller (MVC)} Architektur
 \cite{Gamma95Design}[S.10] wurde erstmals in \textit{Smalltalk-80}
-verwendet um Benutzeroberflächen zu entwickeln. Sie basiert auf drei
+verwendet, um Benutzeroberflächen zu entwickeln. Sie basiert auf drei
 verschiedenen Arten von Objekten. Ein \textit{Model} repräsentiert die
 Daten der Applikation und die darauf möglichen Operationen, die
 sogenannte Geschäftslogik. Die Benutzeroberfläche besteht aus
 \textit{Views} bzw. Sichten, welche für die Darstellung der Daten auf
 verschieden Medien und in unterschiedlichen Formaten verantwortlich
-sind. \textit{Controller} definieren schließlich die Art und Weise wie
-eine Benutzeroberfläche auf Eingaben von Benutzern reagiert. Ziel
-dieser Architektur ist es ein Software System in einzelne, möglichst
+sind. \textit{Controller} definieren schließlich die Art und Weise,
+wie eine Benutzeroberfläche auf Eingaben von Benutzern reagiert. Ziel
+dieser Architektur ist es, ein Software System in einzelne, möglichst
 voneinander unabhängige Komponenten aufzuteilen. Dadurch soll die
 Komplexität der Software reduziert werden und die Erweiterung und
 Wiederverwendung des Programmcodes erleichtert werden.
@@ -329,7 +330,7 @@ Architekturstile für das Design netzwerkbasierter Hypermedia Systeme
 vorgestellt und deren Verhalten unter anderem bezüglich Effizienz und
 Skalierbarkeit untersucht. In Kapitel 5 wird \textit{REST} als
 Architekturstil vorgestellt, der bewährte Konzepte aus den zuvor
-anayliserten Architekturen aufgreift und Regeln und Anforderungen für
+analysierten Architekturen aufgreift und Regeln und Anforderungen für
 das Design moderner Web Architekturen vorgibt. Fielding, der auch an
 der Spezifikation des \textit{Hypertext Transfer Protocol (HTTP)}
 \nomenclature{HTTP}{Hypertext Transfer Protocol} beteiligt war, führt
@@ -349,7 +350,7 @@ Konzepte und deren Anwendung anhand einiger Beispiele vorgestellt.
 
 \paragraph{Ressourcen}
 Der Begriff \textit{Ressource} wird in der \textit{Resource Oriented
-  Architecture} als Abstraktion verwendet um Dinge zu bezeichnen, die
+  Architecture} als Abstraktion verwendet, um Dinge zu bezeichnen, die
 auf einem Computer gespeichert, in einer Folge von Bits repräsentiert
 und auf irgendeine Art und Weise identifiziert und referenziert werden
 können. Dokumente auf einem Web Server, Zeilen einer Datenbanktabelle
@@ -398,19 +399,19 @@ Service zuzugreifen.
 
 \paragraph{Adressierbarkeit}
 
-Ein \textit{Web Service} ist addressierbar wenn die zur Verfügung
+Ein \textit{Web Service} ist addressierbar, wenn die zur Verfügung
 gestellten Informationen als Ressourcen publiziert werden und auf
 diese durch \textit{URI}s zugegriffen werden kann. Die Anzahl der
 \textit{URI}s, die von solch einem \textit{Web Service} angeboten
-werden ist durch die Vielzahl der möglichen Eingaben meist unbegrenzt.
-Vertreter eines solchen \textit{Web Services} ist z.B. die Suche nach
-dem Wort ''REST'' bei \textit{Google}, welche durch folgenden
-\textit{URI} adressierbar ist:
+werden, ist durch die Vielzahl der möglichen Eingaben meist
+unbegrenzt.  Vertreter eines solchen \textit{Web Services} ist
+z.B. die Suche nach dem Wort ''REST'' bei \textit{Google}, welche
+durch folgenden \textit{URI} adressierbar ist:
 \url{http://www.google.de/search?q=REST}.
 
 Addressierbarkeit ist eine wichtige Eigenschaft
 \textit{REST}-basierter Web Architekturen und bringt viel mehr
-Anwendungsmöglichkeiten mit sich, als das ''bloße Publizieren'' von
+Anwendungsmöglichkeiten mit sich als das ''bloße Publizieren'' von
 Informationen. Beispiele hierfür sind:
 
 \begin{itemize}
@@ -418,8 +419,8 @@ Informationen. Beispiele hierfür sind:
   können z.B. in Büchern abgedruckt, als Lesezeichen gespeichert, per
   Mail weitergeleitet und als Eingabe für Programme dienen, welche den
   Inhalt weiterverarbeiten. Dadurch muss nicht der eigentliche Inhalt
-  verbreitet oder kommuniziert werden werden sondern nur die Adresse
-  unter der dieser Inhalt zu finden ist.
+  verbreitet oder kommuniziert werden, sondern nur die Adresse, unter
+  der dieser Inhalt zu finden ist.
 \item In \textit{HTTP Proxy Caches} wird die Adressierbarkeit von
   Ressourcen ausgenutzt um den Zugriff darauf zu beschleunigen. Bei
   einer ersten Anfrage wird die Ressource vom Proxy
@@ -427,9 +428,9 @@ Informationen. Beispiele hierfür sind:
   bedient.
 \item Durch \textit{URI}s adressierbare \textit{Web Services} bieten
   nicht nur den speziell entworfenen Programmen Zugang zu Ressourcen,
-  sondern auch Menschen die mit Standardwerkzeugen wie z.B. einem
-  \textit{Web Browser} oder einem \textit{RSS Reader} darauf zugreifen
-  oder Agenten des \textit{Semantic Web}.
+  sondern auch Menschen, die mit Standardwerkzeugen wie z.B. einem
+  \textit{Web Browser} oder einem \textit{RSS Reader} darauf
+  zugreifen, oder Agenten des \textit{Semantic Web}.
 \end{itemize}
 
 \paragraph{Zustandslosigkeit}
@@ -437,17 +438,17 @@ Unter Zustandslosigkeit bzw. \textit{Statelessness} versteht man in
 Protokollen zur Client-Server Kommunikation, dass alle Anfragen des
 Clienten an den Server komplett unabhängig voneinander sind. Anfragen
 des Clienten müssen alle nötigen Informationen beinhalten, die vom
-Server benötigt werden um diese zu bearbeiten. Auf Seiten des Servers
+Server benötigt werden, um diese zu bearbeiten. Auf Seiten des Servers
 wird keinerlei Information über den Zustand von Anfragen
 verwaltet. Dadurch wird dessen Implementierung vereinfacht, spart
 Ressourcen beim Verarbeiten von Anfragen ein und bietet die
 Möglichkeit \textit{Load Balancing} in Form von horizontaler
-Skalierung zu betreiben. 
+Skalierung zu betreiben.
 
 \paragraph{Repräsentation}
 Das abstrakte Konzept einer Ressource wird durch ihre Repräsentation
 bzw. Darstellung konkretisiert. Fordert ein Client Informationen über
-eine Ressource an wird eine bestimmte Repräsentation dieser Ressource
+eine Ressource an, wird eine bestimmte Repräsentation dieser Ressource
 als Sequenz von Bytes übertragen. Eine Ressource kann viele
 verschiedene Repräsentationen haben, beispielsweise als
 \textit{HTML-}, \nomenclature{HTML}{Hypertext Markup Language}
@@ -456,9 +457,9 @@ verschiedene Repräsentationen haben, beispielsweise als
 in unterschiedlichen konkreten Sprachen sind ebenfalls mögliche
 Repräsentationen einer Ressource.
 
-In der \textit{Resource Oriented Architecture} wird empfohlen die
-Information welche Art der Repräsentation einer Ressource der Server
-ausliefern soll, in den \textit{URI} oder in die Metadaten des
+In der \textit{Resource Oriented Architecture} wird empfohlen, die
+Information darüber, welche Art der Repräsentation einer Ressource der
+Server ausliefern soll, in den \textit{URI} oder in die Metadaten des
 verwendeten Übertragungsprotokolls einzubetten. Mögliche
 Repräsentationen der Wettervorhersage für \textit{Mundaka} am 26. Juli
 2009 um 15:00h könnten z.B. als ''Dateiendung'' im \textit{URI}
@@ -517,7 +518,7 @@ definierten \textit{GET}, \textup{POST}, \textit{PUT} und
 
 \item Der Zustand existierender Ressourcen wird mit der \textit{PUT}
   Methode verändert. Im \textit{HTTP-Body} der Anfrage wird eine
-  Repräsentation \footnote{In Web Applikationen üblicherweise in XML
+  Repräsentation \footnote{In Web-Applikationen üblicherweise in XML
     oder Form-Encoded} der Ressource mitgesendet, die den veränderten
   Zustand widerspiegelt. Im folgenden Beispiel wird die geographische
   Position des Spot \textit{Mundaka} mit der im \textit{HTTP-Body}
@@ -530,7 +531,7 @@ definierten \textit{GET}, \textup{POST}, \textit{PUT} und
 
 \item Neue Ressourcen werden entweder mit der \textit{POST}- oder der
   \textit{PUT} Methode erstellt. Eine den Zustand der Ressource
-  widerspigelnde Repräsentation wird hier ebenfalls im
+  widerspiegelnde Repräsentation wird hier ebenfalls im
   \textit{HTTP-Body} kodiert.
 
   Mit welcher Methode und \textit{URI} die Anfrage gesendet wird, ist
@@ -569,11 +570,11 @@ Implementierung führt nicht nur zu sauberen Schnittstellen nach außen
 hin, sondern auch zu modularem Programmcode. Die implementierten
 Ressourcen werden hauptsächlich im \textit{XHTML} Format, vereinzelt
 aber auch im \textit{JSON} Format repräsentiert. Das \textit{JSON}
-Format wird in Verbindung mit \textit{Google Maps} eingesetzt um mit
+Format wird in Verbindung mit \textit{Google Maps} eingesetzt, um mit
 Javascript asynchron auf die Ressourcen zugreifen zu können. Die
 Regeln der \textit{Resource Oriented Architecture} können als
 \textit{''Best Practices''} verstanden werden und sind bei der
-Konzeption und beim Design von Web Anwendungen überaus hilfreich.
+Konzeption und beim Design von Web-Anwendungen überaus hilfreich.
 
 \section{Behaviour \& Test Driven Development}
 
@@ -591,10 +592,10 @@ Philosophie des \textit{Test Driven Developments}
 \cite{wiki:bdd}. Durch die Einführung eines gemeinsamen Vokabulars
 soll die Zusammenarbeit zwischen Programmierern und nicht-technisch
 Beteiligten an einem Softwareprojekt erhöht werden. Das gemeinsame
-Vokabular wird benutzt um das Verhalten, bzw. die Anforderungen der
+Vokabular wird benutzt, um das Verhalten bzw. die Anforderungen der
 Software gemeinsam zu beschreiben und eine Spezifikation zu erstellen.
 Diese Spezifikation wird in Form von automatischen Tests in einer
-domänen\-spezifische Sprache vom Programmierer implementiert. Die
+domänen\-spezifischen Sprache vom Programmierer implementiert. Die
 Spezifikation und die eigentliche Implementierung des Verhaltens
 geschieht dabei zeitgleich.
 
@@ -603,16 +604,16 @@ geschieht dabei zeitgleich.
 Die Entwicklung der Software erfolgt, wie beim Test Driven
 Development, durch ständige Wiederholung des \textit{Red, Green,
   Refactor} Zykluses. \textit{Red} und \textit{Green} stehen für
-fehlschlagende bzw. erfolgreiche Testfälle, und \textit{Refactor} für
-die Umstrukturierung, Verbesserung und Säuberung schon implementierten
-Programmcodes. Die Entwicklung der Anwendung wird in kleinere Teile,
-sogenannte \textit{Feature} aufgeteilt und diese nacheinander
-abgearbeitet. Das Verhalten eines zu implementierenden Features wird
-durch mehrere Testfälle beschrieben und somit spezifiziert. Dabei
-werden die folgenden drei Schritte solange wiederholt bis das
-gewünschte Feature ausreichend spezifiziert und implementiert ist. Die
-Kunst ist hierbei, immer nur sehr kleine Schritte pro Zyklus zu
-spezifizieren und zu implementieren.
+fehlschlagende bzw. erfolgreiche Testfälle und \textit{Refactor} für
+die Umstrukturierung, Verbesserung und Säuberung von schon
+implementiertem Programmcode. Die Entwicklung der Anwendung wird in
+kleinere Teile, sogenannte \textit{Feature}, aufgeteilt und diese
+nacheinander abgearbeitet. Das Verhalten eines zu implementierenden
+Features wird durch mehrere Testfälle beschrieben und somit
+spezifiziert. Dabei werden die folgenden drei Schritte solange
+wiederholt bis das gewünschte Feature ausreichend spezifiziert und
+implementiert ist. Die Kunst ist hierbei, immer nur sehr kleine
+Schritte pro Zyklus zu spezifizieren und zu implementieren.
 
 \subsubsection{Red - Die Spezifikation des Verhaltens}
 In der \textit{Red} Phase wird ein korrekter, aber fehlschlagender
@@ -624,7 +625,7 @@ Instanzen einer bestimmten Klasse sind oder die Distanz zwischen zwei
 gegebenen geografischen Positionen korrekt berechnet wird.
 
 \subsubsection{Green - Die Implementierung des Verhaltens}
-Ziel der \textit{Green} Phase ist es den soeben geschriebenen und
+Ziel der \textit{Green} Phase ist es, den soeben geschriebenen und
 fehlschlagenden Test (und alle bisher erfolgreichen) durch eine
 geeignete Implementierung zum Erfolg zu bringen. Hierbei ist zu
 Erwähnen, dass auch eine vorübergehend nicht korrekte Implementierung
@@ -649,13 +650,13 @@ geänderter Programmcode muss nochmals manuell verifiziert
 werden. Probleme treten oft auch an nicht offensichtlich mit den
 Änderungen in Verbindung stehenden Teilen des Programms auf. Ein
 deshalb notwendiger, manueller Systemtest kann dann oft zu aufwendig
-sein, dass die Vorteile des Refactoring in den Hintergrund rücken und
-oftmals darauf verzichtet wird.
+sein, so dass die Vorteile des Refactoring in den Hintergrund rücken
+und oftmals darauf verzichtet wird.
 
 \subsection{Vorteile Behaviour \& Test Driven Developments}
 Diese Art der Softwareentwicklung wird heute oft immer noch aus den
 verschiedensten Gründen abgelehnt. \textit{''Nicht notwendig, bei gut
-  entwickeltem Code''}, \textit{''zu aufwendig''}, oder Barrieren
+  entwickeltem Code''}, \textit{''zu aufwendig''}, oder Barrieren,
 seine gewohnte Arbeitsweise zu ändern sind nur einige dieser
 Gründe. Der Klassiker \textit{''man würde ja, aber habe keine Zeit
   Tests zu schreiben''} zeigt, dass die Vorteile des \textit{Test
@@ -669,18 +670,18 @@ Folgenden deutlich gemacht werden.
 Martin Fowler beschreibt in \cite{Fowler1999}[S.89], dass viele
 Programmierer ihre Zeit nicht mit der Entwicklung des eigentlichen
 Programmcodes verbringen, sondern den Großteil der Zeit für Debugging
-und das manuelle Testen des gerade zu entwickelten Codes verwendet
-wird. Wirklich produziert wird hier aber nur der Programmcode der
-Implementierung. Beim \textit{Test Driven Development} wird diese Zeit
-für die selben Ziele verwendet, doch als Nebenprodukt entstehen
-automatische Tests. Manuelles Testen und Debugging muss unter
-Umständen immer wieder von neuem wiederholt werden, während
-automatische Tests sicherstellen, dass bestimmte Dinge funktionieren
-und nicht nochmals verifiziert werden müssen. Die Entwicklung von
-Tests bedeutet mehr Code, was mit mehr Arbeit gleichzusetzen
-ist. Dieser Mehraufwand scheint auf den ersten Blick keinen Sinn zu
-machen, bis man selbst erfahren hat wie sehr dieses Vorgehen die
-eigene Produktivität steigern kann.
+und das manuelle Testen des Codes verwendet wird. Wirklich produziert
+wird hier aber nur der Programmcode der Implementierung. Beim
+\textit{Test Driven Development} wird diese Zeit für dieselben Ziele
+verwendet, doch als Nebenprodukt entstehen automatische
+Tests. Manuelles Testen und Debugging muss unter Umständen immer
+wieder von neuem wiederholt werden, während automatische Tests
+sicherstellen, dass bestimmte Dinge funktionieren und nicht nochmals
+verifiziert werden müssen. Die Entwicklung von Tests bedeutet mehr
+Code, was mit mehr Arbeit gleichzusetzen ist. Dieser Mehraufwand
+scheint auf den ersten Blick keinen Sinn zu machen, bis man selbst
+erfahren hat, wie sehr dieses Vorgehen die eigene Produktivität
+steigern kann.
 
 \subsubsection{Besserer Programmcode}
 Schreibt man Tests vor der eigentlichen Implementierung blickt man von
@@ -688,11 +689,11 @@ vornherein aus der Rolle eines Anwenders auf die zu entwickelnde
 Schnittstelle. Die API des zu implementierenden Codes kann so während
 der Entwicklung der Testfälle ''erforscht'' werden. Die Struktur des
 Programmcodes wird zudem positiv beeinflusst, da vor der
-Implementierung überlegt werden muss wie das Verhalten am besten
+Implementierung überlegt werden muss, wie das Verhalten am besten
 getestet werden kann. Implementierungen, die vor Testfällen entwickelt
-wurden, müssen oft umstrukturiert werden damit diese überhaupt
+wurden, müssen oft umstrukturiert werden, damit diese überhaupt
 getestet werden können. Zu lange Methoden sind hier das klassische
-Beispiel. Sie lassen sich schlecht testen weil sie oft viel zu viel
+Beispiel. Sie lassen sich schlecht testen, weil sie oft viel zu viel
 auf einmal erledigen. Darüber hinaus sind sie meist auch noch schwer
 zu verstehen. Durch Extraktion von Hilfsmethoden kann man diese
 Methoden verkürzen und verbessert dadurch die Lesbarkeit des
@@ -702,26 +703,25 @@ als zuvor. Zudem können die extrahierten Hilfsmethoden potentiell von
 anderem Programmcode wiederverwendet werden.
 
 \subsubsection{Qualitätsmanagment und Teamwork}
-
 Insbesondere bei Softwareprojekten in dynamischen Programmiersprachen,
 die erst zur Laufzeit interpretiert werden und keine statische
-Typprüfung besitzen ist es von großem Vorteil eine automatische
-Testsuite zu haben. In diesen Sprachen gibt es keinen Compiler der
+Typprüfung besitzen, ist es von großem Vorteil eine automatische
+Testsuite zu haben. In diesen Sprachen gibt es keinen Compiler, der
 nach Änderungen überprüfen kann, dass zumindest syntaktisch noch alles
 korrekt ist. Änderungen an einer Stelle im System haben oft
 Konsequenzen an anderen nicht vorhersehbaren Stellen. Eine Testsuite,
-welche die gesamte Codebasis abdeckt kann sicherstellen, dass
+welche die gesamte Codebasis abdeckt, kann sicherstellen, dass
 Änderungen funktionieren und eingeschlichene Fehler so früh wie
 möglich aufgedeckt werden.
 
 Auch bei Softwareprojekten, die von mehreren Personen gleichzeitig
-entwickelt werden bietet eine Testsuite Schutz gegen das Einschleichen
-von Fehlern und hilft bei der Weiterentwicklung fremden Codes. Wird
-Programmcode vom nicht ursprünglichen Autor geändert oder erweitert
-muss dieser zuerst verstanden, erweitert und danach verifiziert
-werden. Testfällen dienen dabei nicht nur zur Verifizierung dieser
-Änderungen, sondern auch als Dokumentation und Spezifikation, und
-helfen somit das Problem besser und schneller zu verstehen.
+entwickelt werden, bietet eine Testsuite Schutz gegen das
+Einschleichen von Fehlern und hilft bei der Weiterentwicklung fremden
+Codes. Wird Programmcode vom nicht ursprünglichen Autor geändert, muss
+dieser zuerst verstanden, dann geändert und anschließend verifiziert
+werden. Testfälle dienen dabei nicht nur zur Verifizierung dieser
+Änderungen, sondern auch als Dokumentation und Spezifikation und
+helfen somit, das Problem besser und schneller zu verstehen.
 
 \subsection{Unit Tests mit RSpec}
 
@@ -795,7 +795,7 @@ end
 \end{lstlisting}
 
 Im nächsten Iterationszyklus muß nun die eigentliche Haversine Formel
-\cite{wiki:haversine} implementiert werden um auch den zweiten
+\cite{wiki:haversine} implementiert werden, um auch den zweiten
 Testfall zum Erfolg zu bringen. Durch das Aufteilen der zu
 bewältigenden Aufgaben in kleine Iterationszyklen wird das
 spezifizierte Verhalten so Schritt für Schritt implementiert. Die
@@ -815,12 +815,11 @@ Verhalten der Web Applikation verifizieren.
 Das Durchlaufen der gesamten Testsuite benötigt momentan ca. 15
 Minuten, was zu einem Durchschnitt von 4,8 Sekunden pro Test
 führt. Diese hohe Laufzeit lässt sich auf die vielen Datenbankzugriffe
-zurückführen, die vor den meisten Testfällen einen bestimmten
-Datenbestand herstellen und danach wieder zurücksetzen müssen. Durch
-den Einsatz von \textit{Mocks} und \textit{Stubs} können diese
-Datenbankzugriffe reduziert werden. Diese Techniken sollten jedoch
-vorsichtig eingesetzt werden. Eine übermäßige Anwendung resultiert
-meist in einer zu engen Kopplung zwischen Test und
+zurückführen, die vor vielen Testfällen einen bestimmten Datenbestand
+herstellen. Durch den Einsatz von \textit{Mocks} und \textit{Stubs}
+können diese Datenbankzugriffe reduziert werden. Diese Techniken
+sollten jedoch vorsichtig eingesetzt werden. Eine übermäßige Anwendung
+resultiert meist in einer zu engen Kopplung zwischen Test und
 Implementierung. Diese Kopplung macht sich dann meist beim Refactoring
 bemerkbar, wenn Tests ebenfalls geändert werden müssen weil aus
 Performanzgründen Annahmen über die Implementierung getroffen
@@ -830,23 +829,22 @@ Testsuite und deren Laufzeit finden.
 In der Praxis hat sich herausgestellt, dass der Durchschnittswert von
 4,8 Sekunden pro Test von geringer Bedeutung ist. Bei der
 Implementierung eines Features lässt man meist nur die gerade
-aktuellen Testfälle laufen und deren Laufzeit ist im einzelnen meist
+aktuellen Testfälle laufen, und deren Laufzeit ist im einzelnen meist
 besser als der erwähnte Durchschnittswert. Mindestens vor jedem
-Deployment sollte dann die gesamte Testsuite ausgeführt werden um
-sicherzustellen, dass das System auch in der Gesamtheit korrekt
+Deployment sollte dann die gesamte Testsuite ausgeführt werden, um
+sicher zu stellen, dass das System auch in der Gesamtheit korrekt
 funktioniert.
 
 \subsection{Integrationstests mit Cucumber}
-
 \textit{Cucumber} \cite{cucumber} ist ein weiteres Framework für
-Behaviour Driven Development in Ruby. Es bietet die Möglichkeit das
+Behaviour Driven Development in Ruby. Es bietet die Möglichkeit, das
 Verhalten von Anwendungen in einer \textit{natürlichen Sprache}, wie
 z.B. Englisch oder Deutsch, zu beschreiben. Auch hier war das Ziel,
-das nicht-technische Personen das Verhalten einer Anwendung durch ein
+dass nicht-technische Personen das Verhalten einer Anwendung durch ein
 gemeinsam verwendetes Vokabular beschreiben und spezifizieren können.
-Die Spezifikationen wird dann von einem Entwickler erweitert um daraus
-automatische Tests zu erstellen. In Ruby on Rails Projekten wird
-Cucumber üblicherweise benutzt um durch Integrationstests
+Die Spezifikationen wird dann von einem Entwickler erweitert, um
+daraus automatische Tests zu erstellen. In Ruby on Rails Projekten
+wird Cucumber üblicherweise benutzt um durch Integrationstests
 sicherzustellen, dass das Zusammenspiel zwischen Browser und
 Controllern funktioniert.
 
@@ -881,7 +879,7 @@ wird die Spezifikation eines Features eingeleitet, gefolgt von einer
 kurzen Beschreibung zu Dokumentationszwecken. Ein Abschnitt, der mit
 dem Schlüsselwort \textit{Scenario} definiert wird, beschreibt das
 Verhalten der Anwendung in einer bestimmten Situation. Mit dem
-Schlüsselwort \textit{Given} beschreibt man welche Vorbedingungen in
+Schlüsselwort \textit{Given} beschreibt man, welche Vorbedingungen in
 der gegebenen Situation herrschen müssen. \textit{When} beschreibt
 auszuführende Aktionen, wie z.B. das Ausfüllen eines Formulars oder
 das Klicken eines Links. Das Schlüsselwort \textit{Then} beschreibt
@@ -890,7 +888,7 @@ den erwarteten Zustand nach dem Ausführen der Aktionen. Mit
 definiert, und dient zur Verknüpfung und der besseren Lesbarkeit.
 
 Cucumber verarbeitet solch eine Spezifikation zeilenweise und führt
-für bestimmte Zeilen Code aus der die beschriebenen Vorbedingungen
+für bestimmte Zeilen Code aus, der die beschriebenen Vorbedingungen
 herstellt, Aktionen ausführt und Erwartungen verifiziert. Für jede
 Zeile, die mit einem der Schlüsselwörter \textit{Given},
 \textit{When}, \textit{Then} oder \textit{And} anfängt, muss ein auf
@@ -909,13 +907,13 @@ Given /^I am an activated user$/ do
 end
 \end{lstlisting}
 
-Cucumber stellt eine Bibliothek einiger dieser häufige verwendeten
+Cucumber stellt eine Bibliothek einiger dieser häufig verwendeten
 Konstrukte als Makros zu Verfügung. Diese können in eigenen
 Codeblöcken benutzt werden. Der folgende Code verwendet einige dieser
-vordefinierten Konstrukte. Der Code der dabei ausgeführt wird
+vordefinierten Konstrukte. Der Code, der dabei ausgeführt wird,
 simuliert das Besuchen der \textit{Login} Seite, das Ausfüllen zweier
-Textfelder mit dem Benutzernamen und einem falschen Passwort, sowie
-das Klicken des \textit{Login} Buttons mit einem Browser.
+Textfelder mit dem Benutzernamen und einem falschen Passwort sowie das
+Klicken des \textit{Login} Buttons mit einem Browser.
 
 \begin{lstlisting}
 When /^I log in with invalid credentials$/ do
@@ -928,11 +926,11 @@ end
 
 Die Zeile \textit{Then I should see ''Sorry, invalid nick/password
   combination given.''} verwendet ebenfalls ein von Cucumber
-definiertes Makro, dass überprüft ob der in Hochkomma gesetzte Text in
+definiertes Makro, das überprüft ob der in Hochkomma gesetzte Text in
 der vom Server empfangenen HTML Seite zu finden ist.
 
 Die letzte Zeile ist ein selbst definiertes Makro, das wiederum
-Methoden des RSpec Frameworks verwendet um zu überprüfen dass der
+Methoden des RSpec Frameworks verwendet, um zu überprüfen dass der
 Benutzer nicht angemeldet ist.
 
 \begin{lstlisting}
@@ -941,16 +939,16 @@ Then /^I should not be logged in$/ do
 end
 \end{lstlisting}
 
-Cucumber bietet die Möglichkeit eigene Makros interaktiv zu
-entwickeln. Für Zeilen die keinem regulären Ausdruck zugeordnet werden
-können, generiert Cucumber auf sie passende Codeblöcke, die sehr
-einfach angepasst und weiterentwickelt werden können. Durch die
+Cucumber bietet die Möglichkeit, eigene Makros interaktiv zu
+entwickeln. Für Zeilen, die keinem regulären Ausdruck zugeordnet
+werden können, generiert Cucumber auf sie passende Codeblöcke, die
+sehr einfach angepasst und weiterentwickelt werden können. Durch die
 Verwendung der eigenen und der vielen vordefinierten Makros lässt sich
 so ein auf die eigene Domäne zugeschnittenes Vokabular definieren, mit
 dem das korrekte Verhalten einer Anwendung auf einem hohem
 Abstraktionsniveau verifiziert werden kann.
 
-Da Cucumber relativ neu ist wurden im hier entwickelten Prototypen
+Da Cucumber relativ neu ist, wurden im hier entwickelten Prototypen
 bisher nur 17 solcher Szenarien spezifiziert, die vor allem die
 korrekte Interaktion mit externen Diensten
 verifizieren. Beispielsweise werden von Benutzern publizierte Videos
@@ -959,7 +957,7 @@ und Bilder von der Web Applikation auf \textit{Amazon's
   \url{http://aws.amazon.com/s3}} gespeichert. Die Verwendung dieses
 Web Services wurde aus Performanzgründen in den RSpec Unit Tests durch
 Mock Objekte ersetzt. Integrationstests mit Cucumber bieten hier eine
-gute Möglichkeit das Zusammenspiel von Browser und Controllern in
+gute Möglichkeit, das Zusammenspiel von Browser und Controllern in
 einer realitätsnahen Umgebung zu verifizieren.
 
 %%% Local Variables:

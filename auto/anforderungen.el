@@ -4,6 +4,8 @@
      "piktogramm"
      "google-maps"
      "sec:Wetter- und Wellendaten"
+     "forecast"
+     "youtube"
      "locals-only"
      "secret-spot")))
 

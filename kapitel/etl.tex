@@ -678,15 +678,15 @@ gespeichert.
       \toprule
       \textbf{Element} & \textbf{Beschreibung} & \textbf{Größe (Element)} & \textbf{Zeit (Element)}  \\
       \midrule
-      HTSGW & Wellenhöhe & 2.5 MB & 27.12 s \\
-      PERPW & Periode des Wellenkamms & 2.7 MB & 30.12 s \\
-      DIRPW & Richtung des Wellenkamms & 3.5 MB & 35.90 s \\
-      WVPER & Wellenperiode & 2.5 MB & 25.79 s \\
-      WVDIR & Wellenrichtung & 3.5 MB & 35.83 s \\
-      WIND  & Windstärke & 2.9 MB & 34.36 s \\
-      WDIR  & Windrichtung & 3.8 MB & 38.99 s \\
+      HTSGW & Wellenhöhe & 2,5 MB & 27,12 s \\
+      PERPW & Periode des Wellenkamms & 2,7 MB & 30,12 s \\
+      DIRPW & Richtung des Wellenkamms & 3,5 MB & 35,90 s \\
+      WVPER & Wellenperiode & 2,5 MB & 25,79 s \\
+      WVDIR & Wellenrichtung & 3,5 MB & 35,83 s \\
+      WIND  & Windstärke & 2,9 MB & 34,36 s \\
+      WDIR  & Windrichtung & 3,8 MB & 38,99 s \\
       \midrule
-      Gesamt: & & 21.4 MB & 3.80 m \\
+      Gesamt: & & 21,4 MB & 3,80 m \\
       \bottomrule
     \end{longtable}
   }
@@ -699,7 +699,7 @@ Inhaltsverzeichnis und 7 für die \textit{Grib}-Nachrichten der
 entsprechenden Elemente. In Tabelle \ref{tab:download_messung_ww3}
 sind die durchschnittlichen Downloadzeiten für die einzelnen Elemente
 des \textit{Wave Watch III} Modells aufgeführt. Der Extraktionsprozess
-dauert durchschnittlich 3.8 Minuten und überträgt 21.4 MB an
+dauert durchschnittlich 3,8 Minuten und überträgt 21,4 MB an
 \textit{Grib}-Daten.
 
 \subsubsection{Downloadstrategie für das Global Forecast System}
@@ -1186,15 +1186,15 @@ weiter benötigt und können gelöscht werden.
   \centering
   {\sf
     \footnotesize
-    \begin{longtable}{c|c|c|c|c|c}
+    \begin{longtable}{c|c|c|c|c|c|c}
 
       \toprule
-      \textbf{Element(e)} & \textbf{1 Spot} & \textbf{10 Spots} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} \\
+      \textbf{Element(e)} & \textbf{1 Spot} & \textbf{10 Spots} & \textbf{100 Sp.} & \textbf{1.000 Sp.} & \textbf{10.000 Sp.} & \textbf{100.000 Sp.} \\
       \midrule
-      1 & 17 ms & 170 ms & 1,7 s & 17 s & 2,83 m \\
-      10 & 170 ms & 1,7 s & 17 s & 2,83 m & 28,3 m \\
-      \textbf{11} & \textbf{187 ms} &  \textbf{1,87 s} & \textbf{18,7 s} & \textbf{3,12 m} & \textbf{31,17 m} \\
-      15 & 255 ms & 2,55 s & 25,5 s & 4,25 m & 42,5 m \\
+      1 & 17 ms & 170 ms & 1,7 s & 17 s & 2,83 m & 28,34 m \\
+      10 & 170 ms & 1,7 s & 17 s & 2,83 m & 28,34 m & 4,72 h \\
+      \textbf{11} & \textbf{187 ms} &  \textbf{1,87 s} & \textbf{18,7 s} & \textbf{3,12 m} & \textbf{31,17 m} & \textbf{5,19 h} \\
+      15 & 255 ms & 2,55 s & 25,5 s & 4,25 m & 42,5 m &  7,08 h\\
       \bottomrule
     \end{longtable}
   }
@@ -1912,8 +1912,8 @@ dass $N=12$ Vorhersageelemente für jeden Spot verarbeitet werden.
       \textbf{Laufzeit} & \textbf{10 Spots} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots} \\
       \midrule
       $l$ = 200 ms & 307 ms & 3,08 s & 30,76 s &  5,14 m &  51,28 m \\
-      $l$ = 400 ms & 615 ms & 6,15 s & 61,54 s & 10,26 m & 102,56 m \\
-      $l$ = 600 ms & 923 ms & 9,23 s & 92,31 s & 15,38 m & 153,84 m \\
+      $l$ = 400 ms & 615 ms & 6,15 s & 61,54 s & 10,26 m & 1,71 h \\
+      $l$ = 600 ms & 923 ms & 9,23 s & 92,31 s & 15,38 m & 2,56 h \\
       \bottomrule
 
     \end{longtable}
@@ -1975,6 +1975,31 @@ Transformationsschritt erst dann anzustoßen, wenn die Daten beider
 Modelle verfügbar sind. Andernfalls müsste man die aktuellen Daten des
 einen Modells mit den schon geladenen Daten des anderen Modells
 verknüpfen.
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{l|c|c|c|c}
+
+      \toprule
+      \textbf{Phase} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots}\\
+      \midrule
+      Extraktion \textit{(NWW3)} & 3,80 m & 3,80 m & 3,80 m & 3,80 m \\
+      Extraktion \textit{(GFS)} & 13,92 m & 13,92 m & 13,92 m & 13,92 m \\
+      \midrule
+      Transformation & 18,7 s & 3,12 m & 31,17 m & 5,19 h \\
+      Laden \textit{(l=600ms)} & 9,23 s & 92,31 s & 15,38 m & 2,56 h \\
+      \bottomrule
+      \textbf{Gesamt:} & 18,19 m & 21,00 m & 1,07 h & 8,05 h \\
+      \bottomrule
+    \end{longtable}
+  }
+
+  \caption{Hochrechnung der Gesamtlaufzeit}
+  \label{tab:gesamt_laufzeit}
+
+\end{table*}
 
 Eine Vorverarbeitung der Daten bietet sich insbesondere bei dem zur
 Zeit stattfindenden Trend in Richtung \textit{Cloud Computing} an. Die

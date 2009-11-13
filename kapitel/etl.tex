@@ -288,7 +288,7 @@ etabliert haben. Die mit der Nummer 0 bezeichnete Version gilt als
 veraltet und befindet sich bei den meisten Wetterorganisationen nicht
 mehr im operativen Einsatz.
 
-\subsection{Struktur von Grib Dateien}
+\subsection{Struktur von Grib-Dateien}
 Eine \textit{Grib}-Datei besteht aus eigenständigen, sich selbst
 beschreibenden Datensätzen, den sogenannten \textit{Grib}
 Nachrichten. Eine Nachricht enthält dabei alle Daten eines bestimmten
@@ -350,7 +350,7 @@ beziehen.
 
 \end{table*}
 
-\subsection{Programme zum Verarbeiten von Grib Dateien}
+\subsection{Programme zum Verarbeiten von Grib-Dateien}
 \label{grib-reader}
 Zum Verarbeiten und Lesen von \textit{Grib}-Dateien werden spezielle
 Programme eingesetzt. Werkzeuge für die Kommandozeile, C-Bibliotheken
@@ -368,7 +368,7 @@ eine \textit{Grib}-Datei zu erstellen, mit dessen Hilfe ein wahlfreier
 Zugriff nach geographischen Positionen ermöglicht wird und die
 Zugriffszeiten erheblich beschleunigt.
 
-\subsection{Inventar einer Grib Datei}
+\subsection{Inventar einer Grib-Datei}
 Die beiden Kommandozeilenprogramme \texttt{degrib} und \texttt{wgrib}
 können dazu verwendet werden, Inventare von \textit{Grib}-Datei zu
 erstellen. Ein Inventar ist eine Art Inhaltsverzeichnis und liefert
@@ -555,7 +555,7 @@ verschiedenen Elementen ist bei einer Auflösung von
 1.25$^{\circ}$ x 1$^{\circ}$ ca. 32 Megabyte groß und enthält
 Vorhersagedaten für 180 Stunden in die Zukunft.
 
-\subsection{Download einzelner Grib Nachrichten}
+\subsection{Download einzelner Grib-Nachrichten}
 \label{subsec:download}
 Die beiden Vorhersagemodelle bieten sehr viel mehr Informationen, als
 von der hier entwickelten Anwendungen überhaupt benötigt werden. Vom
@@ -728,7 +728,7 @@ bewerkstelligt werden, beispielsweise mit \textit{cat TMP.00h.grib
 Anfordern der Inhaltsverzeichnisse muss dieser Vorgang für alle
 gewünschten Elemente wiederholt werden. Insgesamt sind $ 61 * (N+1) $
 Anfragen nötig, 61 für die Inhaltsverzeichnisse und pro Element
-weitere \textit{61} Anfragen für die einzelnen Grib Nachrichten. Der
+weitere \textit{61} Anfragen für die einzelnen Grib-Nachrichten. Der
 Extraktionsprozess für das \textit{Global Forecast System} sendet
 somit für die zurzeit 4 verwendeten Elemente $ 61 * (4+1) = 305$
 Anfragen. Tabelle \ref{tab:download_messung_gfs} zeigt im linken Teil

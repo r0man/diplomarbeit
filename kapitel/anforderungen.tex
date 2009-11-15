@@ -1,7 +1,7 @@
 
-\chapter{Anforderungen an die Web Applikation}
+\chapter{Anforderungen an die Web-Applikation}
 
-\section{Spot Beschreibungen}
+\section{Spotbeschreibungen}
 
 Eine der bekanntesten Wellen in Europa ist im spanischen Baskenland an
 einer Fluss\-mündung östlich des Ortes \textit{Mundaka} zu finden. Im
@@ -26,7 +26,7 @@ Kategorien zugeordnet, welche die Gegebenheiten vor Ort durch eine
 vereinfachte grafische Darstellung widerspiegeln. Einige dieser
 Kategorien sind die bevorzugte Windrichtung, die optimale Gezeit, die
 Art der brechenden Welle, Beschaffenheit des Bodens sowie mögliche
-Gefahren. Durch die Piktogramme ist mit einen kurzen Blick schnell
+Gefahren. Durch die Piktogramme ist mit einem kurzen Blick schnell
 ersichtlich, welche Bedingungen an einem Spot herrschen. In Abbildung
 \ref{piktogramm} sind die Piktogramme zu sehen, die für die obige
 Beschreibung in Mundaka verwendet wurden. Sie sollen vermitteln, dass
@@ -58,7 +58,7 @@ zusätzlich Kommentarfunktionen zur Verfügung gestellt. Um Spam und
 anderer mutwilliger Zerstörung oder Verunreinigung des Contents
 vorzubeugen, ist für bestimmte Funktionen eine Registrierung der
 Nutzer erforderlich. Für alle Informationen, die gemeinschaftlich von
-Nutzern der Web Applikation verändert werden können, soll eine
+Nutzern der Web-Applikation verändert werden können, soll eine
 Historie verwaltet werden. Dadurch soll sichergestellt werden, dass
 bei einer eventuellen Verunreinigung des Contents auf eine frühere
 Version der Information zurückgegriffen und der ursprüngliche Zustand
@@ -67,7 +67,7 @@ wieder hergestellt werden kann.
 \section{Kartenmaterial}
 
 Um das Auffinden von Spots zu vereinfachen, sollen diese auf einer
-Karte dargestellt werden. Webservice Dienste wie \textit{Google Maps},
+Karte dargestellt werden. Webservice-Dienste wie \textit{Google Maps},
 \textit{Yahoo! Maps} oder Microsoft's \textit{Bing Maps}
 \footnote{seit Juni 2009, früher: Microsoft's Virtual Earth} bieten
 die Möglichkeit, interaktive Karten per Java\-script oder Flash in
@@ -75,16 +75,16 @@ eine Webseite einzubetten. Diese Dienste bieten nicht nur die
 typischen Land- bzw. Straßenkarten an, sondern stellen auch
 Satelitenbilder und teilweise dreidimensionale Ansichten für bestimmte
 Gebiete zur Verfügung. In Abbildung \ref{google-maps} ist eine Karten-
-und eine Satellitenansicht von dem Surf Spot in \textit{Mundaka} zu
+und eine Satellitenansicht von dem Surfspot in \textit{Mundaka} zu
 sehen. Insbesondere die Satellitenansicht ist beim Auffinden von neuen
-oder geheimen Surf Spots recht nützlich, da man darauf sehr gut
+oder geheimen Surfspots recht nützlich, da man darauf sehr gut
 brechende Wellen erkennen und sich einen Überblick auf das Gelände
 verschaffen kann.
 
 \begin{figure}[h]
   \subfigure[Karten Ansicht]{\includegraphics[width=0.49\textwidth]{bilder/google-maps-map}}
   \subfigure[Satelliten Ansicht]{\includegraphics[width=0.49\textwidth]{bilder/google-maps-hybrid}}
-  \caption{Google Maps Kartenmaterial für Mundaka, Spanien}
+  \caption{\textit{Google Maps} Kartenmaterial für Mundaka, Spanien}
   \label{google-maps}
 \end{figure}
 
@@ -98,16 +98,18 @@ Wellenverhältnisse in den nächsten Tagen zu informieren. Dabei ist
 hauptsächlich die Wellenhöhe, die Wellenperiode sowie die Stärke und
 die Richtung des Windes von Interesse. Die Spotbeschreibungen sollen
 deshalb mit aktuellen Wetter- und Wellenvorhersagen verknüpft werden,
-um den Benutzern der Web Applikation einen Ausblick auf die
+um den Benutzern der Web-Applikation einen Ausblick auf die
 Surfbedingungen in den nächsten Tagen bieten zu können. Die
 \textit{National Oceanic and Atmospheric Administration (NOAA)} ist
 die Wetter- und Ozeanografiebehörde der Vereinigten Staaten. Sie
 besteht aus 5 größeren Organisationen, zu denen unter anderen auch der
-\textit{National Weather Service} und der \textit{National Ocean
-  Service} gehören, welche die benötigten Wetter- und Wellendaten zur
-Verfügung stellen. Viele der im Internet verfügbaren Dienste, die
-Wetter- oder Wellenvorhersagen anbieten, beziehen ihre Daten ebenfalls
-von diesen Organisationen. Diese Vorhersagen sind zwar insbesondere an
+\textit{National Weather Service (NWS)} \nomenclature{NWS}{National
+  Weather Service} und der \textit{National Ocean Service (NOS)}
+\nomenclature{NOS}{National Ocean Service} gehören, welche die
+benötigten Wetter- und Wellendaten zur Verfügung stellen. Viele der im
+Internet verfügbaren Dienste, die Wetter- oder Wellenvorhersagen
+anbieten, beziehen ihre Daten ebenfalls von diesen
+Organisationen. Diese Vorhersagen sind zwar insbesondere an
 Küstengegenden nicht sehr genau, tragen aber einen wichtigen Teil dazu
 bei, die Surfbedingungen in einer bestimmten Region oder an einem Spot
 grob einzuschätzen zu können.
@@ -124,7 +126,7 @@ diese mit Bildern und Videos verknüpft werden. Diese in der Surf
 Community gerne gesehenen Bilder und Videos sind ideal um das bisher
 aus Beschreibungen, Wetter- und Wellenvorhersagen bestehende
 Informationsangebot aufzuwerten. Zum einen sollen externe Bilder und
-Videos durch die Nutzung von Web Services in die Applikation
+Videos durch die Nutzung von \textit{Web Services} in die Applikation
 integriert werden, und zum anderen den Nutzern die Möglichkeit gegeben
 werden, ihre eigenen Bilder und Videos auf der Plattform zu
 publizieren.
@@ -135,7 +137,7 @@ vielen bekannten Spots Bilder und Videos zu finden. Eine Suchanfrage
 nach einem bekannten Spot mit den Stichwörtern \textit{Mavericks} und
 \textit{Surf} ergab im Juni 2009 bei \textit{Flickr} 2319 und bei
 \textit{YouTube} 548 Ergebnisse. Die Integration diese externen
-Informationen ist insbesondere im Anfangsstadium der Web Applikation
+Informationen ist insbesondere im Anfangsstadium der Web-Applikation
 nützlich, da in dieser Phase noch wenig Content durch die Nutzer
 generiert wurde. Durch Einbindung externer Bilder und Videos kann
 somit die Qualität des gesamten Content verbessert werden. Sowohl
@@ -147,12 +149,12 @@ Videos in eigene Anwendungen zu integrieren.
  \includegraphics[width=\textwidth]{bilder/photos-flickr}
  \caption{Integration von Bildern durch den \textit{Flickr}
       Webservice}
- \label{piktogramm}
+ \label{photos-flickr}
 \end{figure}
 
 \subsubsection{Publikation eigener Bilder und Videos}
 Zudem soll den Nutzern die Möglichkeit gegeben werden, ihre eigenen
-Bilder und Videos auf die Community Plattform zu laden und diese dort
+Bilder und Videos auf die Community-Plattform zu laden und diese dort
 zu veröffentlichen. Im Moment wird genau diese Funktionalität mit
 großem Erfolg zwar auch von \textit{Flickr} und \textit{YouTube}
 angeboten, aber mit Blick auf zukünftige Erweiterungen ist es
@@ -174,11 +176,11 @@ Komplexität beim Deployment der Plattform reduziert werden.
  \label{youtube}
 \end{figure}
 
-\section{Community Funktionen}
-Community Plattformen wie \textit{Facebook}, \textit{MySpace} und
+\section{Community-Funktionen}
+Community-Plattformen wie \textit{Facebook}, \textit{MySpace} und
 \textit{StudiVZ} erfreuen sich in den letzten Jahren einer sehr großen
 Beliebtheit. Einige der dort bewährten Funktionalitäten sind auch in
-der hier entwickelten Web Applikation sinnvoll und könnten einen
+der hier entwickelten Web-Applikation sinnvoll und könnten einen
 Beitrag dazu leisten, den Nutzern einen Mehrwert zu bieten und sie
 enger an die Plattform zu binden. Beispielsweise sollen die gemeinsam
 erstellten Spotbeschreibungen, die eine objektive Sicht auf einen Spot
@@ -195,13 +197,13 @@ Profilseiten der registrierten Surfer zu stöbern. Um die Privatsphäre
 der Nutzer zu respektieren, müssen einige diese Funktionen von den
 Anwendern freigeschalten bzw. gesperrt werden können. Einige dieser
 Konzepte werden zwar von vielen als ''Spielerei'' angesehen, für
-andere sind dies aber einige der Gründe, eine Community Plattform zu
+andere sind dies aber einige der Gründe, eine Community-Plattform zu
 nutzen und tragen wohl auch einen großen Teil zum Erfolg vieler
-bereits etablierter Community Plattformen bei.
+bereits etablierter Community-Plattformen bei.
 
 \section{Nachhaltiges Publizieren}
 Ein relativ unschönes, aber teilweise auch verständliches Phänomen in
-der Surf Szene ist der sogenannte Lokalismus oder \textit{Localism} im
+der Surfszene ist der sogenannte Lokalismus oder \textit{Localism} im
 Englischen. Entgegen dem allgemeinen Klischee, dass Surfer friedliche
 und entspannte Menschen sind, wird dieser Eindruck an einigen Spots
 durch unsportliches Verhalten einiger weniger getrübt. Beim Surfen
@@ -227,13 +229,13 @@ reagieren auf diese mit aggressivem Verhalten. Wie in Abbildung
 \ref{locals-only} zu sehen ist, wird fremden Surfern deshalb oft durch
 Grafittis oder ähnliche Markierungen nahe gelegt, dass sie an einem
 Spot nichts zu suchen haben. Dies gelingt teilweise auch, da es
-zuweilen vorkommt, dass man einen Spots zwar nicht ängstlich, aber
-zumindest mit einem unguten Gefühl besucht. Grundsätzlich gilt
-deshalb, je weniger Surfer an einem Spot sind, desto entspannter ist
-die Atmosphäre und desto eher kommt jeder auf seine
-Kosten. Abgelegenere oder nur schwer zugängliche Spots werden deshalb
-von \textit{Locals} oft als geheim gehandelt, gegenüber Fremden nicht
-erwähnt oder diese beim Suchen nach Spots in die Irre geführt.
+zuweilen vorkommt, dass man einen Spot mit einem unguten Gefühl
+besucht. Grundsätzlich gilt deshalb, je weniger Surfer an einem Spot
+sind, desto entspannter ist die Atmosphäre und desto eher kommt jeder
+auf seine Kosten. Abgelegenere oder nur schwer zugängliche Spots
+werden deshalb von \textit{Locals} oft als geheim gehandelt, gegenüber
+Fremden nicht erwähnt oder diese beim Suchen nach Spots in die Irre
+geführt.
 
 Um die vor Ort ansässigen Surfer zu respektieren und nicht sofort
 jeden neuen Spot in die Welt hinaus zu posaunen, wurde hier deshalb

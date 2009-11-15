@@ -1,5 +1,5 @@
 
-\chapter{Aufbau und Analyse der ETL Prozesse}
+\chapter{Aufbau und Analyse der ETL-Prozesse}
 
 \section{Überblick über die verwendeten Datenquellen}
 Eine der Anforderungen an die Web-Applikation ist den Nutzern aktuelle
@@ -16,7 +16,7 @@ kommen und welche Rolle dabei numerische Wettermodelle spielen.
 Wettervorhersagen haben das Ziel, den Zustand der Erdatmosphäre zu
 einer bestimmten Zeit an einem bestimmten Ort zu prognostizieren. Sie
 werden meist von staatlichen aber auch privaten Wetterdiensten
-erstellt, die sich an den Erkenntnissen der Meteorologie
+erstellt, die sich den Erkenntnissen der Meteorologie
 bedienen. Heutige Wettervorhersagen basieren auf den aufwändig
 berechneten Ergebnissen numerischer Wettermodelle.
 
@@ -60,12 +60,16 @@ voneinander abweichen können.
 
 Der Deutsche Wetterdienst betreibt drei verschiedene
 Wettermodelle. Die lokalen \textit{COSMO-DE} und \textit{COSMO-EU}
-Modelle liefern Vorhersagen für Deutschland und Europa, das globale
-Modell \textit{GME} Vorhersagen für die ganze Welt. Weitere bekannte
-Modelle sind das von der US-amerikanischen \textit{National Oceanic
-  and Atmospheric Administration (NOAA)} betriebene \textit{Global
-  Forecast System (GFS)} \nomenclature{GFS}{Global Forecast System}
-und das neuere \textit{Weather Research and Forecasting (WRF)}
+Modelle \footnote{COSMO - Consortium for Small-Scale Modelling}
+\nomenclature{COSMO}{Consortium for Small-Scale Modelling} liefern
+Vorhersagen für Deutschland und Europa, das globale Modell
+\textit{GME} \footnote{Global Model} \nomenclature{GME}{Globales
+  Modell des Deutsche Wetterdienst} Vorhersagen für die ganze
+Welt. Weitere bekannte Modelle sind das von der US-amerikanischen
+\textit{National Oceanic and Atmospheric Administration (NOAA)}
+betriebene \textit{Global Forecast System (GFS)}
+\nomenclature{GFS}{Global Forecast System} und das neuere
+\textit{Weather Research and Forecasting (WRF)}
 \nomenclature{WRF}{Weather Research and Forecasting} Modell, das vom
 \textit{National Weather Service (NWS)} \nomenclature{NWS}{National
   Weather Service}, vom amerikanischen Militär und einigen privaten
@@ -77,20 +81,22 @@ Um die sich verändernde Atmosphäre der Erde auf ein Modell abbilden zu
 können wird eine Diskretisierung von Raum und Zeit vorgenommen. Dabei
 wird die Oberfläche der Erde mit einem aus Drei- oder Vierecken
 bestehenden Gitternetz überzogen, und die Atmosphäre vertikal in
-mehrere Luftschichten aufgeteilt. Damit wird die unendliche Zahl der
-möglichen Vorhersagepunkte in der Atmosphäre auf die endliche Zahl der
-so entstandenen Kreuzungspunkte reduziert. In Abbildung
-\ref{gitternetz} ist das dreieckige Gitternetz des zur Zeit vom
-Deutschen Wetterdienst und des Max-Planck-Instituts für Meteorologie
-neu entwickelten \textit{ICON} \nomenclature{ICON}{Icosahedral
-  Non-hydrostatic General Circulation Model} Wettermodells zu
-sehen. Das \textit{Global Forecast System} und das \textit{Wave Watch
-  III} Modell verwendet ein aus Vierecken bestehendes Gitternetz.
+mehrere Luftschichten aufgeteilt. Damit werden die möglichen
+Vorhersagepunkte in der Atmosphäre auf die endliche Zahl der so
+entstandenen Kreuzungspunkte reduziert. In Abbildung \ref{gitternetz}
+ist das dreieckige Gitternetz des zur Zeit vom Deutschen Wetterdienst
+und des Max-Planck-Instituts für Meteorologie neu entwickelten
+\textit{ICON} \footnote{Icosahedral Non-hydrostatic General
+  Circulation Model} \nomenclature{ICON}{Icosahedral Non-hydrostatic
+  General Circulation Model} Wettermodells zu sehen. Das
+\textit{Global Forecast System} und das \textit{Wave Watch III} Modell
+verwendet ein aus Vierecken bestehendes Gitternetz.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[height=200px]{bilder/gitternetz}
-    \caption{Dreiecksgitter des ICON Wettermodells}
+    \caption{Dreiecksgitter des \textit{ICON} Wettermodells (Quelle:
+      Deutscher Wetterdienst)}
     \label{gitternetz}
   \end{center}
 \end{figure}
@@ -103,7 +109,7 @@ was sich wiederum auf die Genauigkeit der Wettervorhersage
 auswirkt. Die benötigten Ressourcen zur Berechnung der
 Modellgleichungen steigt mit der Anzahl der verwendeten Gitterpunkte.
 
-Da eine sehr hohe Auflösungen selbst die Leistungsfähigkeit der
+Da eine sehr hohe Auflösung selbst die Leistungsfähigkeit der
 schnellsten Supercomputer übersteigt, werden von den Wetterdiensten
 meist verschiedene Modelle in unterschiedlichen Auflösungen
 berechnet. Globale Modelle, die den gesamten Globus umfassen, werden
@@ -147,7 +153,7 @@ Spitzenleistung von 3,1 Teraflop/s berechnet.
   Berechnung einer 24-stündigen Vorhersage dauert 25 Minuten.
 \item Das globale, die gesamte Welt umfassende \textit{GME} Modell hat
   eine Maschenweite von 40 Kilometern mit ca. 15 Millionen
-  Gitterpunkten. Die Berechnung der 24 Stunden Vorhersage mit einem
+  Gitterpunkten. Die Berechnung der 24-stündigen Vorhersage mit einem
   Zeitintervall von 133 Sekunden benötigt 15 Minuten.
 \end{itemize}
 
@@ -181,7 +187,7 @@ sehen.
 
 \begin{figure}[h]
   \includegraphics[width=310px]{bilder/koordinaten}
-  \caption{Die in Breiten- und Längenkreise unterteilte Erdkugel}
+  \caption{Die in Breiten- und Längenkreise unterteilte Erdkugel (Quelle: Wikipedia)}
   \label{koordinaten}
 \end{figure}
 
@@ -219,7 +225,6 @@ Formeln zur Berechnung von Problemen aus dem geographischen Bereich
 sind unter \cite{aviation} und \cite{movable_type_scripts} zu finden.
 
 \subsection{Global Forecast System}
-
 Das \textit{Global Forecast System} ist ein globales numerisches
 Wettermodell, das vom \textit{National Weather Service} betrieben wird
 und den gesamten Erdball abdeckt. Da die Ergebnisse der
@@ -244,12 +249,11 @@ ungenau sind, verwenden die hier entwickelten \textit{ETL} Prozesse
 nur die ersten 180 Stunden in der höchsten Auflösung.
 
 \subsection{Wave Watch III}
-
 Um für mehr Sicherheit auf hoher See und an Küstenregionen zu sorgen,
 betreibt der \textit{National Weather Service} das \textit{Wave Watch
   III} Wettermodell, um Wellen vorherzusagen. Es liefert
 ausschließlich Informationen über diejenigen Wellen, die durch den
-direkten Einfluss von Winden entstehen. Wellen die durch andere
+direkten Einfluss von Winden entstehen. Wellen, die durch andere
 Ereignisse wie z.B. Gewitter, Gezeiten oder Tsunamis verursacht
 werden, sind in diesem Modell nicht berücksichtigt. Da sich Wellen
 viel zu sehr voneinander unterscheiden, werden nicht Vorhersagen für
@@ -305,7 +309,7 @@ eigentlichen Daten Informationen über die Dimension und Auflösung des
 verwendeten Gitternetzes, die Herkunft der Daten, die Art des
 verwendeten Komprimierungsverfahrens und die physikalische Einheit, in
 der die Daten gespeichert sind. \textit{Grib}-Nachrichten können
-beliebig oft aneinander gereit werden, was eine individuelle
+beliebig oft aneinander gereiht werden, was eine individuelle
 Komposition von unterschiedlichen Nachrichten in einer Datei
 erlaubt. Dies wird in Abschnitt \ref{subsec:download} ausgenutzt, um
 nur ausgewählte Nachrichten aus einer größeren \textit{Grib}-Datei zu
@@ -409,9 +413,9 @@ Vorhersage (fcst), sondern um eine Analyse (anl) für die hier kein
 durchschnittlicher Wert (NAve=0) berechnet ist. Mit Analyse wird hier
 der Ausgangszustand der Atmosphäre zum Zeitpunkt der Modellberechnung
 bezeichnet und mit Vorhersage der simulierte Zustand in der
-Zukunft. Diese Inhaltsverzeichnisse werden in den \textit{ETL}
-Prozessen verwendet, um nur die benötigten Nachrichten einer
-\textit{Grib}-Datei zu extrahieren.
+Zukunft. Diese Inhaltsverzeichnisse werden in den
+\textit{ETL}-Prozessen verwendet, um nur die benötigten Nachrichten
+einer \textit{Grib}-Datei zu extrahieren.
 
 \section{Extraktion aus dem Quellsystem}
 Die Aufgabe der hier entwickelten Extraktionsprozesse besteht darin,
@@ -429,21 +433,21 @@ die Performanz des Extraktionsprozesses getroffen.
 \subsection{Analyse der Quellsystems}
 Sowohl das \textit{Global Forecast System} als auch das \textit{Wave
   Watch III} Modell werden viermal täglich, jeweils um , 6.00, 12.00,
-18.00 und 24.00 Uhr koordinierter Weltzeit berechnet. Danach werden
-die Ergebnisse in \textit{Grib}-Dateien auf mehreren, teilweise von
-Unterorganisationen der \textit{NOAA} betriebenen Servern
+18.00 und 24.00 Uhr koordinierter Weltzeit (UTC) berechnet. Danach
+werden die Ergebnisse in \textit{Grib}-Dateien auf mehreren, teilweise
+von Unterorganisationen der \textit{NOAA} betriebenen Servern
 veröffentlicht, die verschiedensten Anforderungen gerecht werden. Auf
-einigen Server sind nur die aktuellen Ergebnisse verfügbar, andere
-wiederum dienen zur Archivierung und bieten eine Historie über mehrere
+einigen Servern sind nur die aktuellen Ergebnisse verfügbar, andere
+wiederum dienen der Archivierung und bieten eine Historie über mehrere
 Jahre hinweg.
 
 Die Ergebnisse der Modellberechnung werden in einem, meist nach Datum
-und Uhrzeit strukturierten Dateisystem hinterlegt, das per
+und Uhrzeit strukturiertem Dateisystem hinterlegt, das per
 \textit{FTP} oder \textit{HTTP} exportiert wird. Die Struktur und
 Benennung der Verzeichnisse und Dateien variiert dabei zwischen den
 Servern, ist aber innerhalb eines Servers konsistent und folgt einem
 vorhersehbaren Muster. Die \textit{URI}s der benötigten Daten können
-so für einem bestimmten Server im voraus konstruiert werden und die
+so für einen bestimmten Server im voraus konstruiert werden und die
 Existenz der \textit{Grib}-Daten mit einem der unterstützten
 Protokolle überprüft werden. Dieses Verfahren ist ein Beispiel zur
 Identifizierung von Ressourcen durch vorhersehbare \textit{URI}s und
@@ -453,7 +457,7 @@ beschriebenen Vorschläge aus der \textit{Ressource Oriented
 
 \subsubsection{Datenorganisation des Global Forecast System}
 Aktuelle Daten des \textit{Global Forecast System} können in
-verschiedener Auflösung von den Servern des \textit{National Oceanic
+verschiedenen Auflösungen von den Servern des \textit{National Oceanic
   and Atmospheric Administration Operational Model Archive and
   Distribution System (NOMADS)} \nomenclature{NOMADS}{NOAA Operational
   Model Archive and Distribution System}
@@ -490,11 +494,11 @@ Zukunft enthält.
 
 \end{table*}
 
-Die in dieser Arbeit entwickelten \textit{ETL} Prozesse arbeiten alle
+Die in dieser Arbeit entwickelten \textit{ETL}-Prozesse arbeiten alle
 mit den \textit{Grib}-Dateien der höchsten Auflösung (0.5$^{\circ}$ x
 0.5$^{\circ}$). Unter der \textit{URI}
 \url{http://nomad5.ncep.noaa.gov/pub/gfs_master/} sind Verzeichnisse
-zu finden, die nach dem Muster \texttt{gfs\textbf{YYYYMMDD}} benannt
+zu finden, die nach dem Muster \texttt{gfs\textbf{\textit{YYYYMMDD}}} benannt
 sind. Dabei steht \texttt{YYYY} für das Jahr, \texttt{MM} für den
 Monat und \texttt{DD} für den Tag, an dem ein Modell berechnet
 wurde. Beispielsweise waren die \textit{Grib}-Dateien aller
@@ -558,7 +562,7 @@ Vorhersagedaten für 180 Stunden in die Zukunft.
 \subsection{Download einzelner Grib-Nachrichten}
 \label{subsec:download}
 Die beiden Vorhersagemodelle bieten sehr viel mehr Informationen, als
-von der hier entwickelten Anwendungen überhaupt benötigt werden. Vom
+von der hier entwickelten Anwendung überhaupt benötigt werden. Vom
 \textit{Global Forecast System} werden im Moment lediglich 4 der 63
 verschiedenen Vorhersagelemente und vom \textit{Wave Watch III} Modell
 7 von 11 Elementen verwendet. Um nicht unnötig Bandbreite zu
@@ -632,8 +636,8 @@ letzte Nachricht nicht bekannt ist, wird dadurch abgedeckt, dass die
 Endposition im \textit{Range} Header einfach weggelassen wird. Dies
 ist trotz der fehlenden Endposition eine gültige \textit{Range} Angabe
 und veranlasst den Server dazu, den Rest der Datei ab der gegebenen
-Startposition zu senden. Zum Download der einzelnen \textit{Grib}
-Nachrichten wird das Programm \textit{curl}
+Startposition zu senden. Zum Download der einzelnen
+\textit{Grib-}Nachrichten wird das Programm \textit{curl}
 \footnote{\url{http://curl.haxx.se}} verwendet, da es das
 \textit{HTTP/1.1} Protokoll unterstützt und man beliebige Felder im
 \textit{HTTP} Header angeben kann.
@@ -722,21 +726,22 @@ können die eigentlichen Daten des Elements mit
 heruntergeladen werden. Die einzelnen \textit{Grib}-Nachrichten aus
 den Dateien werden dann pro Element in einer Datei
 zusammengefasst. Dies kann Dank des selbstbeschreibenden Formats der
-einzelnen \textit{Grib}-Nachrichten mit Standard Unix Kommandos
+einzelnen \textit{Grib}-Nachrichten mit Standard-Unix-Kommandos
 bewerkstelligt werden, beispielsweise mit \textit{cat TMP.00h.grib
   TMP.03h.grib ... TMP.180h.grib > TMP.0h-180h.grib}. Bis auf das
 Anfordern der Inhaltsverzeichnisse muss dieser Vorgang für alle
 gewünschten Elemente wiederholt werden. Insgesamt sind $ 61 * (N+1) $
 Anfragen nötig, 61 für die Inhaltsverzeichnisse und pro Element
-weitere \textit{61} Anfragen für die einzelnen Grib-Nachrichten. Der
-Extraktionsprozess für das \textit{Global Forecast System} sendet
-somit für die zurzeit 4 verwendeten Elemente $ 61 * (4+1) = 305$
-Anfragen. Tabelle \ref{tab:download_messung_gfs} zeigt im linken Teil
-die Größe einer einzelnen Nachrichten und die Zeit, die benötigt wird,
-um diese herunterzuladen. Im rechten Teil ist die Zusammenfassung
-dieser Werte für das jeweilige Element zu sehen. Der
-Extraktionsprozess für das \textit{Global Forecast System} überträgt
-insgesamt 68.04 MB und benötigt durchschnittlich ca. 14 Minuten.
+weitere \textit{61} Anfragen für die einzelnen
+\textit{Grib}-Nachrichten. Der Extraktionsprozess für das
+\textit{Global Forecast System} sendet somit für die zurzeit 4
+verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen. Tabelle
+\ref{tab:download_messung_gfs} zeigt im linken Teil die Größe einer
+einzelnen Nachrichten und die Zeit, die benötigt wird, um diese
+herunterzuladen. Im rechten Teil ist die Zusammenfassung dieser Werte
+für das jeweilige Element zu sehen. Der Extraktionsprozess für das
+\textit{Global Forecast System} überträgt insgesamt 68.04 MB und
+benötigt durchschnittlich ca. 14 Minuten.
 
 \begin{table*}[h]
   \centering
@@ -792,7 +797,7 @@ der beiden Modelle.
       \bottomrule
     \end{longtable}
   }
-  \caption{Verzeichnisstruktur der Grib Daten im lokalen Repository}
+  \caption{Verzeichnisstruktur der \textit{Grib}-Daten im lokalen Repository}
   \label{tab:repository}
 \end{table*}
 
@@ -809,12 +814,12 @@ nicht integrierte Daten zur Verfügung stehen.
 \subsubsection{Beurteilung der Extraktionsprozesse}
 Trotz der eher mäßigen Übertragungsgeschwindigkeit kann die Performanz
 der beiden Extraktionsprozesse als unproblematisch eingestuft
-werden. Kritisch wird es, wenn die von den gesamten \textit{ETL}
-Prozessen beanspruchte Zeit sich dem 4-stündigen Intervall der
-Modellberechnung nähert. Die Downloadzeit von 18 Minuten ist für die
-zu übertragende Datenmenge zwar sehr schlecht, aber nicht weiter
-problematisch. Der Download der \textit{Grib}-Daten beansprucht im
-Vergleich zu den anschließenden Transformations- und Ladeprozessen
+werden. Kritisch wird es, wenn die von den gesamten
+\textit{ETL}-Prozessen beanspruchte Zeit sich dem 4-stündigen
+Intervall der Modellberechnung nähert. Die Downloadzeit von 18 Minuten
+ist für die zu übertragende Datenmenge zwar sehr schlecht, aber nicht
+weiter problematisch. Der Download der \textit{Grib}-Daten beansprucht
+im Vergleich zu den anschließenden Transformations- und Ladeprozessen
 sehr wenig Ressourcen und wirkt sich nur negativ auf die Aktualität
 der Vorhersagen aus. Da gravierende Veränderungen in den Vorhersagen
 zwischen zwei Modellberechnungen eher selten sind und die Vorhersagen
@@ -825,21 +830,21 @@ Verbindung reguliert wird, könnte versucht werden mehrere Anfragen
 gleichzeitig zu stellen, um die Daten parallel herunterzuladen und
 somit die Performanz zu verbessern. Wohin dies führt ist allerdings
 fraglich, da man davon ausgehen kann, dass die Anzahl der Verbindungen
-von einer IP Adresse ebenfalls beschränkt wird, falls schon die
+von einer IP-Adresse ebenfalls beschränkt wird, falls schon die
 Übertragungsgeschwindigkeit gedrosselt wurde. Um die \textit{NOMADS}
 Server nicht unnötig zu überlasten und sich fair gegenüber anderen zu
 verhalten wurden Tricks dieser Art nicht weiter verfolgt.
 
 \section{Transformation der Daten}
-Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde und
-die Daten beider Modelle im lokalen \textit{Repository} vorliegen,
-startet die Transformationsphase. In dieser Phase wird die bisher noch
-den gesamten Globus umfassende Datenmenge auf die in der Datenbank
+Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde und die
+Daten beider Modelle im lokalen \textit{Repository} vorliegen, startet
+die Transformationsphase. In dieser Phase wird die bisher noch den
+gesamten Globus umfassende Datenmenge auf die in der Datenbank
 enthaltenen \textit{Spots} reduziert. Alle relevanten Datensätze
-werden dabei in einer \textit{CSV} \nomenclature{CSV}{Comma-Separated
-  Values} Datei gespeichert, die im nächsten Schritt mit dem
-\textit{Bulk Loader} des Datenbank Management Systems in die Datenbank
-importiert wird.
+werden dabei in einer \textit{CSV}-Datei
+\nomenclature{CSV}{Comma-Separated Values} gespeichert, die im
+nächsten Schritt mit dem \textit{Bulk Loader} des
+Datenbankmanagementsystems in die Datenbank importiert wird.
 
 \subsection{Auslesen der Vorhersagedaten}
 \label{auslesen-der-vorhersagedaten}
@@ -888,7 +893,7 @@ geographische Positionen enthalten, die sich auch über dem Meer
 befinden. Für alle anderen Positionen stehen keine Daten zur
 Verfügung. Wegen der groben Gitterauflösung des \textit{Wave Watch
   III} Modells verläuft die Grenze zwischen Land und Meer jedoch nicht
-wirklichkeitsgetreu, sondern in einer Zick-Zack Linie, die sich am
+wirklichkeitsgetreu, sondern in einer Zick-Zack-Linie, die sich am
 rechteckigen Gitternetz des Modells orientiert. In Abbildung
 \ref{positions-bestimmung} ist die Küstenregion um den spanischen Ort
 Mundaka mit dem darüber liegenden Gitternetz zu sehen. Die Abbildung
@@ -1018,10 +1023,10 @@ verwendet, wobei der Erdradius mit $R = 6371 km$ festgelegt ist.
 
 Bei der Überprüfung einer Position auf gültige Werte wird das Programm
 \textit{degrib} mit den entsprechenden Parametern aufgerufen, dessen
-Ausgabe geparst und anschließend auf Gültigkeit hin überprüft. Eine
-alternative Vorhersageposition wurde genau dann gefunden, wenn der
-Wert in der Ausgabe von \textit{degrib} gültig (nicht 9999.0) ist. Die
-Anzahl der Aufrufe des Programms \textit{degrib} ist mit den bei der
+Ausgabe geparst und auf Gültigkeit hin überprüft. Eine alternative
+Vorhersageposition wurde genau dann gefunden, wenn der Wert in der
+Ausgabe von \textit{degrib} gültig (nicht 9999.0) ist. Die Anzahl der
+Aufrufe des Programms \textit{degrib} ist mit den bei der
 Initialisierung festgelegten Parametern durch die Obergrenze $1 +
 (360^{\circ} / \alpha) * (\Delta / \delta)$ beschränkt. Da die Wahl
 der Parameter die Laufzeit und die Genauigkeit des Algorithmus
@@ -1092,13 +1097,13 @@ folgendermaßen:
   gefunden, kann die Ursprungsposition als Vorhersageposition
   verwendet werden und der Algorithmus ist fertig.
 
-\item In den nächsten beiden Schritten wird die alternative
-  Vorhersageposition durch Anwendung des \textit{Divide and Conquer}
-  Prinzips gesucht. Hierzu wird eine untere Schranke mit $l = 0$ und
-  eine obere Schranke mit $u = \Delta$ festgelegt. Der Abstand der
-  unteren und oberen Schranke wird in den folgenden Iterationen
-  halbiert, bis dieser kleiner ist als der zuvor angegebene
-  Schwellenwert $d$. 
+\item Falls nicht, wird in den nächsten beiden Schritten die
+  alternative Vorhersageposition durch Anwendung des \textit{Divide
+    and Conquer} Prinzips gesucht. Hierzu wird eine untere Schranke
+  mit $l = 0$ und eine obere Schranke mit $u = \Delta$ festgelegt. Der
+  Abstand der unteren und oberen Schranke wird in den folgenden
+  Iterationen halbiert, bis dieser kleiner ist als der zuvor
+  angegebene Schwellenwert $d$.
 
 \item Mit dem Programm \textit{degrib} werden bestimmte Positionen auf
   gültige Vorhersagewerte hin überprüft, die auf dem Umkreis liegen,
@@ -1132,8 +1137,8 @@ folgendermaßen:
   Vorhersageposition},label=locate]{listings/locate.txt}
 
 In Auflistung \ref{locate} ist die Ausgabe des Algorithmus für den
-Spot \textit{Esposende} in Portugal zu sehen. Der Algorithmus wurde
-mit einer maximalen Distanz $\Delta$ von 100 Kilometern, einer
+Spot Esposende in Portugal zu sehen. Der Algorithmus wurde mit einer
+maximalen Distanz $\Delta$ von 100 Kilometern, einer
 Richtungsschrittweite $\alpha$ von $10^{\circ}$ und einem
 Schwellenwert $d$ von einem Meter initialisiert. Da an der
 Ursprungsposition keine gültigen Vorhersagewerte gefunden wurden,
@@ -1144,7 +1149,7 @@ Positionen, die mehr als 50 Kilometer von der Ursprungsposition
 entfernt sind, nicht weiter untersucht werden. In den folgenden
 Iterationen werden weitere Positionen untersucht und die untere oder
 obere Schranke entsprechend angepasst. Nachdem der Schwellenwert
-unterschritten wurde terminiert der Algorithmus nach ca. 8 Sekunden
+unterschritten wurde, terminiert der Algorithmus nach ca. 8 Sekunden
 mit einer alternativen Vorhersageposition, die 3,6 Kilometern weiter
 südlich liegt.
 
@@ -1152,7 +1157,7 @@ südlich liegt.
 Nachdem die alternativen Vorhersagepositionen für das \textit{Wave
   Watch III} Modell ermittelt wurden, können die Vorhersagedaten der
 Spots mit dem Programm \textit{degrib} ausgelesen und in das
-\textit{CSV} Format umgewandelt werden. Die Vorhersagedaten des
+\textit{CSV}-Format umgewandelt werden. Die Vorhersagedaten des
 \textit{Wave Watch III} Modells werden dabei an der alternativen
 Vorhersageposition, die Daten des \textit{Global Forecast System} an
 der Ursprungsposition eines Spots ausgelesen. Hierzu wird das Programm
@@ -1163,9 +1168,9 @@ geographische Position, an der die Daten gelesen werden.
 
 Die Ausgabe dieser Programmaufrufe entspricht der aus Auflistung
 \ref{degrib} bekannten Struktur. Bis auf einige Feinheiten ist diese
-Ausgabe schon fast in dem gewünschten \textit{CSV} Format. Damit die
+Ausgabe schon fast in dem gewünschten \textit{CSV}-Format. Damit die
 in der Ausgabe enthaltenen Zeitangaben vom \textit{Bulk} Loader des
-Datenbank Management Systems interpretiert werden können, müssen diese
+Datenbankmanagementsystems interpretiert werden können, müssen diese
 noch in ein durch \textit{ISO 8601} standardisiertes Datums- und
 Zeitformat konvertiert werden. Zudem wird pro Datensatz noch der
 Primärschlüssel des entsprechenden Spots hinzugefügt, damit die
@@ -1173,13 +1178,13 @@ Vorhersagedaten im späteren Ladevorgang eindeutig mit einem Spot in
 Verbindung gebracht werden können. Das Ergebnis dieser Transformation
 ist in Auflistung \ref{degrib-csv} zu sehen.
 
-\lstinputlisting[caption={Vorhersagedaten aus Mundaka im CSV Format},label=degrib-csv]{listings/degrib-csv.txt}
+\lstinputlisting[caption={Vorhersagedaten aus Mundaka im CSV-Format},label=degrib-csv]{listings/degrib-csv.txt}
 
 Der hier beschriebene Vorgang wird für alle Spots ausgeführt und die
 Ausgabe der Transformation durch Anhängen in eine Datei
-umgeleitet. Die so entstandene \textit{CSV} Datei enthält schließlich
+umgeleitet. Die so entstandene \textit{CSV}-Datei enthält schließlich
 alle relevanten Vorhersagedaten in einem Format, das im nächsten
-Schritt vom Bulk Loader des Datenbank Management System geladen werden
+Schritt vom Bulk Loader des Datenbankmanagementsystem geladen werden
 kann. Die \textit{Grib}-Dateien werden nach diesem Schritt nicht
 weiter benötigt und können gelöscht werden.
 \begin{table*}[h]
@@ -1214,7 +1219,7 @@ kann an dieser Stelle nur geschätzt werden. Auf einer ähnlichen
 Webseite \footnote{\url{http://www.wannasurf.com}} waren Mitte Oktober
 2009 ungefähr 8.300 Spots weltweit gelistet. Das Auslesen der
 Vorhersagedaten für 11 Elemente und deren Transformation in eine
-\textit{CSV} Datei würde für diese 8.300 Spots somit ca. 26 Minuten
+\textit{CSV}-Datei würde für diese 8.300 Spots somit ca. 26 Minuten
 dauern.
 
 \subsection{Verbesserung des Transformationsvorgangs}
@@ -1241,7 +1246,7 @@ Position nun besser zur Extraktion der Vorhersagedaten geeignet ist
 bzw. welche Vorhersagewerte am ehesten dem Spot entsprechen, müsste im
 Detail noch untersucht werden. Die bisher erzielten Ergebnisse machen
 jedoch einen realistischen Eindruck und liefern nachvollziehbare
-Resultate, die als zufriedenstellend bewertet werden.
+Resultate, die als zufriedenstellend bewertet werden können.
 
 Die Geschwindigkeit bei der Extraktion der Vorhersagedaten mit dem
 Programm \textit{degrib} kann nicht bemängelt werden. Nachdem ein
@@ -1279,7 +1284,7 @@ Das Datenbankschema der Web-Applikation orientiert sich an den von
 Großteil auch bewährt haben. Beim Entwurf des Schemas wurden die
 üblichen Methoden zur Normalisierung von Relationen angewendet,
 Primär- und Fremdschlüssel definiert und Indizes zum schnelleren
-Auffinden von Datensätzen erstellt. Da für die \textit{ETL} Prozesse
+Auffinden von Datensätzen erstellt. Da für die \textit{ETL}-Prozesse
 nur zwei Tabellen von Interesse sind, wird hier auf die komplette
 Darstellung des Datenbankschemas verzichtet und nur auf die für den
 Ladevorgang relevanten Relationen eingegangen.
@@ -1361,7 +1366,7 @@ Vorhersageelemente der beiden Modelle und nehmen die mit
     \end{longtable}
   }
 
-  \caption{Schema der \textit{forecasts} Datenbanktabelle}
+  \caption{Schema der Datenbanktabelle \textit{forecasts}}
   \label{tab:forecasts}
 
 \end{table*}
@@ -1373,7 +1378,7 @@ zu bringen, ist die \textit{tupelorientierte} Aktualisierung mit
 die Zielrelation eingefügt bzw. dort aktualisiert wird, ein
 \textit{SQL} Befehl ausgeführt wird.
 
-Hierzu müsste man zunächst die Zeilen der \textit{CSV} Datei zu
+Hierzu müsste man zunächst die Zeilen der \textit{CSV}-Datei zu
 Datensätzen transformieren, die der Struktur der \textit{forecasts}
 Relation entsprechen. Anschließend könnte man die zu aktualisierenden
 Datensätze mit einem \textit{UPDATE} Befehl ändern und die neu
@@ -1384,7 +1389,7 @@ auszuführende \textit{SQL} Befehle, den Zeitpunkt der Analyse mit
 berücksichtigt. Für die verwendeten 73 Spots wären das $61 * 73 =
 4.453$, bei den zuvor erwähnten 8.300 Spots einer ähnlichen Webseite
 $61 * 8.300 = 506.300$ auszuführende \textit{SQL} Befehle. Da sich bei
-einer größeren Datenmenge der vom Datenbank Management System
+einer größeren Datenmenge der vom Datenbankmanagementsystem
 betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
 Performanz des Ladevorgangs auswirkt \cite{postgresql:populate}, wurde
 diese Methode zur Aktualisierung der Vorhersagedaten nicht weiter
@@ -1400,7 +1405,7 @@ Bevor im nächsten Abschnitt ein aus dem Bereich des \textit{Data
   Warehousing} bekanntes Verfahren vorgestellt wird, sollen hier noch
 einige Verbesserungsvorschläge gemacht werden. Um die Laufzeit einer
 tupelorientierten Aktualisierung zu verbessern, sollte die
-Dokumentation des verwendeten Datenbank Management Systems
+Dokumentation des verwendeten Datenbankmanagementsystems
 herangezogen und mögliche Optimierungsvorschläge in Betracht gezogen
 werden. Durch die Verwendung von \textit{Prepared Statements}, dem
 Ausschalten der \textit{Auto-Commit} Einstellung und der Einbettung
@@ -1428,7 +1433,7 @@ sehr viel bessere Ergebnisse zu erzielen.
 
 % \subsubsection{Abschätzung der auszuführenden Befehle}
 % Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
-% Datenbank Management System im \textit{Worst-Case} Szenario $2 * n$ Befehle
+% Datenbankmanagementsystem im \textit{Worst-Case} Szenario $2 * n$ Befehle
 % ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
 % überhaupt keine Vorhersagedaten in der Datenbank enthalten sind. Da
 % die Vorhersagezeitpunkte von zwei aufeinander folgenden
@@ -1444,7 +1449,7 @@ sehr viel bessere Ergebnisse zu erzielen.
 % und den Vorhersagezeitpunkt bearbeitet wurde. Im Durchschnitt liegt
 % die Anzahl der Befehle somit leicht über $n$. Die Anzahl der
 % auszuführenden Befehle ist hier von der Zahl der Datensätze
-% abhängig. Bei einer großen Datenmenge wirkt sich der vom Datenbank Management System
+% abhängig. Bei einer großen Datenmenge wirkt sich der vom Datenbankmanagementsystem
 % betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
 % Performanz des Ladevorgangs aus.
 
@@ -1455,20 +1460,20 @@ darin, dass die abgesetzten \textit{SQL} Befehle tupelorientiert
 arbeiten. Die \textit{SQL} Befehle zur Manipulation von Datensätzen
 können aber auch mengenorientiert eingesetzt werden, so dass pro
 Befehl mehrere Tupel geändert bzw. hinzugefügt werden. Voraussetzung
-hierfür ist, dass das Datenbank Management System auf alle zu
+hierfür ist, dass das Datenbankmanagementsystem auf alle zu
 verarbeitenden Daten zugreifen kann. Dies war bei der vorigen Methode
-nicht der Fall, da das Datenbank Management System bei jeder Operation
+nicht der Fall, da das Datenbankmanagementsystem bei jeder Operation
 nur einen Datensatz der Eingabe zu Gesicht bekam.
 
 In diesem Abschnitt wird beschrieben wie die Vorhersagedaten der
-\textit{CSV} Datei effizient unter die Kontrolle des Datenbank
+\textit{CSV}-Datei effizient unter die Kontrolle des Datenbank
 Management Systems gebracht werden können. Die Daten werden zunächst
 in einen temporären Bereich der Datenbank geladen, der sogenannte
 \textit{Staging Area}. Von dort aus werden sie in einem weiteren
 Schritt in die operative Datenbasis der Web-Applikation überführt. Die
 hier verwendete \textit{Staging Area} besteht aus einer einzigen, in
 Tabelle \ref{tab:grib_messages} zu sehenden, Relation, deren Attribute
-die Spalten der \textit{CSV} Datei widerspiegeln.
+die Spalten der \textit{CSV}-Datei widerspiegeln.
 
 \begin{table*}[h]
   \centering
@@ -1495,7 +1500,7 @@ die Spalten der \textit{CSV} Datei widerspiegeln.
     \end{longtable}
   }
 
-  \caption{Schema der \textit{grib\textunderscore messages} Datenbanktabelle}
+  \caption{Schema der Datenbanktabelle \textit{grib\textunderscore messages}}
   \label{tab:grib_messages}
 
 \end{table*}
@@ -1508,7 +1513,7 @@ hier würde sich die Verwendung eines \textit{Prepared Statement}
 anbieten, da eine hohe Anzahl sich ähnelnder Befehle verarbeitet
 werden müsste. Im Bereich des \textit{Data Warehousing} wird beim
 Laden von Daten allerdings immer auf die sogenannten \textit{Bulk
-  Loader} der verwendeten Datenbank Management Systeme verwiesen. Dies
+  Loader} der verwendeten Datenbankmanagementsysteme verwiesen. Dies
 sind meist datenbankspezifische Befehle oder Programme, mit denen
 größere Datenmengen effizienter als mit den standardisierten
 \textit{SQL} Befehlen geladen werden können. Der \textit{Bulk Loader}
@@ -1519,11 +1524,11 @@ importiert und exportiert werden können. Der Befehl aus Auflistung
 Standard Eingabekanal gelesenen Datensätze in die Tabelle
 \textit{grib\textunderscore messages} zu importieren. Dieser Befehl
 wird mit \textit{PostgreSQL}'s Kommandozeilenprogramm \textit{psql}
-ausgeführt und die Datensätze der \textit{CSV} Datei über den Standard
+ausgeführt und die Datensätze der \textit{CSV}-Datei über den Standard
 Eingabekanal weitergereicht. Nachdem mit dem \textit{COPY} Befehl alle
 Daten geladen wurden, wird ein zusätzlicher \textit{ANALYZE} Befehl
 ausgeführt, der die Statistiken der Tabelle aktualisiert, die vom
-Anfrageoptimierer des Datenbank Management Systems verwendet werden,
+Anfrageoptimierer des Datenbankmanagementsystems verwendet werden,
 um einen guten Ausführungsplan zu finden.
 
 \begin{lstlisting}[captionpos=b, caption=Befehl zum Import von Datensätzen in \textit{PostgreSQL}, label=lst:copy]
@@ -1585,7 +1590,7 @@ sich gegenüber anderer Alternativen anzweifeln lässt. Für diese Art
 von Anfragen werden in \textit{PostgreSQL} üblicherweise die
 sogenannten \textit{crosstab} Funktionen aus dem \textit{tablefunc}
 Modul verwendet. Da bei einem Engpass des Ladevorgangs allerdings eine
-Vorverarbeitung der \textit{CSV} Datei mit \textit{awk} und ähnlichen
+Vorverarbeitung der \textit{CSV}-Datei mit \textit{awk} und ähnlichen
 Programmen als vielversprechender angesehen wird, wurde diese
 Alternativen hier nicht weiter verfolgt, sondern eine inkrementelle
 und zugleich einfachere Strategie gewählt.
@@ -1613,13 +1618,13 @@ repräsentieren die Vorhersageelemente und werden mit dem Wert
 \subsubsection{Beeinflussung des Anfrageoptimierers}
 Die Menge der hinzuzufügenden Datensätze kann durch Verwendung
 verschiedenster \textit{SQL} Konstrukte erzeugt werden. Eine der
-Aufgaben des Datenbank Management Systems besteht darin, einen guten
+Aufgaben des Datenbankmanagementsystems besteht darin, einen guten
 Ausführungsplan für eine Anfrage zu finden. Idealerweise sollten dabei
 zwei äquivalente Befehle in den optimalen Ausführungsplan übersetzt
 werden. Diese komplexe Aufgabe wird von den Optimierern der
-verschiedenen Datenbank Management Systeme allerdings unterschiedlich
+verschiedenen Datenbankmanagementsysteme allerdings unterschiedlich
 gut gelöst. Durch das Verwenden verschiedener \textit{SQL} Konstrukte
-kann der Optimierer eines Datenbank Management Systems teilweise
+kann der Optimierer eines Datenbankmanagementsystems teilweise
 beeinflusst werden. Hier wurde das Laufzeitverhalten von zwei
 äquivalenten \textit{SQL} Befehlen durch die Analyse ihrer
 Ausführungspläne untersucht. Beide Befehle wurden auf einer Datenbank
@@ -1791,7 +1796,7 @@ sie hier vernachlässigt werden kann.
 
 Zusammenfassend kann man zu dieser Untersuchung sagen, dass durch die
 Wahl entsprechender \textit{SQL} Konstrukte der Anfrageoptimierer
-eines Datenbank Management Systems beeinflusst werden kann und sich
+eines Datenbankmanagementsystems beeinflusst werden kann und sich
 dies auf die Performanz der Anfrage auswirken kann. Dies spielt bei
 der hier zu Analysezwecken verwendeten Datenmenge zwar noch keine
 große Rolle, kann bei einer größeren Datenmengen aber fatale
@@ -1866,7 +1871,7 @@ wieder hergestellt wird. Die Angaben zur Laufzeit der \textit{SQL}
 Befehle schwanken im Bereich von ca. 50 Millisekunden und können auch
 nur als grobe Richtwerte für die hier verwendete Datenmenge verstanden
 werden. Diese Schwankungen haben unter anderem mit dem Cache des
-Datenbank Management Systems zu tun.
+Datenbankmanagementsystems zu tun.
 
 \subsubsection{Laufzeitverhalten bei einer größeren Datenmenge}
 Eine konkrete Aussage über die Laufzeit des Ladevorgangs bei einer
@@ -1876,7 +1881,7 @@ Anfrageoptimierer und die Laufzeit der einzelnen Befehle bei einer
 größeren Datenmenge verhalten. Kommen mehr Daten hinzu, verändern sich
 die Statistiken, die vom Anfrageoptimierer dazu verwendet werden,
 einen geeigneten Ausführungsplan zu finden. Durch die Anpassung von
-Parametern zur Konfiguration des Datenbank Management Systems kann das
+Parametern zur Konfiguration des Datenbankmanagementsystems kann das
 Verhalten des Anfrageoptimierers ebenfalls beeinflusst werden. Diese
 Parameter hängen wiederum von den Eigenschaften der verwendeten
 Hardware ab. Eine Diskussion zur optimalen Einstellung von
@@ -1951,18 +1956,18 @@ zu anderen Vorschlägen als nicht sehr hoch eingestuft wird.
 
 Viel mehr Potential zur Beschleunigung des Ladevorgangs wird in einer
 Vorverarbeitung der Vorhersagedaten gesehen. Durch diesen zusätzlichen
-Schritt könnte man die Vorhersagedaten in eine \textit{CSV} Datei
+Schritt könnte man die Vorhersagedaten in eine \textit{CSV}-Datei
 transformieren, die der Struktur der \textit{forecasts} Tabelle
 entspricht. Die bisher in der Datenbank durchgeführte Transposition
 von Zeilen zu Spalten würde so in ein externes Programm verlagert
 werden, mit der Aussicht, diese effizienter durchführen zu können, als
-dies mit den Boardmitteln des Datenbank Management Systems möglich
+dies mit den Boardmitteln des Datenbankmanagementsystems möglich
 ist. Die transformierte Datei kann dann in eine entsprechende
 \textit{Staging Area} geladen werden und mit einem \textit{UPDATE-}
 und einem \textit{INSERT} Befehl in die \textit{forecasts} Relation
 integriert werden. Eine noch bessere Alternative wäre, die zu
 aktualisierenden Datensätze der \textit{forecasts} Tabelle vor dem
-Laden zu löschen und die \textit{CSV} Datei mit einem \textit{COPY}
+Laden zu löschen und die \textit{CSV}-Datei mit einem \textit{COPY}
 Befehl direkt in diese Relation zu integrieren. Ein Nachteil an diesem
 Vorschlag ist, dass der Transformationsschritt vom
 Aktualisierungszeitplan der beiden Modelle abhängig ist. Da die Daten

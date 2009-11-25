@@ -480,9 +480,9 @@ Zukunft enthält.
 
       \midrule
 
-      2$^{\circ}$ x 5$^{\circ}$ & 4 Mb - 4.8 Mb & \url{http://nomad5.ncep.noaa.gov/pub/gfs2p5} \\
-      1$^{\circ}$ x 1$^{\circ}$ & 25 Mb - 29 Mb & \url{http://nomad5.ncep.noaa.gov/pub/gfs} \\
-      0.5$^{\circ}$ x 0.5$^{\circ}$ & 200 Mb - 215 Mb & \url{http://nomad5.ncep.noaa.gov/pub/gfs_master} \\
+      2$^{\circ}$ x 5$^{\circ}$ & 4 MB - 4.8 MB & \url{http://nomad5.ncep.noaa.gov/pub/gfs2p5} \\
+      1$^{\circ}$ x 1$^{\circ}$ & 25 MB - 29 MB & \url{http://nomad5.ncep.noaa.gov/pub/gfs} \\
+      0.5$^{\circ}$ x 0.5$^{\circ}$ & 200 MB - 215 MB & \url{http://nomad5.ncep.noaa.gov/pub/gfs_master} \\
 
       \bottomrule
 
@@ -527,7 +527,7 @@ für einen bestimmten Zeitpunkt 63 verschiedene Vorhersageelemente und
 ist zwischen 200 und 215 Megabyte groß. Die Größe aller \textit{Grib}
 Daten für einen Vorhersagezeitraum von 180 Stunden (und für den
 Berechnungszeitpunkt selbst) mit einem 3-stündigen Intervall beträgt
-somit $(180h / 3h + 1) * 215 Mb = 13115 Mb$. Da hier aber nur sehr
+somit $(180h / 3h + 1) * 215 MB = 13.115 MB$. Da hier aber nur sehr
 wenige Vorhersageelemente der \textit{Grib}-Dateien benötigt werden,
 wird in Abschnitt \ref{subsec:download} ein Verfahren vorgestellt, um
 nur die benötigten Elemente zu übertragen und somit das zu
@@ -655,14 +655,24 @@ Vorhersagemodelle auf der Serverseite zurückzuführen.
 
 Die Performanz der Extraktionsprozesse hängt hauptsächlich von der
 Geschwindigkeit ab, mit der die \textit{Grib}-Daten heruntergeladen
-werden. Zu verschiedenen Zeiten durchgeführte Benchmark Tests ergaben
-eine eher mäßige durchschnittliche Übertragungsgeschwindigkeit von
-186.30 KB/s. Dies liegt vermutlich an der hohen Auslastung der
-\textit{NOMADS} Server, auf die keinen Einfluss genommen werden
-kann. Um eine bessere und einen längerfristigen Zeitraum abdeckende
-Aussage zu machen, wurden die Log Dateien des Extraktionsprozesse aus
-einem Zeitraum von einer Woche ausgewertet und die Ergebnisse
-zusammengefasst.
+werden. Um die durchschnittliche Übertragungsgeschwindigkeit über
+einen längeren Zeitraum zu ermitteln, wurden mehrere Messung mit dem
+Kommandozeilenprogramm \textit{ab} \footnote{Apache HTTP Server
+  Benchmarking Tool} durchgeführt, wobei jedes mal eine 32 MB große
+\textit{Grib}-Datei heruntergeladen wurde. Die Messwerte wurden in
+einem Intervall von 6 Stunden über einen Zeitraum von einer Woche
+erhoben. Dieser Messintervall entspricht dem Intervall, in dem die
+beiden Modelle aktualisiert werden. Alle 28 Messungen sind auf einem
+dedizierten Server ausgeführt worden, der mit einer 100 Mbps
+Verbindung an das Internet angeschlossen ist. Das Ergebnis der Messung
+ergab eine eher mäßige durchschnittliche Übertragungsgeschwindigkeit
+von 166,22 KB/s, mit einer Standardabweichung von 40,5 KB/s. Die
+schlechte Übertragungsgeschwindigkeit liegt vermutlich an der hohen
+Auslastung der \textit{NOMADS} Server, auf die keinen Einfluss
+genommen werden kann. Um eine Aussage über die Laufzeit der
+Extraktionsprozesse zu machen, wurden die Log Dateien der beiden
+Prozesse ebenfalls über einen Zeitraum von einer Woche ausgewertet und
+die Ergebnisse zusammengefasst.
 
 \subsubsection{Downloadstrategie für das Wave Watch III Model}
 Alle Daten des \textit{Wave Watch III} Modells sind auf Serverseite in
@@ -682,15 +692,15 @@ gespeichert.
       \toprule
       \textbf{Element} & \textbf{Beschreibung} & \textbf{Größe (Element)} & \textbf{Zeit (Element)}  \\
       \midrule
-      HTSGW & Wellenhöhe & 2,5 MB & 27,12 s \\
-      PERPW & Periode des Wellenkamms & 2,7 MB & 30,12 s \\
-      DIRPW & Richtung des Wellenkamms & 3,5 MB & 35,90 s \\
-      WVPER & Wellenperiode & 2,5 MB & 25,79 s \\
-      WVDIR & Wellenrichtung & 3,5 MB & 35,83 s \\
-      WIND  & Windstärke & 2,9 MB & 34,36 s \\
-      WDIR  & Windrichtung & 3,8 MB & 38,99 s \\
+      HTSGW & Wellenhöhe & 2,5 MB & 27 s \\
+      PERPW & Periode des Wellenkamms & 2,7 MB & 30 s \\
+      DIRPW & Richtung des Wellenkamms & 3,5 MB & 37 s \\
+      WVPER & Wellenperiode & 2,5 MB & 26 s \\
+      WVDIR & Wellenrichtung & 3,5 MB & 36 s \\
+      WIND  & Windstärke & 2,9 MB & 34 s \\
+      WDIR  & Windrichtung & 3,8 MB & 39 s \\
       \midrule
-      Gesamt: & & 21,4 MB & 3,80 m \\
+      Gesamt: & & 21,4 MB & 3 min 49 s \\
       \bottomrule
     \end{longtable}
   }
@@ -703,7 +713,7 @@ Inhaltsverzeichnis und 7 für die \textit{Grib}-Nachrichten der
 entsprechenden Elemente. In Tabelle \ref{tab:download_messung_ww3}
 sind die durchschnittlichen Downloadzeiten für die einzelnen Elemente
 des \textit{Wave Watch III} Modells aufgeführt. Der Extraktionsprozess
-dauert durchschnittlich 3,8 Minuten und überträgt 21,4 MB an
+dauert durchschnittlich ca. 4 Minuten und überträgt 21,4 MB an
 \textit{Grib}-Daten.
 
 \subsubsection{Downloadstrategie für das Global Forecast System}
@@ -751,12 +761,12 @@ benötigt durchschnittlich ca. 14 Minuten.
       \toprule
       \textbf{Element} & \textbf{Größe (Nachricht)} & \textbf{Zeit (Nachricht)} & \textbf{Größe (Element)} & \textbf{Zeit (Element)} \\
       \midrule
-      TMP   & 317.4 KB & 4.17 s & 18.90 MB & 4.24 m \\
-      TCDC  & 222.2 KB & 2.62 s & 13.23 MB & 2.66 m \\
-      PWAT  & 317.4 KB & 3.63 s & 18.90 MB & 3.69 m \\
-      WEASD & 285.6 KB & 3.27 s & 17.01 MB & 3.33 m \\
+      TMP   & 317.4 KB & 4 s & 18.90 MB & 4 min \\
+      TCDC  & 222.2 KB & 3 s & 13.23 MB & 3 min \\
+      PWAT  & 317.4 KB & 4 s & 18.90 MB & 4 min \\
+      WEASD & 285.6 KB & 3 s & 17.01 MB & 3 min \\
       \midrule
-      Gesamt: & 1.12 MB  & 13.69 s & 68.04 MB & 13.92 m \\
+      Gesamt: & 1.12 MB  & 14 s & 68.04 MB & 14 min \\
       \bottomrule
     \end{longtable}
   }
@@ -1196,10 +1206,10 @@ weiter benötigt und können gelöscht werden.
       \toprule
       \textbf{Element(e)} & \textbf{1 Spot} & \textbf{10 Spots} & \textbf{100 Sp.} & \textbf{1.000 Sp.} & \textbf{10.000 Sp.} & \textbf{100.000 Sp.} \\
       \midrule
-      1 & 17 ms & 170 ms & 1,7 s & 17 s & 2,83 m & 28,34 m \\
-      10 & 170 ms & 1,7 s & 17 s & 2,83 m & 28,34 m & 4,72 h \\
-      \textbf{11} & \textbf{187 ms} &  \textbf{1,87 s} & \textbf{18,7 s} & \textbf{3,12 m} & \textbf{31,17 m} & \textbf{5,19 h} \\
-      15 & 255 ms & 2,55 s & 25,5 s & 4,25 m & 42,5 m &  7,08 h\\
+      1 & 17 ms & 170 ms & 1,7 s & 17 s & 2 m 50 s & 28 m 20 s \\
+      10 & 170 ms & 1,7 s & 17 s & 2 m 50 s & 28 m 20 s & 4 h 43 m \\
+      \textbf{11} & \textbf{187 ms} &  \textbf{1,87 s} & \textbf{18,7 s} & \textbf{3 m 7 s} & \textbf{31 m 10 s} & \textbf{5 h 12 m} \\
+      15 & 255 ms & 2,55 s & 25,5 s & 4 m 15 s & 42 m 30 s &  7 h 5 min\\
       \bottomrule
     \end{longtable}
   }
@@ -1905,7 +1915,7 @@ für die Anzahl der Vorhersageelemente, $l$ für die Laufzeit eines
 \textit{SQL} Befehls und 78 für die Anzahl der Spots steht, die bei
 der zuvor durchgeführten Untersuchung existierten. Die Werte in
 Tabelle \ref{tab:sql_laufzeit} wurden unter der Annahme berechnet,
-dass $N=12$ Vorhersageelemente für jeden Spot verarbeitet werden.
+dass $N=11$ Vorhersageelemente für jeden Spot verarbeitet werden.
 
 \begin{table*}[h]
   \centering
@@ -1914,11 +1924,11 @@ dass $N=12$ Vorhersageelemente für jeden Spot verarbeitet werden.
     \begin{longtable}{l|c|c|c|c|c}
 
       \toprule
-      \textbf{Laufzeit} & \textbf{10 Spots} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots} \\
+      \textbf{Laufzeit} & \textbf{1 Spot} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots} \\
       \midrule
-      $l$ = 200 ms & 307 ms & 3,08 s & 30,76 s &  5,14 m &  51,28 m \\
-      $l$ = 400 ms & 615 ms & 6,15 s & 61,54 s & 10,26 m & 1,71 h \\
-      $l$ = 600 ms & 923 ms & 9,23 s & 92,31 s & 15,38 m & 2,56 h \\
+      $l$ = 200 ms & 31 ms & 3,1 s & 31 s &  5m 10 s &  51 m 40 s \\
+      $l$ = 400 ms & 62 ms & 6,2 s & 1 m 2 s & 10 m 20 s & 1 h 43 m \\
+      $l$ = 600 ms & 92 ms & 9,2 s & 1 m 32 s & 15 m 20 s & 2 h 33 m \\
       \bottomrule
 
     \end{longtable}
@@ -1990,13 +2000,13 @@ verknüpfen.
       \toprule
       \textbf{Phase} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots}\\
       \midrule
-      Extraktion \textit{(NWW3)} & 3,80 m & 3,80 m & 3,80 m & 3,80 m \\
-      Extraktion \textit{(GFS)} & 13,92 m & 13,92 m & 13,92 m & 13,92 m \\
+      Extraktion \textit{(NWW3)} & 4 m & 4 m & 4 m & 4 m \\
+      Extraktion \textit{(GFS)} & 14 m & 14 m & 14 m & 14 m \\
       \midrule
-      Transformation & 18,7 s & 3,12 m & 31,17 m & 5,19 h \\
-      Laden \textit{(l=600ms)} & 9,23 s & 92,31 s & 15,38 m & 2,56 h \\
+      Transformation & 18,7 s & 3 m 7 s & 31 m 10 s & 5 h 12 m \\
+      Laden \textit{(l=600ms)} & 9,2 s & 1 m 32 s & 15 m 20 s & 2 h 33 m \\
       \bottomrule
-      \textbf{Gesamt:} & 18,19 m & 21,00 m & 1,07 h & 8,05 h \\
+      \textbf{Gesamt:} & 18 m 28 s & 22 m 39 s & 1 h 4 m & 8 h 3 m \\
       \bottomrule
     \end{longtable}
   }

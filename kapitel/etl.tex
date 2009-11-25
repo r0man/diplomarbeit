@@ -474,24 +474,17 @@ Zukunft enthält.
   {\sf
     \footnotesize
     \begin{longtable}{@{}ccl}
-
       \toprule
       \textbf{Auflösung} & \textbf{Dateigrößen} & \textbf{URI der Bezugsquelle} \\
-
       \midrule
-
       2$^{\circ}$ x 5$^{\circ}$ & 4 MB - 4.8 MB & \url{http://nomad5.ncep.noaa.gov/pub/gfs2p5} \\
       1$^{\circ}$ x 1$^{\circ}$ & 25 MB - 29 MB & \url{http://nomad5.ncep.noaa.gov/pub/gfs} \\
       0.5$^{\circ}$ x 0.5$^{\circ}$ & 200 MB - 215 MB & \url{http://nomad5.ncep.noaa.gov/pub/gfs_master} \\
-
       \bottomrule
-
     \end{longtable}
   }
-
   \caption{Dateigrößen des \textit{Global Forecast System}}
   \label{tab:gfs_auflösungen}
-
 \end{table*}
 
 Die in dieser Arbeit entwickelten \textit{ETL}-Prozesse arbeiten alle
@@ -666,23 +659,14 @@ beiden Modelle aktualisiert werden. Alle 28 Messungen sind auf einem
 dedizierten Server ausgeführt worden, der mit einer 100 Mbps
 Verbindung an das Internet angeschlossen ist. Das Ergebnis der Messung
 ergab eine eher mäßige durchschnittliche Übertragungsgeschwindigkeit
-von 166,22 KB/s, mit einer Standardabweichung von 40,5 KB/s. Die
+von 166,22 KB/s mit einer Standardabweichung von 40,5 KB/s. Die
 schlechte Übertragungsgeschwindigkeit liegt vermutlich an der hohen
 Auslastung der \textit{NOMADS} Server, auf die keinen Einfluss
 genommen werden kann. Um eine Aussage über die Laufzeit der
 Extraktionsprozesse zu machen, wurden die Log Dateien der beiden
 Prozesse ebenfalls über einen Zeitraum von einer Woche ausgewertet und
-die Ergebnisse zusammengefasst.
-
-\subsubsection{Downloadstrategie für das Wave Watch III Model}
-Alle Daten des \textit{Wave Watch III} Modells sind auf Serverseite in
-einer \textit{Grib}-Datei gespeichert. Der Extraktionsprozess für
-dieses Modell lädt zunächst das Inhaltsverzeichnis dieser Datei, um
-die Start- und Endpositionen der gewünschten Elemente zu
-berechnen. Anschließend wird pro Element eine \textit{HTTP-Range}
-Anfrage an den Server gesendet und die in der Antwort enthaltene
-\textit{Grib}-Nachricht in einer Datei im lokalen Dateisystem
-gespeichert.
+die Ergebnisse zusammengefasst. Die durchschnittlichen Laufzeiten
+wurden für jedes Modell aus insgesamt 28 Messwerten berechnet.
 
 \begin{table*}[h]
   \centering
@@ -692,29 +676,39 @@ gespeichert.
       \toprule
       \textbf{Element} & \textbf{Beschreibung} & \textbf{Größe (Element)} & \textbf{Zeit (Element)}  \\
       \midrule
-      HTSGW & Wellenhöhe & 2,5 MB & 27 s \\
-      PERPW & Periode des Wellenkamms & 2,7 MB & 30 s \\
-      DIRPW & Richtung des Wellenkamms & 3,5 MB & 37 s \\
-      WVPER & Wellenperiode & 2,5 MB & 26 s \\
-      WVDIR & Wellenrichtung & 3,5 MB & 36 s \\
-      WIND  & Windstärke & 2,9 MB & 34 s \\
-      WDIR  & Windrichtung & 3,8 MB & 39 s \\
+      HTSGW & Wellenhöhe & 2,5 MB &  27 s \\
+      PERPW & Periode des Wellenkamms & 2,7 MB &  30 s \\
+      DIRPW & Richtung des Wellenkamms & 3,5 MB &  37 s \\
+      WVPER & Wellenperiode & 2,5 MB &  26 s \\
+      WVDIR & Wellenrichtung & 3,5 MB &  36 s \\
+      WIND  & Windstärke & 2,9 MB &  34 s \\
+      WDIR  & Windrichtung & 3,8 MB &  39 s \\
       \midrule
-      Gesamt: & & 21,4 MB & 3 min 49 s \\
+      Gesamt: & & 21,4 MB &  3 min 49 s \\
       \bottomrule
     \end{longtable}
   }
-  \caption{Messung der Downloadzeiten des \textit{Wave Watch III} Modells}
+  \caption{Durchschnittliche Downloadzeiten des \textit{Wave Watch III} Modells}
   \label{tab:download_messung_ww3}
 \end{table*}
 
-Insgesamt werden dabei 8 Anfragen an den Server gesendet, eine für das
-Inhaltsverzeichnis und 7 für die \textit{Grib}-Nachrichten der
-entsprechenden Elemente. In Tabelle \ref{tab:download_messung_ww3}
-sind die durchschnittlichen Downloadzeiten für die einzelnen Elemente
-des \textit{Wave Watch III} Modells aufgeführt. Der Extraktionsprozess
-dauert durchschnittlich ca. 4 Minuten und überträgt 21,4 MB an
-\textit{Grib}-Daten.
+\subsubsection{Downloadstrategie für das Wave Watch III Model}
+Alle Daten des \textit{Wave Watch III} Modells sind auf Serverseite in
+einer \textit{Grib}-Datei gespeichert. Der Extraktionsprozess für
+dieses Modell lädt zunächst das Inhaltsverzeichnis dieser Datei, um
+die Start- und Endpositionen der gewünschten Elemente zu
+berechnen. Anschließend wird pro Element eine \textit{HTTP-Range}
+Anfrage an den Server gesendet und die in der Antwort enthaltene
+\textit{Grib}-Nachricht in einer Datei im lokalen Dateisystem
+gespeichert. Nachdem die Datei gespeichert wurde, wird für den
+späteren Transformationsvorgang noch ein Index mit dem Programm
+\textit{degrib} erstellt. Insgesamt werden dabei 8 Anfragen an den
+Server gesendet, eine für das Inhaltsverzeichnis und 7 für die
+\textit{Grib}-Nachrichten der entsprechenden Elemente. In Tabelle
+\ref{tab:download_messung_ww3} sind die durchschnittlichen
+Downloadzeiten für die einzelnen Elemente des \textit{Wave Watch III}
+Modells aufgeführt. Der Extraktionsprozess dauert durchschnittlich
+ca. 4 Minuten und überträgt 21,4 MB an \textit{Grib}-Daten.
 
 \subsubsection{Downloadstrategie für das Global Forecast System}
 Der Downloadvorgang für das \textit{Global Forecast System} erfordert
@@ -726,6 +720,27 @@ enthalten sind. Dies sind bei einem Vorhersagezeitraum von 180 Stunden
 im 3-stündigen Intervall 61 Dateien, $180h / 3h = 60$ für den
 Vorhersagezeitraum und eine weitere für den Zeitpunkt der
 Modellberechnung, der sogenannten Analyse.
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{@{}ccccc}
+      \toprule
+      \textbf{Element} & \textbf{Größe (Nachricht)} & \textbf{Zeit (Nachricht)} & \textbf{Größe (Element)} & \textbf{Zeit (Element)} \\
+      \midrule
+      TMP   & 317.4 KB &  4 s & 18.90 MB &  4 min \\
+      TCDC  & 222.2 KB &  3 s & 13.23 MB &  3 min \\
+      PWAT  & 317.4 KB &  4 s & 18.90 MB &  4 min \\
+      WEASD & 285.6 KB &  3 s & 17.01 MB &  3 min \\
+      \midrule
+      Gesamt: & 1.12 MB  &  14 s & 68.04 MB &  14 min \\
+      \bottomrule
+    \end{longtable}
+  }
+  \caption{Durchschnittliche Downloadzeiten des \textit{Global Forecast System}}
+  \label{tab:download_messung_gfs}
+\end{table*}
 
 Um alle \textit{Grib}-Nachrichten für ein ausgewähltes Element
 herunterzuladen, müssen zunächst die 61 Inhaltsverzeichnisse aller
@@ -752,27 +767,6 @@ herunterzuladen. Im rechten Teil ist die Zusammenfassung dieser Werte
 für das jeweilige Element zu sehen. Der Extraktionsprozess für das
 \textit{Global Forecast System} überträgt insgesamt 68.04 MB und
 benötigt durchschnittlich ca. 14 Minuten.
-
-\begin{table*}[h]
-  \centering
-  {\sf
-    \footnotesize
-    \begin{longtable}{@{}ccccc}
-      \toprule
-      \textbf{Element} & \textbf{Größe (Nachricht)} & \textbf{Zeit (Nachricht)} & \textbf{Größe (Element)} & \textbf{Zeit (Element)} \\
-      \midrule
-      TMP   & 317.4 KB & 4 s & 18.90 MB & 4 min \\
-      TCDC  & 222.2 KB & 3 s & 13.23 MB & 3 min \\
-      PWAT  & 317.4 KB & 4 s & 18.90 MB & 4 min \\
-      WEASD & 285.6 KB & 3 s & 17.01 MB & 3 min \\
-      \midrule
-      Gesamt: & 1.12 MB  & 14 s & 68.04 MB & 14 min \\
-      \bottomrule
-    \end{longtable}
-  }
-  \caption{Messung der Downloadzeiten des \textit{Global Forecast System}}
-  \label{tab:download_messung_gfs}
-\end{table*}
 
 \subsubsection{Lokales Grib Repository}
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde, liegen

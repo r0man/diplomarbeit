@@ -649,24 +649,25 @@ Vorhersagemodelle auf der Serverseite zurückzuführen.
 Die Performanz der Extraktionsprozesse hängt hauptsächlich von der
 Geschwindigkeit ab, mit der die \textit{Grib}-Daten heruntergeladen
 werden. Um die durchschnittliche Übertragungsgeschwindigkeit über
-einen längeren Zeitraum zu ermitteln, wurden mehrere Messung mit dem
-Kommandozeilenprogramm \textit{ab} \footnote{Apache HTTP Server
-  Benchmarking Tool} durchgeführt, wobei jedes mal eine 32 MB große
-\textit{Grib}-Datei heruntergeladen wurde. Die Messwerte wurden in
-einem Intervall von 6 Stunden über einen Zeitraum von einer Woche
-erhoben. Dieser Messintervall entspricht dem Intervall, in dem die
-beiden Modelle aktualisiert werden. Alle 28 Messungen sind auf einem
-dedizierten Server ausgeführt worden, der mit einer 100 Mbps
-Verbindung an das Internet angeschlossen ist. Das Ergebnis der Messung
-ergab eine eher mäßige durchschnittliche Übertragungsgeschwindigkeit
-von 166,22 KB/s mit einer Standardabweichung von 40,5 KB/s. Die
-schlechte Übertragungsgeschwindigkeit liegt vermutlich an der hohen
-Auslastung der \textit{NOMADS} Server, auf die keinen Einfluss
-genommen werden kann. Um eine Aussage über die Laufzeit der
-Extraktionsprozesse zu machen, wurden die Log Dateien der beiden
-Prozesse ebenfalls über einen Zeitraum von einer Woche ausgewertet und
-die Ergebnisse zusammengefasst. Die durchschnittlichen Laufzeiten
-wurden für jedes Modell aus insgesamt 28 Messwerten berechnet.
+einen längeren Zeitraum zu ermitteln, wurden mehrere Messung durch
+einen \textit{Cronjob} mit dem Kommandozeilenprogramm \textit{ab}
+\footnote{Apache HTTP Server Benchmarking Tool} durchgeführt, wobei
+jedes mal eine 32 MB große \textit{Grib}-Datei heruntergeladen
+wurde. Die Messwerte wurden in einem Intervall von 6 Stunden über
+einen Zeitraum von einer Woche erhoben. Dieser Messintervall
+entspricht dem Intervall, in dem die beiden Modelle aktualisiert
+werden. Alle 28 Messungen sind auf einem dedizierten Server ausgeführt
+worden, der mit einer 100 Mbps Verbindung an das Internet
+angeschlossen ist. Das Ergebnis der Messung ergab eine eher mäßige
+durchschnittliche Übertragungsgeschwindigkeit von 166,22 KB/s mit
+einer Standardabweichung von 40,5 KB/s. Die schlechte
+Übertragungsgeschwindigkeit liegt vermutlich an der hohen Auslastung
+der \textit{NOMADS} Server, auf die keinen Einfluss genommen werden
+kann. Um eine Aussage über die Laufzeit der Extraktionsprozesse zu
+machen, wurden die Log Dateien der beiden Prozesse ebenfalls über
+einen Zeitraum von einer Woche ausgewertet und die Ergebnisse
+zusammengefasst. Die durchschnittlichen Laufzeiten wurden für jedes
+Modell aus insgesamt 28 Messwerten berechnet.
 
 \begin{table*}[h]
   \centering
@@ -725,16 +726,16 @@ Modellberechnung, der sogenannten Analyse.
   \centering
   {\sf
     \footnotesize
-    \begin{longtable}{@{}ccccc}
+    \begin{longtable}{@{}clcc}
       \toprule
-      \textbf{Element} & \textbf{Größe (Nachricht)} & \textbf{Zeit (Nachricht)} & \textbf{Größe (Element)} & \textbf{Zeit (Element)} \\
+      \textbf{Element} & \textbf{Beschreibung} & \textbf{Größe (Element)} & \textbf{Zeit (Element)} \\
       \midrule
-      TMP   & 317.4 KB &  4 s & 18.90 MB &  4 min \\
-      TCDC  & 222.2 KB &  3 s & 13.23 MB &  3 min \\
-      PWAT  & 317.4 KB &  4 s & 18.90 MB &  4 min \\
-      WEASD & 285.6 KB &  3 s & 17.01 MB &  3 min \\
+      TMP   & Temperatur & 18.90 MB &  3 m 47 s \\
+      TCDC  & Bewölkung & 13.23 MB &  2 m 56 s \\
+      PWAT  & Niederschlag & 18.90 MB &  3 m 56 s \\
+      WEASD & Schnee & 17.01 MB &  3 m 34 s \\
       \midrule
-      Gesamt: & 1.12 MB  &  14 s & 68.04 MB &  14 min \\
+      Gesamt: & & 68.04 MB &  14 m 13 s \\
       \bottomrule
     \end{longtable}
   }

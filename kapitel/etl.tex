@@ -638,8 +638,8 @@ Startposition zu senden. Zum Download der einzelnen
 \subsection{Beschreibung der Extraktionsprozesse}
 Ziel der Extraktion ist es, alle relevanten \textit{Grib}-Nachrichten
 der beiden Modelle in einer einheitlichen Struktur im lokalen
-Dateisystem zu hinterlegen. Pro Element wird eine Datei erstellt
-werden, die alle Nachrichten des entsprechenden Elements für die
+Dateisystem zu hinterlegen. Pro Element wird dabei eine Datei
+erstellt, die alle Nachrichten des entsprechenden Elements für die
 verschiedenen Zeitpunkte der Vorhersage enthält. Beim Download der
 \textit{Grib}-Dateien von den \textit{NOMADS} Servern werden zwei
 verschiedene Strategien angewendet, die im Folgenden beschrieben
@@ -656,18 +656,22 @@ jedes mal eine 32 MB große \textit{Grib}-Datei heruntergeladen
 wurde. Die Messwerte wurden in einem Intervall von 6 Stunden über
 einen Zeitraum von einer Woche erhoben. Dieser Messintervall
 entspricht dem Intervall, in dem die beiden Modelle aktualisiert
-werden. Alle 28 Messungen sind auf einem dedizierten Server ausgeführt
-worden, der mit einer 100 Mbps Verbindung an das Internet
-angeschlossen ist. Das Ergebnis der Messung ergab eine eher mäßige
-durchschnittliche Übertragungsgeschwindigkeit von 166,22 KB/s mit
-einer Standardabweichung von 40,5 KB/s. Die schlechte
+werden. Alle 28 Messungen ($24h/6h * 7$) sind auf einem dedizierten
+Server ausgeführt worden, der mit einer 100 Mbps Verbindung an das
+Internet angeschlossen ist. Das Ergebnis der Messung ergab eine eher
+mäßige durchschnittliche Übertragungsgeschwindigkeit von 166,22 KB/s
+mit einer Standardabweichung von 40,51 KB/s. Die schlechte
 Übertragungsgeschwindigkeit liegt vermutlich an der hohen Auslastung
 der \textit{NOMADS} Server, auf die keinen Einfluss genommen werden
-kann. Um eine Aussage über die Laufzeit der Extraktionsprozesse zu
-machen, wurden die Log Dateien der beiden Prozesse ebenfalls über
-einen Zeitraum von einer Woche ausgewertet und die Ergebnisse
-zusammengefasst. Die durchschnittlichen Laufzeiten wurden für jedes
-Modell aus insgesamt 28 Messwerten berechnet.
+kann.
+
+Um eine Aussage über die Laufzeit der Extraktionsprozesse zu machen,
+wurden die Log-Dateien der beiden Prozesse ebenfalls über einen
+Zeitraum von einer Woche ausgewertet. Für jedes Element wurden die 28
+Messwerte extrahiert und daraus die durchschnittliche Laufzeit pro
+Element berechnet. Die durchschnittliche Gesamtlaufzeit für den
+Extraktionsprozess eines Modells ergibt sich aus der Summe der
+durchschnittlichen Laufzeiten der einzelnen Elemente.
 
 \begin{table*}[h]
   \centering
@@ -708,8 +712,9 @@ Server gesendet, eine für das Inhaltsverzeichnis und 7 für die
 \textit{Grib}-Nachrichten der entsprechenden Elemente. In Tabelle
 \ref{tab:download_messung_ww3} sind die durchschnittlichen
 Downloadzeiten für die einzelnen Elemente des \textit{Wave Watch III}
-Modells aufgeführt. Der Extraktionsprozess dauert durchschnittlich
-ca. 4 Minuten und überträgt 21,4 MB an \textit{Grib}-Daten.
+Modells und deren Gesamtlaufzeit aufgeführt. Der Extraktionsprozess
+dauert durchschnittlich ca. 4 Minuten und überträgt 21,4 MB an
+\textit{Grib}-Daten.
 
 \subsubsection{Downloadstrategie für das Global Forecast System}
 Der Downloadvorgang für das \textit{Global Forecast System} erfordert
@@ -735,7 +740,7 @@ Modellberechnung, der sogenannten Analyse.
       PWAT  & Niederschlag & 18.90 MB &  3 m 56 s \\
       WEASD & Schnee & 17.01 MB &  3 m 34 s \\
       \midrule
-      Gesamt: & & 68.04 MB &  14 m 13 s \\
+      Gesamt: & & 68,04 MB &  14 m 13 s \\
       \bottomrule
     \end{longtable}
   }
@@ -762,12 +767,10 @@ weitere \textit{61} Anfragen für die einzelnen
 \textit{Grib}-Nachrichten. Der Extraktionsprozess für das
 \textit{Global Forecast System} sendet somit für die zurzeit 4
 verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen. Tabelle
-\ref{tab:download_messung_gfs} zeigt im linken Teil die Größe einer
-einzelnen Nachrichten und die Zeit, die benötigt wird, um diese
-herunterzuladen. Im rechten Teil ist die Zusammenfassung dieser Werte
-für das jeweilige Element zu sehen. Der Extraktionsprozess für das
-\textit{Global Forecast System} überträgt insgesamt 68.04 MB und
-benötigt durchschnittlich ca. 14 Minuten.
+\ref{tab:download_messung_gfs} zeigt die durchschnittlichen Laufzeiten
+für die einzelnen Elemente und deren aufsummierte Gesamtlaufzeit. Der
+Extraktionsprozess für das \textit{Global Forecast System} überträgt
+insgesamt 68,04 MB und benötigt durchschnittlich ca. 14 Minuten.
 
 \subsubsection{Lokales Grib Repository}
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde, liegen
@@ -829,16 +832,18 @@ sehr wenig Ressourcen und wirkt sich nur negativ auf die Aktualität
 der Vorhersagen aus. Da gravierende Veränderungen in den Vorhersagen
 zwischen zwei Modellberechnungen eher selten sind und die Vorhersagen
 nicht in Echtzeit benötigt werden, kann diese Verzögerung
-vernachlässigt werden. Da es den Anschein macht, dass die
-Übertragungsgeschwindigkeit von den \textit{NOMADS} Servern pro
-Verbindung reguliert wird, könnte versucht werden mehrere Anfragen
-gleichzeitig zu stellen, um die Daten parallel herunterzuladen und
-somit die Performanz zu verbessern. Wohin dies führt ist allerdings
-fraglich, da man davon ausgehen kann, dass die Anzahl der Verbindungen
-von einer IP-Adresse ebenfalls beschränkt wird, falls schon die
-Übertragungsgeschwindigkeit gedrosselt wurde. Um die \textit{NOMADS}
-Server nicht unnötig zu überlasten und sich fair gegenüber anderen zu
-verhalten wurden Tricks dieser Art nicht weiter verfolgt.
+vernachlässigt werden. 
+
+\subsubsection{Verbesserung der Extraktionsprozesse}
+Da es den Anschein macht, dass die Übertragungsgeschwindigkeit von den
+\textit{NOMADS} Servern pro Verbindung reguliert wird, könnte versucht
+werden mehrere Anfragen gleichzeitig zu stellen, um die Daten parallel
+herunterzuladen und somit die Performanz zu verbessern. Wohin dies
+führt ist allerdings fraglich, da man davon ausgehen kann, dass die
+Anzahl der Verbindungen von einer IP-Adresse ebenfalls beschränkt
+wird, falls schon die Übertragungsgeschwindigkeit gedrosselt wurde. Um
+die \textit{NOMADS} Server nicht unnötig zu überlasten wurden Ansätze
+dieser Art nicht weiter verfolgt.
 
 \section{Transformation der Daten}
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde und die
@@ -1138,9 +1143,6 @@ folgendermaßen:
 
 \end{enumerate}
 
-\lstinputlisting[caption={Ausgabe bei der Suche einer alternativen
-  Vorhersageposition},label=locate]{listings/locate.txt}
-
 In Auflistung \ref{locate} ist die Ausgabe des Algorithmus für den
 Spot Esposende in Portugal zu sehen. Der Algorithmus wurde mit einer
 maximalen Distanz $\Delta$ von 100 Kilometern, einer
@@ -1157,6 +1159,9 @@ obere Schranke entsprechend angepasst. Nachdem der Schwellenwert
 unterschritten wurde, terminiert der Algorithmus nach ca. 8 Sekunden
 mit einer alternativen Vorhersageposition, die 3,6 Kilometern weiter
 südlich liegt.
+
+\lstinputlisting[caption={Ausgabe bei der Suche einer alternativen
+  Vorhersageposition},label=locate]{listings/locate.txt}
 
 \subsection{Transformation der Vorhersagedaten}
 Nachdem die alternativen Vorhersagepositionen für das \textit{Wave
@@ -1214,18 +1219,20 @@ weiter benötigt und können gelöscht werden.
 
 \end{table*}
 
-Nach dem Erstellen der Indexstruktur dauert das Auslesen und die
-Transformation der Vorhersagedaten für ein Element ca. 17
-Millisekunden (ohne Index ca. 320 ms). In Tabelle
-\ref{tab:transformation_laufzeit} ist eine Hochrechnung der Laufzeit
-für mehrere Spots zu sehen. Wie viele Spots weltweit existieren
+Das Auslesen und die Transformation der Vorhersagedaten dauert für ein
+Element durchschnittlich 17 Millisekunden (ohne Index ca. 320 ms) mit
+einer Standardabweichung von 3,2 Millisekunden. Diese Werte wurden
+durch mehrmaliges Auslesen eines Vorhersageelements an einer festen
+Position ermittelt. In Tabelle \ref{tab:transformation_laufzeit} ist
+eine Hochrechnung dieser durchschnittlichen Laufzeit für mehrere
+Elemente und Spots zu sehen. Wie viele Spots weltweit existieren
 bzw. mit welcher Anzahl an zu verarbeitenden Spots zu rechnen ist,
 kann an dieser Stelle nur geschätzt werden. Auf einer ähnlichen
 Webseite \footnote{\url{http://www.wannasurf.com}} waren Mitte Oktober
 2009 ungefähr 8.300 Spots weltweit gelistet. Das Auslesen der
 Vorhersagedaten für 11 Elemente und deren Transformation in eine
 \textit{CSV}-Datei würde für diese 8.300 Spots somit ca. 26 Minuten
-dauern.
+($187 ms * 8.300$) dauern.
 
 \subsection{Verbesserung des Transformationsvorgangs}
 Sowohl hinsichtlich der Geschwindigkeit als auch der Korrektheit ist
@@ -1298,18 +1305,19 @@ Ladevorgang relevanten Relationen eingegangen.
 Seltsamerweise scheint in der \textit{Ruby on Rails} Community nicht
 allzuviel Wert auf die \textit{ACID} \nomenclature{ACID}{Atomicity,
   Consistency, Isolation, Durability} Eigenschaften eines Datenbank
-Management Systems gelegt zu werden. Nach fast 4 Jahren fehlen in der
-\textit{API} von \textit{ActiveRecord} leider immer noch Methoden zur
-Definition von Fremdschlüsseln. Auch in vielen Büchern und
-Diskussionen zu \textit{Ruby on Rails} wird auf die Verwendung von
-Fremdschlüsseln zur Sicherung der referenziellen Integrität nicht
-eingegangen. Dieses Defizit wurde durch die Definition entsprechender
-Methoden in der \textit{ActiveRecord} Bibliothek behoben, so dass
+Management Systems gelegt zu werden. 4 Jahren nach der
+Veröffentlichung von \textit{Ruby on Rails} fehlen in der \textit{API}
+von \textit{ActiveRecord} leider immer noch Methoden zur Definition
+von Fremdschlüsseln. Auch in vielen Büchern und Internetartikeln zu
+\textit{Ruby on Rails} wird auf die Verwendung von Fremdschlüsseln zur
+Sicherung der referenziellen Integrität nicht eingegangen. Dieses
+Defizit wurde durch eine eigene Definition der entsprechender Methoden
+in der \textit{ActiveRecord} Bibliothek behoben, so dass
 Fremdschlüssel direkt über die \textit{API} definiert werden
 können. Diese stellen die referenzielle Integrität auf Datenbankebene
 sicher. Bei der Entwicklung der Web-Applikation traten so einige
-Fehler sehr viel schneller zum Vorschein, als wenn man darauf
-verzichtet hätte.
+Fehler sehr viel schneller zum Vorschein, als wenn man auf
+Fremdschlüssel verzichtet hätte.
 
 \subsubsection{Repräsentation der Vorhersagedaten in der Datenbank}
 Die Vorhersagedaten der Spots werden in einer Relation mit dem Namen
@@ -1321,7 +1329,7 @@ Werte der Vorhersageelemente. Die Attribute
 bilden den Schlüsselkandidaten der Relation. Pro Spot
 (\textit{spot\textunderscore id}) existiert für jeden
 Vorhersagezeitpunkt (\textit{valid\textunderscore time}) genau ein
-Datensatz in der Tabelle. Um den \textit{ActiveRecord} Konventionen
+Datensatz in der Tabelle. Um den \textit{ActiveRecord}-Konventionen
 gerecht zu werden und Datensätze dieser Tabelle aus anderen Tabellen
 einfacher zu referenzieren, wird allerdings als künstlicher
 Primärschlüssel das Attribut \textit{id} verwendet. Das Attribut
@@ -1419,47 +1427,7 @@ vielen Anwendungen gesteigert werden. Reichen diese Optimierungen
 nicht aus, sind mit dem im folgenden Abschnitt beschriebenen Verfahren
 sehr viel bessere Ergebnisse zu erzielen.
 
-% Bei der Aktualisierung wird über die Datensätzen der \textit{CSV}
-% Datei iteriert, und für jeden Datensatz ein \textit{UPDATE} Befehl,
-% gefolgt von einem konditionalen \textit{INSERT} Befehl ausgeführt. Da
-% für einen bestimmten Vorhersagezeitpunkt eines Spots bereits ein
-% Datensatz aus einer früheren Modellberechnung existieren kann, wird
-% zunächst ein \textit{UPDATE} Befehl ausgeführt. Durch die Angabe des
-% Schlüsselkandidaten in der \textit{WHERE} Klausel des Befehls wird die
-% Menge der zu aktualisierenden Datensätze auf genau einen
-% beschränkt. Das Ergebnis des ausgeführten Befehls ist die Anzahl der
-% aktualisierten Datensätze und beträgt entweder 0 oder 1. Wurde ein
-% Datensatz geändert kann auf die folgende \textit{INSERT} Operation
-% verzichtet, und mit dem nächsten Datensatz der \textit{CSV} Datei
-% weitergemacht werden. Falls die \textit{UPDATE} Operation nicht
-% erfolgreich war, wird der neue Datensatz mit einem \textit{INSERT}
-% Befehl hinzugefügt. Nachdem alle Datensätze der Eingabe verarbeitet
-% wurden ist die Zielrelation auf dem neusten Stand.
-
-% \subsubsection{Abschätzung der auszuführenden Befehle}
-% Sind in der \textit{CSV} Datei $n$ Datensätze enthalten, muss das
-% Datenbankmanagementsystem im \textit{Worst-Case} Szenario $2 * n$ Befehle
-% ausführen. Dieser Fall trifft allerdings nur dann zu, falls noch
-% überhaupt keine Vorhersagedaten in der Datenbank enthalten sind. Da
-% die Vorhersagezeitpunkte von zwei aufeinander folgenden
-% Modellberechnungen immer nur um 6 Stunden \footnote{in einem
-%   3-stündigen Vorhersageintervall} voneinander abweichen, reicht für
-% die Mehrheit der Datensätze eine \textit{UPDATE} Operation aus. Eine
-% zusätzliche \textit{INSERT} Operation ist nur für diejenigen
-% Datensätze notwendig, die in dem abweichenden Zeitraum liegen. Da die
-% Datensätze der \textit{CSV} Datei in der Reihenfolge Spot
-% $\rightarrow$ Vorhersageelement $\rightarrow$ Vorhersagezeitpunkt
-% sortiert sind, kann auf eine \textit{INSERT} Operation verzichtet
-% werden, falls zuvor schon ein Datensatz für den entsprechenden Spot
-% und den Vorhersagezeitpunkt bearbeitet wurde. Im Durchschnitt liegt
-% die Anzahl der Befehle somit leicht über $n$. Die Anzahl der
-% auszuführenden Befehle ist hier von der Zahl der Datensätze
-% abhängig. Bei einer großen Datenmenge wirkt sich der vom Datenbankmanagementsystem
-% betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
-% Performanz des Ladevorgangs aus.
-
 \subsection{Bulk Loading}
-
 Das grundlegende Problem der zuvor beschriebenen Methode besteht
 darin, dass die abgesetzten \textit{SQL} Befehle tupelorientiert
 arbeiten. Die \textit{SQL} Befehle zur Manipulation von Datensätzen
@@ -1552,12 +1520,12 @@ Performanz des Ladevorgangs aus. Hier wird zum Beispiel vorgeschlagen,
 auf der Zielrelation definierte Indizes vor dem Laden zu entfernen und
 anschließend wieder neu zu erstellen. Die Konfiguration des Datenbank
 Management Systems selbst ist auch nicht außer Acht zu lassen. Die
-Performanz von PostgreSQL lässt sich durch das Einstellen bestimmter
-Parametern in der Konfigurationsdatei verbessern, da die Standard
-Werte in einigen Distributionen für heutige Hardware relativ niedrig
-angesetzt sind. Eine optimale Systemkonfiguration benötigt allerdings
-einiges an Erfahrung und Geduld beim Ausprobieren der verschiedenen
-Konfigurationsparameter.
+Performanz von \textit{PostgreSQL} lässt sich durch das Einstellen
+bestimmter Parametern in der Konfigurationsdatei verbessern, da die
+Standard Werte in vielen Distributionen für heutige Hardware relativ
+niedrig angesetzt sind. Eine optimale Systemkonfiguration benötigt
+allerdings einiges an Erfahrung und Geduld beim Ausprobieren der
+verschiedenen Konfigurationsparameter.
 
 \subsection{Mengenorientierte Aktualisierung}
 Nachdem die zu verarbeitenden Daten unter die Kontrolle des Datenbank
@@ -1578,27 +1546,27 @@ ermittelt werden.
 
 \subsubsection{Transposition von Spalten und Zeilen}
 Idealerweise würde man bei der mengenorientierten Aktualisierung genau
-zwei Befehle ausführen. Ein \textit{UPDATE} Befehl, der alle
-existierenden Datensätze der \textit{forecasts} Relation aktualisiert
-und ein \textit{INSERT} Befehl, mit dem neue Datensätze hinzugefügt
+zwei Befehle ausführen. Ein \textit{UPDATE}-Befehl, der alle
+existierenden Datensätze der Relation \textit{forecasts} aktualisiert
+und ein \textit{INSERT}-Befehl, mit dem neue Datensätze hinzugefügt
 werden. Die Art und Weise wie die Daten aber in der Relation
 \textit{grib\textunderscore messages} vorliegen, würde zu sehr
 komplexen \textit{SQL} Befehlen oder dem Einsatz datenbankspezifischer
 Erweiterungen führen. Das Problem besteht darin, dass mehrere
 Datensätze der Relation \textit{grib\textunderscore messages} zu einem
 Datensatz der Relation \textit{forecasts} überführt werden
-müssen. Oder anders ausgedrückt: Die Zeilen der Quellrelation müssen
-zu Spalten der Zielrelation transponiert werden. Die Konstruktion
-solcher Anfragen lässt sich nur umständlich in \textit{SQL} ausdrücken
-und führt üblicherweise zu sehr komplexen Befehlen, deren Performanz
-sich gegenüber anderer Alternativen anzweifeln lässt. Für diese Art
-von Anfragen werden in \textit{PostgreSQL} üblicherweise die
-sogenannten \textit{crosstab} Funktionen aus dem \textit{tablefunc}
-Modul verwendet. Da bei einem Engpass des Ladevorgangs allerdings eine
-Vorverarbeitung der \textit{CSV}-Datei mit \textit{awk} und ähnlichen
-Programmen als vielversprechender angesehen wird, wurde diese
-Alternativen hier nicht weiter verfolgt, sondern eine inkrementelle
-und zugleich einfachere Strategie gewählt.
+müssen. Oder anders ausgedrückt: Mehrere Zeilen der Quellrelation
+müssen zu einer Spalte der Zielrelation transponiert werden. Die
+Konstruktion solcher Anfragen lässt sich nur umständlich in
+\textit{SQL} ausdrücken und führt üblicherweise zu sehr komplexen
+Befehlen. Für diese Art von Anfragen werden in \textit{PostgreSQL}
+üblicherweise die sogenannten \textit{crosstab}-Funktionen aus dem
+Modul \textit{tablefunc} verwendet. Da bei einem Engpass des
+Ladevorgangs eine Vorverarbeitung der \textit{CSV}-Datei mit
+\textit{awk} oder einem spezialisierten Programm als
+vielversprechender angesehen wird, wurden diese Alternativen hier
+nicht weiter verfolgt, sondern eine inkrementelle und leichter
+erweiterbare Strategie gewählt.
 
 \subsubsection{Hinzufügen von Datensätzen}
 Die gewählte Strategie zur Aktualisierung der Vorhersagedaten erfolgt
@@ -1607,7 +1575,7 @@ entsprechender Datensätze sichergestellt, dass für jeden Spot und
 jeden Vorhersagezeitpunkt der Quellrelation ein Datensatz in der
 Zielrelation existiert. Diese hinzugefügten Datensätze dienen als
 Platzhalter und werden im zweiten Schritt mit den Vorhersagedaten der
-Quellrelation aktualisiert. Mit einer \textit{SQL} Anfrage wird
+Quellrelation aktualisiert. Mit einer \textit{SQL}-Anfrage wird
 diejenige Menge an Datensätze erzeugt, deren Schlüsselkandidaten noch
 nicht in der Zielrelation existieren, sich aber aus den Datensätzen
 der Quellrelation ableiten lassen. Diese Datensätze dienen
@@ -1622,23 +1590,23 @@ repräsentieren die Vorhersageelemente und werden mit dem Wert
 
 \subsubsection{Beeinflussung des Anfrageoptimierers}
 Die Menge der hinzuzufügenden Datensätze kann durch Verwendung
-verschiedenster \textit{SQL} Konstrukte erzeugt werden. Eine der
+verschiedenster \textit{SQL}-Konstrukte erzeugt werden. Eine der
 Aufgaben des Datenbankmanagementsystems besteht darin, einen guten
 Ausführungsplan für eine Anfrage zu finden. Idealerweise sollten dabei
 zwei äquivalente Befehle in den optimalen Ausführungsplan übersetzt
 werden. Diese komplexe Aufgabe wird von den Optimierern der
 verschiedenen Datenbankmanagementsysteme allerdings unterschiedlich
-gut gelöst. Durch das Verwenden verschiedener \textit{SQL} Konstrukte
+gut gelöst. Durch das Verwenden verschiedener \textit{SQL}-Konstrukte
 kann der Optimierer eines Datenbankmanagementsystems teilweise
 beeinflusst werden. Hier wurde das Laufzeitverhalten von zwei
-äquivalenten \textit{SQL} Befehlen durch die Analyse ihrer
+äquivalenten \textit{SQL}-Befehlen durch die Analyse ihrer
 Ausführungspläne untersucht. Beide Befehle wurden auf einer Datenbank
-ausgeführt, in der 32452 Datensätze in der Relation
-\textit{grib\textunderscore messages} enthalten waren. Diese
-Datensätze repräsentierten die Vorhersagedaten für 78 Spots über einen
-Zeitraum von ca. 4 Monaten. Der erste Befehl verwendet einen
-sogenannten \textit{Left Join} um das Ergebnis zu berechnen, im
-zweiten Befehl wird eine \textit{Subquery} benutzt.
+ausgeführt, in der 32.452 Datensätze in der Relation
+\textit{forecasts} enthalten waren. Diese Datensätze repräsentierten
+die Vorhersagedaten für 78 Spots über einen Zeitraum von ca. 4
+Monaten. Der erste Befehl verwendet einen \textit{Left Join} um das
+Ergebnis zu berechnen, im zweiten Befehl wird eine \textit{Subquery}
+benutzt.
 
 \subsubsection{Analyse der Ausführungspläne}
 Da der Optimierer von \textit{PostgreSQL} bei der Wahl des
@@ -1646,33 +1614,34 @@ Ausführungsplans Statistiken über Tabellen verwendet, ist es wichtig,
 diese regelmäßig zu aktualisieren. Üblicherweise wird dies in einem
 bestimmten Intervall durch einen Hintergrundprozess erledigt, sollte
 aber nach dem Einfügen oder Entfernen von vielen Datensätzen manuell
-mit dem \textit{ANALYZE} Befehl durchgeführt werden. Um den
-Ausführunsplan eines \textit{SQL} Befehls in \textit{PostgreSQL}
-anzuzeigen, wird der \textit{EXPLAIN} Befehl benutzt. Durch die Angabe
-der \textit{ANALYZE} Option wird der zu untersuchende Befehl
+mit dem \textit{ANALYZE}-Befehl durchgeführt werden. Um den
+Ausführungsplan eines \textit{SQL}-Befehls in \textit{PostgreSQL}
+anzuzeigen, wird der \textit{EXPLAIN}-Befehl benutzt. Durch die Angabe
+des Parameters \textit{ANALYZE} wird der zu untersuchende Befehl
 ausgeführt und Informationen über dessen Laufzeit ausgegeben. Die hier
-gezeigten Ausführungspläne wurden zwar mit der \textit{ANALYZE} Option
-erstellt, enthalten der Übersichtlichkeit halber aber nicht alle
-Informationen. Vor der Analyse der Ausführungspläne wurden auf allen
-Attributen, die in Anfragen referenziert werden, Indizes definiert und
-die Statistiken der Tabellen aktualisiert. Auf den Schlüsselkandidaten
+gezeigten Ausführungspläne wurden zwar mit dem Parameter
+\textit{ANALYZE} erstellt, zeigen der Übersichtlichkeit halber aber
+nur die für die Untersuchung relevanten Informationen. Vor der Analyse
+der Ausführungspläne wurden auf allen Attributen, die in Anfragen
+referenziert werden, Indizes definiert und die Statistiken der
+Tabellen aktualisiert. Auf den Schlüsselkandidaten
 \textit{spot\textunderscore id} und \textit{valid\textunderscore time}
 wurden zusätzlich noch zusammengesetzte Indizes definiert.
 
 \subsubsection{Ausführungsplan der Left Join Anfrage}
-In Auflistung \ref{forecasts:insert_1} ist der \textit{SQL} Befehl als
+In Auflistung \ref{forecasts:insert_1} ist der \textit{SQL}-Befehl als
 \textit{Left Join} Variante zu sehen, mit der die Menge der
 hinzuzufügenden Datensätze erzeugt wird. Der Befehl verknüpft die
 Datensätze der Relation \textit{grib\textunderscore messages} über die
 Attribute \textit{spot\textunderscore id} und
 \textit{valid\textunderscore time} mit den Datensätzen der Relation
-\textit{forecasts}. Durch die Bedingung in der \textit{WHERE} Klausel
+\textit{forecasts}. Durch die Bedingung in der \textit{WHERE}-Klausel
 wird das Ergebnis auf diejenigen Datensätze reduziert, deren
 Schlüsselkandidat noch nicht in der Relation \textit{forecasts}
 existiert. Dies sind genau die Vorhersagezeitpunkte, die seit der
 letzten Modellberechnung neu hinzugekommen sind.
 
-\begin{lstlisting}[captionpos=b, caption=Hinzufügen von Datensätze mittels Left Join, label=forecasts:insert_1, language=SQL]
+\begin{lstlisting}[captionpos=b, caption=Hinzufügen von Datensätze mittels \textit{Left Join}, label=forecasts:insert_1, language=SQL]
 INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
                       reference_time)
      SELECT grib_messages.spot_id, grib_messages.valid_time, 
@@ -1692,19 +1661,19 @@ definiert sind, kann man im Ausführungsplan in Auflistung
 wird, sondern ein \textit{Sequence Scan} auf den beiden Relationen
 \textit{forecasts} und \textit{grib\textunderscore messages}
 durchgeführt wird. Falls viele Spots hinzukommen oder historische
-Vorhersagedaten für statistische Zwecke und \textit{Data Mining}
-Verfahren über einen längeren Zeitraum behalten werden, könnte man
-hier auf Dauer Probleme bekommen. Der Optimierer scheint bei dieser
-Anfrage nicht zu erkennen, dass die Ergebnismenge im Vergleich zu der
-Anzahl von Datensätzen in der \textit{forecasts} Relation sehr gering
-ist. Im Ergebnis befinden sich nämlich nur diejenigen Datensätze, die
-seit der letzten Modellberechnung hinzugekommen sind. Das Problem
-liegt hier in der Verwendung des \textit{Left Joins}, der den
-Optimierer dazu veranlasst, alle Datensätze der beiden Relationen zu
-verknüpfen und erst anschließend den Großteil der Datensätze wieder
-weg zu werfen.
+Vorhersagedaten für statistische Zwecke und \textit{Data
+  Mining}-Verfahren über einen längeren Zeitraum behalten werden,
+könnte man hier auf Dauer Probleme bekommen. Der Optimierer scheint
+bei dieser Anfrage nicht zu erkennen, dass die Ergebnismenge im
+Vergleich zu der Anzahl von Datensätzen in der \textit{forecasts}
+Relation sehr gering ist. Im Ergebnis befinden sich nämlich nur
+diejenigen Datensätze, die seit der letzten Modellberechnung
+hinzugekommen sind. Das Problem liegt hier in der Verwendung des
+\textit{Left Joins}, der den Optimierer dazu veranlasst, alle
+Datensätze der beiden Relationen zu verknüpfen und erst anschließend
+den Großteil der Datensätze wieder weg zu werfen.
 
-\begin{lstlisting}[captionpos=b, caption=Ausführungsplan des Left Joins, label=forecasts:explain_1]
+\begin{lstlisting}[captionpos=b, caption=Ausführungsplan des \textit{Left Joins}, label=forecasts:explain_1]
 GroupAggregate (cost=14275.00..15496.03 rows=3246 width=20)
  Merge Left Join (cost=14275.00..15317.53 rows=16226 width=20)
    Merge Cond: ((grib_messages.spot_id = forecasts.spot_id) AND 
@@ -1725,19 +1694,13 @@ Anfrage als nutzlos. Der Optimierer von \textit{PostgreSQL} kann durch
 das Setzen entsprechender Parameter allerdings beeinflusst werden. Die
 Ausführung des selben Befehls mit einem erzwungenen \textit{Index
   Scan} ergab ein sehr viel schlechteres Ergebnis als der im
-Allgemeinen als negativ bewertete \textit{Sequence Scan}. Das Problem
+Allgemeinen als teuer bewertete \textit{Sequence Scan}. Das Problem
 dieser Anfrage lässt sich also nicht durch die geschickte Definition
 von Indizes lösen, sondern durch die Vermeidung des \textit{Left
-  Joins}.
-
-Nichtsdestotrotz traten bei der Verwendung dieses Befehls über einen
-Zeitraum von ca. 3 Monaten hinweg keine Probleme auf. Der Befehl wurde
-alle 4 Stunden durch einen \textit{Cronjob} ausgeführt und provozierte
-dabei keinerlei Auffälligkeiten. Die Ausführungszeit beträgt bei der
-jetzigen Datenmenge ca. 214 Millisekunden und kann als akzeptabel
-angesehen werden. Die Ausführungszeit wird aber mit einem Anwachsen
-der \textit{forecasts} Relation stetig zunehmen. Eine bessere
-Alternative ist, die Anfrage in eine \textit{Subquery} umzuformen.
+  Joins}. Die Ausführungszeit beträgt in diesem Ausführungsplan
+ca. 214 Millisekunden, wird aber mit einem Anwachsen der
+\textit{forecasts} Relation stetig zunehmen. Eine bessere Alternative
+ist, die Anfrage in eine \textit{Subquery} umzuformen.
 
 \subsubsection{Ausführungsplan der Subquery Anfrage}
 Ein äquivalenter Befehl zum Einfügen der Platzhalter Datensätze ist in
@@ -1745,11 +1708,11 @@ Auflistung \ref{forecasts:insert_2} zu sehen. Bei dieser Variante wird
 eine \textit{korrelierte Subquery} verwendet, die im Allgemeinen als
 kritisch hinsichtlich der Performanz eingestuft wird. Bei einer
 \textit{korrelierten Subquery} werden in der inneren Anfrage Attribute
-der Äußeren referenziert, was bei der Ausführung dazu führt, dass die
-innere Anfrage für jeden Datensatz ausgeführt werden muss, der durch
-die Äußere erzeugt wird.
+der Äußeren referenziert, was dazu führt, dass die innere Anfrage für
+jeden Datensatz ausgeführt werden muss, der durch die Äußere erzeugt
+wird.
 
-\begin{lstlisting}[captionpos=b, caption=Hinzufügen von Datensätzen mittels Subquery, label=forecasts:insert_2, language=SQL]
+\begin{lstlisting}[captionpos=b, caption=Hinzufügen von Datensätzen mittels \textit{Subquery}, label=forecasts:insert_2, language=SQL]
 INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
                       reference_time)
      SELECT grib_messages.spot_id, grib_messages.valid_time, 
@@ -1777,7 +1740,7 @@ werden. Stattdessen wird für jeden Datensatz aus der Tabelle
 dem Schlüsselkandidaten benutzt, um die Existenz eines entsprechenden
 Datensatzes in der Tabelle \textit{forecasts} zu überprüfen.
 
-\begin{lstlisting}[captionpos=b, caption=Ausführungsplan der Subquery, label=forecasts:explain_2]
+\begin{lstlisting}[captionpos=b, caption=Ausführungsplan der \textit{Subquery}, label=forecasts:explain_2]
 Subquery Scan "*SELECT*"  (cost=270420.52..270481.38 rows=1623 width=36)
  HashAggregate (cost=270420.52..270448.92 rows=1623 width=20)
   Seq Scan on grib_messages  (cost=0.00..270298.82 rows=16226 width=20)
@@ -1791,40 +1754,43 @@ Total runtime: 98.575 ms
 
 Die Performanz der \textit{Subquery} Variante wird bei einer Zunahme
 von Datensätzen der \textit{forecasts} Relation nur minimal
-beeinflusst, da die Anzahl der \textit{Subquery} Aufrufe durch die
+beeinflusst, da die Anzahl der \textit{Subquery}-Aufrufe durch die
 Zahl der Datensätze in der Tabelle \textit{grib\textunderscore
-  messages} beschränkt ist. Die Größe der \textit{forecasts} Relation
+  messages} beschränkt ist. Die Größe der Relation \textit{forecasts}
 kann sich hier nur beim Auffinden von Datensätze über den stetig
 wachsenden Index negativ auswirken. Diese Beeinflussung ist allerdings
 gerade wegen der Verwendung geeigneter Indexstrukturen so gering, dass
 sie hier vernachlässigt werden kann.
 
 Zusammenfassend kann man zu dieser Untersuchung sagen, dass durch die
-Wahl entsprechender \textit{SQL} Konstrukte der Anfrageoptimierer
-eines Datenbankmanagementsystems beeinflusst werden kann und sich
-dies auf die Performanz der Anfrage auswirken kann. Dies spielt bei
-der hier zu Analysezwecken verwendeten Datenmenge zwar noch keine
-große Rolle, kann bei einer größeren Datenmengen aber fatale
-Auswirkungen auf die Laufzeit der Anfragen haben. Wie man sehen
-konnte, war die \textit{Subquery} Anfrage im Gegensatz zur
-\textit{Left Join} Anfrage durch die Anzahl der Datensätze in der
-Tabelle \textit{grib\textunderscore messages} beschränkt. Diese
-Beschränkung ist wiederum abhängig von der Anzahl der Spots, was auch
-genau so sein sollte. Wichtig ist hier nicht, dass die Laufzeit um das
-doppelte beschleunigt wurde, sondern dass die Anfrage durch die Anzahl
-der Spots und nicht durch die Anzahl der historischen Daten beschränkt
-ist.
+Wahl entsprechender \textit{SQL}-Konstrukte der Anfrageoptimierer
+eines Datenbankmanagementsystems beeinflusst werden kann und sich dies
+auf die Performanz der Anfrage auswirken kann. Wie man sehen konnte,
+war die \textit{Subquery}-Anfrage im Gegensatz zur \textit{Left
+  Join}-Anfrage durch die Anzahl der Datensätze in der Tabelle
+\textit{grib\textunderscore messages} beschränkt. Diese Beschränkung
+ist wiederum abhängig von der Anzahl der Spots, was auch genau so sein
+sollte. Wichtig ist, dass die Anfrage durch die Anzahl der Spots und
+nicht durch die Anzahl der historischen Daten beschränkt ist.
+
+Um eine Aussage über die durchschnittliche Laufzeit der
+\textit{Subquery} Variante machen zu können, wurden die Laufzeiten
+dieser Befehle ebenfalls über einen Zeitraum von einer Woche aus den
+Log-Dateien extrahiert. Aus diesen 56 Messwerten ($24h/6h * 7 * 2$),
+ergab sich eine durchschnittliche Laufzeit von 131 Millisekunden mit
+einer Standardabweichung von 34 Millisekunden.
 
 \subsubsection{Aktualisierung der Vorhersagedaten}
 Die Aktualisierung der Vorhersagedaten wird wegen der erwähnten
-Transposition von Zeilen zu Spalten elementweise durchgeführt. Für
-jedes Vorhersageelement wird ein \textit{UPDATE} Befehl ausgeführt,
-der die entsprechende Spalte der Datensätze aus der \textit{forecasts}
-Relation aktualisiert. In Auflistung \ref{forecasts:update} ist der
-\textit{UPDATE} Befehl zu sehen, mit dem die Wellenhöhen aktualisiert
-werden. Da sich die Befehle nur in der Angabe des Spaltennamen in
-Zeile 3 und der Angabe der Elementkennung in Zeile 6 unterscheiden,
-werden diese Befehle dynamisch erzeugt und hintereinander ausgeführt.
+Transposition von Zeilen zu Spalten pro Vorhersageelement
+durchgeführt. Für jedes Element wird ein \textit{UPDATE}-Befehl
+ausgeführt, der die entsprechende Spalte der Datensätze aus der
+Relation \textit{forecasts} aktualisiert. In Auflistung
+\ref{forecasts:update} ist der \textit{UPDATE}-Befehl zu sehen, mit
+dem die Werte der Wellenhöhen aktualisiert werden. Da sich die Befehle
+nur in der Angabe des Spaltennamen in Zeile 3 und der Angabe der
+Elementkennung in Zeile 6 unterscheiden, werden diese Befehle pro
+Modell dynamisch erzeugt und hintereinander ausgeführt.
 
 \begin{lstlisting}[captionpos=b, caption=Aktualisierung der Wellenhöhe, label=forecasts:update, language=SQL]
 UPDATE forecasts
@@ -1842,14 +1808,19 @@ zeigt, dass bei der Aktualisierung zwei Indizes genutzt werden. Zum
 einen wird der Index auf dem Attribut \textit{element} der Tabelle
 \textit{grib\textunderscore messages} genutzt, um nur diejenigen
 Zeilen zu finden, in denen die Wellenhöhe gespeichert ist. Zum anderen
-wird der zusammengesetzte Index auf dem Schlüsselkandidaten der
-Tabelle \textit{forecasts} beansprucht, um nur Vorhersagen zu
+wird der zusammengesetzte Index auf dem Schlüsselkandidaten
+(\textit{spot\textunderscore id, valid\textunderscore time}) der
+Tabelle \textit{forecasts} verwendet, um nur Vorhersagen zu
 aktualisieren, die auch im Zeitraum der aktuellen Modellberechnung
-liegen. Die Laufzeit zur Aktualisierung der Wellenhöhe beträgt ca. 108
-Millisekunden und ist wegen der Verwendung des Index auf der Tabelle
-\textit{forecasts} ebenfalls durch die Anzahl der Spots
-beschränkt. Die Laufzeit der \textit{UPDATE} Befehle zur
-Aktualisierung der anderen Vorhersagespalten verhält sich ähnlich.
+liegen. Die Laufzeit zur Aktualisierung der Wellenhöhe beträgt in
+diesem Ausführungsplan ca. 128 Millisekunden und ist wegen der
+Verwendung des Index auf der Tabelle \textit{forecasts} ebenfalls
+durch die Anzahl der Spots beschränkt. Über einen Zeitraum von einer
+Woche ergab sich für einen \textit{UPDATE}-Befehl eine
+durchschnittliche Laufzeit von 195 Millisekunden mit einer
+Standardabweichung von 41 Millisekunden. Für diese Berechnung wurden
+insgesamt 308 Messwerte ($24h/6h * 7 * 11$) aus den Log-Dateien
+extrahiert.
 
 \begin{lstlisting}[captionpos=b, caption=Ausführungsplan der Aktualisierung, label=forecasts:update_explain]
 Nested Loop (cost=108.56..17995.79 rows=4619 width=134)
@@ -1862,21 +1833,28 @@ Nested Loop (cost=108.56..17995.79 rows=4619 width=134)
                    (cost=0.00..3.71 rows=1 width=118)
     Index Cond: ((forecasts.spot_id = grib_messages.spot_id) AND 
                  (forecasts.valid_time = grib_messages.valid_time))
-Total runtime: 107.865 ms
+Total runtime: 127.865 ms
 \end{lstlisting}
 
 Bei der mengenorientierten Aktualisierung der Vorhersagedaten werden
 insgesamt \textit{N+1} Anfragen ausgeführt, wobei \textit{N} für die
-Anzahl der Vorhersageelemente steht. Zunächst wird ein \textit{INSERT}
-Befehl ausgeführt und anschließend ein \textit{UPDATE} Befehl pro
-Vorhersageelement. Alle Befehle zur Aktualisierung der Vorhersagedaten
-laufen in einer Transaktion ab, durch die sichergestellt ist, dass der
-ursprünglichen Status der Datenbank bei einem eventuellen Fehler
-wieder hergestellt wird. Die Angaben zur Laufzeit der \textit{SQL}
-Befehle schwanken im Bereich von ca. 50 Millisekunden und können auch
-nur als grobe Richtwerte für die hier verwendete Datenmenge verstanden
-werden. Diese Schwankungen haben unter anderem mit dem Cache des
-Datenbankmanagementsystems zu tun.
+Anzahl der Vorhersageelemente steht. Zunächst wird ein
+\textit{INSERT}-Befehl ausgeführt und anschließend ein
+\textit{UPDATE}-Befehl pro Vorhersageelement. Alle Befehle zur
+Aktualisierung der Vorhersagedaten laufen in einer Transaktion ab,
+durch die sichergestellt ist, dass der ursprüngliche Status der
+Datenbank bei einem eventuellen Fehler wieder hergestellt wird. Dies
+hat den zusätzlichen Vorteil, dass mehrere Befehle, die in einer
+Transaktion stattfinden, von \textit{PostgreSQL} schneller ausgeführt
+werden können, als wenn jeder Befehl in eine eigene Transaktion
+eingebettet ist. 
+
+% Im nächsten Abschnitt werden die hier analysierten Befehle Die
+% Angaben zur Laufzeit der \textit{SQL}-Befehle schwanken im Bereich
+% von ca. 50 Millisekunden und können auch nur als grobe Richtwerte
+% für die hier verwendete Datenmenge verstanden werden. Diese
+% Schwankungen haben unter anderem mit dem Cache des
+% Datenbankmanagementsystems zu tun.
 
 \subsubsection{Laufzeitverhalten bei einer größeren Datenmenge}
 Eine konkrete Aussage über die Laufzeit des Ladevorgangs bei einer
@@ -1890,27 +1868,25 @@ Parametern zur Konfiguration des Datenbankmanagementsystems kann das
 Verhalten des Anfrageoptimierers ebenfalls beeinflusst werden. Diese
 Parameter hängen wiederum von den Eigenschaften der verwendeten
 Hardware ab. Eine Diskussion zur optimalen Einstellung von
-Konfigurationsparametern würde zum einen den Rahmen dieser Arbeit
-sprengen, zum anderen der Aussage \textit{''Premature optimization is
-  the root of all evil''} von
-\footnote{\url{http://shreevatsa.wordpress.com/2008/05/16/premature-optimization-is-the-root-of-all-evil}}
-Donald Knuth widersprechen. Da bisher noch kein Engpass existiert,
-wurden in diese Richtung hin keine weiteren Untersuchen gemacht.
+Konfigurationsparametern würde den Rahmen dieser Arbeit sprengen. Da
+bisher noch kein Engpass existiert, wurden in diese Richtung hin keine
+weiteren Untersuchen gemacht.
 
-Um trotzdem ein gewisses Gefühl für die Laufzeit bei einer höheren
-Anzahl von Spots zu bekommen, wird hier eine Hochrechnung der Laufzeit
+Um trotzdem einen Eindruck für die Laufzeit bei einer höheren Anzahl
+von Spots zu bekommen, wird hier eine Hochrechnung der Laufzeit
 vorgestellt, die auf vereinfachten Annahmen basiert. Da die Laufzeit
 der einzelnen Befehle sich in einem ähnlichen Zeitrahmen bewegen, wird
 hier die Annahme getroffen, dass die Laufzeit eines einzelnen Befehls
-konstant ist und sich aufsummieren lässt. Weiterhin wird angenommen,
-dass sich die Laufzeit bei einer Zunahme der Datenmenge nicht
-verändert. Somit kann die Gesamtlaufzeit der \textit{SQL} Befehle für
-einen Spot mit $L = ((N+1) * l) / 78$ abgeschätzt werden, wobei $N$
-für die Anzahl der Vorhersageelemente, $l$ für die Laufzeit eines
-\textit{SQL} Befehls und 78 für die Anzahl der Spots steht, die bei
-der zuvor durchgeführten Untersuchung existierten. Die Werte in
-Tabelle \ref{tab:sql_laufzeit} wurden unter der Annahme berechnet,
-dass $N=11$ Vorhersageelemente für jeden Spot verarbeitet werden.
+konstant ist und sich die Gesamtlaufzeit aller Befehle aufsummieren
+lässt. Weiterhin wird angenommen, dass sich die Laufzeit bei einer
+Zunahme der Datenmenge nicht verändert. Somit kann die Gesamtlaufzeit
+der \textit{SQL}-Befehle für einen Spot mit $L = ((N+1) * l) / 78$
+abgeschätzt werden, wobei $N$ für die Anzahl der Vorhersageelemente,
+$l$ für die Laufzeit eines \textit{SQL}-Befehls und 78 für die Anzahl
+der Spots steht, die bei der zuvor durchgeführten Untersuchung
+existierten. Die Werte in Tabelle \ref{tab:sql_laufzeit} wurden unter
+der Annahme berechnet, dass $N=11$ Vorhersageelemente für jeden Spot
+verarbeitet werden.
 
 \begin{table*}[h]
   \centering
@@ -1929,7 +1905,7 @@ dass $N=11$ Vorhersageelemente für jeden Spot verarbeitet werden.
     \end{longtable}
   }
 
-  \caption{Hochrechnung der Laufzeit aller \textit{SQL} Befehle}
+  \caption{Hochrechnung der Laufzeit aller \textit{SQL}-Befehle}
   \label{tab:sql_laufzeit}
 
 \end{table*}
@@ -1946,11 +1922,11 @@ Das Laden der Vorhersagedaten mit dem \textit{Bulk Loader} von
 ''\textit{Performance Tips}'' \cite{postgresql:performance} der
 \textit{PostgreSQL} Dokumentation werden einige Vorschläge gemacht,
 die zur Steigerung der Performanz beitragen können. Beispielsweise
-kann der \textit{COPY} Befehl am schnellsten ausgeführt werden, wenn
+kann der \textit{COPY}-Befehl am schnellsten ausgeführt werden, wenn
 er in der selben Transaktion wie ein zuvor abgesetzter \textit{CREATE
-  TABLE} oder \textit{TRUNCATE} Befehl ausgeführt wird. In diesem Fall
-kann auf das sonst zu verwaltende \textit{Write Ahead Log} verzichtet
-werden, da bei einem Fehler die Daten wieder gelöscht
+  TABLE}- oder \textit{TRUNCATE}-Befehl ausgeführt wird. In diesem
+Fall kann auf das sonst zu verwaltende \textit{Write Ahead Log}
+verzichtet werden, da bei einem Fehler die Daten wieder gelöscht
 werden. Weiterhin wird vorgeschlagen, die Indizes einer zu ladenden
 Tabelle vor dem Laden zu löschen und erst danach wieder zu erstellen,
 da der Aufbau eines neuen Index schneller ist als eine zeilenweise
@@ -1962,36 +1938,35 @@ zu anderen Vorschlägen als nicht sehr hoch eingestuft wird.
 Viel mehr Potential zur Beschleunigung des Ladevorgangs wird in einer
 Vorverarbeitung der Vorhersagedaten gesehen. Durch diesen zusätzlichen
 Schritt könnte man die Vorhersagedaten in eine \textit{CSV}-Datei
-transformieren, die der Struktur der \textit{forecasts} Tabelle
+transformieren, die der Struktur der Tabelle \textit{forecasts}
 entspricht. Die bisher in der Datenbank durchgeführte Transposition
 von Zeilen zu Spalten würde so in ein externes Programm verlagert
 werden, mit der Aussicht, diese effizienter durchführen zu können, als
-dies mit den Boardmitteln des Datenbankmanagementsystems möglich
-ist. Die transformierte Datei kann dann in eine entsprechende
-\textit{Staging Area} geladen werden und mit einem \textit{UPDATE-}
-und einem \textit{INSERT} Befehl in die \textit{forecasts} Relation
-integriert werden. Eine noch bessere Alternative wäre, die zu
-aktualisierenden Datensätze der \textit{forecasts} Tabelle vor dem
-Laden zu löschen und die \textit{CSV}-Datei mit einem \textit{COPY}
-Befehl direkt in diese Relation zu integrieren. Ein Nachteil an diesem
-Vorschlag ist, dass der Transformationsschritt vom
-Aktualisierungszeitplan der beiden Modelle abhängig ist. Da die Daten
-beider Modelle zu einem Datensatz der \textit{forecasts} Relation
-transformiert werden, stellt sich die Frage, welche Strategie man bei
-der Transformation und beim späteren Laden wählt, falls die Modelle
-erst zu unterschiedlichen Zeitpunkten zur Verfügung stehen (was in der
-Regel der Fall ist). Hier wäre die einfachste Möglichkeit, den
-Transformationsschritt erst dann anzustoßen, wenn die Daten beider
-Modelle verfügbar sind. Andernfalls müsste man die aktuellen Daten des
-einen Modells mit den schon geladenen Daten des anderen Modells
-verknüpfen.
+dies innerhalb des Datenbankmanagementsystems möglich ist. Die
+transformierte Datei kann dann in eine entsprechende \textit{Staging
+  Area} geladen werden und mit einem \textit{UPDATE-} und einem
+\textit{INSERT}-Befehl in die Relation \textit{forecasts} integriert
+werden. Eine noch bessere Alternative wäre, die zu aktualisierenden
+Datensätze der Tabelle \textit{forecasts} vor dem Laden zu löschen und
+die \textit{CSV}-Datei mit einem \textit{COPY}-Befehl direkt in diese
+Relation zu integrieren. Ein Nachteil an diesem Vorschlag ist, dass
+der Transformationsschritt vom Aktualisierungszeitplan der beiden
+Modelle abhängig ist. Da die Daten beider Modelle zu einem Datensatz
+der Relation \textit{forecasts} transformiert werden, stellt sich die
+Frage, welche Strategie man bei der Transformation und beim späteren
+Laden wählt, falls die Modelle erst zu unterschiedlichen Zeitpunkten
+zur Verfügung stehen (was in der Regel der Fall ist). Hier wäre die
+einfachste Möglichkeit, den Transformationsschritt erst dann
+anzustoßen, wenn die Daten beider Modelle verfügbar sind. Andernfalls
+müsste man die aktuellen Daten des einen Modells mit den schon
+geladenen Daten des Anderen verknüpfen.
 
+\section{Zusammenfassung}
 \begin{table*}[h]
   \centering
   {\sf
     \footnotesize
     \begin{longtable}{l|c|c|c|c}
-
       \toprule
       \textbf{Phase} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots}\\
       \midrule
@@ -2005,34 +1980,30 @@ verknüpfen.
       \bottomrule
     \end{longtable}
   }
-
   \caption{Hochrechnung der Gesamtlaufzeit}
   \label{tab:gesamt_laufzeit}
-
 \end{table*}
 
 Eine Vorverarbeitung der Daten bietet sich insbesondere bei dem zur
 Zeit stattfindenden Trend in Richtung \textit{Cloud Computing} an. Die
-Extraktion und Transformation der Vorhersagedaten wäre ein guter
-Kandidat für das \textit{Map Reduce} Verfahren. Die Extraktion und
-Transformation der Vorhersagedaten könnte auf mehrere Systeme
-aufgeteilt und durch parallele Verarbeitung sehr viel schneller
-durchgeführt werden.  Dieses Verfahren ist mittlerweile durch Web
-Services, wie z.B. \textit{Amazon's Elastic Map Reduce}
+Extraktion und die Transformation der Vorhersagedaten wären gute
+Kandidaten für das \textit{Map Reduce} Verfahren. Das Verarbeiten der
+Vorhersagedaten könnte auf mehrere Systeme aufgeteilt und durch
+parallele Verarbeitung sehr viel schneller durchgeführt werden.
+Dieses Verfahren ist mittlerweile durch Web Services, wie
+z.B. \textit{Amazon's Elastic Map Reduce}
 \footnote{\url{http://aws.amazon.com/elasticmapreduce}}, auch für
 kleiner Projekte ohne Anschaffung der benötigten Hardware
 erschwinglich und interessant geworden.
 
-Die Verbesserung des gesamten \textit{ETL} Prozesses erfordert ein
+Die Verbesserung des gesamten \textit{ETL}-Prozesses erfordert ein
 gründliches Abwägen der verschiedenen Vor- und Nachteile. Oft stellt
 sich heraus, dass man mit einem Geschwindigkeitsvorteil an einer
 Stelle, Flexibilität an einer anderen einbüßt und/oder zusätzliche
-Komplexität erzeugt. Stoßen die hier entwickelten \textit{ETL}
-Prozesse an ihre Grenzen, würde mit Hinblick auf das \textit{Map
-  Reduce} Verfahren der Weg in Richtung Vorverarbeitung
-eingeschlagen. Grundsätzlich sollte bei der Optimierung von
-\textit{ETL} Prozessen an den Stellen angesetzt werden, an denen der
-größte Geschwindigkeitsvorteil zu erwarten ist.
+Komplexität erzeugt. Stoßen die hier entwickelten
+\textit{ETL}-Prozesse an ihre Grenzen, würde mit Hinblick auf das
+\textit{Map Reduce} Verfahren der Weg in Richtung Vorverarbeitung
+eingeschlagen.
 
 %%% Local Variables:
 %%% mode: latex

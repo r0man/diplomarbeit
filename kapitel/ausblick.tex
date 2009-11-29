@@ -21,25 +21,26 @@ bei der Betrachtung der Wetterlage.
 Da surfbare Wellen oft durch den viele Kilometer weit gereisten Swell
 entstehen, ist eine globale Betrachtung dessen Ausbreitung recht
 aufschlussreich. In Abbildung \ref{wave-watch-grads} ist eine
-Wetterkarte mit den Wellenhöhen und einiger weiterer Vorhersageelement
-über dem Atlantik zu sehen. Die verschiedenen Wellenhöhen sind dort in
-unterschiedlichen Farben gekennzeichnet. Durch diese Darstellung kann
-man sehr gut Trends erkennen, die bei einem Blick auf bloße Zahlen gar
-nicht auffallen würden oder nur schwer erkennbar wären. Betrachtet man
-beispielsweise nur die Wellenhöhen an einem bestimmten Spot, kann man
-nur eine Aussage für die nächsten 180 Stunden machen. Zieht man jedoch
-die visuelle Darstellung der Wellenausbreitung hinzu, kann man oft
-einen dort erst sehr viel später eintreffenden Swell erkennen und eine
+Wetterkarte mit den Wellenhöhen und einiger weiterer
+Vorhersageelemente über dem Atlantik zu sehen. Die verschiedenen
+Wellenhöhen sind dort in unterschiedlichen Farben
+gekennzeichnet. Durch diese Darstellung kann man sehr gut Trends
+erkennen, die bei einem Blick auf bloße Zahlen gar nicht auffallen
+würden oder nur schwer erkennbar wären. Betrachtet man beispielsweise
+nur die Wellenhöhen an einem bestimmten Spot, kann man nur eine
+Aussage für die nächsten 180 Stunden machen. Zieht man jedoch die
+visuelle Darstellung der Wellenausbreitung hinzu, kann man oft einen
+dort erst sehr viel später eintreffenden Swell erkennen und eine
 Einschätzung weit über 180 Stunden hinaus bekommen. Eine Darstellung
 solcher Strömungsfilme für einige ausgewählte Regionen wäre eine
 wünschenswerte Erweiterung, mit der den Nutzern der Web-Applikation
 ein Mehrwert geboten werden könnte. Einige Webseiten
 \footnote{\url{http://nomad5.ncep.noaa.gov/cgi-bin/pdisp_wave.sh}}
-bieten bereits eine sehr gute \footnote{\url{http://magicseaweed.com}}
-Aufbereitung solcher Vorhersagen an, und solch eine Integration wäre
-für die Web-Applikation ebenfalls wünschenswert. Um Plots wie in
-Abbildung \ref{wave-watch-grads} zu sehen und Strömungsfilme zu
-erstellen, kann das Open Source Programm \textit{Grads}
+bieten bereits sehr gute \footnote{\url{http://magicseaweed.com}}
+Aufbereitungen solcher Vorhersagen an, was auch für die hier
+entwickelte Web-Applikation wünschenswert wäre. Um Plots wie in
+Abbildung \ref{wave-watch-grads} und Strömungsfilme zu erstellen, kann
+das Open Source Programm \textit{Grads}
 \footnote{\url{http://www.iges.org/grads/}} verwendet werden.
 
 \begin{figure}[h]
@@ -79,9 +80,9 @@ zwei benachbarte Spots sehr ähnlichen Wetter- und Wellenverhältnissen
 ausgesetzt sind, die Qualität der brechenden Wellen sich aber
 erheblich unterscheidet. Dies kann z.B. daran liegen, dass der eine
 Spot besser bei Flut und der andere besser bei Ebbe bricht. Manche
-Spots fangen erst bei einer bestimmten Wellenhöhe an zu brechen,
-andere hingegen sind bei zu großen Wellen nicht mehr surfbar, da die
-Wellen sofort in sich zusammenfallen. Vor Ort ansässige Surfer,
+Spots wiederum fangen erst bei einer bestimmten Wellenhöhe an zu
+brechen, andere hingegen sind bei zu großen Wellen nicht mehr surfbar,
+da die Wellen sofort in sich zusammenfallen. Vor Ort ansässige Surfer,
 sogenannte \textit{Locals}, haben oft ein feines Gespür für diese
 Zusammenhänge, was wohl auf deren langjährige Beobachtungen
 zurückzuführen ist.
@@ -96,26 +97,27 @@ und in Verbindung mit den Vorhersagen gebracht werden können.
 \subsubsection{Abstimmung durch die Benutzer}
 Eine im Rahmen dieser Arbeit leider nicht weiter verfolgbare Idee,
 welche diese Problematik vielleicht lösen könnte, wäre die Einführung
-eines Abstimmungssystems in Kombination mit Data Mining
-Verfahren. Informiert sich ein Benutzer auf der Webseite über die
-Surfbedingungen an einem bestimmten Spot, könnte man ihn zu den
-Bedingungen in den letzten Tagen befragen. Mit etwas Glück kann es
-nämlich durchaus sein, dass der Benutzer dort surfen war und eine
-Aussage über die damalige Qualität der Wellen treffen kann. Diese
-Befragung sollte benutzerfreundlich und schnell vonstatten gehen,
-damit sich die Besucher nicht belästigt fühlen, sondern konstruktiv
-daran teilnehmen. Hier würde sich z.B. eine Bewertungsskala von 1 bis
-5 ''Sternen'' mit einer Auswahl des entsprechenden Zeitpunktes
-anbieten. Die so erhobenen Datensätze sollten Informationen über den
-Spot, den Zeitpunkt zu dem der Benutzer surfen war, die Qualität der
-Wellen und den Benutzer selbst (optional) enthalten. Sammelt man viele
-dieser Bewertungen können diese statistisch ausgewertet und eine
-Aussage darüber getroffen werden, wie gut die Surfbedingungen in der
-Vergangenheit waren. Mit diesen Informationen könnte man z.B. die
-besten Spots in einer Region bestimmen oder die Konsistenz der
-Surfbedingungen an einem Spot ermitteln. Eine weitaus interessantere
-Verwendung dieser Daten wäre aber, sie für die Bewertung von
-zukünftigen Surfbedingungen einzusetzen.
+eines Abstimmungssystems in Kombination mit
+\textit{Data-Mining}-Verfahren. Informiert sich ein Benutzer auf der
+Community Plattform über die Surfbedingungen an einem bestimmten Spot,
+könnte man ihn zu den Bedingungen in den letzten Tagen befragen. Mit
+etwas Glück kann es nämlich durchaus sein, dass der Benutzer dort
+surfen war und eine Aussage über die damalige Qualität der Wellen
+treffen kann. Diese Befragung sollte benutzerfreundlich und schnell
+vonstatten gehen, damit sich die Besucher nicht belästigt fühlen,
+sondern konstruktiv daran teilnehmen. Hier würde sich z.B. eine
+Bewertungsskala von 1 bis 5 ''Sternen'' mit einer Auswahl des
+entsprechenden Zeitpunktes anbieten. Die so erhobenen Datensätze
+sollten Informationen über den Spot, den Zeitpunkt zu dem der Benutzer
+surfen war, die Qualität der Wellen und den Benutzer selbst (optional)
+enthalten. Sammelt man viele dieser Bewertungen können diese
+statistisch ausgewertet und eine Aussage darüber getroffen werden, wie
+gut die Surfbedingungen in der Vergangenheit waren. Mit diesen
+Informationen könnte man z.B. die besten Spots in einer Region
+bestimmen oder die Konsistenz der Surfbedingungen an einem Spot
+ermitteln. Eine weitaus interessantere Verwendung dieser Daten wäre
+aber, sie für die Bewertung von zukünftigen Surfbedingungen
+einzusetzen.
 
 \subsubsection{Bewertung zukünftiger Surfbedingungen}
 Es wäre wünschenswert, wenn man einem Benutzer neben den Wetter- und
@@ -166,8 +168,8 @@ werden die Zusammenhänge zwischen den Vorhersagen, den lokalen
 Gegebenheiten und der Qualität der Surfbedingungen zu finden und
 daraus zukünftige Bewertungen abzuleiten. \textit{Bayesian
   Classifier}, \textit{Decision Trees}, und \textit{Neuronale
-  Netzwerke} sind nur einige der vorgestellten Algorithmen, mit denen
-man versuchen könnte, dieses Problem zu lösen.
+  Netzwerke} sind nur einige der dort vorgestellten Algorithmen, mit
+denen man versuchen könnte, dieses Problem zu lösen.
 
 \subsubsection{Supervised Learning}
 Bei Algorithmen aus dem Bereich des maschinellen Lernens unterscheidet
@@ -215,20 +217,20 @@ Instanz des Algorithmus übergeben, der dann das Ergebnis unter
 Berücksichtigung der Trainingsdaten berechnet. Um dies Berechnung in
 die Web-Applikation zu integrieren würde man beispielsweise einmal
 täglich für jeden Spot eine Instanz des Algorithmus mit den
-zugehörigen Trainingsdaten initialisieren und persistent
-abspeichern. Da die Klassifikation einer Vorhersage schnell zu
-berechnen ist, könnte die Bewertung sogar bei einem Seitenaufruf der
-Web-Applikation dynamisch generiert werden. Alternativ könnte man die
-Berechnung auch in den \textit{ETL-}Prozess integrieren und alle
-Bewertungen in der Datenbank vorhalten.
+zugehörigen Trainingsdaten initialisieren und abspeichern. Da die
+Klassifikation einer Vorhersage schnell zu berechnen ist, könnte die
+Bewertung sogar bei einem Seitenaufruf der Web-Applikation dynamisch
+generiert werden. Alternativ könnte man die Berechnung auch in den
+\textit{ETL-}Prozess integrieren und alle Bewertungen in der Datenbank
+vorhalten.
 
 Anzumerken ist hier noch, dass der \textit{Support Vector Machine}
-Algorithmus ein sogenanntes \textit{Black-Box} Verfahren ist, d.h. die
-lokalen Gegebenheiten eines Spots fließen hier indirekt über die
-erhobenen Abstimmungsdaten mit in die Bewertung ein. Welche
-Zusammenhänge allerdings zwischen den Vorhersagedaten und den lokalen
-Gegebenheiten bestehen, können mit diesem Verfahren nicht ermittelt
-werden.
+Algorithmus ein sogenanntes \textit{Black-Box} Verfahren
+\cite{Seagaran2007}[S.292] ist, d.h. die lokalen Gegebenheiten eines
+Spots fließen hier indirekt über die erhobenen Abstimmungsdaten mit in
+die Bewertung ein. Welche Zusammenhänge allerdings zwischen den
+Vorhersagedaten und den lokalen Gegebenheiten bestehen, können mit
+diesem Verfahren nicht ermittelt werden.
 
 \subsubsection{Erfolgsaussichten und Hindernisse}
 Damit mit dem Algorithmus gute Ergebnisse erzielt werden, benötigt man
@@ -240,7 +242,7 @@ werden.
 
 Ob dieses Verfahren überhaupt zum Ziel führt, müsste durch eine
 Auswertung der Ergebnisse an verschiedenen Spots überprüft
-werden. Zudem werden dem Algorithmus bei der Initialisierung noch
+werden. Außerdem werden dem Algorithmus bei der Initialisierung noch
 einige Parameter übergeben, die sich auf die Berechnung der
 Bewertungen auswirken. Diese Parameter variieren von Problem zu
 Problem, können aber durch ein Verfahren das sich

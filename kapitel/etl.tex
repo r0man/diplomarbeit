@@ -805,7 +805,7 @@ der beiden Modelle.
       \bottomrule
     \end{longtable}
   }
-  \caption{Verzeichnisstruktur der \textit{Grib}-Daten im lokalen Repository}
+  \caption{Verzeichnisstruktur und \textit{Grib}-Daten im lokalen Repository}
   \label{tab:repository}
 \end{table*}
 
@@ -1044,7 +1044,7 @@ erheblich beeinflusst, wurde der Algorithmus auf einige Spots
 angewendet und die Ergebnisse untersucht.
 
 \subsubsection{Beobachtungen bei der Anwendung des Algorithmus}
-Der Algorithmus wurde auf 73 Spots angewendet, von denen zwei in
+Der Algorithmus wurde auf 78 Spots angewendet, von denen zwei in
 Nord-Amerika, 4 in Indonesien und die restlichen in Europa liegen. Als
 Abbruchbedingung wurde die maximale Distanz $\Delta$ bei der
 Initialisierung des Algorithmus auf 100 Kilometer gesetzt. Für die
@@ -1219,20 +1219,25 @@ weiter benötigt und können gelöscht werden.
 
 \end{table*}
 
-Das Auslesen und die Transformation der Vorhersagedaten dauert für ein
-Element durchschnittlich 17 Millisekunden (ohne Index ca. 320 ms) mit
-einer Standardabweichung von 3,2 Millisekunden. Diese Werte wurden
-durch mehrmaliges Auslesen eines Vorhersageelements an einer festen
-Position ermittelt. In Tabelle \ref{tab:transformation_laufzeit} ist
-eine Hochrechnung dieser durchschnittlichen Laufzeit für mehrere
-Elemente und Spots zu sehen. Wie viele Spots weltweit existieren
-bzw. mit welcher Anzahl an zu verarbeitenden Spots zu rechnen ist,
-kann an dieser Stelle nur geschätzt werden. Auf einer ähnlichen
-Webseite \footnote{\url{http://www.wannasurf.com}} waren Mitte Oktober
-2009 ungefähr 8.300 Spots weltweit gelistet. Das Auslesen der
-Vorhersagedaten für 11 Elemente und deren Transformation in eine
-\textit{CSV}-Datei würde für diese 8.300 Spots somit ca. 26 Minuten
-($187 ms * 8.300$) dauern.
+Das Auslesen der Vorhersagedaten dauert für ein Element
+durchschnittlich 17 Millisekunden mit einer Standardabweichung von 4
+Millisekunden. Diese Werte wurden ermittelt, indem für 78 Spots alle
+11 Vorhersageelemente ausgelesen wurden und die Laufzeit für jedes
+Vorhersageelement protokolliert wurde. Das arithmetische Mittel und
+die Standardabweichung wurden also aus insgesamt 858 Messwerten
+berechnet. Die Messung wurde auf einem dedizierten Server
+\footnote{\url{http://www.ovh.de/produkte/superplan_best_of.xml}}
+durchgeführt, der mit einem Intel Core 2 Duo (2x 2.66+ GHz) Prozessor
+und 4 GB Arbeitsspeicher ausgestattet ist. In Tabelle
+\ref{tab:transformation_laufzeit} ist eine Hochrechnung dieser
+durchschnittlichen Laufzeit für mehrere Elemente und Spots zu
+sehen. Wie viele Spots weltweit existieren bzw. mit welcher Anzahl an
+zu verarbeitenden Spots zu rechnen ist, kann an dieser Stelle nur
+geschätzt werden. Auf einer ähnlichen Webseite
+\footnote{\url{http://www.wannasurf.com}} waren Mitte Oktober 2009
+ungefähr 8.300 Spots weltweit gelistet. Das Auslesen der
+Vorhersagedaten für 11 Elemente würde für diese 8.300 Spots somit
+ca. 26 Minuten ($187 ms * 8.300$) dauern.
 
 \subsection{Verbesserung des Transformationsvorgangs}
 Sowohl hinsichtlich der Geschwindigkeit als auch der Korrektheit ist
@@ -1258,7 +1263,10 @@ Position nun besser zur Extraktion der Vorhersagedaten geeignet ist
 bzw. welche Vorhersagewerte am ehesten dem Spot entsprechen, müsste im
 Detail noch untersucht werden. Die bisher erzielten Ergebnisse machen
 jedoch einen realistischen Eindruck und liefern nachvollziehbare
-Resultate, die als zufriedenstellend bewertet werden können.
+Resultate, die bis auf kleinere Abweichungen den Vorhersagen einer
+ähnlichen Webseite \footnote{\url{http://magicseaweed.com}}
+entsprechen, und somit erst einmal als zufriedenstellend bewertet
+werden.
 
 Die Geschwindigkeit bei der Extraktion der Vorhersagedaten mit dem
 Programm \textit{degrib} kann nicht bemängelt werden. Nachdem ein
@@ -1399,14 +1407,13 @@ hinzugekommenen Datensätze mit einem \textit{INSERT} Befehl
 einfügen. Bei einem Vorhersagezeitraum von 180 Stunden in einem 3
 stündigen Intervall sind dies pro Spot $(180 / 3) + 1 = 61$
 auszuführende \textit{SQL} Befehle, den Zeitpunkt der Analyse mit
-berücksichtigt. Für die verwendeten 73 Spots wären das $61 * 73 =
-4.453$, bei den zuvor erwähnten 8.300 Spots einer ähnlichen Webseite
+berücksichtigt. Für die verwendeten 78 Spots wären das $61 * 78 =
+4.758$, bei den zuvor erwähnten 8.300 Spots einer ähnlichen Webseite
 $61 * 8.300 = 506.300$ auszuführende \textit{SQL} Befehle. Da sich bei
-einer größeren Datenmenge der vom Datenbankmanagementsystem
-betriebene Overhead beim Ausführen der vielen Befehle negativ auf die
-Performanz des Ladevorgangs auswirkt \cite{postgresql:populate}, wurde
-diese Methode zur Aktualisierung der Vorhersagedaten nicht weiter
-verfolgt.
+einer größeren Datenmenge der vom Datenbankmanagementsystem betriebene
+Overhead beim Ausführen der vielen Befehle negativ auf die Performanz
+des Ladevorgangs auswirkt \cite{postgresql:populate}, wurde diese
+Methode zur Aktualisierung der Vorhersagedaten nicht weiter verfolgt.
 
 Das hier beschriebene Verfahren eignet sich für Anwendungen, bei denen
 nur eine geringe Datenmenge zu verarbeiten und die Performanz des
@@ -1511,6 +1518,38 @@ COPY grib_messages (
 ) FROM STDIN;
 \end{lstlisting}
 
+Um die durchschnittliche Laufzeit für den Bulk Loader zu ermitteln,
+wurde eine \textit{CSV}-Datei erstellt, in der Vorhersagedaten aus
+beiden Modellen für 78 Spots enthalten waren. Diese Datei war 3,6 MB
+groß, hatte 52.338 Zeilen ($78 * 11 * 61$) und enthielt die Werte von
+11 Vorhersageelementen für 61 Vorhersagezeitpunkte. Diese Datei wurde
+50 mal mit dem Bulk Loader des Datenbankmanagementsystems in eine
+leere Tabelle geladen und die Laufzeit gemessen. Für die
+Vorhersagedaten der 78 Spots ergab sich aus diesen Messwerten eine
+durchschnittliche Laufzeit von 15,24 Sekunden mit einer
+Standardabweichung von 5,97 Sekunden. Aus der daraus berechneten
+durchschnittlichen Laufzeit von 195 Millisekunden für einen Spot,
+wurde eine Hochrechnung für mehrere Spot abgeleitet, die in Tabelle
+\ref{tab:transformation_bulk_load} zu sehen ist.
+
+\begin{table*}[h]
+  \centering
+  {\sf
+    \footnotesize
+    \begin{longtable}{c|c|c|c|c|c|c}
+
+      \toprule
+      \textbf & \textbf{1 Spot} & \textbf{10 Spots} & \textbf{100 Sp.} & \textbf{1.000 Sp.} & \textbf{10.000 Sp.} & \textbf{100.000 Sp.} \\
+      \midrule
+      Zeit & 195 ms & 1,95 s & 19,5 s & 3 m 15 s & 32 m 30 s & 5 h 25 m \\
+      Größe & 46,3 KB & 462,96 KB & 4,52 MB & 45,21 MB & 452.11 MB & 4,52 GB \\
+      \bottomrule
+    \end{longtable}
+  }
+  \caption{Hochrechnung der Bulk Load Laufzeit}
+  \label{tab:transformation_bulk_load}
+\end{table*}
+
 Im Abschnitt \textit{Populating a Database} \cite{postgresql:populate}
 der \textit{PostgreSQL} Dokumentation sind weitere nützliche Hinweise
 zu finden, die beim Verarbeiten größerer Datenmengen zu beachten
@@ -1518,14 +1557,17 @@ sind. Auf der Zielrelation definierte Indizes, \textit{Check
   Constraints} und \textit{Trigger}, wirken sich negativ auf die
 Performanz des Ladevorgangs aus. Hier wird zum Beispiel vorgeschlagen,
 auf der Zielrelation definierte Indizes vor dem Laden zu entfernen und
-anschließend wieder neu zu erstellen. Die Konfiguration des Datenbank
-Management Systems selbst ist auch nicht außer Acht zu lassen. Die
-Performanz von \textit{PostgreSQL} lässt sich durch das Einstellen
-bestimmter Parametern in der Konfigurationsdatei verbessern, da die
-Standard Werte in vielen Distributionen für heutige Hardware relativ
-niedrig angesetzt sind. Eine optimale Systemkonfiguration benötigt
-allerdings einiges an Erfahrung und Geduld beim Ausprobieren der
-verschiedenen Konfigurationsparameter.
+anschließend wieder neu zu erstellen. Da bei der zuvor durchgeführten
+Messung Indizes auf der Tabelle definiert waren, ist bei einer
+Umsetzung dieser Vorschläge noch eine leichte Steigerung der
+Performanz zu erwarten. Die Konfiguration des Datenbank Management
+Systems selbst ist auch nicht außer Acht zu lassen. Die Performanz von
+\textit{PostgreSQL} lässt sich durch das Einstellen bestimmter
+Parametern in der Konfigurationsdatei verbessern, da die Standard
+Werte in vielen Distributionen für heutige Hardware relativ niedrig
+angesetzt sind. Eine optimale Systemkonfiguration benötigt allerdings
+einiges an Erfahrung und Geduld beim Ausprobieren der verschiedenen
+Konfigurationsparameter.
 
 \subsection{Mengenorientierte Aktualisierung}
 Nachdem die zu verarbeitenden Daten unter die Kontrolle des Datenbank
@@ -1847,7 +1889,7 @@ Datenbank bei einem eventuellen Fehler wieder hergestellt wird. Dies
 hat den zusätzlichen Vorteil, dass mehrere Befehle, die in einer
 Transaktion stattfinden, von \textit{PostgreSQL} schneller ausgeführt
 werden können, als wenn jeder Befehl in eine eigene Transaktion
-eingebettet ist. 
+eingebettet ist.
 
 % Im nächsten Abschnitt werden die hier analysierten Befehle Die
 % Angaben zur Laufzeit der \textit{SQL}-Befehle schwanken im Bereich

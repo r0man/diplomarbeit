@@ -1,4 +1,3 @@
-
 \chapter{Aufbau und Analyse der ETL-Prozesse}
 
 \section{Überblick über die verwendeten Datenquellen}
@@ -823,7 +822,7 @@ nicht integrierte Daten zur Verfügung stehen.
 Trotz der eher mäßigen Übertragungsgeschwindigkeit kann die Performanz
 der beiden Extraktionsprozesse als unproblematisch eingestuft
 werden. Kritisch wird es, wenn die von den gesamten
-\textit{ETL}-Prozessen beanspruchte Zeit sich dem 4-stündigen
+\textit{ETL}-Prozessen beanspruchte Zeit sich dem 6-stündigen
 Intervall der Modellberechnung nähert. Die Downloadzeit von 18 Minuten
 ist für die zu übertragende Datenmenge zwar sehr schlecht, aber nicht
 weiter problematisch. Der Download der \textit{Grib}-Daten beansprucht
@@ -832,7 +831,7 @@ sehr wenig Ressourcen und wirkt sich nur negativ auf die Aktualität
 der Vorhersagen aus. Da gravierende Veränderungen in den Vorhersagen
 zwischen zwei Modellberechnungen eher selten sind und die Vorhersagen
 nicht in Echtzeit benötigt werden, kann diese Verzögerung
-vernachlässigt werden. 
+vernachlässigt werden.
 
 \subsubsection{Verbesserung der Extraktionsprozesse}
 Da es den Anschein macht, dass die Übertragungsgeschwindigkeit von den
@@ -1194,7 +1193,7 @@ Der hier beschriebene Vorgang wird für alle Spots ausgeführt und die
 Ausgabe der Transformation durch Anhängen in eine Datei
 umgeleitet. Die so entstandene \textit{CSV}-Datei enthält schließlich
 alle relevanten Vorhersagedaten in einem Format, das im nächsten
-Schritt vom Bulk Loader des Datenbankmanagementsystem geladen werden
+Schritt vom \textit{Bulk Loader} des Datenbankmanagementsystem geladen werden
 kann. Die \textit{Grib}-Dateien werden nach diesem Schritt nicht
 weiter benötigt und können gelöscht werden.
 \begin{table*}[h]
@@ -1496,8 +1495,8 @@ Laden von Daten allerdings immer auf die sogenannten \textit{Bulk
   Loader} der verwendeten Datenbankmanagementsysteme verwiesen. Dies
 sind meist datenbankspezifische Befehle oder Programme, mit denen
 größere Datenmengen effizienter als mit den standardisierten
-\textit{SQL} Befehlen geladen werden können. Der \textit{Bulk Loader}
-von \textit{PostgreSQL} ist durch die \textit{COPY} Befehlsfamilie
+\textit{SQL}-Befehlen geladen werden können. Der \textit{Bulk Loader}
+von \textit{PostgreSQL} ist durch die \textit{COPY}-Befehlsfamilie
 implementiert, mit der Daten im Text-, \textit{CSV-} oder Binärformat
 importiert und exportiert werden können. Der Befehl aus Auflistung
 \ref{lst:copy} veranlasst \textit{PostgreSQL} dazu, die über den
@@ -1505,11 +1504,11 @@ Standard Eingabekanal gelesenen Datensätze in die Tabelle
 \textit{grib\textunderscore messages} zu importieren. Dieser Befehl
 wird mit \textit{PostgreSQL}'s Kommandozeilenprogramm \textit{psql}
 ausgeführt und die Datensätze der \textit{CSV}-Datei über den Standard
-Eingabekanal weitergereicht. Nachdem mit dem \textit{COPY} Befehl alle
-Daten geladen wurden, wird ein zusätzlicher \textit{ANALYZE} Befehl
+Eingabekanal weitergereicht. Nachdem mit dem \textit{COPY}-Befehl alle
+Daten geladen wurden, wird ein zusätzlicher \textit{ANALYZE}-Befehl
 ausgeführt, der die Statistiken der Tabelle aktualisiert, die vom
-Anfrageoptimierer des Datenbankmanagementsystems verwendet werden,
-um einen guten Ausführungsplan zu finden.
+Anfrageoptimierer des Datenbankmanagementsystems verwendet werden, um
+einen guten Ausführungsplan zu finden.
 
 \begin{lstlisting}[captionpos=b, caption=Befehl zum Import von Datensätzen in \textit{PostgreSQL}, label=lst:copy]
 COPY grib_messages (
@@ -1518,19 +1517,19 @@ COPY grib_messages (
 ) FROM STDIN;
 \end{lstlisting}
 
-Um die durchschnittliche Laufzeit für den Bulk Loader zu ermitteln,
-wurde eine \textit{CSV}-Datei erstellt, in der Vorhersagedaten aus
-beiden Modellen für 78 Spots enthalten waren. Diese Datei war 3,6 MB
-groß, hatte 52.338 Zeilen ($78 * 11 * 61$) und enthielt die Werte von
-11 Vorhersageelementen für 61 Vorhersagezeitpunkte. Diese Datei wurde
-50 mal mit dem Bulk Loader des Datenbankmanagementsystems in eine
-leere Tabelle geladen und die Laufzeit gemessen. Für die
-Vorhersagedaten der 78 Spots ergab sich aus diesen Messwerten eine
-durchschnittliche Laufzeit von 15,24 Sekunden mit einer
-Standardabweichung von 5,97 Sekunden. Aus der daraus berechneten
-durchschnittlichen Laufzeit von 195 Millisekunden für einen Spot,
-wurde eine Hochrechnung für mehrere Spot abgeleitet, die in Tabelle
-\ref{tab:transformation_bulk_load} zu sehen ist.
+Um die durchschnittliche Laufzeit des \textit{COPY}-Befehls zu
+ermitteln, wurde eine \textit{CSV}-Datei erstellt, in der
+Vorhersagedaten aus beiden Modellen für 78 Spots enthalten
+waren. Diese Datei war ca. 3,6 MB groß, hatte 52.338 Zeilen ($78 * 11
+* 61$) und enthielt die Werte von 11 Vorhersageelementen für 61
+Vorhersagezeitpunkte. Diese Datei wurde 50 mal mit dem \textit{Bulk
+  Loader} des Datenbankmanagementsystems in eine leere Tabelle geladen
+und die Laufzeit gemessen. Für die Vorhersagedaten der 78 Spots ergab
+sich aus diesen Messwerten eine durchschnittliche Laufzeit von 15,24
+Sekunden mit einer Standardabweichung von 5,97 Sekunden. Aus der
+daraus berechneten durchschnittlichen Laufzeit von 195 Millisekunden
+für einen Spot, wurde eine Hochrechnung für mehrere Spots abgeleitet,
+die in Tabelle \ref{tab:transformation_bulk_load} zu sehen ist.
 
 \begin{table*}[h]
   \centering
@@ -1542,30 +1541,31 @@ wurde eine Hochrechnung für mehrere Spot abgeleitet, die in Tabelle
       \textbf & \textbf{1 Spot} & \textbf{10 Spots} & \textbf{100 Sp.} & \textbf{1.000 Sp.} & \textbf{10.000 Sp.} & \textbf{100.000 Sp.} \\
       \midrule
       Zeit & 195 ms & 1,95 s & 19,5 s & 3 m 15 s & 32 m 30 s & 5 h 25 m \\
-      Größe & 46,3 KB & 462,96 KB & 4,52 MB & 45,21 MB & 452.11 MB & 4,52 GB \\
+      Größe & 46,3 KB & 463 KB & 4,52 MB & 45,21 MB & 452,15 MB & 4,42 GB \\
       \bottomrule
     \end{longtable}
   }
-  \caption{Hochrechnung der Bulk Load Laufzeit}
+  \caption{Hochrechnung der Laufzeit für den \textit{COPY}-Befehl}
   \label{tab:transformation_bulk_load}
 \end{table*}
 
 Im Abschnitt \textit{Populating a Database} \cite{postgresql:populate}
-der \textit{PostgreSQL} Dokumentation sind weitere nützliche Hinweise
-zu finden, die beim Verarbeiten größerer Datenmengen zu beachten
-sind. Auf der Zielrelation definierte Indizes, \textit{Check
-  Constraints} und \textit{Trigger}, wirken sich negativ auf die
-Performanz des Ladevorgangs aus. Hier wird zum Beispiel vorgeschlagen,
-auf der Zielrelation definierte Indizes vor dem Laden zu entfernen und
+der \textit{PostgreSQL} Dokumentation sind Hinweise zu finden, die
+beim Verarbeiten größerer Datenmengen zu beachten sind. Auf der
+Zielrelation definierte Indizes, \textit{Check Constraints} und
+\textit{Trigger}, wirken sich negativ auf die Performanz des
+Ladevorgangs aus. Dort wird zum Beispiel vorgeschlagen, auf der
+Zielrelation definierte Indizes vor dem Laden zu entfernen und
 anschließend wieder neu zu erstellen. Da bei der zuvor durchgeführten
 Messung Indizes auf der Tabelle definiert waren, ist bei einer
-Umsetzung dieser Vorschläge noch eine leichte Steigerung der
+Umsetzung dieses Vorschlags noch eine leichte Steigerung der
 Performanz zu erwarten. Die Konfiguration des Datenbank Management
 Systems selbst ist auch nicht außer Acht zu lassen. Die Performanz von
 \textit{PostgreSQL} lässt sich durch das Einstellen bestimmter
-Parametern in der Konfigurationsdatei verbessern, da die Standard
-Werte in vielen Distributionen für heutige Hardware relativ niedrig
-angesetzt sind. Eine optimale Systemkonfiguration benötigt allerdings
+Parametern in der Konfigurationsdatei verbessern. Da die Standardwerte
+in vielen Distributionen für heutige Hardware relativ niedrig
+angesetzt sind, ist eine Anpassung an das verwendete System unbedingt
+zu empfehlen. Eine optimale Systemkonfiguration benötigt allerdings
 einiges an Erfahrung und Geduld beim Ausprobieren der verschiedenen
 Konfigurationsparameter.
 
@@ -1582,7 +1582,7 @@ hinzugefügt. Es werden nur diejenigen Datensätze aktualisiert bzw.
 hinzugefügt, die auch im Zeitraum der aktuellen Modellberechnung
 liegen. Dieser Zeitraum ist durch die Datensätze der Quellrelation
 \textit{grib\textunderscore messages} bestimmt und kann mit dem
-\textit{SQL} Befehl \textit{SELECT MIN(valid\textunderscore time),
+\textit{SQL}-Befehl \textit{SELECT MIN(valid\textunderscore time),
   MAX(valid\textunderscore time) FROM grib\textunderscore messages}
 ermittelt werden.
 
@@ -1642,13 +1642,17 @@ gut gelöst. Durch das Verwenden verschiedener \textit{SQL}-Konstrukte
 kann der Optimierer eines Datenbankmanagementsystems teilweise
 beeinflusst werden. Hier wurde das Laufzeitverhalten von zwei
 äquivalenten \textit{SQL}-Befehlen durch die Analyse ihrer
-Ausführungspläne untersucht. Beide Befehle wurden auf einer Datenbank
-ausgeführt, in der 32.452 Datensätze in der Relation
-\textit{forecasts} enthalten waren. Diese Datensätze repräsentierten
-die Vorhersagedaten für 78 Spots über einen Zeitraum von ca. 4
-Monaten. Der erste Befehl verwendet einen \textit{Left Join} um das
-Ergebnis zu berechnen, im zweiten Befehl wird eine \textit{Subquery}
-benutzt.
+Ausführungspläne untersucht. Der erste Befehl verwendet einen
+\textit{Left Join} um das Ergebnis zu berechnen, im zweiten Befehl
+wird eine \textit{Subquery} benutzt. Beide Befehle wurden auf einer
+Datenbank ausgeführt, in der sich bereits historische Vorhersagedaten
+aus einem Zeitraum von ca. 6 Monaten (108.169 Datensätze in der
+Relation \textit{forecasts}) angesammelt haben. In der Relation
+\textit{grib\textunderscore messages} waren insgesamt 52.338
+Datensätze aus dem \textit{Wave Watch III Modell} und dem
+\textit{Global Forecast System} enthalten, die mit den hier
+untersuchten Befehlen in die Relation \textit{forecasts} überführt
+werden sollen.
 
 \subsubsection{Analyse der Ausführungspläne}
 Da der Optimierer von \textit{PostgreSQL} bei der Wahl des
@@ -1681,7 +1685,15 @@ Attribute \textit{spot\textunderscore id} und
 wird das Ergebnis auf diejenigen Datensätze reduziert, deren
 Schlüsselkandidat noch nicht in der Relation \textit{forecasts}
 existiert. Dies sind genau die Vorhersagezeitpunkte, die seit der
-letzten Modellberechnung neu hinzugekommen sind.
+letzten Modellberechnung neu hinzugekommen sind. Obwohl auf den
+entsprechenden Attributen beider Relationen Indizes definiert sind,
+kann man im Ausführungsplan in Auflistung \ref{forecasts:explain_1}
+sehen, dass ein \textit{Sequence Scan} auf der Relation
+\textit{forecasts} durchgeführt wird. Falls viele Spots hinzukommen
+oder historische Vorhersagedaten für statistische Zwecke und
+\textit{Data Mining}-Verfahren über einen längeren Zeitraum behalten
+werden, wird man mit diesem \textit{Sequence Scan} auf Dauer Probleme
+bekommen.
 
 \begin{lstlisting}[captionpos=b, caption=Hinzufügen von Datensätze mittels \textit{Left Join}, label=forecasts:insert_1, language=SQL]
 INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at, 
@@ -1697,51 +1709,45 @@ INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at,
    GROUP BY grib_messages.spot_id, grib_messages.valid_time;
 \end{lstlisting}
 
-Obwohl auf den entsprechenden Attributen beider Relationen Indizes
-definiert sind, kann man im Ausführungsplan in Auflistung
-\ref{forecasts:explain_1} sehen, dass kein einziger Index benutzt
-wird, sondern ein \textit{Sequence Scan} auf den beiden Relationen
-\textit{forecasts} und \textit{grib\textunderscore messages}
-durchgeführt wird. Falls viele Spots hinzukommen oder historische
-Vorhersagedaten für statistische Zwecke und \textit{Data
-  Mining}-Verfahren über einen längeren Zeitraum behalten werden,
-könnte man hier auf Dauer Probleme bekommen. Der Optimierer scheint
-bei dieser Anfrage nicht zu erkennen, dass die Ergebnismenge im
-Vergleich zu der Anzahl von Datensätzen in der \textit{forecasts}
-Relation sehr gering ist. Im Ergebnis befinden sich nämlich nur
-diejenigen Datensätze, die seit der letzten Modellberechnung
-hinzugekommen sind. Das Problem liegt hier in der Verwendung des
-\textit{Left Joins}, der den Optimierer dazu veranlasst, alle
-Datensätze der beiden Relationen zu verknüpfen und erst anschließend
-den Großteil der Datensätze wieder weg zu werfen.
+Der Optimierer scheint bei dieser Anfrage nicht zu erkennen,
+dass die Ergebnismenge im Vergleich zu der Anzahl von Datensätzen in
+der \textit{forecasts} Relation sehr gering ist. Im Ergebnis befinden
+sich nämlich nur diejenigen Datensätze, die seit der letzten
+Modellberechnung hinzugekommen sind. Das Problem liegt hier in der
+Verwendung des \textit{Left Joins}, der den Optimierer dazu
+veranlasst, alle Datensätze der beiden Relationen zu verknüpfen und
+erst anschließend den Großteil der Datensätze wieder weg zu werfen.
 
 \begin{lstlisting}[captionpos=b, caption=Ausführungsplan des \textit{Left Joins}, label=forecasts:explain_1]
-GroupAggregate (cost=14275.00..15496.03 rows=3246 width=20)
- Merge Left Join (cost=14275.00..15317.53 rows=16226 width=20)
-   Merge Cond: ((grib_messages.spot_id = forecasts.spot_id) AND 
-                (grib_messages.valid_time = forecasts.valid_time))
-   Filter: (forecasts.id IS NULL)
-     Sort (cost=3778.65..3859.78 rows=32452 width=20)
-       Sort Key: grib_messages.spot_id, grib_messages.valid_time
-         Seq Scan on grib_messages  (cost=0.00..678.52 rows=32452 width=20)
-     Materialize (cost=10496.30..11300.77 rows=64358 width=16)
-       Sort (cost=10496.30..10657.19 rows=64358 width=16)
-         Sort Key: forecasts.spot_id, forecasts.valid_time
-           Seq Scan on forecasts  (cost=0.00..4253.58 rows=64358 width=16)
+Subquery Scan "*SELECT*" (cost=15636.15..23487.90 rows=4819 width=36) 
+-> GroupAggregate (cost=15636.15..23415.62 rows=4819 width=20)
+   -> Merge Left Join (cost=15636.15..23039.99 rows=35627 width=20)
+       Merge Cond: ((grib_messages.spot_id = public.forecasts.spot_id) AND 
+                    (grib_messages.valid_time = public.forecasts.valid_time))
+       Filter: (public.forecasts.id IS NULL)
+       -> Index Scan using index_grib_messages_on_spot_id_valid_time 
+           on grib_messages  (cost=0.00..5521.40 rows=71109 width=20)
+       -> Materialize (cost=15636.15..16993.40 rows=108580 width=16)
+          -> Sort (cost=15636.15..15907.60 rows=108580 width=16)
+                Sort Key: public.forecasts.spot_id, 
+                          public.forecasts.valid_time
+                Sort Method: external merge  Disk: 3624kB
+                ->  Seq Scan on forecasts  (cost=0.00..4695.80 rows=108580 
+                      width=16)
 Total runtime: 213.518 ms
 \end{lstlisting}
 
-Die auf beiden Relationen definierten Indizes erweisen sich bei dieser
-Anfrage als nutzlos. Der Optimierer von \textit{PostgreSQL} kann durch
-das Setzen entsprechender Parameter allerdings beeinflusst werden. Die
-Ausführung des selben Befehls mit einem erzwungenen \textit{Index
-  Scan} ergab ein sehr viel schlechteres Ergebnis als der im
-Allgemeinen als teuer bewertete \textit{Sequence Scan}. Das Problem
-dieser Anfrage lässt sich also nicht durch die geschickte Definition
-von Indizes lösen, sondern durch die Vermeidung des \textit{Left
-  Joins}. Die Ausführungszeit beträgt in diesem Ausführungsplan
-ca. 214 Millisekunden, wird aber mit einem Anwachsen der
-\textit{forecasts} Relation stetig zunehmen. Eine bessere Alternative
+Die auf der Relation \textit{forecasts} definierten Indizes erweisen
+sich bei dieser Anfrage als nutzlos. Der Optimierer von
+\textit{PostgreSQL} kann durch das Setzen entsprechender Parameter
+allerdings beeinflusst werden. Die Ausführung des selben Befehls mit
+einem erzwungenen \textit{Index Scan} ergab ein sehr viel schlechteres
+Ergebnis als der im Allgemeinen als teuer bewertete \textit{Sequence
+  Scan}. Das Problem dieser Anfrage lässt sich also nicht durch die
+geschickte Definition von Indizes lösen, sondern durch die Vermeidung
+des \textit{Left Joins}. Die Ausführungszeit beträgt in diesem
+Ausführungsplan ca. 214 Millisekunden, wird aber mit einem Anwachsen
+der Relation \textit{forecasts} zunehmen. Eine bessere Alternative
 ist, die Anfrage in eine \textit{Subquery} umzuformen.
 
 \subsubsection{Ausführungsplan der Subquery Anfrage}
@@ -1772,25 +1778,23 @@ INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at,
 Wie man aber am Ausführungsplan aus Auflistung
 \ref{forecasts:explain_2} erkennen kann, ist diese Anfrage mit ca. 100
 Millisekunden jedoch doppelt so schnell wie die eben untersuchte
-\textit{Left Join} Variante. Der \textit{Sequence Scan} auf der
-\textit{grib\textunderscore messages} Relation ist hier kein Problem,
-da ohnehin alle Datensätze dieser Relation betrachtet werden müssen,
-um das Ergebnis zu berechnen. Der teure \textit{Sequence Scan} auf der
-Relation \textit{forecasts} konnte hier jedoch vermieden
-werden. Stattdessen wird für jeden Datensatz aus der Tabelle
-\textit{grib\textunderscore messages} der zusammengesetzte Index auf
-dem Schlüsselkandidaten benutzt, um die Existenz eines entsprechenden
-Datensatzes in der Tabelle \textit{forecasts} zu überprüfen.
+\textit{Left Join} Variante. Der teure \textit{Sequence Scan} auf der
+Relation \textit{forecasts} konnte hier vermieden werden. Stattdessen
+wird für jeden Datensatz aus der Tabelle \textit{grib\textunderscore
+  messages} der zusammengesetzte Index auf dem Schlüsselkandidaten
+benutzt, um die Existenz eines entsprechenden Datensatzes in der
+Tabelle \textit{forecasts} zu überprüfen.
 
 \begin{lstlisting}[captionpos=b, caption=Ausführungsplan der \textit{Subquery}, label=forecasts:explain_2]
-Subquery Scan "*SELECT*"  (cost=270420.52..270481.38 rows=1623 width=36)
- HashAggregate (cost=270420.52..270448.92 rows=1623 width=20)
-  Seq Scan on grib_messages  (cost=0.00..270298.82 rows=16226 width=20)
-   Filter: (NOT (subplan))
-    SubPlan
-     Index Scan using index_forecasts_on_spot_id_and_valid_time 
-                      on forecasts (cost=0.00..8.31 rows=1 width=0)
-      Index Cond: ((spot_id = $0) AND (valid_time = $1))
+Subquery Scan "*SELECT*" (cost=0.00..436811.09 rows=4819 width=36)
+-> GroupAggregate (cost=0.00..436774.94 rows=4819 width=20) 
+   ->  Index Scan using index_grib_messages_on_spot_id_valid_time 
+         on grib_messages (cost=0.00..436526.73 rows=25864 width=20)
+        Filter: (NOT (subplan))
+        SubPlan
+          ->  Index Scan using index_forecasts_on_spot_id_and_valid_time 
+                on forecasts (cost=0.00..8.34 rows=1 width=0) 
+                Index Cond: ((spot_id = $0) AND (valid_time = $1))
 Total runtime: 98.575 ms
 \end{lstlisting}
 
@@ -1801,8 +1805,7 @@ Zahl der Datensätze in der Tabelle \textit{grib\textunderscore
   messages} beschränkt ist. Die Größe der Relation \textit{forecasts}
 kann sich hier nur beim Auffinden von Datensätze über den stetig
 wachsenden Index negativ auswirken. Diese Beeinflussung ist allerdings
-gerade wegen der Verwendung geeigneter Indexstrukturen so gering, dass
-sie hier vernachlässigt werden kann.
+gerade wegen der Verwendung geeigneter Indexstrukturen gering.
 
 Zusammenfassend kann man zu dieser Untersuchung sagen, dass durch die
 Wahl entsprechender \textit{SQL}-Konstrukte der Anfrageoptimierer
@@ -1816,11 +1819,11 @@ sollte. Wichtig ist, dass die Anfrage durch die Anzahl der Spots und
 nicht durch die Anzahl der historischen Daten beschränkt ist.
 
 Um eine Aussage über die durchschnittliche Laufzeit der
-\textit{Subquery} Variante machen zu können, wurden die Laufzeiten
-dieser Befehle ebenfalls über einen Zeitraum von einer Woche aus den
-Log-Dateien extrahiert. Aus diesen 56 Messwerten ($24h/6h * 7 * 2$),
-ergab sich eine durchschnittliche Laufzeit von 131 Millisekunden mit
-einer Standardabweichung von 34 Millisekunden.
+\textit{Subquery} Variante für die Vorhersagedaten von 78 Spots zu
+treffen, wurden die Laufzeiten dieser Befehle über einen Zeitraum von
+einer Woche aus den Log-Dateien extrahiert. Aus diesen 56 Messwerten
+($24h/6h * 7 * 2$), ergab sich eine durchschnittliche Laufzeit von 131
+Millisekunden mit einer Standardabweichung von 34 Millisekunden.
 
 \subsubsection{Aktualisierung der Vorhersagedaten}
 Die Aktualisierung der Vorhersagedaten wird wegen der erwähnten
@@ -1865,16 +1868,16 @@ insgesamt 308 Messwerte ($24h/6h * 7 * 11$) aus den Log-Dateien
 extrahiert.
 
 \begin{lstlisting}[captionpos=b, caption=Ausführungsplan der Aktualisierung, label=forecasts:update_explain]
-Nested Loop (cost=108.56..17995.79 rows=4619 width=134)
-  Bitmap Heap Scan on grib_messages (cost=108.56..521.11 rows=4684 width=28)
+Nested Loop (cost=128.70..20824.68 rows=4555 width=134)
+-> Bitmap Heap Scan on grib_messages (cost=128.70..958.48 rows=4702 width=28)
     Recheck Cond: ((element)::text = 'HTSGW'::text)
-      Bitmap Index Scan on index_grib_messages_on_element  
-                           (cost=0.00..107.38 rows=4684 width=0)
-        Index Cond: ((element)::text = 'HTSGW'::text)
-  Index Scan using index_forecasts_on_spot_id_and_valid_time on forecasts 
-                   (cost=0.00..3.71 rows=1 width=118)
-    Index Cond: ((forecasts.spot_id = grib_messages.spot_id) AND 
-                 (forecasts.valid_time = grib_messages.valid_time))
+    -> Bitmap Index Scan on index_grib_messages_on_element 
+            (cost=0.00..127.53 rows=4702 width=0)
+          Index Cond: ((element)::text = 'HTSGW'::text)
+-> Index Scan using index_forecasts_on_spot_id_and_valid_time 
+        on forecasts (cost=0.00..4.21 rows=1 width=118)
+      Index Cond: ((forecasts.spot_id = grib_messages.spot_id) AND
+                   (forecasts.valid_time = grib_messages.valid_time))
 Total runtime: 127.865 ms
 \end{lstlisting}
 
@@ -1905,45 +1908,52 @@ hauptsächlich darin begründet, dass nicht bekannt ist, wie sich der
 Anfrageoptimierer und die Laufzeit der einzelnen Befehle bei einer
 größeren Datenmenge verhalten. Kommen mehr Daten hinzu, verändern sich
 die Statistiken, die vom Anfrageoptimierer dazu verwendet werden,
-einen geeigneten Ausführungsplan zu finden. Durch die Anpassung von
-Parametern zur Konfiguration des Datenbankmanagementsystems kann das
-Verhalten des Anfrageoptimierers ebenfalls beeinflusst werden. Diese
-Parameter hängen wiederum von den Eigenschaften der verwendeten
-Hardware ab. Eine Diskussion zur optimalen Einstellung von
-Konfigurationsparametern würde den Rahmen dieser Arbeit sprengen. Da
-bisher noch kein Engpass existiert, wurden in diese Richtung hin keine
-weiteren Untersuchen gemacht.
+einen geeigneten Ausführungsplan zu finden. Die dann verwendeten
+Ausführungspläne können sich von den hier Untersuchten unterscheiden
+und ein anderes Laufzeitverhalten haben. Um trotzdem einen Eindruck
+für die Laufzeit bei einer größeren Anzahl von Spots zu bekommen, wird
+hier eine Hochrechnung der Laufzeit vorgestellt, bei der angenommen
+wird, dass sich die durchschnittliche Laufzeit der
+\textit{SQL}-Befehle bei ansteigendem Datenvolumen nicht verändert,
+sondern linear verhält. Zunächst werden aus den zuvor gemessenen
+Laufzeiten der \textit{INSERT}- und \textit{UPDATE}-Befehle für 78
+Spots die durchschnittlichen Laufzeiten für einen Spot abgeleitet. Die
+durchschnittliche Laufzeit eines \textit{INSERT}-Befehls für einen
+Spot beträgt somit $l_i = 131 ms / 78 = 1,68 ms$, die eines
+\textit{UPDATE}-Befehls $l_u = 195 ms / 78 = 2,5 ms$. Daraus lässt
+sich die durchschnittliche Gesamtlaufzeit zur Aktualisierung von
+\textit{N} Vorhersageelementen für einen Spot mit $l = l_i + N * l_u =
+$ berechnen. Für 11 Vorhersageelementen sind dies $l = 1,68 ms + 11 *
+2,5 ms = 29,18 ms$. Ausgehend von der durchschnittlichen Laufzeit von
+einem Spot für die 11 Vorhersageelemente beider Modelle, wurde eine
+Hochrechnung für mehrere Spots vorgenommen, die in Tabelle
+\ref{tab:sql_laufzeit} zu sehen ist. Wie nahe die hier vorgestellte
+Hochrechnung an der Realität ist, bleibt allerdings fraglich.
 
-Um trotzdem einen Eindruck für die Laufzeit bei einer höheren Anzahl
-von Spots zu bekommen, wird hier eine Hochrechnung der Laufzeit
-vorgestellt, die auf vereinfachten Annahmen basiert. Da die Laufzeit
-der einzelnen Befehle sich in einem ähnlichen Zeitrahmen bewegen, wird
-hier die Annahme getroffen, dass die Laufzeit eines einzelnen Befehls
-konstant ist und sich die Gesamtlaufzeit aller Befehle aufsummieren
-lässt. Weiterhin wird angenommen, dass sich die Laufzeit bei einer
-Zunahme der Datenmenge nicht verändert. Somit kann die Gesamtlaufzeit
-der \textit{SQL}-Befehle für einen Spot mit $L = ((N+1) * l) / 78$
-abgeschätzt werden, wobei $N$ für die Anzahl der Vorhersageelemente,
-$l$ für die Laufzeit eines \textit{SQL}-Befehls und 78 für die Anzahl
-der Spots steht, die bei der zuvor durchgeführten Untersuchung
-existierten. Die Werte in Tabelle \ref{tab:sql_laufzeit} wurden unter
-der Annahme berechnet, dass $N=11$ Vorhersageelemente für jeden Spot
-verarbeitet werden.
+% Da die Laufzeit
+% der einzelnen Befehle sich in einem ähnlichen Zeitrahmen bewegen, wird
+% hier die Annahme getroffen, dass die Laufzeit eines einzelnen Befehls
+% konstant ist und sich die Gesamtlaufzeit aller Befehle aufsummieren
+% lässt. Weiterhin wird angenommen, dass sich die Laufzeit bei einer
+% Zunahme der Datenmenge nicht verändert. Somit kann die Gesamtlaufzeit
+% der \textit{SQL}-Befehle für einen Spot mit $L = ((N+1) * l) / 78$
+% abgeschätzt werden, wobei $N$ für die Anzahl der Vorhersageelemente,
+% $l$ für die Laufzeit eines \textit{SQL}-Befehls und 78 für die Anzahl
+% der Spots steht, die bei der zuvor durchgeführten Untersuchung
+% existierten. Die Werte in Tabelle \ref{tab:sql_laufzeit} wurden unter
+% der Annahme berechnet, dass $N=11$ Vorhersageelemente für jeden Spot
+% verarbeitet werden.
 
 \begin{table*}[h]
   \centering
   {\sf
     \footnotesize
     \begin{longtable}{l|c|c|c|c|c}
-
       \toprule
-      \textbf{Laufzeit} & \textbf{1 Spot} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots} \\
+       & \textbf{1 Spot} & \textbf{100 Spots} & \textbf{1.000 Spots} & \textbf{10.000 Spots} & \textbf{100.000 Spots} \\
       \midrule
-      $l$ = 200 ms & 31 ms & 3,1 s & 31 s &  5m 10 s &  51 m 40 s \\
-      $l$ = 400 ms & 62 ms & 6,2 s & 1 m 2 s & 10 m 20 s & 1 h 43 m \\
-      $l$ = 600 ms & 92 ms & 9,2 s & 1 m 32 s & 15 m 20 s & 2 h 33 m \\
+      Laufzeit & 29 ms & 2,9 s & 29 s & 4 m 50 s &  49 m 20 s \\
       \bottomrule
-
     \end{longtable}
   }
 
@@ -1952,30 +1962,29 @@ verarbeitet werden.
 
 \end{table*}
 
-Wie nahe die hier vorgestellte Hochrechnung an der Realität ist,
-bleibt allerdings offen. Da davon ausgegangen wird, dass die Laufzeit
-$l$ eines einzelnen Befehls bei Zunahme der Datenmenge ebenfalls
-steigt, würden in der Realität wohl eher schlechtere Ergebnisse als in
-Tabelle \ref{tab:sql_laufzeit} erzielt werden.
+% Wie nahe die hier vorgestellte Hochrechnung an der Realität ist,
+% bleibt allerdings offen. Da davon ausgegangen wird, dass die Laufzeit
+% $l$ eines einzelnen Befehls bei Zunahme der Datenmenge ebenfalls
+% steigt, würden in der Realität wohl eher schlechtere Ergebnisse als in
+% Tabelle \ref{tab:sql_laufzeit} erzielt werden.
 
 \subsection{Verbesserung des Ladevorgangs}
-Das Laden der Vorhersagedaten mit dem \textit{Bulk Loader} von
-\textit{PostgreSQL} wird als unproblematisch angesehen. Im Abschnitt
-''\textit{Performance Tips}'' \cite{postgresql:performance} der
-\textit{PostgreSQL} Dokumentation werden einige Vorschläge gemacht,
-die zur Steigerung der Performanz beitragen können. Beispielsweise
-kann der \textit{COPY}-Befehl am schnellsten ausgeführt werden, wenn
-er in der selben Transaktion wie ein zuvor abgesetzter \textit{CREATE
-  TABLE}- oder \textit{TRUNCATE}-Befehl ausgeführt wird. In diesem
-Fall kann auf das sonst zu verwaltende \textit{Write Ahead Log}
-verzichtet werden, da bei einem Fehler die Daten wieder gelöscht
-werden. Weiterhin wird vorgeschlagen, die Indizes einer zu ladenden
-Tabelle vor dem Laden zu löschen und erst danach wieder zu erstellen,
-da der Aufbau eines neuen Index schneller ist als eine zeilenweise
-Aktualisierung. Bei der jetzigen Datenmenge wird der Umsetzung dieser
-Verbesserungsvorschläge allerdings eine eher geringe Priorität
-eingeräumt, da der zu erzielende Geschwindigkeitsvorteil im Vergleich
-zu anderen Vorschlägen als nicht sehr hoch eingestuft wird.
+Im Abschnitt ''\textit{Performance Tips}''
+\cite{postgresql:performance} der \textit{PostgreSQL} Dokumentation
+werden einige Vorschläge gemacht, die zur Steigerung der Performanz
+beitragen können. Beispielsweise kann der \textit{COPY}-Befehl am
+schnellsten ausgeführt werden, wenn er in der selben Transaktion wie
+ein zuvor abgesetzter \textit{CREATE TABLE}- oder
+\textit{TRUNCATE}-Befehl ausgeführt wird. In diesem Fall kann auf das
+sonst zu verwaltende \textit{Write Ahead Log} verzichtet werden, da
+bei einem Fehler die Daten wieder gelöscht werden. Weiterhin wird
+vorgeschlagen, die Indizes einer zu ladenden Tabelle vor dem Laden zu
+löschen und erst danach wieder zu erstellen, da der Aufbau eines neuen
+Index schneller ist als eine zeilenweise Aktualisierung. Bei der
+jetzigen Datenmenge wird der Umsetzung dieser Verbesserungsvorschläge
+allerdings eine eher geringe Priorität eingeräumt, da der zu
+erzielende Geschwindigkeitsvorteil im Vergleich zu anderen Vorschlägen
+als nicht sehr hoch eingestuft wird.
 
 Viel mehr Potential zur Beschleunigung des Ladevorgangs wird in einer
 Vorverarbeitung der Vorhersagedaten gesehen. Durch diesen zusätzlichen
@@ -1985,12 +1994,14 @@ entspricht. Die bisher in der Datenbank durchgeführte Transposition
 von Zeilen zu Spalten würde so in ein externes Programm verlagert
 werden, mit der Aussicht, diese effizienter durchführen zu können, als
 dies innerhalb des Datenbankmanagementsystems möglich ist. Die
-transformierte Datei kann dann in eine entsprechende \textit{Staging
+transformierte Datei könnte dann in eine entsprechende \textit{Staging
   Area} geladen werden und mit einem \textit{UPDATE-} und einem
 \textit{INSERT}-Befehl in die Relation \textit{forecasts} integriert
-werden. Eine noch bessere Alternative wäre, die zu aktualisierenden
-Datensätze der Tabelle \textit{forecasts} vor dem Laden zu löschen und
-die \textit{CSV}-Datei mit einem \textit{COPY}-Befehl direkt in diese
+werden. 
+
+Eine noch bessere Alternative wäre, die zu aktualisierenden Datensätze
+der Tabelle \textit{forecasts} vor dem Laden zu löschen und die
+\textit{CSV}-Datei mit einem \textit{COPY}-Befehl direkt in diese
 Relation zu integrieren. Ein Nachteil an diesem Vorschlag ist, dass
 der Transformationsschritt vom Aktualisierungszeitplan der beiden
 Modelle abhängig ist. Da die Daten beider Modelle zu einem Datensatz
@@ -2004,7 +2015,25 @@ müsste man die aktuellen Daten des einen Modells mit den schon
 geladenen Daten des Anderen verknüpfen.
 
 \section{Zusammenfassung}
-\begin{table*}[h]
+Eine Hochrechnung der Gesamtlaufzeit der \textit{ELT}-Prozesse für
+mehrere Spots ist in Tabelle \ref{tab:gesamt_laufzeit}
+zusammengestellt. Die Extraktionsprozesse für das \textit{Wave Watch
+  III} Modell und das \textit{Global Forecast System} sind dabei
+unabhängig von der Anzahl der Spots, da in diesen Schritten zunächst
+die benötigten Vorhersageelemente (für den gesamten Globus) der beiden
+Modelle heruntergeladen werden. Die Extraktion der Vorhersagedaten
+benötigt deshalb in allen Fällen durchschnittlich ca. 18 Minuten. In
+der Transformationsphase wird diese Datenmenge dann auf die Anzahl der
+Spots reduziert, indem nur die Vorhersagedaten an den Spots in eine
+\textit{CSV}-Datei transformiert werden. In diesem und den folgenden
+Schritten wirkt sich dann die Anzahl der Spots auf die Laufzeit der
+\textit{ETL}-Prozesse aus. Der Ladevorgang ist schließlich dafür
+verantwortlich die neuen Vorhersagedaten aus der \textit{CSV}-Datei in
+die operative Datenbasis zu überführen. Danach stehen die Daten der
+Web-Applikation zur Verfügung und können dem Nutzer der Plattform
+angezeigt werden. 
+
+\begin{table*}[t]
   \centering
   {\sf
     \footnotesize
@@ -2016,9 +2045,11 @@ geladenen Daten des Anderen verknüpfen.
       Extraktion \textit{(GFS)} & 14 m & 14 m & 14 m & 14 m \\
       \midrule
       Transformation & 18,7 s & 3 m 7 s & 31 m 10 s & 5 h 12 m \\
-      Laden \textit{(l=600ms)} & 9,2 s & 1 m 32 s & 15 m 20 s & 2 h 33 m \\
+      \midrule
+      Bulk Load & 19,5 s & 3 m 15 s & 32 m 30 s & 5 h 25 m \\
+      Aktualisierung & 2,9 s & 29 s & 4 m 50 s &  49 m 20 s \\
       \bottomrule
-      \textbf{Gesamt:} & 18 m 28 s & 22 m 39 s & 1 h 4 m & 8 h 3 m \\
+      \textbf{Gesamt:} & 18 m 41 s & 24 m 51 s & 1 h 26 m & 11 h 44 m \\
       \bottomrule
     \end{longtable}
   }
@@ -2026,26 +2057,33 @@ geladenen Daten des Anderen verknüpfen.
   \label{tab:gesamt_laufzeit}
 \end{table*}
 
-Eine Vorverarbeitung der Daten bietet sich insbesondere bei dem zur
-Zeit stattfindenden Trend in Richtung \textit{Cloud Computing} an. Die
-Extraktion und die Transformation der Vorhersagedaten wären gute
-Kandidaten für das \textit{Map Reduce} Verfahren. Das Verarbeiten der
-Vorhersagedaten könnte auf mehrere Systeme aufgeteilt und durch
-parallele Verarbeitung sehr viel schneller durchgeführt werden.
-Dieses Verfahren ist mittlerweile durch Web Services, wie
-z.B. \textit{Amazon's Elastic Map Reduce}
+Spätestens wenn sich die Laufzeit der \textit{ETL}-Prozesse dem
+6-stündigen Aktualisierungszeitplan der beiden Modelle nähert, sollte
+aber ein alternativer Weg zur Verarbeitung und Integration der
+Vorhersagedaten eingeschlagen werden. Wie schon in den
+Verbesserungsvorschlägen des Transformations- und Ladevorgangs
+beschrieben, wird eine Vorverarbeitung der Daten außerhalb des
+Datenbankmanagementsystems als mögliche Strategie angesehen. Zum einen
+wird dadurch das Datenbankmanagementsystem erheblich entlastet und zum
+anderen könnte man dazu übergehen die Vorhersagedaten parallel zu
+Verarbeiten. Insbesondere bei dem zur Zeit stattfindenden Trend in
+Richtung \textit{Cloud Computing} bietet sich eine Vorverarbeitung der
+Daten an. Die Extraktion und die Transformation der Vorhersagedaten
+wären beispielsweise gute Kandidaten für das \textit{Map Reduce}
+Verfahren. Das Verarbeiten der Vorhersagedaten könnte auf mehrere
+Systeme aufgeteilt und durch parallele Verarbeitung sehr viel
+schneller durchgeführt werden.  Dieses Verfahren ist mittlerweile
+durch Web Services, wie z.B. \textit{Amazon's Elastic Map Reduce}
 \footnote{\url{http://aws.amazon.com/elasticmapreduce}}, auch für
 kleiner Projekte ohne Anschaffung der benötigten Hardware
-erschwinglich und interessant geworden.
-
-Die Verbesserung des gesamten \textit{ETL}-Prozesses erfordert ein
-gründliches Abwägen der verschiedenen Vor- und Nachteile. Oft stellt
-sich heraus, dass man mit einem Geschwindigkeitsvorteil an einer
-Stelle, Flexibilität an einer anderen einbüßt und/oder zusätzliche
-Komplexität erzeugt. Stoßen die hier entwickelten
-\textit{ETL}-Prozesse an ihre Grenzen, würde mit Hinblick auf das
-\textit{Map Reduce} Verfahren der Weg in Richtung Vorverarbeitung
-eingeschlagen.
+erschwinglich und interessant geworden. Die Verbesserung des gesamten
+\textit{ETL}-Prozesses erfordert ein gründliches Abwägen der
+verschiedenen Vor- und Nachteile. Oft stellt sich heraus, dass man mit
+einem Geschwindigkeitsvorteil an einer Stelle, Flexibilität an einer
+anderen einbüßt und/oder zusätzliche Komplexität erzeugt. Stoßen die
+hier entwickelten \textit{ETL}-Prozesse an ihre Grenzen, würde mit
+Hinblick auf das \textit{Map Reduce} Verfahren der Weg in Richtung
+Vorverarbeitung eingeschlagen.
 
 %%% Local Variables:
 %%% mode: latex

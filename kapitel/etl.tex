@@ -56,7 +56,6 @@ Gleichungssysteme, weshalb die Ergebnisse verschiedener Modelle
 voneinander abweichen können.
 
 \subsubsection{Operative Wettermodelle}
-
 Der Deutsche Wetterdienst betreibt drei verschiedene
 Wettermodelle. Die lokalen \textit{COSMO-DE} und \textit{COSMO-EU}
 Modelle \footnote{COSMO - Consortium for Small-Scale Modelling}
@@ -100,13 +99,13 @@ verwendet ein aus Vierecken bestehendes Gitternetz.
   \end{center}
 \end{figure}
 
-Mit der Maschenweite bezeichnet man den horizontalen Abstand zwischen
-zwei benachbarten Gitterpunkten. Je feiner das Gitter bzw. je höher
-die Auflösung des Modells ist, desto genauer können die Erdoberfläche
-und die darüber liegenden atmosphärischen Strukturen erfasst werden,
-was sich wiederum auf die Genauigkeit der Wettervorhersage
-auswirkt. Die benötigten Ressourcen zur Berechnung der
-Modellgleichungen steigt mit der Anzahl der verwendeten Gitterpunkte.
+Mit der Maschenweite bezeichnet man den Abstand zwischen zwei
+benachbarten Gitterpunkten. Je feiner das Gitter bzw. je höher die
+Auflösung des Modells ist, desto genauer können die Erdoberfläche und
+die darüber liegenden atmosphärischen Strukturen erfasst werden, was
+sich wiederum auf die Genauigkeit der Wettervorhersage auswirkt. Die
+benötigten Ressourcen zur Berechnung der Modellgleichungen steigt mit
+der Anzahl der verwendeten Gitterpunkte.
 
 Da eine sehr hohe Auflösung selbst die Leistungsfähigkeit der
 schnellsten Supercomputer übersteigt, werden von den Wetterdiensten
@@ -296,10 +295,11 @@ Eine \textit{Grib}-Datei besteht aus eigenständigen, sich selbst
 beschreibenden Datensätzen, den sogenannten \textit{Grib}
 Nachrichten. Eine Nachricht enthält dabei alle Daten eines bestimmten
 Vorhersageelements, für eine auf ein Gitternetz diskretisierte
-geographische Region zu einem bestimmten Zeitpunkt. Beispielsweise die
-Temperaturen um 12.00 Uhr mittags der gesamten Erdkugel aus dem
-\textit{Global Forecast System} oder die signifikanten Wellenhöhen des
-\textit{Wave Watch III} Modells um 9.00 Uhr morgens für Europa.
+geographische Region zu einem bestimmten Zeitpunkt oder
+Zeitraum. Beispielsweise die Temperaturen um 12.00 Uhr mittags der
+gesamten Erdkugel aus dem \textit{Global Forecast System} oder die
+signifikanten Wellenhöhen des \textit{Wave Watch III} Modells für
+einen Zeitraum von einer Woche für Europa.
 
 Eine \textit{Grib}-Nachricht besteht wiederum aus mehreren Sektionen,
 die den Inhalt einer Nachricht genauer beschreiben und in Tabelle
@@ -324,7 +324,6 @@ beziehen.
       \textbf{Name der Sektion} & \textbf{Verwendungszweck} \\
 
       \midrule
-
       Indicator & Die Zeichenkette ''GRIB'', Versionsnummer, Länge der gesamten Nachricht \\
 
       Identification & Charakteristiken, die auf alle Daten zutreffen, u.a. Herkunft der Daten, Referenzzeit und Typ des Produkts \\
@@ -429,7 +428,7 @@ Struktur des Quellsystems analysiert, dann das Verfahren zum Download
 der ausgewählten Daten vorgestellt und anschließend eine Aussage über
 die Performanz des Extraktionsprozesses getroffen.
 
-\subsection{Analyse der Quellsystems}
+\subsection{Analyse der Quellsysteme}
 Sowohl das \textit{Global Forecast System} als auch das \textit{Wave
   Watch III} Modell werden viermal täglich, jeweils um , 6.00, 12.00,
 18.00 und 24.00 Uhr koordinierter Weltzeit (UTC) berechnet. Danach
@@ -511,7 +510,7 @@ die Stunde der Vorhersage in der Zukunft (00-180 im 3 Stunden
 Intervall). Die Vorhersagedaten des \textit{GFS} für den 16. August
 2009 um 18 Uhr abends, die am selben Tag um 6 Uhr morgens berechnet
 wurden, waren somit in der \textit{Grib}-Datei mit dem \textit{URI}
-\url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/gfs.t06z.master.grbf12}
+\url{http://nomad5.ncep.noaa.gov/pub/gfs_master/gfs20090816/gfs.t06z.master.grbf18}
 zu finden.
 
 Eine \textit{Grib}-Datei des \textit{Global Forecast System} enthält
@@ -519,11 +518,11 @@ für einen bestimmten Zeitpunkt 63 verschiedene Vorhersageelemente und
 ist zwischen 200 und 215 Megabyte groß. Die Größe aller \textit{Grib}
 Daten für einen Vorhersagezeitraum von 180 Stunden (und für den
 Berechnungszeitpunkt selbst) mit einem 3-stündigen Intervall beträgt
-somit $(180h / 3h + 1) * 215 MB = 13.115 MB$. Da hier aber nur sehr
-wenige Vorhersageelemente der \textit{Grib}-Dateien benötigt werden,
-wird in Abschnitt \ref{subsec:download} ein Verfahren vorgestellt, um
-nur die benötigten Elemente zu übertragen und somit das zu
-übertragende Datenvolumen zu reduzieren.
+somit ca. $(180h / 3h + 1) * 215 MB = 13.115 MB$. Da hier aber nur
+sehr wenige Vorhersageelemente der \textit{Grib}-Dateien benötigt
+werden, wird in Abschnitt \ref{subsec:download} ein Verfahren
+vorgestellt, um nur die benötigten Elemente zu übertragen und somit
+das zu übertragende Datenvolumen zu reduzieren.
 
 \subsubsection{Datenorganisation des Wave Watch III Models}
 Die Daten des \textit{Wave Watch III} Modells sind ähnlich
@@ -588,7 +587,7 @@ Endposition berechnet sich aus der Startposition der nächsten
 Nachricht, von der ein Byte subtrahiert wird. Ein Sonderfall ist die
 letzte Nachricht des Inhaltsverzeichnisses. Für diese Nachricht kann
 die Endposition nicht berechnet werden, da keine Information über die
-gesamte Länge der \textit{Grib} im Inhaltsverzeichnis vorhanden
+gesamte Länge der \textit{Grib}-Datei im Inhaltsverzeichnis vorhanden
 ist. Tabelle \ref{tab:inhaltsverzeichnis_mit_positionen} zeigt das
 Resultat dieser Berechnung, angewendet auf das Inhaltsverzeichnis aus
 Abbildung \ref{abbildung:inventar}.
@@ -726,6 +725,31 @@ im 3-stündigen Intervall 61 Dateien, $180h / 3h = 60$ für den
 Vorhersagezeitraum und eine weitere für den Zeitpunkt der
 Modellberechnung, der sogenannten Analyse.
 
+Um alle \textit{Grib}-Nachrichten für ein ausgewähltes Element
+herunterzuladen, müssen zunächst die 61 Inhaltsverzeichnisse aller
+\textit{Grib}-Dateien angefordert werden, damit die Start- und
+Endpositionen des Elements berechnet werden können. Anschließend
+können die eigentlichen Daten des Elements mit
+\textit{Http-Range}-Anfragen aus den 61 \textit{Grib}-Dateien
+heruntergeladen werden. Die einzelnen \textit{Grib}-Nachrichten aus
+den Dateien werden dann pro Element in einer Datei
+zusammengefasst. Dies kann Dank des selbstbeschreibenden Formats der
+einzelnen \textit{Grib}-Nachrichten mit Standard-Unix-Kommandos
+bewerkstelligt werden, beispielsweise mit \textit{cat TMP.00h.grib
+  TMP.03h.grib ... TMP.180h.grib > TMP.0h-180h.grib}. Bis auf das
+Anfordern der Inhaltsverzeichnisse muss dieser Vorgang für alle
+gewünschten Elemente wiederholt werden. Insgesamt sind $ 61 * (N+1) $
+Anfragen nötig, 61 für die Inhaltsverzeichnisse und pro Element
+weitere \textit{61} Anfragen für die einzelnen
+\textit{Grib}-Nachrichten. Der Extraktionsprozess für das
+\textit{Global Forecast System} sendet somit für die zurzeit 4
+verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen. Tabelle
+\ref{tab:download_messung_gfs} zeigt die durchschnittlichen Laufzeiten
+für die einzelnen Elemente und die durchschnittliche
+Gesamtlaufzeit. Der Extraktionsprozess für das \textit{Global Forecast
+  System} überträgt insgesamt 68,04 MB und benötigt durchschnittlich
+ca. 14 Minuten.
+
 \begin{table*}[h]
   \centering
   {\sf
@@ -747,30 +771,6 @@ Modellberechnung, der sogenannten Analyse.
   \label{tab:download_messung_gfs}
 \end{table*}
 
-Um alle \textit{Grib}-Nachrichten für ein ausgewähltes Element
-herunterzuladen, müssen zunächst die 61 Inhaltsverzeichnisse aller
-\textit{Grib}-Dateien angefordert werden, damit die Start- und
-Endpositionen des Elements berechnet werden können. Anschließend
-können die eigentlichen Daten des Elements mit
-\textit{Http-Range}-Anfragen aus den 61 \textit{Grib}-Dateien
-heruntergeladen werden. Die einzelnen \textit{Grib}-Nachrichten aus
-den Dateien werden dann pro Element in einer Datei
-zusammengefasst. Dies kann Dank des selbstbeschreibenden Formats der
-einzelnen \textit{Grib}-Nachrichten mit Standard-Unix-Kommandos
-bewerkstelligt werden, beispielsweise mit \textit{cat TMP.00h.grib
-  TMP.03h.grib ... TMP.180h.grib > TMP.0h-180h.grib}. Bis auf das
-Anfordern der Inhaltsverzeichnisse muss dieser Vorgang für alle
-gewünschten Elemente wiederholt werden. Insgesamt sind $ 61 * (N+1) $
-Anfragen nötig, 61 für die Inhaltsverzeichnisse und pro Element
-weitere \textit{61} Anfragen für die einzelnen
-\textit{Grib}-Nachrichten. Der Extraktionsprozess für das
-\textit{Global Forecast System} sendet somit für die zurzeit 4
-verwendeten Elemente $ 61 * (4+1) = 305$ Anfragen. Tabelle
-\ref{tab:download_messung_gfs} zeigt die durchschnittlichen Laufzeiten
-für die einzelnen Elemente und deren aufsummierte Gesamtlaufzeit. Der
-Extraktionsprozess für das \textit{Global Forecast System} überträgt
-insgesamt 68,04 MB und benötigt durchschnittlich ca. 14 Minuten.
-
 \subsubsection{Lokales Grib Repository}
 Nachdem der Extraktionsvorgang erfolgreich abgeschlossen wurde, liegen
 die \textit{Grib}-Daten beider Modelle in einem \textit{Repository}
@@ -781,7 +781,7 @@ und dem Element der Vorhersage organisiert. Diese in Tabelle
 Transformationsprozessen einen einheitlichen Zugriff auf die Elemente
 der beiden Modelle.
 
-\begin{table*}
+\begin{table*}[h]
   \centering
   {\sf
     \footnotesize
@@ -830,10 +830,10 @@ im Vergleich zu den anschließenden Transformations- und Ladeprozessen
 sehr wenig Ressourcen und wirkt sich nur negativ auf die Aktualität
 der Vorhersagen aus. Da gravierende Veränderungen in den Vorhersagen
 zwischen zwei Modellberechnungen eher selten sind und die Vorhersagen
-nicht in Echtzeit benötigt werden, kann diese Verzögerung
-vernachlässigt werden.
+nicht in Echtzeit benötigt werden, kann diese Verzögerung in Kauf
+genommen werden.
 
-\subsubsection{Verbesserung der Extraktionsprozesse}
+\subsection{Verbesserung der Extraktionsprozesse}
 Da es den Anschein macht, dass die Übertragungsgeschwindigkeit von den
 \textit{NOMADS} Servern pro Verbindung reguliert wird, könnte versucht
 werden mehrere Anfragen gleichzeitig zu stellen, um die Daten parallel
@@ -882,7 +882,7 @@ ausgelesen, an der keine Daten \footnote{Beispielsweise die Wellenhöhe
 liefert \textit{degrib} Datensätze mit dem als ungültig definierten
 Wert \textit{9999.0}.
 
-\subsection{Bestimmung der Wave Watch III Position}
+\subsection{Bestimmung der alternativen Vorhersageposition}
 Bevor der eigentliche Transformationsvorgang beschrieben wird, muss
 zuvor noch auf eine Eigenart des \textit{Wave Watch III} Modells
 eingegangen werden. Bei einigen Spots wird das Auslesen der
@@ -1011,7 +1011,7 @@ Variante des Algorithmus arbeitet wie folgt.
     gegenüberliegend oder randomisiert.} nur diejenigen Positionen
   betrachtet, deren vom Ursprung aus in Grad angegebene Richtung durch
   die Schrittweise $\alpha$ teilbar ist. Sobald an einer dieser
-  Positionen ein gültiger Wert gefunden wurden, kann diese als
+  Positionen ein gültiger Wert gefunden wurde, kann diese als
   Vorhersageposition verwendet werden, und der Algorithmus ist
   fertig. Falls nicht, wird mit Schritt 3 weitergemacht.
 
@@ -1506,9 +1506,10 @@ wird mit \textit{PostgreSQL}'s Kommandozeilenprogramm \textit{psql}
 ausgeführt und die Datensätze der \textit{CSV}-Datei über den Standard
 Eingabekanal weitergereicht. Nachdem mit dem \textit{COPY}-Befehl alle
 Daten geladen wurden, wird ein zusätzlicher \textit{ANALYZE}-Befehl
-ausgeführt, der die Statistiken der Tabelle aktualisiert, die vom
-Anfrageoptimierer des Datenbankmanagementsystems verwendet werden, um
-einen guten Ausführungsplan zu finden.
+ausgeführt, der die Statistiken von allen Tabellen aktualisiert. Diese
+Statistiken werden vom Anfrageoptimierer des
+Datenbankmanagementsystems verwendet, um einen geeigneten
+Ausführungsplan für einen \textit{SQL}-Befehl zu finden.
 
 \begin{lstlisting}[captionpos=b, caption=Befehl zum Import von Datensätzen in \textit{PostgreSQL}, label=lst:copy]
 COPY grib_messages (
@@ -1522,14 +1523,16 @@ ermitteln, wurde eine \textit{CSV}-Datei erstellt, in der
 Vorhersagedaten aus beiden Modellen für 78 Spots enthalten
 waren. Diese Datei war ca. 3,6 MB groß, hatte 52.338 Zeilen ($78 * 11
 * 61$) und enthielt die Werte von 11 Vorhersageelementen für 61
-Vorhersagezeitpunkte. Diese Datei wurde 50 mal mit dem \textit{Bulk
+Vorhersagezeitpunkte. Diese Datei wurde 28 mal mit dem \textit{Bulk
   Loader} des Datenbankmanagementsystems in eine leere Tabelle geladen
 und die Laufzeit gemessen. Für die Vorhersagedaten der 78 Spots ergab
 sich aus diesen Messwerten eine durchschnittliche Laufzeit von 15,24
 Sekunden mit einer Standardabweichung von 5,97 Sekunden. Aus der
 daraus berechneten durchschnittlichen Laufzeit von 195 Millisekunden
 für einen Spot, wurde eine Hochrechnung für mehrere Spots abgeleitet,
-die in Tabelle \ref{tab:transformation_bulk_load} zu sehen ist.
+die in Tabelle \ref{tab:transformation_bulk_load} zu sehen ist. In
+dieser Hochrechnung wurde angenommen, dass sich die Laufzeit des
+\textit{COPY}-Befehls linear verhält.
 
 \begin{table*}[h]
   \centering
@@ -1575,12 +1578,12 @@ Management Systems gebracht wurden, kann mit der mengenorientierten
 Aktualisierung der Vorhersagedaten begonnen werden. Ziel ist, die
 Vorhersagedaten der Relation \textit{grib\textunderscore messages} in
 die Relation \textit{forecasts} zu überführen. Dabei werden
-existierende, aus einer früheren Modellberechnung stammenden
-Datensätze der Tabelle \textit{forecasts} mit den Werten der neueren
-Berechnung überschrieben und noch nicht existierende Datensätze
-hinzugefügt. Es werden nur diejenigen Datensätze aktualisiert bzw.
-hinzugefügt, die auch im Zeitraum der aktuellen Modellberechnung
-liegen. Dieser Zeitraum ist durch die Datensätze der Quellrelation
+existierende, aus einer früheren Modellberechnung stammende Datensätze
+der Tabelle \textit{forecasts} mit den Werten der neueren Berechnung
+überschrieben und noch nicht existierende Datensätze hinzugefügt. Es
+werden nur diejenigen Datensätze aktualisiert bzw.  hinzugefügt, die
+auch im Zeitraum der aktuellen Modellberechnung liegen. Dieser
+Zeitraum ist durch die Datensätze der Quellrelation
 \textit{grib\textunderscore messages} bestimmt und kann mit dem
 \textit{SQL}-Befehl \textit{SELECT MIN(valid\textunderscore time),
   MAX(valid\textunderscore time) FROM grib\textunderscore messages}
@@ -1709,14 +1712,15 @@ INSERT INTO forecasts(spot_id, valid_time, created_at, updated_at,
    GROUP BY grib_messages.spot_id, grib_messages.valid_time;
 \end{lstlisting}
 
-Der Optimierer scheint bei dieser Anfrage nicht zu erkennen,
-dass die Ergebnismenge im Vergleich zu der Anzahl von Datensätzen in
-der \textit{forecasts} Relation sehr gering ist. Im Ergebnis befinden
-sich nämlich nur diejenigen Datensätze, die seit der letzten
+Der Optimierer scheint bei dieser Anfrage nicht zu erkennen, dass die
+Ergebnismenge im Vergleich zu der Anzahl von Datensätzen in der
+\textit{forecasts} Relation sehr gering ist. Im Ergebnis befinden sich
+nämlich nur diejenigen Datensätze, die seit der letzten
 Modellberechnung hinzugekommen sind. Das Problem liegt hier in der
-Verwendung des \textit{Left Joins}, der den Optimierer dazu
-veranlasst, alle Datensätze der beiden Relationen zu verknüpfen und
-erst anschließend den Großteil der Datensätze wieder weg zu werfen.
+Verwendung des \textit{Left Joins}, der das Datenbankmanagementsystem
+dazu veranlasst, alle Datensätze der beiden Relationen zu verknüpfen
+und erst anschließend den Großteil der Datensätze wieder weg zu
+werfen.
 
 \begin{lstlisting}[captionpos=b, caption=Ausführungsplan des \textit{Left Joins}, label=forecasts:explain_1]
 Subquery Scan "*SELECT*" (cost=15636.15..23487.90 rows=4819 width=36) 
@@ -1820,10 +1824,11 @@ nicht durch die Anzahl der historischen Daten beschränkt ist.
 
 Um eine Aussage über die durchschnittliche Laufzeit der
 \textit{Subquery} Variante für die Vorhersagedaten von 78 Spots zu
-treffen, wurden die Laufzeiten dieser Befehle über einen Zeitraum von
-einer Woche aus den Log-Dateien extrahiert. Aus diesen 56 Messwerten
-($24h/6h * 7 * 2$), ergab sich eine durchschnittliche Laufzeit von 131
-Millisekunden mit einer Standardabweichung von 34 Millisekunden.
+treffen, wurden die Laufzeiten dieser Befehle für beide Modelle über
+einen Zeitraum von einer Woche aus den Log-Dateien extrahiert. Aus
+diesen 56 Messwerten ($24h/6h * 7 * 2$), ergab sich eine
+durchschnittliche Laufzeit von 131 Millisekunden mit einer
+Standardabweichung von 34 Millisekunden.
 
 \subsubsection{Aktualisierung der Vorhersagedaten}
 Die Aktualisierung der Vorhersagedaten wird wegen der erwähnten
@@ -1864,8 +1869,8 @@ durch die Anzahl der Spots beschränkt. Über einen Zeitraum von einer
 Woche ergab sich für einen \textit{UPDATE}-Befehl eine
 durchschnittliche Laufzeit von 195 Millisekunden mit einer
 Standardabweichung von 41 Millisekunden. Für diese Berechnung wurden
-insgesamt 308 Messwerte ($24h/6h * 7 * 11$) aus den Log-Dateien
-extrahiert.
+insgesamt 308 Messwerte ($24h/6h * 7 * 11$) für die insgesamt 11
+Vorhersageelemente aus den Log-Dateien extrahiert.
 
 \begin{lstlisting}[captionpos=b, caption=Ausführungsplan der Aktualisierung, label=forecasts:update_explain]
 Nested Loop (cost=128.70..20824.68 rows=4555 width=134)
@@ -1914,10 +1919,10 @@ und ein anderes Laufzeitverhalten haben. Um trotzdem einen Eindruck
 für die Laufzeit bei einer größeren Anzahl von Spots zu bekommen, wird
 hier eine Hochrechnung der Laufzeit vorgestellt, bei der angenommen
 wird, dass sich die durchschnittliche Laufzeit der
-\textit{SQL}-Befehle bei ansteigendem Datenvolumen nicht verändert,
-sondern linear verhält. Zunächst werden aus den zuvor gemessenen
-Laufzeiten der \textit{INSERT}- und \textit{UPDATE}-Befehle für 78
-Spots die durchschnittlichen Laufzeiten für einen Spot abgeleitet. Die
+\textit{SQL}-Befehle bei ansteigendem Datenvolumen linear
+verhält. Zunächst werden aus den zuvor gemessenen Laufzeiten der
+\textit{INSERT}- und \textit{UPDATE}-Befehle für 78 Spots die
+durchschnittlichen Laufzeiten für einen Spot abgeleitet. Die
 durchschnittliche Laufzeit eines \textit{INSERT}-Befehls für einen
 Spot beträgt somit $l_i = 131 ms / 78 = 1,68 ms$, die eines
 \textit{UPDATE}-Befehls $l_u = 195 ms / 78 = 2,5 ms$. Daraus lässt

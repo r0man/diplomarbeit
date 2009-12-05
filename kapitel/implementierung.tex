@@ -24,10 +24,10 @@ vier größeren Bibliotheken \textit{ActionMailer}, \textit{ActionPack},
 \textit{ActiveSupport} und \textit{ActiveRecord}, mit denen Emails
 verarbeitet, Benutzeroberflächen erstellt, Daten persistent
 gespeichert und viele weitere Probleme bewältigt werden
-können. \textit{Rails} basiert auf der bewährten \textit{MVC}
-Architektur, greift aber auch neuere Techniken, wie den in Abschnitt
-\ref{rest} beschriebenen \textit{REST}
-\nomenclature{REST}{Representational State Transfer} Architekturstil
+können. \textit{Rails} basiert auf der bewährten
+\textit{MVC}-Architektur, greift aber auch neuere Techniken, wie den
+in Abschnitt \ref{rest} beschriebenen \textit{REST}
+\nomenclature{REST}{Representational State Transfer}-Architekturstil
 auf und ebnet so den Weg zu einer zukunftsorientierten Entwicklung von
 Web-Applikationen. Viele dieser bewährten Konzepte, aber auch neue und
 innovative Ideen haben dazu beigetragen, dass \textit{Rails} in
@@ -391,10 +391,10 @@ zu einem bestimmten Zeitpunkt auch über mehrere \textit{URI}s
 identifiziert werden: Zu einem bestimmten Zeitpunkt war Version 3.0.12
 der Software auch die aktuellste Version. Der Aufbau oder die Struktur
 von \textit{URI}s wird durch \textit{REST} nicht strikt vorgegeben.
-Eine durch den Client vorhersehbare Struktur wird aber in
+Eine durch den Client vorhersehbare Struktur wird aber in der
 \textit{Resource Oriented Architecture} empfohlen, da dies dem Client
-die Möglichkeiten gibt sehr viel flexibler auf den \textit{Web Service}
-zuzugreifen.
+die Möglichkeiten gibt sehr viel flexibler auf den \textit{Web
+  Service} zuzugreifen.
 
 \paragraph{Adressierbarkeit}
 
@@ -497,7 +497,7 @@ einheitlichen Schnittstelle für Ressourcen an. In
 \cite{Richardson07}[S.97-105] wird das \textit{HTTP}-Protokoll zur
 Implementierung dieser Schnittstelle vorgeschlagen. Dabei werden die
 vier \textit{CRUD}-Operationen auf die im \textit{HTTP}-Protokoll
-definierten \textit{GET}, \textup{POST}, \textit{PUT} und
+definierten \textit{GET}, \textit{POST}, \textit{PUT} und
 \textit{DELETE} Methoden abgebildet.
 
 \begin{itemize}
@@ -595,7 +595,7 @@ Software gemeinsam zu beschreiben und eine Spezifikation zu erstellen.
 Diese Spezifikation wird in Form von automatischen Tests in einer
 domänen\-spezifischen Sprache vom Programmierer implementiert. Die
 Spezifikation und die eigentliche Implementierung des Verhaltens
-geschieht dabei zeitgleich.
+geschieht dabei zeitnah.
 
 \subsection{Red, Green, Refactor}
 
@@ -781,13 +781,9 @@ Refactor Zykluses wird nun das Verhalten der Klasse implementiert. Der
 erste Testfall kann durch die folgende, noch inkorrekte
 Implementierung zum Erfolg gebracht werden:
 
-\begin{lstlisting}[float=t]
-class Haversine
-
-  def self.distance(from, to, options = { })
-    return 0 # A first, naive implementation.
-  end
-
+\begin{lstlisting}[]
+def Haversine.distance(from, to)
+  return 0 # A first, naive implementation.
 end
 \end{lstlisting}
 

@@ -7,8 +7,6 @@
 \definecolor{listlightgray}{gray}{0.955}
 \definecolor{listwhite}{gray}{1.0} 
 
-\usepackage[utf8]{inputenc}
-
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -39,10 +37,34 @@
 
 \usepackage{fancyvrb}
 
-\usepackage{fancyhdr}
-\pagestyle{headings}
-\usepackage{titlesec}
+% \usepackage{fancyhdr}
+% %\pagestyle{headings}
+% \pagestyle{fancy}
+% \renewcommand{\chaptermark}[1]%
+%    {\markboth{\MakeUppercase{\thechapter.\ #1}}{}}
+% \renewcommand{\sectionmark}[1]%
+%    {\markright{\MakeUppercase{\thesection.\ #1}}}
+% \renewcommand{\headrulewidth}{0.5pt}
+% \renewcommand{\footrulewidth}{0pt}
+% \newcommand{\helv}{%
+%    \fontfamily{phv}\fontseries{b}\fontsize{9}{11}\selectfont}
+% \fancyhf{}
+% \fancyfoot{}
+% \fancyhead[LE,RO]{\helv \thepage}
+% \fancyhead[LO]{\helv \rightmark}
+% \fancyhead[RE]{\helv \leftmark}
 
+% \pagestyle{fancy}
+% \fancyhead{} % clear all header fields
+% \fancyhead[RO,LE]{\bfseries The performance of new graduates}
+% \fancyfoot{} % clear all footer fields
+% \fancyfoot[LE,RO]{\thepage}
+% \fancyfoot[LO,CE]{From: K. Grant}
+% \fancyfoot[CO,RE]{To: Dean A. Smith}
+% \renewcommand{\headrulewidth}{0.4pt}
+% \renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{titlesec}
 \titleformat{\chapter}[display]
 {\bfseries\Large}
 {\filleft\MakeUppercase{\chaptertitlename} \Huge\thechapter}
